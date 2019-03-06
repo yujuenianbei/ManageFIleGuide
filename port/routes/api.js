@@ -148,7 +148,7 @@ router.post('/userLogin', function (req, res) {
 
 // 获取左侧菜单内容
 router.get('/leftList', (req, res) => {
-  const listSql = `SELECT id, list_type, list_name,list_link, list_parent_id FROM leftlist`
+  const listSql = `SELECT id, list_type, list_name,list_link, list_parent_id FROM leftList`
   query(listSql, [], function (err, rows, fields) {
     if (err) {
       console.log('[SELECT ERROR] - ', err.message);

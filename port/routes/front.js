@@ -4,33 +4,33 @@ const router = express.Router();
 const mysql = require('mysql');
 const { query } = require('../sql/init');
 
-//引入redis
-var redis = require("redis");
-//创建redis客户端
-var client = redis.createClient("6379", "127.0.0.1");
-//连接错误处理
-client.on("error", function (error) {
-  console.log(error);
-});
-//redis验证 （如果redis没有开启验证，此配置可以不写）
-client.auth("492275105");
-//查找
+// //引入redis
+// var redis = require("redis");
+// //创建redis客户端
+// var client = redis.createClient("6379", "127.0.0.1");
+// //连接错误处理
+// client.on("error", function (error) {
+//   console.log(error);
+// });
+// //redis验证 （如果redis没有开启验证，此配置可以不写）
+// client.auth("492275105");
+// //查找
 
-router.get('/getRedis', function (req, res, next) {
-  client.set("node_redis_key", JSON.stringify({ "name": "antonio", age: 28 }), function (error, resr) {
-    if (error) {
-      console.log(error);
-    } else {
-      console.log(resr);
-    };
-    //操作完成，关闭redis连接
-    client.end(true);
-    res.send({
-      reqCode: 200,
-      reqData: resr
-    });
-  });
-})
+// router.get('/getRedis', function (req, res, next) {
+//   client.set("node_redis_key", JSON.stringify({ "name": "antonio", age: 28 }), function (error, resr) {
+//     if (error) {
+//       console.log(error);
+//     } else {
+//       console.log(resr);
+//     };
+//     //操作完成，关闭redis连接
+//     client.end(true);
+//     res.send({
+//       reqCode: 200,
+//       reqData: resr
+//     });
+//   });
+// })
 
 // banner 置顶
 router.get('/imgList/banner', function (req, res, next) {

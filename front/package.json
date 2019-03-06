@@ -6,7 +6,9 @@
     "/": {
       "target": "http://localhost:3000",
       "changeOrigin": true,
-      "pathRewrite": { "^/" : "" }
+      "pathRewrite": {
+        "^/": ""
+      }
     }
   },
   "dependencies": {
@@ -32,7 +34,8 @@
     "react-scripts": "1.0.17",
     "redux": "^3.7.2",
     "redux-logger": "^3.0.6",
-    "redux-thunk": "^2.2.0"
+    "redux-thunk": "^2.2.0",
+    "socket.io-client": "^2.2.0"
   },
   "scripts": {
     "server": "node ./server/server.js",

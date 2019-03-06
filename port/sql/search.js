@@ -1,5 +1,5 @@
 const listInfo = require('../config/listInfo');
-const songList = require('../config/songList');
+const userList = require('../config/userList');
 
 function main(query) {
   // const addNmae = `INSERT INTO userlist (id, name, lastname, age) VALUES (1, 'antonio', 'teddy', 28)`;
@@ -11,7 +11,9 @@ function main(query) {
   //     console.log(result)
   // })
 
-  // 初始化歌曲列表
+  // 需要添加对初始化数据的判断
+
+  // 初始化左侧列表
   let param = '';
   listInfo.forEach(data => {
     param += `(${JSON.stringify(data.id)},
@@ -19,7 +21,24 @@ function main(query) {
       ${JSON.stringify(data.list_link)},${JSON.stringify(data.list_parent_id)}, NOW(), NOW()),`;
   });
   param = param.substring(0, param.length - 1);
-  const userInfoSQL = `insert ignore leftlist(id, list_type, list_name, list_link, list_parent_id, create_time, update_time)
+  const leftInfoSQL = `insert ignore leftList(id, list_type, list_name, list_link, list_parent_id, create_time, update_time)
+      values${param};`;
+  query(leftInfoSQL, [], (err) => {
+    if (err) {
+      console.log('init leftinfo error', err);
+    } else {
+      console.log('init leftinfo success');
+    }
+  });
+  // 初始化root用户
+  param = '';
+  userList.forEach(data => {
+    param += `(${JSON.stringify(data.id)},
+      ${JSON.stringify(data.user_name)},${JSON.stringify(data.user_password)},
+      ${JSON.stringify(data.user_realname)},${JSON.stringify(data.user_birthday)},${JSON.stringify(data.user_id)}, NOW(), NOW()),`;
+  });
+  param = param.substring(0, param.length - 1);
+  const userInfoSQL = `insert ignore userList(id, user_name, user_password, user_realname, user_birthday, user_id, create_time, update_time)
       values${param};`;
   query(userInfoSQL, [], (err) => {
     if (err) {
@@ -28,7 +47,6 @@ function main(query) {
       console.log('init userinfo success');
     }
   });
-
   // // 初始化歌曲列表
   // param = '';
   // songList.forEach(data => {

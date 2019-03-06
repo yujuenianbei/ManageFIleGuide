@@ -3,7 +3,7 @@ const router = express.Router();
 const path = require('path');
 // redis
 const session = require('express-session');
-const redisStore = require('connect-redis')(session);
+// const redisStore = require('connect-redis')(session);
 
 
 
