@@ -1,0 +1,36 @@
+.rightChat{
+    transition: all .2s;
+    width: 300px;
+    background-color: #fff;
+    position: fixed;
+    top: 50px;
+    bottom: 50px;
+    border-left: 1px solid #f0f2f5;
+}
+.ant-tabs-nav .ant-tabs-tab{
+    width: 150px;
+    text-align: center;
+}
+.ant-tabs-nav .ant-tabs-tab-active{
+    color: #fff;
+    font-weight: 500;
+    background-color: #1890ff;
+    transition: backgroud-color 0.3s cubic-bezier(0.65, 0.05, 0.36, 1);
+}
+.chatInput{
+    margin: 0px 5px;
+    width: 290px;
+}
+.chatContent{
+    margin: 0px 5px;
+    width: 290px;
+    height: calc(~'100vh - 275px');
+    overflow-y: auto;
+    li{
+        word-wrap:break-word
+    }
+}
+.submitButton{
+    width: 100%;
+    padding: 5px;
+}

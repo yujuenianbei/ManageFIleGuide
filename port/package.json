@@ -1,0 +1,28 @@
+{
+  "name": "antd-port",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node ./bin/www"
+  },
+  "dependencies": {
+    "connect-multiparty": "^2.0.0",
+    "connect-redis": "^3.3.3",
+    "cookie-parser": "^1.4.3",
+    "debug": "~2.6.9",
+    "ejs": "~2.5.7",
+    "express": "~4.16.0",
+    "express-session": "^1.15.6",
+    "http-errors": "~1.6.2",
+    "jsonwebtoken": "^8.3.0",
+    "morgan": "~1.9.0",
+    "multer": "^1.3.1",
+    "multiparty": "^4.2.1",
+    "mysql": "^2.16.0",
+    "redis": "^2.8.0",
+    "socket.io": "^2.2.0"
+  },
+  "devDependencies": {
+    "fast-csv": "^2.4.1"
+  }
+}

@@ -1,0 +1,119 @@
+// 1140px
+html,body{
+    overflow: hidden;
+}
+ul,li{
+    list-style: none;
+    -webkit-margin-before: 0em;
+    -webkit-margin-after: 0em;
+    -webkit-margin-start: 0px;
+    -webkit-margin-end: 0px;
+    -webkit-padding-start: 0px;
+    margin-top: 0;
+    margin-bottom: 0em !important;
+}
+
+/*定义滚动条高宽及背景 高宽分别对应横竖滚动条的尺寸*/ 
+::-webkit-scrollbar 
+{ 
+    width: 5px; 
+    height: 10px; 
+    background-color: rgba(245, 245, 245, 0); 
+} 
+   
+/*定义滚动条轨道 内阴影+圆角*/ 
+::-webkit-scrollbar-track 
+{ 
+    // -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); 
+    // border-radius: 10px; 
+    background-color: rgba(245, 245, 245, 0); 
+} 
+   
+/*定义滑块 内阴影+圆角*/ 
+::-webkit-scrollbar-thumb 
+{ 
+    // border-radius: 10px; 
+    // -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3); 
+    background-color: #555; 
+}
+
+.loginCover{
+    transition-delay: 0.5s;
+    -moz-transition-delay: 0.5s; /* Firefox 4 */
+    -webkit-transition-delay: 0.5s; /* Safari 和 Chrome */
+    -o-transition-delay: 0.5s; /* Opera */
+    height: 100%;
+    width: 100%;
+    position: absolute;
+}
+.logo{
+    -webkit-transition: all .2s;
+    -o-transition: all .2s;
+    transition: all .2s;
+    background: #fff;
+    width: 180px;
+    height: 30px;
+    margin: 10px;
+}
+.ant-layout-sider-collapsed .logo{
+    -webkit-transition: all .2s;
+    -o-transition: all .2s;
+    transition: all .2s;
+    background: #fff;
+    width: 60px;
+}
+
+.contextMenu{
+    z-index: 100;
+    position: fixed;
+    background: linear-gradient(to right, #c6c7cf, #f0f0f0);
+    box-shadow: 0px 2px 5px #999999;
+    border-radius: 4px;
+    padding-top: 5px;
+  }
+    .contextMenu--option{
+      padding: 0px 50px 2px 15px;
+      min-width: 160px;
+      cursor: default;
+      font-size: 14px;
+    }
+    .contextMenu-separator{
+      width: 100%;
+      height: 1px;
+      background: #b5b7be;
+      margin: 2px 0;
+    }
+.iconSize{
+    font-size: 22px;
+    vertical-align: middle !important;
+}
+.ant-spin-nested-loading{
+    overflow: auto;
+    max-height: 933px;
+}
+.ant-layout{
+    height: calc(~'100vh - 50px');
+    min-width: 940px;
+    padding-bottom: 0px;
+}
+
+.content{
+    overflow-y: auto;
+    overflow-x: hidden;
+    height: 100vh;
+}
+.ant-table-content{
+    height: calc(~'100vh - 199px');
+    overflow-x: hidden;
+    margin-top: 5px;
+}
+.userContent .ant-table-content{
+    height: calc(~'100vh - 204px');
+}
+.ant-table-pagination.ant-pagination{
+    margin: 10px 0 0px !important;
+}
+
+.ant-table-thead > tr > th, .ant-table-tbody > tr > td {
+    padding: 14px 16px !important;
+}
