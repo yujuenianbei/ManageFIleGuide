@@ -21,7 +21,15 @@ yarn-debug.log*
 yarn-error.log*
 
 # static
-/port/static/img/*
-/port/static/music/*
-/port/static/output/*
-/port/static/music/*
+/port/static/img/*.jpg
+/port/static/img/*.png
+/port/static/music/*.mp3
+/port/static/output/*.csv
+/port/static/video/*.mp4
+
+# dbconfig
+/port/config/dbconfig.js
+
+# 
+/port/package-lock.json
+/front/package-lock.json

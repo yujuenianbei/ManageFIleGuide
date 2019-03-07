@@ -59,7 +59,7 @@ class MusicTable extends Component {
         songAlbum: item.album_name,
         songAlbumdate: item.album_data,
         songImg: item.song_img,
-        songTime: item.song_time
+        // songTime: item.song_time
       }
       return data
     })
@@ -107,12 +107,12 @@ class MusicTable extends Component {
             </span>
           )}
         />
-        <Column
+        {/* <Column
           title="时长"
           dataIndex="songTime"
           key="songTime"
           width= {60}
-        />
+        /> */}
         <Column
           title="发专时间"
           dataIndex="songAlbumdate"

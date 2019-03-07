@@ -83,7 +83,7 @@ class ImgTable extends Component {
           key="imgImg"
           render={(text, record) => (
             <span>
-              <img src={"http://localhost:3000/api/img/" + record.imgImg} style={{ width: "100%", height: 70 }} />
+              <img src={"http://localhost:3000/api/img/" + record.imgImg} style={{ height: 70 }} />
             </span>
           )}
         />

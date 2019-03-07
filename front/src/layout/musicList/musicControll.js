@@ -35,7 +35,7 @@ class MusicControll extends Component {
   }
     // 导出
     exportCsv = () => {
-      this.props.onExportCsv('songlist');
+      this.props.onExportCsv('songList');
     }
   render() {
     const { addVisible } = this.state;

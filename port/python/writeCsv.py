@@ -1,12 +1,12 @@
 #!/usr/bin/python3
-
+# encoding: utf-8
 import pymysql
 import csv
 import sys
 
 
 # 打开数据库连接
-db = pymysql.connect("localhost", "root", "492275105", "antd")
+db = pymysql.connect("172.17.0.10", "root", "123456", "antd")
 
 # 使用cursor()方法获取操作游标
 cursor = db.cursor()
@@ -16,7 +16,7 @@ sql = "SELECT * FROM " + sys.argv[1]+";"
 sqlTitle = "select column_name from INFORMATION_SCHEMA.COLUMNS where TABLE_NAME='" +sys.argv[1]+"';"
 try:
     # 创建csv文件
-    with open('./static/output/'+sys.argv[1]+'.csv', 'w', newline='') as csvfile:
+    with open('./static/output/'+syzzs.argv[1]+'.csv', 'w', newline='') as csvfile:
         fieldnames = []
         # 获取列名
         cursor.execute(sqlTitle)

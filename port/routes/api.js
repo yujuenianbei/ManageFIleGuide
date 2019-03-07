@@ -310,6 +310,7 @@ router.post('/exportList', (req, res) => {
     //     csvStream.write(currentValue);
     //   });
     //   csvStream.end();
+    //   resolve(1);
 
 
     // python创建csv
@@ -328,7 +329,7 @@ router.post('/exportList', (req, res) => {
       console.log('子进程已退出，退出码 ' + code);
       resolve(1);
     });
-    // resolve(1);
+    resolve(1);
   });
   // })
   // 导出文件完成后传给前端
@@ -349,38 +350,38 @@ router.post('/exportList', (req, res) => {
   })
 })
 
-// // 下载文件
-// router.get('/exportUserList', (req, res) => {
-//   res.setHeader('Content-fileName', 'songlist.csv');
+// 下载文件
+router.get('/exportUserList', (req, res) => {
+  res.setHeader('Content-fileName', 'songlist.csv');
 
-//   res.setHeader('Content-type', 'application/octet-stream');
-//   res.setHeader('Content-Disposition', 'attachment;filename=songlist.csv');    // 'aaa.txt' can be customized.
-//   var fileStream = fs.createReadStream('./static/output/songlist.csv');
-//   fileStream.on('data', function (data) {
-//       res.write(data, 'binary');
-//   });
-//   fileStream.on('end', function () {
-//       res.end();
-//       console.log('The file has been downloaded successfully!');
-//   });
+  res.setHeader('Content-type', 'application/octet-stream');
+  res.setHeader('Content-Disposition', 'attachment;filename=songlist.csv');    // 'aaa.txt' can be customized.
+  var fileStream = fs.createReadStream('./static/output/songlist.csv');
+  fileStream.on('data', function (data) {
+      res.write(data, 'binary');
+  });
+  fileStream.on('end', function () {
+      res.end();
+      console.log('The file has been downloaded successfully!');
+  });
 
-//   // res.download('./static/output/songlist.csv');
+  // res.download('./static/output/songlist.csv');
 
-//   // //第二种方式
-//   // var path = './static/output/songlist.csv';
-//   // var f = fs.createReadStream(path);
-//   // res.writeHead(200, {
-//   //   'Content-Type': 'application/octet-stream',
-//   //   'Content-Disposition': 'attachment; filename=songlist.csv', //告诉浏览器这是一个需要下载的文件
-//   // });
-//   // f.pipe(res);
+  // //第二种方式
+  // var path = './static/output/songlist.csv';
+  // var f = fs.createReadStream(path);
+  // res.writeHead(200, {
+  //   'Content-Type': 'application/octet-stream',
+  //   'Content-Disposition': 'attachment; filename=songlist.csv', //告诉浏览器这是一个需要下载的文件
+  // });
+  // f.pipe(res);
 
-//   // res.writeHead(200, {
-//   //   'Content-Type': 'application/octet-stream', //告诉浏览器这是一个二进制文件  
-//   //   'Content-Disposition': 'attachment; filename=' + fileName, //告诉浏览器这是一个需要下载的文件  
-//   // });
-//   // fs.createReadStream(filePath).pipe(res);
-// })
+  // res.writeHead(200, {
+  //   'Content-Type': 'application/octet-stream', //告诉浏览器这是一个二进制文件  
+  //   'Content-Disposition': 'attachment; filename=' + fileName, //告诉浏览器这是一个需要下载的文件  
+  // });
+  // fs.createReadStream(filePath).pipe(res);
+})
 
 
 // 获取MP3列表
