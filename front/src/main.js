@@ -26,7 +26,7 @@ class Main extends Component {
     return (
       <Router history = {customHistory}>
             <Left>
-                <Route exact path="/main" component={Home} />
+                <Route exact path="/" component={Home} />
                 <Route path="/user" component={UserList} />
                 <Route path="/about" component={VideoPlayer} />
                 <Route path="/video" component={VideoList} />

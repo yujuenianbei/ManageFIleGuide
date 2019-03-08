@@ -3,7 +3,7 @@ const userInfo = [
     id: 1,
     list_type: 'pie-chart',
     list_name: '首页',
-    list_link: '/main',
+    list_link: '/',
     list_parent_id: ''
   }, {
     id: 2,

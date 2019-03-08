@@ -30,6 +30,25 @@ yarn-error.log*
 # dbconfig
 /port/config/dbconfig.js
 
-# 
+# package-lock.json
 /port/package-lock.json
 /front/package-lock.json
+
+# vue
+/vue/.DS_Store
+/vue/node_modules/
+/vue//dist/
+/vue/npm-debug.log*
+/vue/yarn-debug.log*
+/vue/yarn-error.log*
+/vue//test/unit/coverage/
+/vue//test/e2e/reports/
+/vue/selenium-debug.log
+
+# Editor directories and files
+/vue/.idea
+/vue/.vscode
+/vue/*.suo
+/vue/*.ntvs*
+/vue/*.njsproj
+/vue/*.sln
