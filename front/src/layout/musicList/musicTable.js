@@ -88,6 +88,7 @@ class MusicTable extends Component {
           title="歌手名"
           dataIndex="authorName"
           key="authorName"
+          width= {300}
           sorter={(a, b) => a.authorName - b.authorName}
         />
         <Column

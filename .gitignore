@@ -3,6 +3,7 @@
 # dependencies
 /port/node_modules
 /front/node_modules
+/reactpwa/node_modules
 # testing
 /coverage
 

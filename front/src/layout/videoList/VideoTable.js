@@ -75,6 +75,7 @@ class VideoTable extends Component {
           key="videoName"
           defaultSortOrder='ascend'
           sorter={(a, b) => a.videoName - b.videoName}
+          width={400}
           render={(text, record) => (
             <span className='songName' onClick={() => { this.addvideoTolist(record) }}>
               {record.videoName}

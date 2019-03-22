@@ -970,6 +970,31 @@ router.get('/python', function (req, res, next) {
     reqCode: 200
   })
 })
+router.get('/getcode', function (req, res, next) {
+  res.send({
+    reqCode: 11000
+  })
+})
+
+router.post('/getcode', function (req, res, next) {
+  const response = {
+    pingcode: req.body.pingcode
+  };
+  console.log(response.pingcode == 11000)
+  if(response.pingcode == 11000) {
+    res.send({
+      days: "Delivery approx 3 WORKING DAYS BEFORE 6PM",
+      is_same_day_delivery_on: false,
+      success: 1
+    })
+  } else {
+    res.send({
+      message: "Please enter a valid pincode.",
+      success: 0
+    })
+  }
+
+})
 
 
 
