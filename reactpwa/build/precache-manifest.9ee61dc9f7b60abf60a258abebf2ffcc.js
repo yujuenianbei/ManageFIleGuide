@@ -20,23 +20,23 @@ self.__precacheManifest = [
     "url": "/static/js/runtime~main.c5541365.js"
   },
   {
-    "revision": "4936402ea907a5181b25",
-    "url": "/static/js/main.a0368318.chunk.js"
+    "revision": "58b9c174fde81c15977a",
+    "url": "/static/js/main.7cff963d.chunk.js"
   },
   {
-    "revision": "f9bad301b1b10c41365e",
-    "url": "/static/js/2.7ac2c223.chunk.js"
+    "revision": "b3c02cd00e361703fa70",
+    "url": "/static/js/2.5577b9b3.chunk.js"
   },
   {
-    "revision": "4936402ea907a5181b25",
-    "url": "/static/css/main.427ec47e.chunk.css"
+    "revision": "58b9c174fde81c15977a",
+    "url": "/static/css/main.229fecef.chunk.css"
   },
   {
-    "revision": "f9bad301b1b10c41365e",
+    "revision": "b3c02cd00e361703fa70",
     "url": "/static/css/2.bf4568a9.chunk.css"
   },
   {
-    "revision": "efa87babdf86a5fad0890c75034fa01a",
+    "revision": "45a64ce584618c8ab6ffb9535315668b",
     "url": "/index.html"
   }
 ];

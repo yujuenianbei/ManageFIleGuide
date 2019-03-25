@@ -4,6 +4,8 @@ import News from './layout/News/index'
 import State from './layout/State/index'
 import User from './layout/User/index'
 import Setting from './layout/Setting/index'
+import Video from './layout/Video/index'
+
 import { HashRouter as Router, Route } from 'react-router-dom';
 import createBrowserHistory from "history/createBrowserHistory";
 
@@ -18,6 +20,8 @@ class Main extends Component {
                 <Route path="/state" component={State} />
                 <Route path="/user" component={User} />
                 <Route path="/setting" component={Setting} />
+                {/* video */}
+                <Route path="/video" component={Video} />
             </Router>
         );
     }

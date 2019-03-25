@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import * as Actions from './redux/action';
 import { connect } from 'react-redux';
-// import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import './index.less';
 import HeaderMain from '../../components/headerSlide';
 import HeaderSearch from '../../components/headerSearch';
@@ -160,126 +160,32 @@ class Home extends Component {
                 </div>
                 <div className="main_videoList">
                     <ul>
-                        <li>
-                            <div className="main_video">
-                                <div className="main_videoImg">
-                                    <img src="http://192.168.1.128:3000/api/img/1553246355983.jpg" alt='' />
-                                </div>
-                                <div className="main_videoUser">
-                                    <div className="main_video_usernum">
-                                        <span className="main_videoIcon icon-play"></span>
-                                        <span className="main_num">1234.5万</span>
+                        { 
+                            this.props.page.Home.videoListData && this.props.page.Home.videoListData.map((item, index) => {
+                            return <li key={index}>
+                                <div className="main_video">
+                                <Link to={`/video?id=${item.video_id}`}>
+                                    <div className="main_videoImg">
+                                        <img src={"http://192.168.1.128:3000/api/img/"+item.video_img} alt='' />
                                     </div>
-                                    <div className="main_video_usernum">
-                                        <span className="main_videoIcon icon-keyboard"></span>
-                                        <span className="main_num">12312</span>
+                                    <div className="main_videoUser">
+                                        <div className="main_video_usernum">
+                                            <span className="main_videoIcon icon-play"></span>
+                                            <span className="main_num">1234.5万</span>
+                                        </div>
+                                        <div className="main_video_usernum">
+                                            <span className="main_videoIcon icon-keyboard"></span>
+                                            <span className="main_num">12312</span>
+                                        </div>
                                     </div>
-                                </div>
-                                <div className="main_videoName">
-                                    1231231231
-                                </div>
+                                    <div className="main_videoName">
+                                        {item.video_name}
+                                    </div>
+                                </Link>
                             </div>
-                        </li>
-                        <li>
-                            <div className="main_video">
-                                <div className="main_videoImg">
-                                    <img src="http://192.168.1.128:3000/api/img/1553246355983.jpg" alt='' />
-                                </div>
-                                <div className="main_videoUser">
-                                    <div className="main_video_usernum">
-                                        <span className="main_videoIcon icon-play"></span>
-                                        <span className="main_num">1234.5万</span>
-                                    </div>
-                                    <div className="main_video_usernum">
-                                        <span className="main_videoIcon icon-keyboard"></span>
-                                        <span className="main_num">12312</span>
-                                    </div>
-                                </div>
-                                <div className="main_videoName">
-                                    1231231231
-                                </div>
-                            </div>
-                        </li>
-                        <li>
-                            <div className="main_video">
-                                <div className="main_videoImg">
-                                    <img src="http://192.168.1.128:3000/api/img/1553246355983.jpg" alt='' />
-                                </div>
-                                <div className="main_videoUser">
-                                    <div className="main_video_usernum">
-                                        <span className="main_videoIcon icon-play"></span>
-                                        <span className="main_num">1234.5万</span>
-                                    </div>
-                                    <div className="main_video_usernum">
-                                        <span className="main_videoIcon icon-keyboard"></span>
-                                        <span className="main_num">12312</span>
-                                    </div>
-                                </div>
-                                <div className="main_videoName">
-                                    1231231231
-                                </div>
-                            </div>
-                        </li>
-                        <li>
-                            <div className="main_video">
-                                <div className="main_videoImg">
-                                    <img src="http://192.168.1.128:3000/api/img/1553246355983.jpg" alt='' />
-                                </div>
-                                <div className="main_videoUser">
-                                    <div className="main_video_usernum">
-                                        <span className="main_videoIcon icon-play"></span>
-                                        <span className="main_num">1234.5万</span>
-                                    </div>
-                                    <div className="main_video_usernum">
-                                        <span className="main_videoIcon icon-keyboard"></span>
-                                        <span className="main_num">12312</span>
-                                    </div>
-                                </div>
-                                <div className="main_videoName">
-                                    1231231231
-                                </div>
-                            </div>
-                        </li>
-                        <li>
-                            <div className="main_video">
-                                <div className="main_videoImg">
-                                    <img src="http://192.168.1.128:3000/api/img/1553246355983.jpg" alt='' />
-                                </div>
-                                <div className="main_videoUser">
-                                    <div className="main_video_usernum">
-                                        <span className="main_videoIcon icon-play"></span>
-                                        <span className="main_num">1234.5万</span>
-                                    </div>
-                                    <div className="main_video_usernum">
-                                        <span className="main_videoIcon icon-keyboard"></span>
-                                        <span className="main_num">12312</span>
-                                    </div>
-                                </div>
-                                <div className="main_videoName">
-                                    1231231231
-                                </div>
-                            </div>
-                        </li>
-                        <li>
-                            <div className="main_video">
-                                <div className="main_videoImg">
-                                    <img src="http://192.168.1.128:3000/api/img/1553246355983.jpg" alt='' />
-                                </div>
-                                <div className="main_videoUser">
-                                    <div className="main_video_usernum">
-                                        <span className="main_videoIcon icon-play"></span>
-                                        <span className="main_num">1234.5万</span>
-                                    </div>
-                                    <div className="main_video_usernum">
-                                        <span className="main_videoIcon icon-keyboard"></span>
-                                        <span className="main_num">12312</span>
-                                    </div>
-                                </div>
-                                <div className="main_videoName">
-                                    1231231231
-                                </div>
-                            </div>
-                        </li>
+                                </li>
+                            })
+                        }  
                     </ul>
                 </div>
                 <div className="copyright">

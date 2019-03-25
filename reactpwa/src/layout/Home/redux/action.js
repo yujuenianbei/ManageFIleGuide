@@ -13,9 +13,6 @@ export function getList() {
     return (dispatch, getState) => {
         fetch('/api/videoList', {
             method: 'GET',
-            // headers: {
-            //   'token': localStorage.getItem('token')
-            // }
         })
             .then((res) => {
                 return res.text();
