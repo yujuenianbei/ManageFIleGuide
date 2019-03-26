@@ -10,8 +10,10 @@ export function getData(data) {
 
 // 获取音乐列表
 export function getList() {
+
     return (dispatch, getState) => {
-        fetch('/api/videoList', {
+        console.log(getState().Http.api)
+        fetch(getState().Http.api+ 'videoList', {
             method: 'GET',
         })
             .then((res) => {

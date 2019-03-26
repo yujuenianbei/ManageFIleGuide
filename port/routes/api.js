@@ -548,6 +548,31 @@ router.get('/videoList', function (req, res) {
   });
 })
 
+// 获取video
+router.get('/video', function (req, res) {
+  const response = {
+    video_id: req.query.id,
+  };
+  const addSql = `SELECT video_id, video_name, author_name,album_name, video_img, video_url, video_time, album_data FROM videoList where video_id=${JSON.stringify(response.video_id)}`
+  query(addSql, [], function (err, rows, fields) {
+    if (err) {
+      console.log('[SELECT ERROR] - ', err.message);
+      res.send({
+        reqCode: 500,
+        reqData: {}
+      })
+      return;
+    } else {
+      res.send({
+        reqCode: 200,
+        reqData: rows[0]
+      });
+    }
+  });
+})
+
+
+
 // 上传VIDEO
 router.post('/videoInfo', function (req, res) {
   const response = {

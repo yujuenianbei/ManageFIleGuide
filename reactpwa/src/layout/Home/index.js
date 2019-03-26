@@ -56,9 +56,9 @@ class Home extends Component {
                 </div>
                 <div className="main_banner">
                     <Carousel {...bannerSettings}>
-                        <div><img src="http://192.168.1.128:3000/api/img/1553231810874.jpg" alt='' /></div>
-                        <div><img src="http://192.168.1.128:3000/api/img/1553231826119.jpg" alt='' /></div>
-                        <div><img src="http://192.168.1.128:3000/api/img/1553231834318.jpg" alt='' /></div>
+                        <div><img src={this.props.page.Http.img + "1553231810874.jpg"} alt='' /></div>
+                        <div><img src={this.props.page.Http.img + "1553231826119.jpg"} alt='' /></div>
+                        <div><img src={this.props.page.Http.img + "1553231834318.jpg"} alt='' /></div>
                     </Carousel>
                 </div>
                 <div className="main_navigation">
@@ -160,32 +160,32 @@ class Home extends Component {
                 </div>
                 <div className="main_videoList">
                     <ul>
-                        { 
+                        {
                             this.props.page.Home.videoListData && this.props.page.Home.videoListData.map((item, index) => {
-                            return <li key={index}>
-                                <div className="main_video">
-                                <Link to={`/video?id=${item.video_id}`}>
-                                    <div className="main_videoImg">
-                                        <img src={"http://192.168.1.128:3000/api/img/"+item.video_img} alt='' />
+                                return <li key={index}>
+                                    <div className="main_video">
+                                        <Link to={'/video/'+ item.video_id}>
+                                            <div className="main_videoImg">
+                                                <img src={this.props.page.Http.img + item.video_img} alt='' />
+                                            </div>
+                                            <div className="main_videoUser">
+                                                <div className="main_video_usernum">
+                                                    <span className="main_videoIcon icon-play"></span>
+                                                    <span className="main_num">1234.5万</span>
+                                                </div>
+                                                <div className="main_video_usernum">
+                                                    <span className="main_videoIcon icon-keyboard"></span>
+                                                    <span className="main_num">12312</span>
+                                                </div>
+                                            </div>
+                                            <div className="main_videoName">
+                                                {item.video_name}
+                                            </div>
+                                        </Link>
                                     </div>
-                                    <div className="main_videoUser">
-                                        <div className="main_video_usernum">
-                                            <span className="main_videoIcon icon-play"></span>
-                                            <span className="main_num">1234.5万</span>
-                                        </div>
-                                        <div className="main_video_usernum">
-                                            <span className="main_videoIcon icon-keyboard"></span>
-                                            <span className="main_num">12312</span>
-                                        </div>
-                                    </div>
-                                    <div className="main_videoName">
-                                        {item.video_name}
-                                    </div>
-                                </Link>
-                            </div>
                                 </li>
                             })
-                        }  
+                        }
                     </ul>
                 </div>
                 <div className="copyright">

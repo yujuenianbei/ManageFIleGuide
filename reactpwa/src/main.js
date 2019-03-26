@@ -21,7 +21,7 @@ class Main extends Component {
                 <Route path="/user" component={User} />
                 <Route path="/setting" component={Setting} />
                 {/* video */}
-                <Route path="/video" component={Video} />
+                <Route path="/video/:id" component={Video}></Route>
             </Router>
         );
     }
