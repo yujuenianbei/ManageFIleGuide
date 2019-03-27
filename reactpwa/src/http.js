@@ -4,13 +4,14 @@ export const IMG_HTTP = 'IMG_HTTP';
 export const MUSIC_HTTP = 'MUSIC_HTTP';
 export const FILE_HTTP = 'FILE_HTTP';
 export const API_HTTP = 'API_HTTP';
+const ip = 'http://192.168.31.203:3000';
 
 const initValue = {
-    video: 'http://192.168.1.128:3000/api/video/',
-    img: 'http://192.168.1.128:3000/api/img/',
-    music: 'http://192.168.1.128:3000/api/music/',
-    file: 'http://192.168.1.128:3000/api/output/',
-    api:  'http://192.168.1.128:3000/api/',
+    video: ip+ '/api/video/',
+    img: ip+ '/api/img/',
+    music: ip+ '/api/music/',
+    file: ip+ '/api/output/',
+    api:  ip+ '/api/',
 }
 const HttpsReducer = (state = initValue, action) =>{
     const data = action.data
