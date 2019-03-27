@@ -6,7 +6,9 @@
 
 var app = require('../app');
 var debug = require('debug')('antd-port:server');
+var fs = require('fs');
 var http = require('http');
+var https = require('https');
 // 添加此段内容以引入socketio
 var io = require('../socket');
 
@@ -15,13 +17,25 @@ var io = require('../socket');
  */
 
 var port = normalizePort(process.env.PORT || '3000');
+
 app.set('port', port);
 
 /**
  * Create HTTP server.
  */
 
-var server = http.createServer(app);
+// var server = http.createServer(app);
+
+
+/**
+ * Create HTTPS server.
+ */
+
+var privateKey  = fs.readFileSync('config/licence/hp.php9.cc.key');
+var certificate = fs.readFileSync('config/licence/hp.php9.cc.crt');
+var credentials = {key: privateKey, cert: certificate};
+
+var server = https.createServer(credentials, app);
 
 // 添加此段内容启动 Socket.io
 io.getSocketio(server);

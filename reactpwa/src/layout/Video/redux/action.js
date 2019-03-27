@@ -11,6 +11,7 @@ export function getData(data) {
 // 获取音乐列表
 export function getVideo(id) {
     return (dispatch, getState) => {
+        console.log(id)
         fetch(getState().Http.api + 'video?id=' + id, {
             method: 'GET',
         }).then((res) => {
