@@ -66,3 +66,7 @@ yarn-error.log*
 /vueFront/test/unit/coverage/
 /vueFront/test/e2e/reports/
 /vueFront/selenium-debug.log
+
+
+# 
+/reactpwa/build

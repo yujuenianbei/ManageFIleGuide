@@ -12,7 +12,6 @@ export function getData(data) {
 export function getList() {
 
     return (dispatch, getState) => {
-        console.log(getState().Http.api)
         fetch(getState().Http.api+ 'videoList', {
             method: 'GET',
         })
