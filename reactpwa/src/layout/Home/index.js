@@ -18,6 +18,14 @@ class Home extends Component {
 
     componentWillMount = () => {
         this.props.getListData();
+        this.props.getBanner();
+    }
+    shouldComponentUpdate(nextProps) {
+        if (nextProps.page.Home.bannerList !== this.props.page.Home.bannerList) {
+            return true
+        } else {
+            return false
+        }
     }
     showDrawer = () => {
         this.setState({
@@ -37,7 +45,7 @@ class Home extends Component {
             infinite: true,
             speed: 500,
             effect: "fade",
-            autoplay: true,
+            autoplay: false,
             autoplaySpeed: 5000
         };
         const navigationSetting = {
@@ -56,9 +64,10 @@ class Home extends Component {
                 </div>
                 <div className="main_banner">
                     <Carousel {...bannerSettings}>
-                        <div><img src={this.props.page.Http.img + "1553231810874.jpg"} alt='' /></div>
-                        <div><img src={this.props.page.Http.img + "1553231826119.jpg"} alt='' /></div>
-                        <div><img src={this.props.page.Http.img + "1553231834318.jpg"} alt='' /></div>
+                    { this.props.page.Home.bannerList && this.props.page.Home.bannerList.map((item, index) => {
+                        return <div key={index}><img src={this.props.page.Http.img + item.img_img} alt='' /></div>
+                        })
+                    }
                     </Carousel>
                 </div>
                 <div className="main_navigation">
@@ -208,6 +217,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         getListData: () => { dispatch(Actions.getList()) },
+        getBanner: () => { dispatch(Actions.getbanner()) },
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Home);

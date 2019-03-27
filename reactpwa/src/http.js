@@ -4,15 +4,18 @@ export const IMG_HTTP = 'IMG_HTTP';
 export const MUSIC_HTTP = 'MUSIC_HTTP';
 export const FILE_HTTP = 'FILE_HTTP';
 export const API_HTTP = 'API_HTTP';
-const ip = 'http://192.168.31.203:3000';
-
+const httpIp = "http://192.168.31.203:3030";
+const httpsIp = "https://192.168.31.203:3030"
+const domainIp = "https://wad.hp.php9.cc:3030"
+let ip = httpsIp;
 const initValue = {
-    video: ip+ '/api/video/',
-    img: ip+ '/api/img/',
-    music: ip+ '/api/music/',
-    file: ip+ '/api/output/',
-    api:  ip+ '/api/',
+    video: ip + '/api/video/',
+    img: ip + '/api/img/',
+    music: ip + '/api/music/',
+    file: ip + '/api/output/',
+    api:  ip + '/api/',
 }
+
 const HttpsReducer = (state = initValue, action) =>{
     const data = action.data
     switch (action.type) {

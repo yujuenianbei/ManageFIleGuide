@@ -11,11 +11,12 @@ export function getData(data) {
 // 获取音乐列表
 export function getVideo(id) {
     return (dispatch, getState) => {
-        fetch('/api/video?id=' + id, {
+        console.log(id)
+        fetch(getState().Http.api + 'video?id=' + id, {
             method: 'GET',
         }).then((res) => {
-                return res.text();
-            })
+            return res.text();
+        })
             .then((res) => {
                 dispatch(getData(JSON.parse(res).reqData));
             })
