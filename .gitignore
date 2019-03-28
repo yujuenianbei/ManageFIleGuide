@@ -29,7 +29,7 @@ yarn-error.log*
 /port/static/video/*.mp4
 
 # dbconfig
-/port/config/dbConfig.js
+port/config/dbConfig.js
 
 # package-lock.json
 /port/package-lock.json
@@ -70,4 +70,4 @@ yarn-error.log*
 
 # 
 /reactpwa/build
-/reactpwa/src/http.js
+reactpwa/src/http.js
