@@ -4,10 +4,10 @@ export const IMG_HTTP = 'IMG_HTTP';
 export const MUSIC_HTTP = 'MUSIC_HTTP';
 export const FILE_HTTP = 'FILE_HTTP';
 export const API_HTTP = 'API_HTTP';
-const httpIp = "http://192.168.31.203:3030";
-const httpsIp = "https://192.168.31.203:3030"
-const domainIp = "https://wad.hp.php9.cc:3030"
-let ip = httpsIp;
+const httpIp = "http://192.168.1.128:3031";
+const httpsIp = "https://192.168.1.128:3032"
+const domainIp = "https://wad.hp.php9.cc:3032"
+let ip = httpIp;
 const initValue = {
     video: ip + '/api/video/',
     img: ip + '/api/img/',
