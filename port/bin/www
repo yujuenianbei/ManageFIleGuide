@@ -16,7 +16,7 @@ var io = require('../socket');
  * Get port from environment and store in Express.
  */
 
-var port = normalizePort(process.env.PORT || '3000');
+var port = normalizePort(process.env.PORT || '3031');
 
 app.set('port', port);
 
@@ -35,7 +35,7 @@ var privateKey  = fs.readFileSync('config/licence/hp.php9.cc.key');
 var certificate = fs.readFileSync('config/licence/hp.php9.cc.crt');
 var credentials = {key: privateKey, cert: certificate};
 
-app.set('port', '3030')
+app.set('port', '3032')
 
 var serverHttps = https.createServer(credentials, app);
 
@@ -63,7 +63,7 @@ server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);
 
-serverHttps.listen('3030');
+serverHttps.listen('3032');
 serverHttps.on('error', onError);
 serverHttps.on('listening', onListeningHttps);
 

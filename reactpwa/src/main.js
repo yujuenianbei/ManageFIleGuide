@@ -13,6 +13,7 @@ const customHistory = createBrowserHistory();
 
 class Main extends Component {
     render() {
+        console.log(2)
         return (
             <Router history={customHistory}>
                 <Route exact path="/" component={Home} />

@@ -1,10 +1,10 @@
 const mysqlConfig = {
     // docker中link的ip地址
-    serverName: 'localhost',
+    serverName: '172.17.0.10',
     port: '3306',
     user: 'root',
-    password: '492275105',
-    dbName: 'data',
+    password: '123456',
+    dbName: 'antd',
     timezone:"08:00"
 }
 module.exports = mysqlConfig

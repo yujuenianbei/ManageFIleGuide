@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import * as Actions from './redux/action';
+
+import * as Bactions from '../Bottom/redux/action';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom'
 import './index.less';
@@ -172,7 +174,7 @@ class Home extends Component {
                         {
                             this.props.page.Home.videoListData && this.props.page.Home.videoListData.map((item, index) => {
                                 return <li key={index}>
-                                    <div className="main_video">
+                                    <div className="main_video" onClick={()=> (this.props.Topager('video'))}>
                                         <Link to={'/video/'+ item.video_id}>
                                             <div className="main_videoImg">
                                                 <img src={this.props.page.Http.img + item.video_img} alt='' />
@@ -218,6 +220,7 @@ const mapDispatchToProps = (dispatch) => {
     return {
         getListData: () => { dispatch(Actions.getList()) },
         getBanner: () => { dispatch(Actions.getbanner()) },
+        Topager: (data) => { dispatch(Bactions.pager(data)) }
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Home);
