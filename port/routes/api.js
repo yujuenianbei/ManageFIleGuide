@@ -1018,8 +1018,56 @@ router.post('/getcode', function (req, res, next) {
       success: 0
     })
   }
-
 })
+
+var CryptoJS = require('crypto-js');
+
+router.post('/loginCrypto', function (req, res, next) {
+  const response = {
+    name: req.body.name,
+    password: req.body.password,
+  };
+  console.log(response.name, response.password)
+  var key_hash = CryptoJS.MD5("password");
+  console.log(key_hash)
+  let key = CryptoJS.enc.Utf8.parse(key_hash);  // 加密秘钥
+  let iv = CryptoJS.enc.Utf8.parse("1234567812345678");   //  矢量
+  let baseResult=CryptoJS.enc.Base64.parse(response.password);   // Base64解密
+  let ciphertext=CryptoJS.enc.Base64.stringify(baseResult);     // Base64解密
+  let decryptResult = CryptoJS.AES.decrypt(ciphertext,key, {    //  AES解密
+      iv: iv,
+      mode: CryptoJS.mode.CBC,
+      padding: CryptoJS.pad.Pkcs7
+  });
+  res.send({
+    user: response.name,
+    password: CryptoJS.enc.Utf8.stringify(decryptResult)
+  })
+})
+
+
+router.post('/loginCryptoTest', function (req, res, next) {
+  const response = {
+    form_key: req.body.form_key,
+    name: req.body.name,
+    password: req.body.password,
+  };
+  var key_hash = CryptoJS.MD5(response.form_key);
+  let key = CryptoJS.enc.Utf8.parse(key_hash);  // 加密秘钥
+  let iv = CryptoJS.enc.Utf8.parse(key+ response.form_key);   //  矢量
+  let baseResult=CryptoJS.enc.Base64.parse(response.password);   // Base64解密
+  let ciphertext=CryptoJS.enc.Base64.stringify(baseResult);     // Base64解密
+  let decryptResult = CryptoJS.AES.decrypt(ciphertext,key, {    //  AES解密
+      iv: iv,
+      mode: CryptoJS.mode.CBC,
+      padding: CryptoJS.pad.Pkcs7
+  });
+  res.send({
+    user: response.name,
+    password: CryptoJS.enc.Utf8.stringify(decryptResult)
+  })
+})
+
 
 
 

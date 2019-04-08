@@ -24,6 +24,7 @@
     "socket.io": "^2.2.0"
   },
   "devDependencies": {
+    "crypto-js": "^3.1.9-1",
     "fast-csv": "^2.4.1"
   }
 }

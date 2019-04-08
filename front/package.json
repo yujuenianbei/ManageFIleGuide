@@ -4,7 +4,7 @@
   "private": true,
   "proxy": {
     "/": {
-      "target": "http://localhost:3031",
+      "target": "http://localhost:3000",
       "changeOrigin": true,
       "pathRewrite": {
         "^/": ""
