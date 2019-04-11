@@ -7,7 +7,8 @@ import {
   ADD_LIST,
   ADD_PLAYER_LIST,
   IMG_MODLE_DATA,
-  IMG_TOP_STATE
+  IMG_TOP_STATE,
+  IMG_TYPE_LIST
 } from './action'
 
 const initValue = {
@@ -15,6 +16,7 @@ const initValue = {
   imgModle: false,
   imgTop: false,
   modleName: 'add',
+  imgTypeList: [],
   list: [],
   searchImgList: [],
   searchImgName: '',
@@ -34,7 +36,7 @@ export default (state = initValue, action) => {
     }
     // 置顶状态
     case IMG_TOP_STATE: {
-      return Object.assign({}, state, {imgTop: data })
+      return Object.assign({}, state, { imgTop: data })
     }
     // 弹框状态
     case IMG_MODLE: {
@@ -51,6 +53,10 @@ export default (state = initValue, action) => {
     // 搜索列表
     case SEARCH_IMG_LIST: {
       return Object.assign({}, state, { searchImgList: data })
+    }
+    // 图片种类
+    case IMG_TYPE_LIST: {
+      return Object.assign({}, state, { imgTypeList: data })
     }
     // 将新增加的列表内容写入
     case ADD_LIST: {

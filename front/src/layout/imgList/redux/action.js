@@ -8,6 +8,7 @@ export const ADD_LIST = 'ADD_LIST';
 export const ADD_PLAYER_LIST = 'ADD_PLAYER_LIST';
 export const IMG_MODLE_DATA = 'IMG_MODLE_DATA';
 export const IMG_TOP_STATE = 'IMG_TOP_STATE';
+export const IMG_TYPE_LIST = 'IMG_TYPE_LIST';
 // loading
 export function imgLoading(data) {
   return {
@@ -69,6 +70,14 @@ export function searchImgList(data) {
 }
 
 // 搜索图片列表
+export function ImgTypeList(data) {
+  return {
+    type: IMG_TYPE_LIST,
+    data
+  }
+}
+
+// 搜索图片列表
 export function getSearchImgList(data) {
   return (dispatch, getState) => {
     const imgData = getState().imgList.list.filter(item => {
@@ -78,6 +87,26 @@ export function getSearchImgList(data) {
       return item;
     })
     dispatch(searchImgList(imgData));
+  }
+}
+
+
+// 获取图片分类列表
+export function getImgTypeList() {
+  return (dispatch, getState) => {
+    dispatch(imgLoading(true));
+    fetch('/api/imgTypeList', {
+      method: 'GET',
+      headers: {
+        'token': localStorage.getItem('token')
+      }
+    })
+      .then((res) => {
+        return res.text();
+      })
+      .then((res) => {
+        dispatch(ImgTypeList(JSON.parse(res).reqData.imgTypeList));
+      })
   }
 }
 
@@ -103,7 +132,6 @@ export function getList() {
           }
           return item
         })
-        console.log(data)
         dispatch(addList(data));
         dispatch(getSearchImgList(getState().imgList.searchImgName))
         dispatch(imgLoading(false));
@@ -116,7 +144,6 @@ export function getList() {
 export function editImgInfo(data) {
   return (dispatch, getState) => {
     dispatch(imgLoading(true));
-    console.log(data)
     fetch('/api/imgInfo', {
       method: 'PUT',
       headers: {
@@ -141,7 +168,6 @@ export function editImgInfo(data) {
 export function deletImgInfo(data) {
   return (dispatch, getState) => {
     dispatch(imgLoading(true));
-    console.log(data);
     fetch('/api/imgInfoDelete', {
       method: 'POST',
       headers: {

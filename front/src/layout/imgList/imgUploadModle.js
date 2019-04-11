@@ -6,7 +6,6 @@ import moment from 'moment';
 
 import { Upload, Modal, Form, Select, Input, Button, DatePicker, Icon, message, Switch } from 'antd';
 
-
 function getBase64(img, callback) {
   const reader = new FileReader();
   reader.addEventListener('load', () => callback(reader.result));
@@ -100,7 +99,8 @@ class App extends Component {
             body: JSON.stringify({
               imgName: values.imgName,
               imgImg: this.state.fileList[0].response.reqData,
-              imgTop: values.imgTop
+              imgTop: values.imgTop,
+              imgType: values.imgType
             })
           }
           fetch(url, opts)
@@ -130,7 +130,8 @@ class App extends Component {
             imgId: this.props.addSong.imgList.modleData.imgId,
             imgName: values.imgName,
             imgImg: this.state.fileList[0].response.reqData,
-            imgTop: values.imgTop
+            imgTop: values.imgTop,
+            imgType: values.imgType
           })
           this.props.onEditImgInfo(data)
           this.props.onImgModle(false);
@@ -176,17 +177,25 @@ class App extends Component {
         imgName: this.props.addSong.imgList.modleData.imgName,
         imgImg: 'http://localhost:3000/api/img/' + this.props.addSong.imgList.modleData.imgImg,
         imgTop: this.props.addSong.imgList.modleData.imgTop,
+        imgType: this.props.addSong.imgList.imgTypeList.map((item, index) => {
+          if (item.imgType_id == this.props.addSong.imgList.modleData.imgType) {
+            return item.imgType_name
+          } else {
+            return false
+          }
+        }),
       }
     }
     return {
       imgName: '',
       imgImg: '',
       imgTop: false,
+      imgType: '',
     }
   }
 
   render() {
-    console.log(this.state)
+    // console.log(this.state)
     const { getFieldDecorator } = this.props.form;
     const uploadButton = (
       <div>
@@ -288,6 +297,24 @@ class App extends Component {
                     initialValue: this.defalutValue().imgTop
                   })(
                     <Switch checkedChildren="是" unCheckedChildren="否" onChange={this.topChecked} defaultChecked={this.props.addSong.imgList.modleData.imgTop} />
+                  )}
+                </FormItem>
+              }
+              {this.props.addSong.imgList.imgTypeList &&
+                <FormItem
+                  label="图片分类"
+                  labelCol={{ span: 5 }}
+                  wrapperCol={{ span: 12 }}
+                >
+                  {getFieldDecorator('imgType', {
+                    rules: [{ required: true, message: '请选择图片分类!' }],
+                    initialValue: this.defalutValue().imgType
+                  })(
+                    <Select initialValue="" style={{ width: 160 }}>
+                      {this.props.addSong.imgList.imgTypeList.map((item, index) => {
+                        return <Option value={item.imgType_id} key={index}>{item.imgType_name}</Option>
+                      })}
+                    </Select>
                   )}
                 </FormItem>
               }

@@ -1,6 +1,6 @@
 const listInfo = require('../config/listInfo');
 const userList = require('../config/userList');
-// const userList = require('../config/userList');
+const imgType = require('../config/imgType');
 
 function main(query) {
   // const addNmae = `INSERT INTO userlist (id, name, lastname, age) VALUES (1, 'antonio', 'teddy', 28)`;
@@ -49,23 +49,22 @@ function main(query) {
     }
   });
 
-    // // 初始化root用户
-    // param = '';
-    // userList.forEach(data => {
-    //   param += `(${JSON.stringify(data.id)},
-    //     ${JSON.stringify(data.user_name)},${JSON.stringify(data.user_password)},
-    //     ${JSON.stringify(data.user_realname)},${JSON.stringify(data.user_birthday)},${JSON.stringify(data.user_id)}, NOW(), NOW()),`;
-    // });
-    // param = param.substring(0, param.length - 1);
-    // const userInfoSQL = `insert ignore userList(id, user_name, user_password, user_realname, user_birthday, user_id, create_time, update_time)
-    //     values${param};`;
-    // query(userInfoSQL, [], (err) => {
-    //   if (err) {
-    //     console.log('init userinfo error', err);
-    //   } else {
-    //     console.log('init userinfo success');
-    //   }
-    // });
+  // 初始化图片分组
+  param = '';
+  imgType.forEach(data => {
+    param += `(${JSON.stringify(data.imgType_id)},
+        ${JSON.stringify(data.imgType_name)}, NOW(), NOW()),`;
+  });
+  param = param.substring(0, param.length - 1);
+  const imgTypeSQL = `insert ignore imgType(imgType_id, imgType_name, create_time, update_time)
+        values${param};`;
+  query(imgTypeSQL, [], (err) => {
+    if (err) {
+      console.log('init imgType error', err);
+    } else {
+      console.log('init imgType success');
+    }
+  });
 
   // // 初始化歌曲列表
   // param = '';
@@ -84,7 +83,7 @@ function main(query) {
   //     console.log('init songList success');
   //   }
   // });
- 
+
 
 
 

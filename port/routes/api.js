@@ -695,10 +695,57 @@ router.post('/videoInfoDelete', function (req, res) {
 
 
 
+// 获取图片分类列表
+router.get('/imgTypeList', function (req, res) {
+  const addSql = `SELECT imgType_id, imgType_name FROM imgType`
+  query(addSql, [], function (err, rows, fields) {
+    if (err) {
+      console.log('[SELECT ERROR] - ', err.message);
+      res.send({
+        reqCode: 500,
+        reqData: {}
+      })
+      return;
+    } else {
+      res.send({
+        reqCode: 200,
+        reqData: {
+          imgTypeList: rows
+        }
+      });
+    }
+  });
+})
+
+
+// 获取指定分类的图片
+router.get('/imgList/:name', function (req, res) {
+  const imgTypeName = req.params.name;
+  const addSql = `SELECT img_id, img_name, img_type, img_top, img_img FROM imgList WHERE img_type = ${imgTypeName}`
+  query(addSql, [], function (err, rows, fields) {
+    if (err) {
+      console.log('[SELECT ERROR] - ', err.message);
+      res.send({
+        reqCode: 500,
+        reqData: {}
+      })
+      return;
+    } else {
+      res.send({
+        reqCode: 200,
+        reqData: {
+          imgTypeList: rows
+        }
+      });
+    }
+  });
+})
+
+
 
 // 获取图片列表
 router.get('/imgList', function (req, res) {
-  const addSql = `SELECT img_id, img_name, img_top, img_img FROM imgList`
+  const addSql = `SELECT img_id, img_name, img_type, img_top, img_img FROM imgList`
   query(addSql, [], function (err, rows, fields) {
     if (err) {
       console.log('[SELECT ERROR] - ', err.message);
@@ -725,10 +772,11 @@ router.post('/imgInfo', function (req, res) {
     img_name: req.body.imgName,
     img_top: req.body.imgTop,
     img_img: req.body.imgImg,
+    img_type: req.body.imgType
   };
   console.log(response);
-  const addSql = `insert ignore imgList(img_id, img_name, img_top, img_img, create_time, update_time) values(?,?,?,?,NOW(),NOW())`
-  const addParams = [response.img_id, response.img_name, response.img_top, response.img_img]
+  const addSql = `insert ignore imgList(img_id, img_name, img_type, img_top, img_img, create_time, update_time) values(?,?,?,?,?,NOW(),NOW())`
+  const addParams = [response.img_id, response.img_name,response.img_type, response.img_top, response.img_img]
   query(addSql, addParams, function (err, rows, fields) {
     if (err) {
       console.log('[SELECT ERROR] - ', err.message);
@@ -754,10 +802,11 @@ router.put('/imgInfo', function (req, res) {
     img_id: req.body.imgId,
     img_top: req.body.imgTop,
     img_name: req.body.imgName,
+    img_type: req.body.imgType
   };
   console.log(response);
-  const addSql = `update ignore imgList set img_name=?, img_top=?, update_time=now() WHERE img_id = ${JSON.stringify(response.img_id)}`
-  const addParams = [response.img_name,response.img_top]
+  const addSql = `update ignore imgList set img_name=?, img_type=?, img_top=?, update_time=now() WHERE img_id = ${JSON.stringify(response.img_id)}`
+  const addParams = [response.img_name,response.img_type,response.img_top]
   query(addSql, addParams, function (err, rows, fields) {
     if (err) {
       console.log('[UPDATE ERROR] - ', err.message);
@@ -1020,6 +1069,10 @@ router.post('/getcode', function (req, res, next) {
   }
 })
 
+
+
+
+// 数据解密
 var CryptoJS = require('crypto-js');
 
 router.post('/loginCrypto', function (req, res, next) {

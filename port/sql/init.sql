@@ -53,7 +53,7 @@ CREATE TABLE IF NOT EXISTS imgList
 (
     `img_id` bigint(20) NOT NULL AUTO_INCREMENT,
     img_name varchar(128),
-    -- img_type varchar(128),
+    img_type varchar(128),
     img_top boolean not null,
     img_img varchar(1000),
     create_time datetime not null,
@@ -61,14 +61,14 @@ CREATE TABLE IF NOT EXISTS imgList
     PRIMARY KEY (`img_id`)
 )ENGINE = INNODB CHARACTER SET utf8;
 
--- CREATE TABLE IF NOT EXISTS imgType
--- (
---     `imgType_id` bigint(20) NOT NULL AUTO_INCREMENT,
---     imgType_name varchar(128),
---     create_time datetime not null,
---     update_time datetime not null,
---     PRIMARY KEY (`imgType_id`)
--- )ENGINE = INNODB CHARACTER SET utf8;
+CREATE TABLE IF NOT EXISTS imgType
+(
+    `imgType_id` bigint(20) NOT NULL AUTO_INCREMENT,
+    imgType_name varchar(128),
+    create_time datetime not null,
+    update_time datetime not null,
+    PRIMARY KEY (`imgType_id`)
+)ENGINE = INNODB CHARACTER SET utf8;
 
 CREATE TABLE IF NOT EXISTS videoList
 (
