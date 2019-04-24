@@ -4,6 +4,8 @@
 /port/node_modules
 /front/node_modules
 /reactpwa/node_modules
+/vue-storefront/node_modules
+/vue-storefront/dist
 # testing
 /coverage
 
