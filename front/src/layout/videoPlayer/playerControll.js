@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Modal, Tooltip, Dropdown, Form, Select, Input, Button, DatePicker, Upload, Icon, message, Slider } from 'antd';
 import './video.less'
+import { ip } from '../../http'
 
 class PlayerControll extends Component {
   constructor() {
@@ -190,8 +191,8 @@ class PlayerControll extends Component {
 
   render() {
     console.log(window.location.hash.split('/')[2])
-    const url = "/api/video/" + window.location.hash.split('/')[2]
-    const img = "/api/img/" + window.location.hash.split('/')[3]
+    const url = ip+"/api/video/" + window.location.hash.split('/')[2]
+    const img = ip+"/api/img/" + window.location.hash.split('/')[3]
     const state = this.state;
     return (
       <div className="videoPlay" style={{ margin: '5px 0px', background: '#fff' }}>

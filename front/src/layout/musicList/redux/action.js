@@ -1,6 +1,7 @@
 import _ from 'lodash'
 import { addSong, songPlayNow } from '../../../play/redux/action/index'
 import { exportCsv } from '../../userList/redux/index'
+import { ip } from '../../../http'
 export const SONG_LOADING = 'SONG_LOADING';
 export const SONG_MODLE = 'SONG_MODLE';
 export const SONG_MODLE_NAME = 'SONG_MODLE_NAME';
@@ -79,7 +80,7 @@ export function getSearchMusicList(data) {
 export function getList() {
   return (dispatch, getState) => {
     dispatch(songLoading(true));
-    fetch('/api/songList', {
+    fetch(ip + '/api/songList', {
       method: 'GET',
       headers: {
         'token': localStorage.getItem('token')
@@ -102,11 +103,11 @@ export function addSongToList(data) {
     const newSongData = {
       sid: getState().music.data.length + 1,
       name: data.songName,
-      img: 'http://localhost:3000/api/img/' + data.songImg,
+      img: ip + '/api/img/' + data.songImg,
       author: data.authorName,
       time: data.songTime,
       album: data.songAlbum,
-      src: 'http://localhost:3000/api/music/' + data.songUrl,
+      src: ip + '/api/music/' + data.songUrl,
     }
     const dataList = _.concat(getState().music.data, newSongData);
     const newData = _.sortBy(dataList, function (item) {
@@ -117,14 +118,14 @@ export function addSongToList(data) {
     dispatch(addSong(!getState().music.add))
     // 第一首触发播放
     if (getState().music.data.length === 1) {
-        dispatch(songPlayNow({
-          sid: getState().music.data.length + 1,
-          songName: data.songName,
-          songImg: 'http://localhost:3000/api/img/' + data.songImg,
-          songAuthor: data.authorName,
-          time: data.songTime,
-          src: 'http://localhost:3000/api/music/' + data.songUrl,
-        }
+      dispatch(songPlayNow({
+        sid: getState().music.data.length + 1,
+        songName: data.songName,
+        songImg: ip + '/api/img/' + data.songImg,
+        songAuthor: data.authorName,
+        time: data.songTime,
+        src: ip + '/api/music/' + data.songUrl,
+      }
       ))
     }
   }
@@ -135,7 +136,7 @@ export function editSongInfo(data) {
   return (dispatch, getState) => {
     dispatch(songLoading(true));
     console.log(data)
-    fetch('/api/songInfo', {
+    fetch(ip + '/api/songInfo', {
       method: 'PUT',
       headers: {
         'Accept': 'application/json',
@@ -159,7 +160,7 @@ export function editSongInfo(data) {
 export function deletSongInfo(data) {
   return (dispatch, getState) => {
     dispatch(songLoading(true));
-    fetch('/api/songInfoDelete', {
+    fetch(ip + '/api/songInfoDelete', {
       method: 'POST',
       headers: {
         'Accept': 'application/json',

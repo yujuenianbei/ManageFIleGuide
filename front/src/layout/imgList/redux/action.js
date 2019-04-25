@@ -1,4 +1,5 @@
-import _ from 'lodash'
+import _ from 'lodash';
+import { ip } from '../../../http'
 export const IMG_LOADING = 'IMG_LOADING';
 export const IMG_MODLE = 'IMG_MODLE';
 export const IMG_MODLE_NAME = 'IMG_MODLE_NAME';
@@ -95,7 +96,7 @@ export function getSearchImgList(data) {
 export function getImgTypeList() {
   return (dispatch, getState) => {
     dispatch(imgLoading(true));
-    fetch('/api/imgTypeList', {
+    fetch(ip + '/api/imgTypeList', {
       method: 'GET',
       headers: {
         'token': localStorage.getItem('token')
@@ -114,7 +115,7 @@ export function getImgTypeList() {
 export function getList() {
   return (dispatch, getState) => {
     dispatch(imgLoading(true));
-    fetch('/api/imgList', {
+    fetch(ip + '/api/imgList', {
       method: 'GET',
       headers: {
         'token': localStorage.getItem('token')
@@ -124,8 +125,8 @@ export function getList() {
         return res.text();
       })
       .then((res) => {
-        const data = JSON.parse(res).reqData.imgInfo.map((item)=>{
-          if(item.img_top == 1){
+        const data = JSON.parse(res).reqData.imgInfo.map((item) => {
+          if (item.img_top == 1) {
             item.img_top = true
           } else {
             item.img_top = false
@@ -144,7 +145,7 @@ export function getList() {
 export function editImgInfo(data) {
   return (dispatch, getState) => {
     dispatch(imgLoading(true));
-    fetch('/api/imgInfo', {
+    fetch(ip + '/api/imgInfo', {
       method: 'PUT',
       headers: {
         'Accept': 'application/json',
@@ -168,7 +169,7 @@ export function editImgInfo(data) {
 export function deletImgInfo(data) {
   return (dispatch, getState) => {
     dispatch(imgLoading(true));
-    fetch('/api/imgInfoDelete', {
+    fetch(ip + '/api/imgInfoDelete', {
       method: 'POST',
       headers: {
         'Accept': 'application/json',

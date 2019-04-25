@@ -1,3 +1,4 @@
+import { ip } from '../../../http'
 export const ADD_SONG = 'ADD_SONG';
 export const ADD_LIST = 'ADD_LIST';
 
@@ -18,7 +19,7 @@ export function addList(data) {
 
 export function getList() {
     return (dispatch) => {
-        fetch('/api/userList', {
+        fetch(ip + '/api/userList', {
                 method: 'GET',
                 headers:{
                     'token': localStorage.getItem('token')

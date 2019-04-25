@@ -14,19 +14,37 @@ var apisRouter = require('./routes/api');
 var frontRouter = require('./routes/front');
 
 
-var { query,initMysql, checkTables } = require('./sql/init');
+var { query, initMysql, checkTables } = require('./sql/init');
 var main = require('./sql/search');
 
 var app = express();
 
 //设置跨域访问
-app.all('*', function(req, res, next) {
+// app.all('*', function(req, res, next) {
+//   res.header("Access-Control-Allow-Origin", "*");
+//   // res.header("Access-Control-Allow-Headers", "X-Requested-With");
+//   res.header("Access-Control-Allow-Methods","PUT,POST,GET,DELETE,OPTIONS");
+//   // res.header("X-Powered-By",' 3.2.1');
+//   res.header("Content-Type", "application/json;charset=utf-8");
+//   next();
+// });
+app.all('*', function (req, res, next) {
+  // console.log(req.method);
   res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "X-Requested-With");
-  res.header("Access-Control-Allow-Methods","PUT,POST,GET,DELETE,OPTIONS");
-  res.header("X-Powered-By",' 3.2.1');
-  res.header("Content-Type", "application/json;charset=utf-8");
-  next();
+  res.header('Access-Control-Allow-Methods', 'OPTIONS,GET,POST,PUT,DELETE');
+  // Header 内容一定要包含前端请求的内容
+  res.header("Access-Control-Allow-Headers", "Origin,X-Requested-With,Content-Type,Accept,Authorization,token,*/*");
+  res.header("Access-Control-Allow-Credentials","true"); //是否支持cookie跨域
+  // res.header("cache-control", "no-cache");
+  res.header("content-type", "application/json; charset=utf-8");
+  // res.header("ETag", '');
+  //header头信息设置结束后，结束程序往下执行，返回
+  if(req.method.toLocaleLowerCase() === 'options'){
+      res.status(204);
+      return res.json({});   //直接返回空数据，结束此次请求
+  }else{
+      next();
+  }
 });
 
 // 初始化数据库
@@ -43,6 +61,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser('name'));
 app.use(express.static(path.join(__dirname, 'static')));
+
 // 设置cookie
 // session
 // app.use(session({
@@ -80,19 +99,19 @@ app.use(express.static(path.join(__dirname, 'static')));
 //   }
 // });
 
-app.use('static',express.static(path.join(__dirname,'static')));
+app.use('static', express.static(path.join(__dirname, 'static')));
 app.use('/', indexRouter);
 app.use('/api', apisRouter);
 app.use('/front', frontRouter);
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   next(createError(404));
 });
 
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};

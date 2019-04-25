@@ -26,7 +26,7 @@
         v-for="(item, index) in Data"
         :key="item.id"
         :class="{active: index == nowIndex}"
-        v-on:mouseover="addActive($event, index)"
+        v-on:mouseenter="addActive($event, index)"
         v-on:mouseout="removeActive($event)"
       >
         <router-link :to="{path: '/videoPlay', query: { id: item.id}}">
@@ -57,6 +57,7 @@
 </template>
 <script>
 import axios from "axios";
+import { ip } from '../../http';
 export default {
   data: function() {
     return {
@@ -89,21 +90,21 @@ export default {
     change(index) {
       this.selected = index;
       if (index == 0) {
-        axios.get("http://localhost:3000/front/videoList/newTrends").then(
+        axios.get(ip + "/front/videoList/newTrends").then(
           response => (
             (this.Data = response.data.reqData.data),
             this.Data.forEach(item => {
-              item.img = "http://localhost:3000/api/img/" + item.img;
+              item.img = ip + "/api/img/" + item.img;
               item.url = item.url;
             })
           )
         );
       } else {
-        axios.get("http://localhost:3000/front/videoList/newContribute").then(
+        axios.get(ip + "/front/videoList/newContribute").then(
           response => (
             (this.Data = response.data.reqData.data),
             this.Data.forEach(item => {
-              item.img = "http://localhost:3000/api/img/" + item.img;
+              item.img = ip + "/api/img/" + item.img;
               item.url = item.url;
             })
           )
@@ -112,11 +113,11 @@ export default {
     }
   },
   mounted() {
-    axios.get("http://localhost:3000/front/videoList/newTrends").then(
+    axios.get(ip + "/front/videoList/newTrends").then(
       response => (
         (this.Data = response.data.reqData.data),
         this.Data.forEach(item => {
-          item.img = "http://localhost:3000/api/img/" + item.img;
+          item.img = ip + "/api/img/" + item.img;
           item.url = item.url;
         })
       )

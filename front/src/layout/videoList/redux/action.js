@@ -1,4 +1,5 @@
 import _ from 'lodash'
+import { ip } from '../../../http'
 import { exportCsv } from '../../userList/redux/index'
 export const VIDEO_LOADING = 'VIDEO_LOADING';
 export const VIDEO_MODLE = 'VIDEO_MODLE';
@@ -79,7 +80,7 @@ export function getSearchVideoList(data) {
 export function getList() {
   return (dispatch, getState) => {
     dispatch(videoLoading(true));
-    fetch('/api/videoList', {
+    fetch(ip + '/api/videoList', {
       method: 'GET',
       headers: {
         'token': localStorage.getItem('token')
@@ -102,11 +103,11 @@ export function addvideoToList(data) {
     const newvideoData = {
       sid: getState().Video.data.length + 1,
       name: data.videoName,
-      img: 'http://localhost:3000/api/img/' + data.videoImg,
+      img: ip + '/api/img/' + data.videoImg,
       author: data.authorName,
       time: data.videoTime,
       album: data.videoAlbum,
-      src: 'http://localhost:3000/api/Video/' + data.videoUrl,
+      src: ip + '/api/Video/' + data.videoUrl,
     }
     const dataList = _.concat(getState().Video.data, newvideoData);
     const newData = _.sortBy(dataList, function (item) {
@@ -121,7 +122,7 @@ export function editvideoInfo(data) {
   return (dispatch, getState) => {
     dispatch(videoLoading(true));
     console.log(data)
-    fetch('/api/videoInfo', {
+    fetch(ip + '/api/videoInfo', {
       method: 'PUT',
       headers: {
         'Accept': 'application/json',
@@ -145,7 +146,7 @@ export function editvideoInfo(data) {
 export function deletvideoInfo(data) {
   return (dispatch, getState) => {
     dispatch(videoLoading(true));
-    fetch('/api/videoInfoDelete', {
+    fetch(ip + '/api/videoInfoDelete', {
       method: 'POST',
       headers: {
         'Accept': 'application/json',

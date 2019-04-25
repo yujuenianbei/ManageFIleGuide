@@ -2,6 +2,7 @@
   <Raking v-if="this.videoTop !== null" :musicTop="videoTop" :tabTitle="list" :musicNew="videoNew"/>
 </template>
 <script>
+import { ip } from '../../http';
 import axios from "axios";
 import Raking from "../main/ranking.vue";
 export default {
@@ -25,21 +26,21 @@ export default {
   },
   methods: {},
   beforeCreate() {
-    axios.get("http://localhost:3000/front/videoList/topSeven").then(
+    axios.get(ip + "/front/videoList/topSeven").then(
       response => (
         this.videoTop = response.data.reqData.data,
         this.videoTop.forEach(item => {
           item.path = "/videoPlay";
-          item.img = "http://localhost:3000/api/img/" + item.img;
+          item.img = ip + "/api/img/" + item.img;
         })
       )
     );
-    axios.get("http://localhost:3000/front/videoList/newSeven").then(
+    axios.get(ip + "/front/videoList/newSeven").then(
       response => (
         this.videoNew = response.data.reqData.data,
         this.videoNew.forEach(item => {
           item.path = "/videoPlay";
-          item.img = "http://localhost:3000/api/img/" + item.img;
+          item.img = ip + "/api/img/" + item.img;
         })
       )
     );

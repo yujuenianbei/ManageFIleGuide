@@ -7,6 +7,7 @@
   </div>
 </template>
 <script>
+import { ip } from '../http';
 import axios from "axios";
 import InputS from '../elements/input.vue'
 import ButtonS from '../elements/button.vue'
@@ -41,15 +42,12 @@ export default {
     
   },
   mounted() {
-    axios.get("http://localhost:3000/front/imgList/banner").then(
+    axios.get(ip + "/api/imgList/1").then(
       response => (
-        response.data.reqData.data.forEach(item => {
-          item.img_img = "http://localhost:3000/api/img/" + item.img_img;
-          console.log(item.img_img);
+        response.data.reqData.imgTypeList.forEach(item => {
+          item.img_img = ip + "/api/img/" + item.img_img;
           this.banner = item.img_img
-          console.log(this.banner)
-        }),
-        console.log(response.data.reqData.data)
+        })
       )
     );
   },

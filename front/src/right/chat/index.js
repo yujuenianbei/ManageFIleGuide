@@ -3,10 +3,11 @@ import * as Actions from '../redux/action';
 import { connect } from 'react-redux';
 import { Drawer, Button, Radio, Icon, Tabs, Input } from 'antd';
 import './index.less';
+import { ip } from '../../http'
 
 import io from 'socket.io-client'
 
-const socket = io('http://localhost:3000');
+const socket = io(ip);
 const TabPane = Tabs.TabPane;
 const RadioGroup = Radio.Group;
 const { TextArea } = Input;

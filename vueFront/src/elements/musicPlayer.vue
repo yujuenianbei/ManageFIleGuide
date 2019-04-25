@@ -73,6 +73,7 @@
 </template>
 
 <script>
+import { ip } from '../http';
 import ProgressS from "../elements/progress.vue";
 import axios from "axios";
 export default {
@@ -100,9 +101,9 @@ export default {
       // 歌曲信息
       songTitle: "Inspire",
       songAuthor: "Capo Productions",
-      songImg: "http://localhost:3000/api/img/Inspire.jpg",
+      songImg: ip + "/api/img/Inspire.jpg",
       songSource:
-        "http://localhost:3000/api/music/5%20Reasons%20-%20In%20My%20Mind(Original%20Mix).mp3",
+        ip + "/api/music/5%20Reasons%20-%20In%20My%20Mind(Original%20Mix).mp3",
       lyric: "",
       lyricArray: [
         {
@@ -248,17 +249,17 @@ export default {
     var params = new URLSearchParams();
     params.append("id", this.$route.query.id);
     axios
-      .post("http://localhost:3000/front/music", params)
+      .post(ip + "/front/music", params)
       .then(
         response => (
           (this.$refs.audio.src =
-            "http://localhost:3000/api/music/" +
+            ip + "/api/music/" +
             response.data.reqData.data[0].url),
           (this.songSource =
-            "http://localhost:3000/api/music/" +
+            ip + "/api/music/" +
             response.data.reqData.data[0].url),
           (this.songImg =
-            "http://localhost:3000/api/img/" +
+            ip + "/api/img/" +
             response.data.reqData.data[0].img),
           (this.songTitle = response.data.reqData.data[0].name),
           (this.songAuthor = response.data.reqData.data[0].author_name),
@@ -267,7 +268,7 @@ export default {
         )
       );
     axios
-      .post("http://localhost:3000/front/musicLyric", params)
+      .post(ip + "/front/musicLyric", params)
       .then(response => {
         if (response.data.reqData.data.length > 0) {
           this.lyricState = true;

@@ -1,3 +1,4 @@
+import { ip } from '../../http'
 export const CHAT_PART = 'CHAT_PART';
 
 // 用户弹窗
@@ -10,7 +11,7 @@ export function chatpart(data) {
 
 export function session() {
   return (dispatch) => {
-      fetch('/api/session', {
+      fetch(ip + '/api/session', {
               method: 'GET',
               headers: {
                 'Content-Type': 'application/json',

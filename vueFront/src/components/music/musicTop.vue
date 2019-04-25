@@ -3,6 +3,7 @@
 </template>
 <script>
 import axios from "axios";
+import { ip } from "../../http";
 import Raking from "../main/ranking.vue";
 export default {
   components: {
@@ -25,21 +26,21 @@ export default {
   },
   methods: {},
   beforeCreate() {
-    axios.get("http://localhost:3000/front/musicList/topSeven").then(
+    axios.get(ip + "/front/musicList/topSeven").then(
       response => (
-        this.musicTop = response.data.reqData.data,
+        (this.musicTop = response.data.reqData.data),
         this.musicTop.forEach(item => {
           item.path = "/musicPlay";
-          item.img = "http://localhost:3000/api/img/" + item.img;
+          item.img = ip + "/api/img/" + item.img;
         })
       )
     );
-    axios.get("http://localhost:3000/front/musicList/newSeven").then(
+    axios.get(ip + "/front/musicList/newSeven").then(
       response => (
-        this.musicNew = response.data.reqData.data,
+        (this.musicNew = response.data.reqData.data),
         this.musicNew.forEach(item => {
           item.path = "/musicPlay";
-          item.img = "http://localhost:3000/api/img/" + item.img;
+          item.img = ip + "/api/img/" + item.img;
         })
       )
     );

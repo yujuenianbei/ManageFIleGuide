@@ -63,6 +63,7 @@
   </div>
 </template>
 <script>
+import { ip } from '../http';
 import ProgressS from "./progress.vue";
 import { setTimeout } from "timers";
 import axios from "axios";
@@ -189,17 +190,17 @@ export default {
     var params = new URLSearchParams();
     params.append("id", this.$route.query.id);
     axios
-      .post("http://localhost:3000/front/video", params)
+      .post(ip + "/front/video", params)
       .then(
         response => (
           (this.$refs.video.src =
-            "http://localhost:3000/api/video/" +
+            ip + "/api/video/" +
             response.data.reqData.data[0].url),
           (this.videoUrl =
-            "http://localhost:3000/api/video/" +
+            ip + "/api/video/" +
             response.data.reqData.data[0].url),
           (this.videoPoster =
-            "http://localhost:3000/api/img/" +
+            ip + "/api/img/" +
             response.data.reqData.data[0].img),
           (this.videoTitle = response.data.reqData.data[0].album_name),
           (this.videoAuthor = response.data.reqData.data[0].author_name),

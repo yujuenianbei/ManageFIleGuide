@@ -1,3 +1,4 @@
+import { ip } from '../../http'
 export const LEFT_LOADING = 'LEFT_LOADING'
 export const COLLAPSED = 'COLLAPSED';
 export const LINK = 'LINK';
@@ -44,9 +45,9 @@ export function leftList(data) {
 export function getData() {
     return (dispatch, getState) => {
         dispatch(leftLoading(true));
-        fetch('/api/leftList', {
+        fetch(ip + '/api/leftList', {
             method: 'GET',
-            headers:{
+            headers: {
                 'token': localStorage.getItem('token')
             }
         })

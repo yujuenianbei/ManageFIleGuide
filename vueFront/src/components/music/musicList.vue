@@ -56,6 +56,7 @@
   </div>
 </template>
 <script>
+import { ip } from '../../http';
 import axios from "axios";
 export default {
   data: function() {
@@ -89,22 +90,22 @@ export default {
     change(index) {
       this.selected = index;
       if (index == 0) {
-        axios.get("http://localhost:3000/front/musicList/newTrends").then(
+        axios.get(ip + "/front/musicList/newTrends").then(
           response => (
             (this.musicData = response.data.reqData.data),
             this.musicData.forEach(item => {
-              item.img = "http://localhost:3000/api/img/" + item.img;
-              item.url = "http://localhost:8081/#/videoPlay/" + item.url;
+              item.img = ip + "/api/img/" + item.img;
+              item.url = ip + "http://localhost:8081/#/videoPlay/" + item.url;
             })
           )
         );
       } else {
-        axios.get("http://localhost:3000/front/musicList/newContribute").then(
+        axios.get("/front/musicList/newContribute").then(
           response => (
             (this.musicData = response.data.reqData.data),
             this.musicData.forEach(item => {
-              item.img = "http://localhost:3000/api/img/" + item.img;
-              item.url = "http://localhost:8081/#/videoPlay/" + item.url;
+              item.img = ip + "/api/img/" + item.img;
+              item.url = ip + "http://localhost:8081/#/videoPlay/" + item.url;
             })
           )
         );
@@ -112,11 +113,11 @@ export default {
     }
   },
   mounted() {
-    axios.get("http://localhost:3000/front/musicList/newTrends").then(
+    axios.get(ip + "/front/musicList/newTrends").then(
       response => (
         (this.musicData = response.data.reqData.data),
         this.musicData.forEach(item => {
-          item.img = "http://localhost:3000/api/img/" + item.img;
+          item.img = ip + "/api/img/" + item.img;
         })
       )
     );

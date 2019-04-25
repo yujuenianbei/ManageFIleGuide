@@ -1,3 +1,4 @@
+import { ip } from '../../../http'
 export const USER_ADD_MODLE = 'USER_ADD_MODLE';
 export const ADD_USER_LIST = 'ADD_LIST';
 export const USER_LOADING = 'USER_LOADING';
@@ -87,7 +88,7 @@ let csvurl = ''
 // 导出数据
 export function exportCsv(params) {
   return (dispatch) => {
-    fetch('/api/exportList', {
+    fetch(ip + '/api/exportList', {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
@@ -119,7 +120,7 @@ export function exportCsv(params) {
 export function getUserList() {
   return (dispatch, getState) => {
     dispatch(userLoading(true));
-    fetch('/api/userList', {
+    fetch(ip + '/api/userList', {
       method: 'GET',
       headers: {
         'token': localStorage.getItem('token')
@@ -134,7 +135,7 @@ export function getUserList() {
         dispatch(userLoading(false));
       })
 
-    fetch('/api/session', {
+    fetch(ip + '/api/session', {
       method: 'GET',
       headers: {
         'token': localStorage.getItem('token')
@@ -153,7 +154,7 @@ export function getUserList() {
 export function addUser(params) {
   return (dispatch) => {
     dispatch(userLoading(true));
-    fetch('/api/userList', {
+    fetch(ip + '/api/userList', {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
@@ -177,7 +178,7 @@ export function addUser(params) {
 export function updateUser(params) {
   return (dispatch) => {
     dispatch(userLoading(true));
-    fetch('/api/userList', {
+    fetch(ip + '/api/userList', {
       method: 'PUT',
       headers: {
         'Accept': 'application/json',
@@ -203,7 +204,7 @@ export function deletUser(params) {
   return (dispatch) => {
     dispatch(userLoading(true));
     console.log(params);
-    fetch('/api/userListDel', {
+    fetch(ip + '/api/userListDel', {
       method: 'POST',
       headers: {
         'Accept': 'application/json',

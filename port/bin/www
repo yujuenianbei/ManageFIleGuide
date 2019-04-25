@@ -42,7 +42,7 @@ var serverHttps = https.createServer(credentials, app);
 
 // 添加此段内容启动 Socket.io
 io.getSocketio(server);
-
+io.getSocketio(serverHttps);
 // /**
 //  * Listen on provided port, on all network interfaces.
 //  */

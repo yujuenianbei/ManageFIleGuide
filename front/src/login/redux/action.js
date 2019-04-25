@@ -1,3 +1,4 @@
+import { ip } from '../../http'
 export const LOGIN_KEY = 'LOGIN_KEY';
 export const LOGIN_NAME = 'LOGIN_NAME';
 export const LOGIN_STATE = 'LOGIN_STATE';
@@ -37,7 +38,7 @@ export function loginName(data) {
 export function checkLogin(data) {
   return (dispatch, getState) => {
     console.log(data);
-    fetch('/api/userLogin', {
+    fetch(ip + '/api/userLogin', {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
