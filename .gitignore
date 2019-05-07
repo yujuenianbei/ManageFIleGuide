@@ -5,6 +5,8 @@
 /front/node_modules
 /reactpwa/node_modules
 /vue-storefront/node_modules
+/hp/node_modules
+/hp/build
 /vue-storefront/dist
 # testing
 /coverage
