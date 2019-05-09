@@ -1,0 +1,55 @@
+@import "../../less/color.less";
+@import "../../less/font.less";
+@import "../../less/button.less";
+
+.additional_links {
+    font-size: 1.4rem;
+    padding: @pd25 @pd30 0;
+    margin-top: 80px;
+    border-top: 1px solid @linkTitle;
+    height: 45px;
+
+    li {
+        border-right: 1px solid @gray;
+        float: left;
+        height: 14px;
+        padding: 0px @pd10;
+
+        &:first-child {
+            padding: 0 @pd10 0 0;
+        }
+
+        &:last-child {
+            border-right: 0;
+        }
+    }
+}
+
+.disclaimer {
+    width: 100%;
+
+    a {
+        color: @ahover;
+
+        &:hover {
+            text-decoration: @undLine;
+        }
+    }
+    p, small {
+        color: @gray;
+        max-width: 1240px;
+        box-sizing: border-box;
+        margin-left: auto;
+        margin-right: auto;
+        font-size: 1.4rem;
+        padding: 0 @pd30;
+        line-height: @pd20;
+        margin-top: @pd10;
+    }
+    small{
+        line-height: @pd30;
+        a{
+            color: @a;
+        }
+    }
+}

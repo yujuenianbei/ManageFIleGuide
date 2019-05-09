@@ -1,0 +1,115 @@
+@import "../../less/color.less";
+@import "../../less/font.less";
+@import "../../less/button.less";
+
+.footer {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 1240px;
+    min-height: 10px;
+    overflow: hidden;
+
+    .country {
+        width: 100%;
+        padding: 17px 5px 18px 30px;
+        font-size: @min_mid;
+        color: @a;
+        border-bottom: 1px solid @footerBorder;
+    }
+
+    .payment {
+        border-bottom: 1px solid #898888;
+        padding: 17px 30px 18px 30px;
+
+        li {
+            display: inline-block;
+            max-width: 100px;
+            margin-right: 10px;
+
+            img {
+                width: 100%;
+            }
+        }
+    }
+
+    .links {
+        width: 100%;
+        margin-top: 20px;
+
+        .links_ul {
+            display: inline-block;
+            width: 75%;
+
+            .footer_links {
+                width: 25%;
+                float: left;
+                padding-left: 30px;
+
+                .block_title {
+                    margin-bottom: 15px;
+
+                    strong {
+                        font-size: @min_mid;
+                        color: @linkTitle;
+                    }
+                }
+
+                ul {
+                    >li {
+                        line-height: 20px;
+
+                        a {
+                            font-size: 1.4rem;
+                            color: @linkTitle;
+
+                            &:hover {
+                                text-decoration: @undLine;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        .contract {
+            float: right;
+            width: 25%;
+
+            .block_title {
+                margin-bottom: 15px;
+
+                strong {
+                    font-size: @min_mid;
+                    color: @linkTitle;
+                }
+
+                .input {
+                    height: 32px;
+                    font-size: 1.42rem;
+                    padding: 0 9px;
+                    width: 90%;
+                }
+
+                .subscribe {
+                    font-size: 1.42rem;
+                }
+            }
+
+            .share {
+                width: 100%;
+                min-height: 10px;
+                overflow: hidden;
+                margin: 10px 0;
+
+                ul {
+                    width: 100%;
+
+                    li {
+                        float: left;
+                    }
+                }
+            }
+        }
+    }
+}
