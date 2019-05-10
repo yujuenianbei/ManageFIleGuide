@@ -1,0 +1,77 @@
+@import "../../less/color.less";
+@import "../../less/font.less";
+@import "../../less/button.less";
+
+.commonadds {
+    width: 100%;
+
+    .topStaticAdds {
+        width: 100%;
+        min-height: 10px;
+        overflow: hidden;
+
+        li {
+            width: 25%;
+            float: left;
+
+            img {
+                width: 100%;
+            }
+        }
+    }
+}
+
+.promiseing {
+    width: 100%;
+    min-height: 10px;
+    overflow: hidden;
+    padding: @pd10 0 @pd20;
+
+    .promise_ul {
+        width: 100%;
+        max-width: 1420px;
+        margin: 0 auto;
+        li {
+            width: calc(~'100% / 3');
+            float: left;
+            text-align: center;
+
+            .promise_icon {
+                width: 100%;
+                font-size: 77px;
+            }
+
+            h4 {
+                width: 100%;
+                font-size: 2.2rem;
+                font-weight: 600;
+                margin-top: 5px;
+            }
+
+            .promise_info {
+                width: 100%;
+                font-size: 1.6rem;
+                color: @linkTitle;
+            }
+        }
+    }
+}
+
+.productContent {
+    width: 100%;
+    background-color: @plbg;
+
+    .productList {
+        width: 100%;
+        margin-left: auto;
+        margin-right: auto;
+        max-width: 1412px;
+        min-height: 10px;
+        overflow: hidden;
+
+        h2 {
+            font-size: 40px;
+            padding: @pd20 0 @pd10;
+        }
+    }
+}
