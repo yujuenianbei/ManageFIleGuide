@@ -1,0 +1,197 @@
+@import "../../less/color.less";
+@import "../../less/font.less";
+@import "../../less/button.less";
+
+.productDetailInfo_ad {
+    width: @f;
+
+    img {
+        width: @f;
+    }
+}
+
+.productSelectInfo {
+    border: @1 solid @border;
+    border-radius: @5;
+
+    .productSelect {
+        width: @f;
+
+        select {
+            font-size: 1.4rem;
+            padding: @0 @10;
+            appearance: none;
+            margin-left: -1px;
+            width: calc(~"100% + 2px");
+            height: @45;
+            line-height: @45;
+            background: @white url(https://media.hpstore.cn/static/version1557351442/frontend/HPOLS/default/zh_Hans_CN/images/select-bg.svg) no-repeat @f 45%;
+            border: 1px solid #ccc;
+            border-radius: @5;
+
+            option {
+                color: @black;
+                background: @white;
+            }
+        }
+    }
+
+    .productFeature {
+        position: relative;
+        width: @f;
+        padding-bottom: @10;
+
+        ul {
+            display: flex;
+            flex-wrap: wrap;
+            padding: @15 @10;
+
+            li {
+                width: calc(~'20% - 1px');
+                text-align: center;
+                position: relative;
+
+                &:after {
+                    content: '';
+                    height: 50%;
+                    width: 1px;
+                    position: absolute;
+                    top: 25%;
+                    right: 0;
+                    background-color: #e2e2e2;
+                }
+
+                &:last-child {
+                    &:after {
+                        width: 0;
+                    }
+                }
+
+                .productIcon {
+                    font-size: @55;
+                }
+
+                .productIconName {
+                    padding: 5px 7px 0;
+                    overflow: hidden;
+                    font-size: 1.2rem;
+                    color: #757575;
+                    word-wrap: break-word;
+                    display: block;
+                    -webkit-line-clamp: 3;
+                    -webkit-box-orient: vertical;
+                    line-height: 1.4rem;
+                }
+            }
+        }
+    }
+}
+
+.cost {
+    margin-top: 10px;
+
+    .suggest {
+        margin-bottom: 20px;
+
+        .suggestCost {
+            font-size: 1.5rem;
+            color: #424242;
+            margin-right: 15px;
+
+            .usedSuggestCost {
+                color: #424242;
+                font-size: 1.5rem;
+                text-decoration: line-through;
+            }
+        }
+
+        .nowCost {
+            font-size: 3.2rem;
+            font-weight: 300;
+            color: #000;
+        }
+    }
+
+    .dis {
+        margin-bottom: 20px;
+
+        .disCost {
+            font-size: 1.5rem;
+            color: #424242;
+            margin-right: 15px;
+
+            .disCostMoney {
+                color: #ff0909;
+                font-size: 14px;
+            }
+        }
+    }
+
+    .addToCartButton {
+        width: 100%;
+        font-size: 1.6rem;
+        padding: 12px 30px;
+    }
+}
+
+.pincode {
+    width: @f;
+    margin-top: 20px;
+    .pincodeTitle {
+        width: 50%;
+        border: @1 solid @border;
+        text-align: center;
+        line-height: 34px;
+        margin-bottom: -@1;
+        border-bottom: @1 solid @white;
+        position: relative;
+        span{
+            font-size: 1.4rem;
+        }
+        .pincodeIcon{
+            float: right;
+            font-size: 26px;
+            line-height: 34px;
+        }
+    }
+    .pincodeContent {
+        border: 1px solid @border;
+        .pincodeCity{
+            padding: @10;
+            display: flex;
+            flex-wrap: wrap;
+        }
+    }
+    .pincodeReslut{
+        width: @f;
+        padding: @15 @15;
+        .pincodeReslutProduct{
+            color: @green;
+            font-size: 1.6rem;
+            margin-bottom: 5px;
+        }
+        .pincodeDays{
+            margin-left: @4;
+            font-size: 1.4rem;
+        }
+    }
+}
+
+.compare {
+    padding: @pd15 0;
+    margin-bottom: @9;
+
+    span {
+        font-size: 1.4rem;
+        vertical-align: super;
+        margin-left: @10;
+    }
+}
+.productSell{
+    color: @red;
+    font-size: 1.4rem;
+    line-height: 24px;
+    span{
+        color: @gray;
+    }
+}

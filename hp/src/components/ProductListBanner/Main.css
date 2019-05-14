@@ -1,0 +1,167 @@
+@import "~slick-carousel/slick/slick.css";
+@import "~slick-carousel/slick/slick-theme.css";
+
+.container {
+    margin: 0 auto;
+    width: 100%;
+    color: #333;
+}
+
+h3 {
+    background: blue;
+    color: #fff;
+    font-size: 36px;
+    line-height: 100px;
+    margin: 10px;
+    padding: 2%;
+    position: relative;
+    text-align: center;
+}
+
+.variable-width .slick-slide p {
+    background: blue;
+    height: 100px;
+    color: #fff;
+    margin: 5px;
+    line-height: 100px;
+    text-align: center;
+}
+
+.center .slick-center h3 {
+    color: #0199d5;
+    opacity: 1;
+    transform: scale(1.08);
+}
+
+.center h3 {
+    opacity: 0.8;
+    transition: all 300ms ease;
+}
+
+.content {
+    padding: 20px;
+    margin: auto;
+    width: 90%;
+}
+
+.productListBanner .slick-slider{
+  min-height: 10px;
+  overflow: hidden;
+}
+
+.slick-slide .image {
+    padding: 10px;
+}
+
+.slick-slide img {
+    display: block;
+    margin: auto;
+    width: 100%;
+}
+
+.slick-slide img.slick-loading {
+    border: 0;
+}
+
+.productListBanner .slick-list {
+    width: 76%;
+    float: left;
+}
+
+.productListBanner .slick-pdots {
+    width: 24%;
+    float: left;
+}
+
+.slick-pdots {
+    margin-left: 0;
+    position: relative;
+}
+
+.slick-pthumb {
+    bottom: 0px;
+}
+
+.slick-pthumb li {
+    width: 100%;
+    margin: 12px;
+}
+
+.slick-pthumb li:first-child {
+    margin-top: 0;
+}
+
+.slick-pthumb li:last-child {
+    margin-bottom: 0;
+}
+
+.slick-pthumb li img {
+    /* filter: grayscale(100%); */
+    filter: opacity(.5);
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    cursor: pointer;
+    transition: all 0.25s linear;
+}
+.slick-pthumb li img:hover{
+  filter: opacity(1);
+}
+
+.slick-pthumb li.slick-active img {
+    /* filter: grayscale(0%); */
+    filter: opacity(1);
+}
+
+.slick-pdots a {
+    display: block;
+}
+
+.slick-pdots a:hover {
+    background-color: rgba(51, 51, 51, 0.14);
+}
+
+@media (max-width: 768px) {
+    h3 {
+        font-size: 24px;
+    }
+
+    .center {
+        margin-left: -40px;
+        margin-right: -40px;
+    }
+
+    .center .slick-center h3 {
+        color: #0199d5;
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    .center h3 {
+        opacity: 0.8;
+        transform: scale(0.95);
+        transition: all 300ms ease;
+    }
+}
+
+.slick-vertical .slick-slide {
+    height: 180px;
+}
+
+.slick-arrow {
+    display: none !important;
+}
+
+.slick-prev {
+    z-index: 100;
+    left: 20px !important;
+}
+
+.slick-next {
+    z-index: 100;
+    right: 20px !important;
+}
+
+.slick-active a {
+    color: #0199d5;
+}

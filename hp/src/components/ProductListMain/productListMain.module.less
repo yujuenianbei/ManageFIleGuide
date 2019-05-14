@@ -1,21 +1,27 @@
 @import "../../less/color.less";
 @import "../../less/font.less";
 @import "../../less/button.less";
-.container{
+
+.container {
     width: 100%;
-    ul{
+
+    ul {
         width: 100%;
-        min-height: @pd10;
-        overflow: hidden;
-        li{
+        display: flex;
+        flex-wrap: wrap;
+
+        li {
             float: left;
             width: 17.5%;
             background-color: #fff;
-            &:first-child{
+
+            &:first-child {
                 width: 30%;
             }
-            img{
+
+            img {
                 width: 100%;
+                height: 100%;
             }
         }
     }

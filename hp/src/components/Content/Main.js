@@ -3,6 +3,7 @@ import classify from '@magento/venia-concept/esm/classify';
 // import { Link, resourceUrl } from '@magento/venia-concept/esm/drivers';
 import Slider from "react-slick";
 import ProductListMain from '../ProductListMain/index'
+import ProductListBanner from '../ProductListBanner/index'
 import styles from './Main.module.less';
 import { Icon } from '@material-ui/core';
 import './Main.css';
@@ -106,6 +107,9 @@ class Main extends Component {
                         <ProductListMain />
                         <ProductListMain />
                     </div>
+                </div>
+                <div className={styles.product}>
+                    <ProductListBanner />
                 </div>
             </div>
         );
