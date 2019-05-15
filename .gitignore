@@ -7,7 +7,7 @@
 /vue-storefront/node_modules
 /hp/node_modules
 /hp/build
-/vue-storefront/dist
+/vue-storefront
 # testing
 /coverage
 
