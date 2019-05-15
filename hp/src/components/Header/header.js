@@ -11,6 +11,17 @@ import UserController from './UserController';
 import styles from './header.module.less';
 
 class Header extends PureComponent {
+    // componentDidMount(){
+    //     document.documentElement.scrollTop = 0;
+    //     window.addEventListener('scroll', this.handleScroll) //监听滚动
+    // }
+    // shouldComponentUpdate =(nextProps) =>{
+    //     if(nextProps){
+    //         console.log(nextProps)
+    //        return false; 
+    //     }
+    // }
+
     render() {
         // const { searchOpen, classes, toggleSearch } = this.props;
         return (

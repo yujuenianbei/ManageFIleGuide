@@ -1,0 +1,45 @@
+@import "../../less/color.less";
+@import "../../less/font.less";
+@import "../../less/button.less";
+
+.productWtched{
+    width: calc(~'20% - 2px');
+    margin-right: @2;
+    background-color: @plbg;
+    img{
+        width: 90%;
+        margin: 0 5%;
+    }
+    .productWtchedContent{
+        width: 100%;
+        padding: 0 @20;
+        text-align: center;
+        h4{
+            font-size: 1.6rem;
+            text-align: center;
+            margin-bottom: 10px;
+            height: @50;
+            max-height: @50;
+            line-height: @25;
+            margin: @5 0;
+            word-wrap: break-word;
+            overflow: hidden;
+        }
+        .message{
+            color: #ff0909;
+            height: @14;
+            overflow: hidden;
+            margin-bottom: @10;
+            font-size: 1.4rem;
+        }
+        .price{
+            height: @30;
+            font-weight: 500;
+            white-space: nowrap;
+            color: @black;
+            font-weight: 700;
+            font-size: 1.6rem;
+            margin: @20 0;
+        }
+    }
+}
