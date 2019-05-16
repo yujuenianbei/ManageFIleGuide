@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import classify from '@magento/venia-concept/esm/classify';
-// import { Link, resourceUrl } from '@magento/venia-concept/esm/drivers';
 import Slider from "react-slick";
 import ProductListMain from '../ProductListMain/index'
 import ProductListBanner from '../ProductListBanner/index'
 import styles from './Main.module.less';
+import { Link } from 'react-router-dom';
 import { Icon } from '@material-ui/core';
 import './Main.css';
 class Main extends Component {
@@ -59,24 +59,24 @@ class Main extends Component {
                 <div className={styles.commonadds}>
                     <ul className={styles.topStaticAdds}>
                         <li>
-                            <a>
-                                <img src="https://adbutler-fermion.com/getad.img/;libID=653547"></img>
-                            </a>
+                            <Link to={`/productList/` + 2313213}>
+                                <img src="https://adbutler-fermion.com/getad.img/;libID=653547" />
+                            </Link>
                         </li>
                         <li>
-                            <a>
-                                <img src="https://adbutler-fermion.com/getad.img/;libID=653547"></img>
-                            </a>
+                            <Link to={`/productList/` + 2313213}>
+                                <img src="https://adbutler-fermion.com/getad.img/;libID=653547" />
+                            </Link>
                         </li>
                         <li>
-                            <a>
-                                <img src="https://adbutler-fermion.com/getad.img/;libID=653547"></img>
-                            </a>
+                            <Link to={`/productList/` + 2313213}>
+                                <img src="https://adbutler-fermion.com/getad.img/;libID=653547" />
+                            </Link>
                         </li>
                         <li>
-                            <a>
-                                <img src="https://adbutler-fermion.com/getad.img/;libID=653547"></img>
-                            </a>
+                            <Link to={`/productList/` + 2313213}>
+                                <img src="https://adbutler-fermion.com/getad.img/;libID=653547" />
+                            </Link>
                         </li>
                     </ul>
                 </div>

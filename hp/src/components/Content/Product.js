@@ -16,8 +16,8 @@ class Main extends Component {
         window.addEventListener('scroll', this.handleScroll) //监听滚动
     }
     handleScroll = (e) => {
-        // console.log(document.documentElement.scrollTop)
-        if (document.documentElement.scrollTop < 867) {
+        console.log(document.documentElement.scrollTop)
+        if (document.documentElement.scrollTop < 990) {
             this.setState({ detailHeaderFixed: false });
         } else {
             this.setState({ detailHeaderFixed: true });
@@ -33,7 +33,7 @@ class Main extends Component {
     changeProductDetails = (index) => {
         this.setState({ type: index });
         if (this.state.detailHeaderFixed) {
-            window.scrollTo(0, 867);
+            window.scrollTo(0, 990);
         }
         // 原生实现滚动
         // let scroll_top = document.documentElement.scrollTop;

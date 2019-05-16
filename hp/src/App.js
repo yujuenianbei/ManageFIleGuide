@@ -14,6 +14,8 @@ import Footer from './components/Footer/index';
 import { ApolloProvider } from 'react-apollo';
 import { Provider as ReduxProvider } from 'react-redux';
 import { HashRouter as Router } from 'react-router-dom';
+import { LocaleProvider } from 'antd';
+import zhCN from 'antd/lib/locale-provider/zh_CN';
 const client = new ApolloClient({
   uri: "https://48p1r2roz4.sse.codesandbox.io"
 });
@@ -62,13 +64,15 @@ const App = () => {
     <ApolloProvider client={client}>
       <ReduxProvider store={store}>
         <Router>
-          <Fragment>
-            <Header />
-            <HeaderInt />
-            <Notification />
-            <Routers />
-            <Footer />
-          </Fragment>
+          <LocaleProvider locale={zhCN}>
+            <Fragment>
+              <Header />
+              <HeaderInt />
+              <Notification />
+              <Routers />
+              <Footer />
+            </Fragment>
+          </LocaleProvider>
         </Router>
       </ReduxProvider>
     </ApolloProvider>
