@@ -8,12 +8,18 @@ import ProductWatched from '../ProductWtched';
 
 import Product from '../../data/product';
 class Main extends Component {
-
-    constructor(props) {
-        super(props)
+    state = {
+        type: 0,
+        detailHeaderFixed: false,
+        productTitle: Product.productTitle,
+        productMayLike: Product.productMayLike,
+        productWatched: Product.productWatched
     }
     componentDidMount() {
         window.addEventListener('scroll', this.handleScroll) //监听滚动
+    }
+    componentWillUnmount(){
+        window.removeEventListener('scroll', this.handleScroll) //监听滚动
     }
     handleScroll = (e) => {
         console.log(document.documentElement.scrollTop)
@@ -23,13 +29,7 @@ class Main extends Component {
             this.setState({ detailHeaderFixed: true });
         }
     }
-    state = {
-        type: 0,
-        detailHeaderFixed: false,
-        productTitle: Product.productTitle,
-        productMayLike: Product.productMayLike,
-        productWatched: Product.productWatched
-    }
+
     changeProductDetails = (index) => {
         this.setState({ type: index });
         if (this.state.detailHeaderFixed) {
@@ -54,7 +54,13 @@ class Main extends Component {
     render() {
         return (
             <div className={styles.productInfo}>
-                <Crumbs />
+                <Crumbs links={[{
+                    link: '/productList',
+                    name: '家用'
+                },{
+                    link: '/',
+                    name: '惠普暗影精灵4代- 15-dc0006tx 15.6 英寸游戏笔记本电脑'
+                }]} />
                 <div className={styles.product}>
                     <div className={styles.productImg}>
                         <h1>{Product.productName}</h1>
@@ -71,23 +77,23 @@ class Main extends Component {
                     <div className={this.state.detailHeaderFixed ? styles.productDetailHeader + " " + styles.productDetailHeaderFixed : styles.productDetailHeader}>
                         <ul>
                             {this.state.productTitle.map((item, index) => {
-                                return <li key={index} className={this.state.type === index ? styles.active : styles.common} onClick={() => this.changeProductDetails(index)}>{item.title}</li>
+                                return <li key={index + "productTitle"} className={this.state.type === index ? styles.active : styles.common} onClick={() => this.changeProductDetails(index)}>{item.title}</li>
                             })}
                         </ul>
                     </div>
                     <div className={styles.productDetailContent}>
                         <div className={this.state.type === 0 ? styles.active + ' ' + styles.first : styles.common}>
-                            <img src={Product.productFirst.topImg} />
-                            <img src={Product.productFirst.contentImg} />
+                            <img src={Product.productFirst.topImg} alt="" />
+                            <img src={Product.productFirst.contentImg} alt="" />
                             <div className={styles.detailContent}>
-                                {Product.productFirst.detailContent.map(item=> {
-                                    return <Fragment><p className={styles.strong}>{item.title}</p><p className={styles.thin}>{item.content}</p></Fragment>
+                                {Product.productFirst.detailContent.map((item, index) => {
+                                    return <Fragment key={index + "productFirst_detailContent"}><p className={styles.strong}>{item.title}</p><p className={styles.thin}>{item.content}</p></Fragment>
                                 })}
                             </div>
                             <div className={styles.moreContent}>
                                 <ul>
-                                    {Product.productFirst.moreContent.map(item=> {
-                                        return  <li>{item}</li>
+                                    {Product.productFirst.moreContent.map((item, index) => {
+                                        return <li key={index + "productFirst_moreContent"}>{item}</li>
                                     })}
                                 </ul>
                             </div>

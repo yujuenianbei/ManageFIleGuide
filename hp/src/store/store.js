@@ -8,10 +8,11 @@
 // export default createStore(reducer, composeEnhancers(middleware, errorHandler));
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
-import { mainsReducer } from '../reducers';
+import { mainsReducer, cartsReducer } from '../reducers';
 
 const reducer = combineReducers({
   main: mainsReducer,
+  cart: cartsReducer,
 })
 const store = createStore(reducer, applyMiddleware(thunk));
 

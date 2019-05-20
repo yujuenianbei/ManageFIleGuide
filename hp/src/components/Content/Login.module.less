@@ -1,0 +1,61 @@
+@import "../../less/color.less";
+@import "../../less/font.less";
+@import "../../less/button.less";
+.login{
+    max-width: 1240px;
+    margin: 0 auto;
+    .content{
+        width: @f;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        .oldUser{
+            width: 32%;
+            padding: @40 @30 0 @30;
+            border: @2 solid @border;
+            min-height: 540px;
+            h3{
+                font-size: 2.6rem;
+                font-weight: 500;
+            }
+        }
+        .newUser{
+            width: 66%;
+            padding: @40 @10 0 @30;
+            border: @2 solid @border;
+            min-height: 540px;
+            display: flex;
+            flex-wrap: wrap;
+            .reg{
+                min-height: 470px;
+                width: 50%;
+                border-right: @2 solid @border;
+                margin-right: -@1;
+                padding-right: @20;
+                h3{
+                    font-size: 2.6rem;
+                    font-weight: 500;
+                }
+                .regTitle{
+                    color: #757678;
+                    font-size: 2.2rem; 
+                    margin-bottom: 20px;
+                }
+                .regBtn{
+                    padding: 9px 15px;
+                    font-size: 1.6rem;
+                    font-weight: 300;
+                }
+            }
+            .context{
+                min-height: 470px;
+                width: 50%;
+                padding-left: 20px;
+                h3{
+                    font-size: 2.6rem;
+                    font-weight: 500;
+                }
+            }
+        } 
+    }
+}

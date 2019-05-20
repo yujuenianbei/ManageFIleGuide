@@ -62,8 +62,8 @@ class FooterLinks extends Component {
                             <ul>
                                 <li><a href="https://epp.hpstore.cn/" target="_blank" rel="noopener noreferrer">HP员工计划</a></li>
                                 <li><a href="https://smbclub.hpstore.cn" target="_blank" rel="noopener noreferrer">企业会员</a></li>
-                                <li><a href={null} target="_blank" rel="noopener noreferrer">公司员工计划</a></li>
-                                <li><a href={null} target="_blank" rel="noopener noreferrer">原始奖励计划</a></li>
+                                <li><a href="https://smbclub.hpstore.cn" target="_blank" rel="noopener noreferrer">公司员工计划</a></li>
+                                <li><a href="https://smbclub.hpstore.cn" target="_blank" rel="noopener noreferrer">原始奖励计划</a></li>
                             </ul >
                         </div >
                     </ul>

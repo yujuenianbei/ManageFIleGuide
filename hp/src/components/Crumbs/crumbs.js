@@ -4,6 +4,7 @@ import styles from './crumbs.module.less';
 import { Link } from 'react-router-dom';
 class Crumbs extends Component {
     render() {
+        console.log(this.props.links.length)
         return (
             <div className={styles.crumbs}>
                 <ul>
@@ -12,14 +13,19 @@ class Crumbs extends Component {
                             <span>首页</span>
                         </Link>
                     </li>
-                    <li>
-                        <Link to={'/'}>
-                            <span>家用</span>
-                        </Link>
-                    </li>
-                    <li>
-                        <span>惠普暗影精灵4代- 15-dc0006tx 15.6 英寸游戏笔记本电脑</span>
-                    </li>
+                    {this.props.links.map((item, index) => {
+                        if (index < this.props.links.length -1) {
+                            return <li key={index + 'Crumbs_links_sdazxad'}>
+                                <Link to={item.link}>
+                                    <span>{item.name}</span>
+                                </Link>
+                            </li>
+                        } else {
+                            return <li key={index + 'Crumbs_links_asdqwex'}>
+                                    <span>{item.name}</span>
+                                </li>
+                        }
+                    })}
                 </ul>
             </div>
         );

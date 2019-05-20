@@ -26,9 +26,9 @@ class Main extends Component {
         var settings = {
             customPaging: function (i) {
                 return (
-                    <a>
+                    <Link to={`/productList/` + 2313213}>
                         {dots[i].title}
-                    </a>
+                    </Link>
                 );
             },
             dots: true,
@@ -44,38 +44,38 @@ class Main extends Component {
             <div className="container">
                 <Slider {...settings}>
                     <div>
-                        <img src="https://media.hpstore.cn/wysiwyg/CN_OLS/banner/public/pavilon_0219_pc_nx.jpg" />
+                        <img src="https://media.hpstore.cn/wysiwyg/CN_OLS/banner/public/pavilon_0219_pc_nx.jpg" alt="" />
                     </div>
                     <div>
-                        <img src="https://media.hpstore.cn/wysiwyg/CN_OLS/banner/public/XINGPC-20190508.jpg" />
+                        <img src="https://media.hpstore.cn/wysiwyg/CN_OLS/banner/public/XINGPC-20190508.jpg" alt="" />
                     </div>
                     <div>
-                        <img src="https://media.hpstore.cn/wysiwyg/CN_OLS/banner/public/BannerZHAN66-20190426PC.jpg" />
+                        <img src="https://media.hpstore.cn/wysiwyg/CN_OLS/banner/public/BannerZHAN66-20190426PC.jpg" alt="" />
                     </div>
                     <div>
-                        <img src="https://media.hpstore.cn/wysiwyg/CN_OLS/banner/public/20190403_nx.jpg" />
+                        <img src="https://media.hpstore.cn/wysiwyg/CN_OLS/banner/public/20190403_nx.jpg" alt="" />
                     </div>
                 </Slider>
                 <div className={styles.commonadds}>
                     <ul className={styles.topStaticAdds}>
                         <li>
                             <Link to={`/productList/` + 2313213}>
-                                <img src="https://adbutler-fermion.com/getad.img/;libID=653547" />
+                                <img src="https://adbutler-fermion.com/getad.img/;libID=653547" alt="" />
                             </Link>
                         </li>
                         <li>
                             <Link to={`/productList/` + 2313213}>
-                                <img src="https://adbutler-fermion.com/getad.img/;libID=653547" />
+                                <img src="https://adbutler-fermion.com/getad.img/;libID=653547" alt="" />
                             </Link>
                         </li>
                         <li>
                             <Link to={`/productList/` + 2313213}>
-                                <img src="https://adbutler-fermion.com/getad.img/;libID=653547" />
+                                <img src="https://adbutler-fermion.com/getad.img/;libID=653547" alt="" />
                             </Link>
                         </li>
                         <li>
                             <Link to={`/productList/` + 2313213}>
-                                <img src="https://adbutler-fermion.com/getad.img/;libID=653547" />
+                                <img src="https://adbutler-fermion.com/getad.img/;libID=653547" alt="" />
                             </Link>
                         </li>
                     </ul>

@@ -4,8 +4,8 @@ import styles from './Main.module.less';
 import Crumbs from '../Crumbs';
 import { Collapse, Slider, Checkbox, Row, Col, Icon, Pagination } from 'antd';
 import ProductListData from '../../data/productListData';
-import ProductInfo from '../ProductListInfo/index';
-import ProductListLink from '../ProductListLink/index';
+import ProductListInfoDetail from '../ProductListInfoDetail';
+import ProductListLink from '../ProductListLink';
 const Panel = Collapse.Panel;
 const CheckboxGroup = Checkbox.Group;
 
@@ -70,7 +70,10 @@ class ProductList extends Component {
     render() {
         return (
             <div className={styles.productList}>
-                <Crumbs />
+                <Crumbs links={[{
+                    link: '/',
+                    name: '家用'
+                }]} />
                 <div className={styles.productListContent}>
                     <div className={styles.productListFilter} >
                         <h2>购物选项</h2>
@@ -268,136 +271,68 @@ class ProductList extends Component {
                             <div className={styles.topSelect}>
                                 <ul>
                                     {this.state.tabHeader.map((item, index) => {
-                                        return <li key={index + "tabHeader"} className={this.state.tabIndex === index ? styles.active : ''} onClick={() => this.changeTab(index)}>{item.label}</li>
+                                        return <li key={index + "tabHeader_123123"} className={this.state.tabIndex === index ? styles.active : ''} onClick={() => this.changeTab(index)}>{item.label}</li>
                                     })}
                                 </ul>
                             </div>
                             <div className={styles.productListProductContent}>
                                 <div className={this.state.tabIndex === 0 ? styles.active + ' ' + styles.content : styles.common}>
                                     <ul className={styles.product}>
-                                        <li>
-                                            <ProductListLink
-                                                img={"https://media.hpstore.cn/wysiwyg/use/ntb/gaming.png"}
-                                                title={"游戏"}
-                                                link={'/'}
-                                            />
-                                        </li>
-                                        <li>
-                                            <ProductListLink
-                                                img={"https://media.hpstore.cn/wysiwyg/use/ntb/power-users.png"}
-                                                title={"高端"}
-                                                link={'/'}
-                                            />
-                                        </li>
-                                        <li>
-                                            <ProductListLink
-                                                img={"https://media.hpstore.cn/wysiwyg/use/ntb/premium.png"}
-                                                title={"旅行"}
-                                                link={'/'}
-                                            />
-                                        </li>
-                                        <li>
-                                            <ProductListLink
-                                                img={"https://media.hpstore.cn/wysiwyg/CN_OLS/banner/public/ntb_students222.png"}
-                                                title={"学生"}
-                                                link={'/'}
-                                            />
-                                        </li>
-                                        <li>
-                                            <ProductListLink
-                                                img={"https://media.hpstore.cn/wysiwyg/use/ntb/travel.png"}
-                                                title={"高级用户"}
-                                                link={'/'}
-                                            />
-                                        </li>
+                                        {ProductListData.purpose.map((item, index) => {
+                                            return <li key={index + "purpose_sdasq123"}>
+                                                <ProductListLink
+                                                    img={item.img}
+                                                    title={item.title}
+                                                    link={item.link}
+                                                />
+                                            </li>
+                                        })}
                                     </ul>
                                 </div>
                                 <div className={this.state.tabIndex === 1 ? styles.active + ' ' + styles.content : styles.common}>
-                                <ul className={styles.product}>
-                                        <li>
-                                            <ProductListLink
-                                                img={"https://media.hpstore.cn/wysiwyg/form_factor/ntb/x360.png"}
-                                                title={"翻转变形笔记本"}
-                                                link={'/'}
-                                            />
-                                        </li>
-                                        <li>
-                                            <ProductListLink
-                                                img={"https://media.hpstore.cn/wysiwyg/form_factor/ntb/standard.png"}
-                                                title={"专业笔记本"}
-                                                link={'/'}
-                                            />
-                                        </li>
+                                    <ul className={styles.product}>
+                                        {ProductListData.appearance.map((item, index) => {
+                                            return <li key={index + "appearance_123sadacvhh"}>
+                                                <ProductListLink
+                                                    img={item.img}
+                                                    title={item.title}
+                                                    link={item.link}
+                                                />
+                                            </li>
+                                        })}
                                     </ul>
                                 </div>
                                 <div className={this.state.tabIndex === 2 ? styles.active + ' ' + styles.content : styles.common}>
-                                <ul className={styles.product}>
-                                        <li>
-                                            <ProductListLink
-                                                img={"https://media.hpstore.cn/wysiwyg/brand/ntb/spectre.png"}
-                                                title={"SPECTRE 幽灵系列"}
-                                                link={'/'}
-                                            />
-                                        </li>
-                                        <li>
-                                            <ProductListLink
-                                                img={"https://media.hpstore.cn/wysiwyg/brand/ntb/omennb.png"}
-                                                title={"OMEN暗影精灵系列"}
-                                                link={'/'}
-                                            />
-                                        </li>
-                                        <li>
-                                            <ProductListLink
-                                                img={"https://media.hpstore.cn/wysiwyg/CN_OLS/banner/public/ntb_students222.png"}
-                                                title={"PAVILION星系列"}
-                                                link={'/'}
-                                            />
-                                        </li>
-                                        <li>
-                                            <ProductListLink
-                                                img={"https://media.hpstore.cn/wysiwyg/CN_OLS/banner/public/pavilion_Untitled-2.png"}
-                                                title={"PAVILION光影精灵系列"}
-                                                link={'/'}
-                                            />
-                                        </li>
-                                        <li>
-                                            <ProductListLink
-                                                img={"https://media.hpstore.cn/wysiwyg/brand/ntb/essential.png"}
-                                                title={"HP 小欧系列"}
-                                                link={'/'}
-                                            />
-                                        </li>
+                                    <ul className={styles.product}>
+                                        {ProductListData.series.map((item, index) => {
+                                            return <li key={index + "series_fgdsret"}>
+                                                <ProductListLink
+                                                    img={item.img}
+                                                    title={item.title}
+                                                    link={item.link}
+                                                />
+                                            </li>
+                                        })}
                                     </ul>
                                 </div>
                                 <div className={this.state.tabIndex === 3 ? styles.active + ' ' + styles.content : styles.common}>
                                     <ul className={styles.product}>
-                                        <li>
-                                            <ProductInfo />
-                                        </li>
-                                        <li>
-                                            <ProductInfo />
-                                        </li>
-                                        <li>
-                                            <ProductInfo />
-                                        </li>
-                                        <li>
-                                            <ProductInfo />
-                                        </li>
-                                        <li>
-                                            <ProductInfo />
-                                        </li>
-                                        <li>
-                                            <ProductInfo />
-                                        </li>
-                                        <li>
-                                            <ProductInfo />
-                                        </li>
-                                        <li>
-                                            <ProductInfo />
-                                        </li>
-                                        <li>
-                                            <ProductInfo />
-                                        </li>
+                                        {ProductListData.productListInfo.map((item, index) => {
+                                            return <li key={index + "productListInfo_qwexca"}>
+                                                <ProductListInfoDetail
+                                                    id={item.id}
+                                                    link={item.link}
+                                                    img={item.img}
+                                                    productName={item.productName}
+                                                    promotionMessage={item.promotionMessage}
+                                                    featrues={item.featrues}
+                                                    promotionMessageSecond={item.promotionMessageSecond}
+                                                    usedPrice={item.usedPrice}
+                                                    nowPrice={item.nowPrice}
+                                                />
+                                            </li>
+                                        })}
+
                                     </ul>
                                     <Pagination
                                         pageSize={this.state.pageSize}

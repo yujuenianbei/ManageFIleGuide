@@ -2,20 +2,22 @@ import React, { Fragment } from 'react';
 import './App.less';
 // import VeniaAdapter from '@magento/venia-concept/esm/drivers/adapter';
 import store from './store/store';
-import * as Actions from './actions/index';
+import * as Actions from './actions';
 import ApolloClient from "apollo-boost";
 import './less/font.less'
-import Header from './components/Header/index';
-import HeaderInt from './components/HeaderInt/index';
-import Notification from './components/Notification/index';
+import Header from './components/Header';
+import HeaderInt from './components/HeaderInt';
+import Notification from './components/Notification';
 import Routers from './router/routers';
-import Footer from './components/Footer/index';
+import Footer from './components/Footer';
 
 import { ApolloProvider } from 'react-apollo';
 import { Provider as ReduxProvider } from 'react-redux';
 import { HashRouter as Router } from 'react-router-dom';
 import { LocaleProvider } from 'antd';
 import zhCN from 'antd/lib/locale-provider/zh_CN';
+import ScrollToTop from './components/ScrollToTop';
+
 const client = new ApolloClient({
   uri: "https://48p1r2roz4.sse.codesandbox.io"
 });
@@ -64,6 +66,7 @@ const App = () => {
     <ApolloProvider client={client}>
       <ReduxProvider store={store}>
         <Router>
+          <ScrollToTop>
           <LocaleProvider locale={zhCN}>
             <Fragment>
               <Header />
@@ -73,6 +76,7 @@ const App = () => {
               <Footer />
             </Fragment>
           </LocaleProvider>
+          </ScrollToTop>
         </Router>
       </ReduxProvider>
     </ApolloProvider>

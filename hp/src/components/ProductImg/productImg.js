@@ -4,9 +4,6 @@ import classify from '@magento/venia-concept/esm/classify';
 import styles from './productImg.module.less';
 import './productImg.css';
 class ProductImg extends Component {
-    constructor(props) {
-        super(props)
-    }
     render() {
         // console.log(this.props.match)
         var dots = [
@@ -29,7 +26,7 @@ class ProductImg extends Component {
         var settings = {
             customPaging: function (i) {
                 return (
-                        <img src={dots[i].src} />
+                        <img src={dots[i].src} alt="" />
                 );
             },
             dots: true,
@@ -45,19 +42,19 @@ class ProductImg extends Component {
             <div className={styles.productListBanner + " productImg"}>
                 <Slider {...settings}>
                     <div>
-                        <img src="https://media.hpstore.cn/catalog/product/cache/e4d64343b1bc593f1c5348fe05efa4a6/1/_/1_2.png" />
+                        <img src="https://media.hpstore.cn/catalog/product/cache/e4d64343b1bc593f1c5348fe05efa4a6/1/_/1_2.png" alt="" />
                     </div>
                     <div>
-                        <img src="https://media.hpstore.cn/catalog/product/cache/e4d64343b1bc593f1c5348fe05efa4a6/o/m/omen_0_700x700_3.jpg" />
+                        <img src="https://media.hpstore.cn/catalog/product/cache/e4d64343b1bc593f1c5348fe05efa4a6/o/m/omen_0_700x700_3.jpg" alt="" />
                     </div>
                     <div>
-                        <img src="https://media.hpstore.cn/catalog/product/cache/e4d64343b1bc593f1c5348fe05efa4a6/2/_/2_1_2.png" />
+                        <img src="https://media.hpstore.cn/catalog/product/cache/e4d64343b1bc593f1c5348fe05efa4a6/2/_/2_1_2.png" alt="" />
                     </div>
                     <div>
-                        <img src="https://media.hpstore.cn/catalog/product/cache/e4d64343b1bc593f1c5348fe05efa4a6/3/_/3_2.png" />
+                        <img src="https://media.hpstore.cn/catalog/product/cache/e4d64343b1bc593f1c5348fe05efa4a6/3/_/3_2.png" alt="" />
                     </div>
                     <div>
-                        <img src="https://media.hpstore.cn/catalog/product/cache/e4d64343b1bc593f1c5348fe05efa4a6/4/_/4.jpg" />
+                        <img src="https://media.hpstore.cn/catalog/product/cache/e4d64343b1bc593f1c5348fe05efa4a6/4/_/4.jpg" alt="" />
                     </div>
                 </Slider>
             </div>

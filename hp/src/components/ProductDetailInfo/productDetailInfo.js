@@ -5,15 +5,12 @@ import styles from './productDetailInfo.module.less';
 import Icon from '@material-ui/core/Icon';
 import SelectCity from '../SelectCity';
 class ProductDetailInfo extends Component {
-    constructor(props) {
-        super(props)
-    }
     render() {
         return (
             <Fragment>
                 <div className={styles.productDetailInfo_ad}>
                     <Link to={'/'}>
-                        <img src="https://adbutler-fermion.com/getad.img/;libID=628417" />
+                        <img src="https://adbutler-fermion.com/getad.img/;libID=628417" alt="" />
                     </Link>
                 </div>
                 <div className={styles.productSelectInfo}>

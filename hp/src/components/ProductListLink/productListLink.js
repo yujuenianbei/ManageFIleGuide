@@ -1,12 +1,9 @@
 import React, { Component } from 'react';
 import classify from '@magento/venia-concept/esm/classify';
 import styles from './productListLink.module.less';
-import { Icon } from '@material-ui/core';
+// import { Icon } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 class ProductListLink extends Component {
-    constructor(props) {
-        super(props)
-    }
     render() {
         return (
             <div className={styles.productListLink}>

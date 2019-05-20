@@ -19,6 +19,7 @@
     "less": "^2.7.3",
     "less-loader": "^4.0.5",
     "lodash": "^4.17.10",
+    "rc-form": "^2.4.5",
     "react": "^16.8.6",
     "react-apollo": "^2.4.0",
     "react-app-polyfill": "^0.2.0",
