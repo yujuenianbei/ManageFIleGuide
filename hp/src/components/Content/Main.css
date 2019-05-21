@@ -7,6 +7,10 @@
   color: #333;
   /* background: #419be0; */
 }
+.ant-back-top {
+  bottom: 100px;
+}
+
 .variable-width .slick-slide p {
   background: blue;
   height: 100px;

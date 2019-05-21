@@ -40,6 +40,7 @@
                     color: #757678;
                     font-size: 2.2rem; 
                     margin-bottom: 20px;
+                    line-height: 2.2rem;
                 }
                 .regBtn{
                     padding: 9px 15px;
@@ -54,6 +55,28 @@
                 h3{
                     font-size: 2.6rem;
                     font-weight: 500;
+                    line-height: 2.6rem;
+                }
+                ul{
+                    width: 100%;
+                    li{
+                        width: @f;
+                        display: flex;
+                        flex-wrap: wrap;
+                        margin-bottom: 15px;
+                        .leftIcon{
+                            width: 50px;
+                            font-size: 25px;
+                            color: @blue;
+                        }
+                        .rightContent{
+                            width: calc(~"100% - 50px");
+                            span{
+                                color: #757678;
+                                font-size: 1.8rem;
+                            }
+                        }
+                    }
                 }
             }
         } 

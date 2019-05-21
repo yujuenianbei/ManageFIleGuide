@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 
 import classify from '@magento/venia-concept/esm/classify';
 // import { Link } from '@magento/venia-concept/esm/drivers';
+import { BackTop, Icon } from 'antd';
 import { Link } from 'react-router-dom';
 import SerchInput from './SearchInput';
 import NavHeader from './NavHeader';
@@ -20,7 +21,7 @@ class Header extends PureComponent {
                 <div className={styles.headerContent}>
                     <div className={styles.logo}>
                         <Link to={'/'}>
-                            <img className={styles.logoImg} src="https://media.hpstore.cn/static/version1556143026/frontend/HPOLS/default/zh_Hans_CN/images/logo.svg" alt="HP"/>
+                            <img className={styles.logoImg} src="https://media.hpstore.cn/static/version1556143026/frontend/HPOLS/default/zh_Hans_CN/images/logo.svg" alt="HP" />
                         </Link>
                     </div>
                     <div className={styles.contentSearch}>
@@ -31,6 +32,9 @@ class Header extends PureComponent {
                         <UserController />
                     </div>
                 </div>
+                <BackTop>
+                    <Icon className={styles.up} type="up" />
+                </BackTop>
             </header>
         );
     }

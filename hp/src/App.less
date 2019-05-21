@@ -111,7 +111,17 @@ button:disabled {
   outline-offset: 0px;
   outline: -webkit-focus-ring-color auto 0px;
 }
-
+label[required]{
+  &:after{
+      content: '*';
+      color: #e02b27;
+      font-size: 1.2rem;
+      margin: 0 0 0 5px;
+  }
+}
+.ant-checkbox-inner::after{
+  left:22% !important;
+}
 
 // .App {
 //   text-align: center;

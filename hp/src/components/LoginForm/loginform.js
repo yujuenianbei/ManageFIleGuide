@@ -13,6 +13,10 @@ class Form extends React.Component {
     submit = () => {
         this.props.form.validateFields((error, value) => {
             console.log(error, value);
+            // 登录成功跳转首页
+            if(!error){
+                this.props.props.history.push('/');
+            }
         });
         // 获取单个值
         // console.log(this.props.form.getFieldValue('password'))
@@ -80,3 +84,4 @@ class Form extends React.Component {
 }
 
 export default classify(styles)(createForm()(Form));
+
