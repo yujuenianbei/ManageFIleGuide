@@ -4,7 +4,6 @@ import styles from './crumbs.module.less';
 import { Link } from 'react-router-dom';
 class Crumbs extends Component {
     render() {
-        console.log(this.props.links.length)
         return (
             <div className={styles.crumbs}>
                 <ul>

@@ -68,7 +68,7 @@ class UserController extends PureComponent {
                                                 <div className={styles.title}>
                                                     <span className={styles.docTwo}>购物车小计:</span>
                                                 </div>
-                                                <button title="查看和编辑购物车" className={styles.prime + " " + styles.edit}>查看和编辑购物车</button>
+                                                <Link to={'/checkout/cart'} title="查看和编辑购物车" className={styles.prime + " " + styles.edit}>查看和编辑购物车</Link>
                                             </div>
                                             {this.props.state.cart.productInfo.map((item, index) => {
                                                 return <div className={styles.productInCrat} key={index + 'cartproductInfo1231231'}>
