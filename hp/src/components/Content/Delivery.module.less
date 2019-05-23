@@ -1,0 +1,161 @@
+@import "../../less/color.less";
+@import "../../less/font.less";
+@import "../../less/button.less";
+
+.delivery {
+    max-width: 1240px;
+    margin: 0 auto;
+
+    >h3 {
+        font-size: 2.6rem;
+        font-weight: 500;
+        text-align: left;
+        width: @f;
+    }
+
+    .deliveryContent {
+        width: @f;
+        position: relative;
+
+        .userInfo {
+            width: calc(~'60% - 10px');
+            margin-right: @10;
+            float: left;
+
+            .leftContent {
+                padding: @30 @25 @20;
+                border: @2 solid @bg1;
+                background-color: @bg1;
+                margin-bottom: @10;
+
+                >h2 {
+                    font-size: 2.2rem;
+                    font-weight: 500;
+                    text-align: left;
+                    margin-bottom: @15;
+                }
+
+                span {
+                    font-size: 1.6rem;
+                }
+
+                p {
+                    padding-left: 25px;
+                }
+
+                .paymethod {
+                    margin-left: @25;
+                    width: 400px;
+
+                    .paycheck {
+                        margin-bottom: @10;
+
+                        .paycheckChange {
+                            margin-right: @10;
+                        }
+
+                        input {
+                            margin-bottom: @10;
+                            font-size: 1.4rem;
+                        }
+                    }
+                }
+            }
+
+            .deliveryPwd {
+                max-width: 500px;
+                margin-top: 5px;
+                padding-bottom: 10px;
+                position: relative;
+
+                .deliveryAddressList {
+                    margin-bottom: 10px;
+                    min-height: 10px;
+                    overflow: hidden;
+
+                    .labels {
+                        font-size: 1.6rem;
+                        line-height: 40px;
+                        font-weight: 400;
+                    }
+
+                    .errorMessage {
+                        color: @red;
+                        width: 300px;
+                        float: right;
+                    }
+
+                    .createAccountCheck {
+                        width: 300px;
+                        float: right;
+                        border: 0;
+                    }
+
+                    .userInput {
+                        width: 300px;
+                        float: right;
+                        border: 1px solid @border;
+                        font-size: 1.4rem;
+                        font-weight: 400;
+                    }
+
+                    .userInput_error {
+                        width: 300px;
+                        float: right;
+                        font-size: 1.4rem;
+                        font-weight: 400;
+                        border: 1px solid @red;
+                    }
+                }
+            }
+
+            .submit {
+                text-align: center;
+
+                .submitBtn {
+                    padding: @5 @25;
+                    font-size: 1.8rem;
+                }
+            }
+        }
+
+        .productInfo {
+            float: right;
+            width: 40%;
+            position: absolute;
+            right: 0;
+            background-color: @bg1;
+            padding: @25;
+
+            h3 {
+                font-size: 2.6rem;
+                font-weight: 500;
+                text-align: left;
+                width: @f;
+            }
+
+            .productPrice {
+                table {
+                    width: 100%;
+                    text-align: right;
+
+                    th {
+                        &:first-child {
+                            width: 70%;
+                        }
+
+                        .pricename {
+                            font-size: 1.8rem;
+                        }
+                    }
+                }
+            }
+
+            .gobackCart {
+                position: absolute;
+                right: 0;
+                bottom: -50px;
+            }
+        }
+    }
+}

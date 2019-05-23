@@ -1,0 +1,28 @@
+@import "../../less/color.less";
+@import "../../less/font.less";
+@import "../../less/button.less";
+.deliveryProduct{
+    display: flex;
+    margin-bottom: @20;
+    .productImg{
+        width: 75px;
+        margin: 10px;
+        img{
+            width: @f;
+        }
+    }
+    .productInfo{
+        width: 50%;
+        .message{
+            color: @red;
+        }
+    }
+    .num{
+        width: 20%;
+        text-align: center;
+    }
+    .price{
+        width: calc(~' 30% - 75px');
+        text-align: center;
+    }
+}

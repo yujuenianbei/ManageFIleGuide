@@ -28,6 +28,26 @@
     }
 }
 
+.primed{
+    border: 1px solid @blue;
+    padding: @6 @12;
+    background-color: @white;
+    border-radius: @4;
+    color: @blue;
+    transition: all 0.25s linear;
+    &:hover{
+        color: @white;
+        background-color: @blue;
+    }
+}
+.primed:disabled{
+    opacity: .5;
+    &:hover{
+        background-color: @white;
+        color: @blue;
+    }
+}
+
 .albedo{
     border: 1px solid @white;
     padding: @6 @12;

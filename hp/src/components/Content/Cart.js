@@ -5,14 +5,18 @@ import { connect } from 'react-redux';
 import styles from './Cart.module.less';
 import Crumbs from '../Crumbs';
 import Message from '../Message';
+import ProductWatched from '../ProductWtched';
 import { Link } from 'react-router-dom';
 import { Icon, Collapse } from 'antd';
 import { createForm } from 'rc-form';
 
+import Product from '../../data/product';
 const Panel = Collapse.Panel;
 class CheckoutCart extends Component {
     state = {
-        totalCost: 0
+        totalCost: 0,
+        productMayLike: Product.productMayLike,
+        productWatched: Product.productWatched
     }
     countCost = (data) => {
         let cost = 0;
@@ -126,7 +130,7 @@ class CheckoutCart extends Component {
 
     classChange = (errors, name, yes, no) => {
         const { getFieldError } = this.props.form;
-        if (errors = getFieldError(name)){
+        if (errors = getFieldError(name)) {
             return yes
         } else {
             return no
@@ -230,10 +234,42 @@ class CheckoutCart extends Component {
                                         <div className={styles.infoTitle}>总金额</div>
                                         <div className={styles.infoPrice}>￥{this.state.totalCost}</div>
                                     </div>
-                                    <button className={styles.confirmDiscountsBtn + " " + styles.prime} onClick={this.confirmDiscountsCode}>进行结算</button>
+                                    <Link to={"/onestepcheckout"}>
+                                        <button className={styles.confirmDiscountsBtn + " " + styles.prime}>
+                                            进行结算
+                                        </button>
+                                    </Link>
                                 </div>
                             </Fragment>
                         }
+                    </div>
+                    <div className={styles.mayLike}>
+                        <h2>为你推荐:</h2>
+                        <div className={styles.likeContent}>
+                            {this.state.productMayLike.map((item, index) => {
+                                return <ProductWatched key={index + 'productMayLike'}
+                                    name={item.name}
+                                    img={item.img}
+                                    link={item.link}
+                                    message={item.message}
+                                    price={item.price}
+                                />
+                            })}
+                        </div>
+                    </div>
+                    <div className={styles.mayLike}>
+                        <h2>您最近浏览的产品:</h2>
+                        <div className={styles.likeContent}>
+                            {this.state.productWatched.map((item, index) => {
+                                return <ProductWatched key={index + 'productMayLike'}
+                                    name={item.name}
+                                    img={item.img}
+                                    link={item.link}
+                                    message={item.message}
+                                    price={item.price}
+                                />
+                            })}
+                        </div>
                     </div>
                 </div>
             </div>

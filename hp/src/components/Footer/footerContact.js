@@ -3,7 +3,8 @@ import React, { Component, Fragment } from 'react';
 import classify from '@magento/venia-concept/esm/classify';
 // import { Link, resourceUrl } from '@magento/venia-concept/esm/drivers';
 // const SearchBar = React.lazy(() => import('src/components/SearchBar'));
-import { Icon } from '@material-ui/core';
+// import { Icon } from '@material-ui/core';
+import { Icon } from 'antd';
 import styles from './footer.module.less';
 
 class FooterContract extends Component {
@@ -18,17 +19,17 @@ class FooterContract extends Component {
                         <ul>
                             <li>
                                 <a title="惠普电脑微博" target="_blank" href="https://www.weibo.com/hppsg" rel="noopener noreferrer">
-                                    <Icon>search</Icon>
+                                    <Icon className={styles.icon} type="weibo-square" />
                                 </a>
                             </li>
                             <li>
                                 <a title="惠普打印微博" target="_blank" href="https://www.weibo.com/hpprint" rel="noopener noreferrer">
-                                    <Icon>search</Icon>
+                                    <Icon className={styles.icon} type="weibo-square" />
                                 </a>
                             </li>
                             <li>
                                 <a title="惠普中国优酷" target="_blank" href="http://i.youku.com/hpsupportchina" rel="noopener noreferrer">
-                                    <Icon>search</Icon>
+                                    <Icon className={styles.icon} type="youtube" />
                                 </a>
                             </li>
                         </ul>

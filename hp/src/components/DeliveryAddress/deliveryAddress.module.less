@@ -1,0 +1,94 @@
+@import "../../less/color.less";
+@import "../../less/font.less";
+@import "../../less/button.less";
+
+.deliveryAddress{
+    max-width: 500px;
+    margin-top: 5px;
+    padding-bottom: 10px;
+    position: relative;
+    .deliveryAddressList{
+        margin-bottom: 10px;
+        min-height: 10px;
+        overflow: hidden;
+        .labels{
+            font-size: 1.6rem;
+            line-height: 40px;
+            font-weight: 400;
+        }
+        .errorMessage{
+            color: @red;
+            width: 300px;
+            float: right;
+        }
+        .userInput{
+            width: 300px;
+            float: right;
+            border: 1px solid @border;
+            font-size: 1.4rem;
+            font-weight: 400;
+        }
+        .userInput_error{
+            width: 300px;
+            float: right;
+            font-size: 1.4rem;
+            font-weight: 400;
+            border: 1px solid @red;
+        }
+        .phonePin{
+            width: 80px;
+            float: right;
+            font-size: 1.4rem;
+            font-weight: 400;
+            height: 40px;
+            background-color: @white;
+            border: 1px solid @border;
+            padding: 0 15px;
+            border-right: 0;
+        }
+        .userInputPhonePin_error{
+            width: 80px;
+            float: right;
+            font-size: 1.4rem;
+            font-weight: 400;
+            height: 40px;
+            border: 1px solid @red;
+            background-color: @white;
+            padding: 0 15px;
+            border-right: 0;
+        }
+        .citySelect{
+            width: 300px;
+            float: right;
+            border: 1px solid @border;
+            font-size: 1.4rem;
+            font-weight: 400;
+            height: 40px;
+            padding: 0 15px;
+        }
+        .citySelectError{
+            width: 300px;
+            float: right;
+            border: 1px solid @red;
+            font-size: 1.4rem;
+            font-weight: 400;
+            height: 40px;
+            padding: 0 15px; 
+        }
+        .phone{
+            width: 220px;
+            float: right;
+            border: 1px solid @border;
+            font-size: 1.4rem;
+            font-weight: 400;
+        }
+        .phone_error{
+            width: 220px;
+            float: right;
+            border: 1px solid @red;
+            font-size: 1.4rem;
+            font-weight: 400;
+        }
+    }
+
+}

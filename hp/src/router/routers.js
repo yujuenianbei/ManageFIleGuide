@@ -8,6 +8,7 @@ import RegUser from '../components/Content/RegUser';
 import List from '../components/Content/List';
 import Product from '../components/Content/Product';
 import CheckoutCart from '../components/Content/Cart';
+import Delivery from '../components/Content/Delivery';
 class Routers extends Component {
     render() {
         return (
@@ -18,6 +19,7 @@ class Routers extends Component {
                 <Route path="/productList" component={List} />
                 <Route path="/productInfo/:id" component={Product} />
                 <Route path="/checkout/cart" component={CheckoutCart} />
+                <Route path="/onestepcheckout" component={Delivery} />
             </Fragment>
         );
     }

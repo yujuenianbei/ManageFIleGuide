@@ -3,7 +3,7 @@
 @import "./less/button.less";
 
 * {
-  box-sizing: border-box;
+    box-sizing: border-box;
 }
 
 // :root {
@@ -31,25 +31,25 @@
 // }
 
 html {
-  background-color: white;
-  font-size: 10px;
-  font-weight: 400;
-  line-height: 1;
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-font-smoothing: antialiased;
+    background-color: white;
+    font-size: 10px;
+    font-weight: 400;
+    line-height: 1;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
 }
 
 body {
-  background-color: white;
-  margin: 0;
-  padding: 0;
+    background-color: white;
+    margin: 0;
+    padding: 0;
 }
 
 body,
 input,
 select,
 textarea {
-  font-family: 'HP Simplified Regular','Helvetica Neue',Helvetica,Arial,sans-serif;
+    font-family: 'HP Simplified Regular', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
 h1,
@@ -58,76 +58,85 @@ h3,
 h4,
 h5,
 h6 {
-  font-size: 1rem;
-  font-weight: 400;
-  margin: 0;
+    font-size: 1rem;
+    font-weight: 400;
+    margin: 0;
 }
 
 h1 {
-  font-size: 1.5rem;
+    font-size: 1.5rem;
 }
 
 h2 {
-  font-size: 1.25rem;
+    font-size: 1.25rem;
 }
 
 a {
-  color: currentColor;
-  text-decoration: none;
+    color: currentColor;
+    text-decoration: none;
 }
 
 p {
-  margin: 0 !important;
+    margin: 0 !important;
 }
 
 dl,
 ol,
 ul {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-  margin-top: 0 !important;
-  margin-bottom: 0 !important;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
 }
 
 dd,
 dt {
-  margin: 0;
+    margin: 0;
 }
 
 button {
-  background: none;
-  border: 0;
-  cursor: pointer;
-  font-family: 'HP Simplified Regular','Helvetica Neue',Helvetica,Arial,sans-serif;
-  font-size: 100%;
-  padding: 0;
-  touch-action: manipulation;
-  user-select: none;
-  -webkit-appearance: none;
+    background: none;
+    border: 0;
+    cursor: pointer;
+    font-family: 'HP Simplified Regular', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size: 100%;
+    padding: 0;
+    touch-action: manipulation;
+    user-select: none;
+    -webkit-appearance: none;
 }
 
 button:disabled {
-  cursor: default;
-  touch-action: none;
+    cursor: default;
+    touch-action: none;
 }
-:focus{
-  outline-offset: 0px;
-  outline: -webkit-focus-ring-color auto 0px;
+
+:focus {
+    outline-offset: 0px;
+    outline: -webkit-focus-ring-color auto 0px;
 }
-label[required]{
-  &:after{
-      content: '*';
-      color: #e02b27;
-      font-size: 1.2rem;
-      margin: 0 0 0 5px;
-  }
+
+label[required] {
+    &:after {
+        content: '*';
+        color: #e02b27;
+        font-size: 1.2rem;
+        margin: 0 0 0 5px;
+    }
 }
-.ant-checkbox-inner::after{
-  left:22% !important;
+
+select {
+    background: #fff url(https://media.hpstore.cn/static/version1557351442/frontend/HPOLS/default/zh_Hans_CN/images/select-bg.svg) no-repeat 100% 45%;
+    appearance: none;
 }
-.ant-collapse-borderless{
-  background-color: @bg1 !important;
+
+.ant-checkbox-inner::after {
+    left: 22% !important;
+}
+
+.ant-collapse-borderless {
+    background-color: @bg1  !important;
 }
 
 // .App {
