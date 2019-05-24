@@ -14,6 +14,7 @@ import Product from '../../data/product';
 const Panel = Collapse.Panel;
 class CheckoutCart extends Component {
     state = {
+        rightTop: 0,
         totalCost: 0,
         productMayLike: Product.productMayLike,
         productWatched: Product.productWatched
@@ -29,6 +30,23 @@ class CheckoutCart extends Component {
     }
     componentWillMount() {
         this.countCost(this.props.state.cart.productInfo);
+    }
+    componentDidMount() {
+        window.addEventListener('scroll', this.rightScrollListener);
+    }
+    componentWillUnmount() {
+        window.removeEventListener('scroll', this.rightScrollListener);
+    }
+    rightScrollListener = (e) => {
+        if (document.documentElement.scrollTop >= 94) {
+            if (document.documentElement.scrollTop - 94 + 17 + this.product.clientHeight >= this.form.clientHeight) {
+
+            } else {
+                this.setState({ rightTop: document.documentElement.scrollTop - 94 })
+            }
+        } else {
+            this.setState({ rightTop: 0 })
+        }
     }
     // 增加数量
     addNum = (id, input) => {
@@ -151,7 +169,7 @@ class CheckoutCart extends Component {
                     <div className={styles.cartContent}>
                         {this.props.state.cart.productInfo.length > 0 &&
                             <Fragment>
-                                <div className={styles.form}>
+                                <div className={styles.form} ref={ref => { this.form = ref }}>
                                     <Message type="warn">立即结账并获得该订单的4649积分。 这仅适用于注册用户，并且在用户登录时可能会有所不同。</Message>
                                     {/* <Message type="success">6666</Message>
                                     <Message type="alert">6666</Message> */}
@@ -223,7 +241,7 @@ class CheckoutCart extends Component {
                                         </Collapse>
                                     </div>
                                 </div>
-                                <div className={styles.cartInfo}>
+                                <div className={styles.cartInfo} ref={ref => { this.product = ref }} style={{ top: this.state.rightTop }}>
                                     <p>总金额</p>
                                     <div className={styles.minPrice}>
                                         <div className={styles.infoTitle}>小计</div>

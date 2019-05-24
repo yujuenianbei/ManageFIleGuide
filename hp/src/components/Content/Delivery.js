@@ -23,6 +23,27 @@ class Delivery extends Component {
         rulesChecked: false,
         smsChecked: true,
         totalCost: 0,
+        rightTop: 0
+    }
+    componentDidMount() {
+        window.addEventListener('scroll', this.rightScrollListener);
+    }
+    componentWillUnmount() {
+        window.removeEventListener('scroll', this.rightScrollListener);
+    }
+    rightScrollListener = (e) => {
+        const data = this.product.clientHeight + this.state.rightTop
+        console.log(document.documentElement.scrollTop - 94 + this.product.clientHeight)
+        if (document.documentElement.scrollTop >= 94) {
+            console.log(document.documentElement.scrollTop - 94 + this.product.clientHeight, this.form.clientHeight, )
+            if (document.documentElement.scrollTop - 94 + 145 + this.product.clientHeight >= this.form.clientHeight) {
+
+            } else {
+                this.setState({ rightTop: document.documentElement.scrollTop - 94 })
+            }
+        } else {
+            this.setState({ rightTop: 0 })
+        }
     }
     countCost = (data) => {
         let cost = 0;
@@ -112,7 +133,7 @@ class Delivery extends Component {
                 }]} />
                 <h3>结账</h3>
                 <div className={styles.deliveryContent}>
-                    <div className={styles.userInfo}>
+                    <div className={styles.userInfo} ref={ref => { this.form = ref }}>
                         <div className={styles.leftContent + " " + styles.deliveryAddress}>
                             <h2>收货地址</h2>
                             <DeliveryAddress form={this.props.form} />
@@ -215,25 +236,27 @@ class Delivery extends Component {
                             <button disabled={this.state.rulesChecked ? false : 'disabled'} className={styles.submitBtn + " " + styles.prime} onClick={this.check}>提交订单</button>
                         </div>
                     </div>
-                    <div className={styles.productInfo}>
+                    <div className={styles.productInfo} ref={ref => { this.product = ref }} style={{ top: this.state.rightTop }}>
                         <h3>商品清单</h3>
                         {this.props.state.cart.productInfo.map((item, index) => {
                             return <DeliveryProduct items={item} />
                         })}
                         <div className={styles.productPrice}>
                             <table>
-                                <tr>
-                                    <th>折扣</th>
-                                    <th>-￥250</th>
-                                </tr>
-                                <tr>
-                                    <th></th>
-                                    <th>京东配送</th>
-                                </tr>
-                                <tr>
-                                    <th><span className={styles.pricename}>总金额</span></th>
-                                    <th><span className={styles.pricename}>￥{this.state.totalCost}</span></th>
-                                </tr>
+                                <tbody>
+                                    <tr>
+                                        <th>折扣</th>
+                                        <th>-￥250</th>
+                                    </tr>
+                                    <tr>
+                                        <th></th>
+                                        <th>京东配送</th>
+                                    </tr>
+                                    <tr>
+                                        <th><span className={styles.pricename}>总金额</span></th>
+                                        <th><span className={styles.pricename}>￥{this.state.totalCost}</span></th>
+                                    </tr>
+                                </tbody>
                             </table>
                         </div>
                         <div className={styles.gobackCart}>
