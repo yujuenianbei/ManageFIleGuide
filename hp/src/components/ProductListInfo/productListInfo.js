@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import * as Actions from '../../actions/index';
 import { connect } from 'react-redux';
@@ -22,7 +22,7 @@ class ProductInfo extends Component {
             const num = productInfo.findIndex((v, index) => {
                 return product.id === v.id
             })
-            if(num === -1){
+            if (num === -1) {
                 productInfo.push(product);
                 this.props.addProductInCart(productInfo);
             } else {
@@ -57,12 +57,14 @@ class ProductInfo extends Component {
                     <div className={styles.promotion_message_secondly}>{this.props.promotionMessageSecond}</div>
                 </div>
                 <div className={styles.price}>
-                    <span className={styles.used_price}>￥ {this.props.usedPrice}</span><br />
+                    <span className={styles.used_price}>{this.props.usedPrice && '￥ ' + this.props.usedPrice}</span><br />
                     <span className={styles.now_price}>￥ {this.props.nowPrice}</span>
                 </div>
                 <div className={styles.discount}>
-                    <span className={styles.price_label_title}>节省了: </span>
-                    <span className={styles.dec_price}>￥ {this.props.usedPrice - this.props.nowPrice} ({Math.floor((this.props.usedPrice - this.props.nowPrice) / this.props.usedPrice * 100)}%)</span>
+                    <span className={styles.price_label_title}>{this.props.usedPrice && "节省了:"}</span>
+                    <span className={styles.dec_price}>{this.props.usedPrice &&
+                        <span>￥ {this.props.usedPrice - this.props.nowPrice} ({(Math.floor((this.props.usedPrice - this.props.nowPrice) / this.props.usedPrice * 100))}%)</span>
+                    }</span>
                 </div>
                 <div className={styles.addToCart}>
                     <button className={styles.addToCartButton + " " + styles.prime} onClick={this.addToCart}>添加到购物车</button>

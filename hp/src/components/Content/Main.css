@@ -53,6 +53,7 @@
 }
 .slick-thumb {
   bottom: 0px;
+  display: flex !important;
 }
 .slick-thumb li {
   width: 25%;

@@ -14,12 +14,17 @@ var {
 const userSchema = require('./user');
 const courseSchema = require('./course');
 
+const account = require('./account');
+const homeSchema = require('./home');
+
 const Query=new GraphQLObjectType({
     name:'UserQuery',
     description:'用户信息查询',
     fields:()=>(Object.assign({},
+        account.query,
         userSchema.query,
-        courseSchema.query
+        courseSchema.query,
+        homeSchema.query
     )),
 });
 const Mutation=new GraphQLObjectType({

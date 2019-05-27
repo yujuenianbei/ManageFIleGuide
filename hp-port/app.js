@@ -44,20 +44,11 @@ app.use('/users', usersRouter);
 //graphql
 var graphqlHTTP = require('express-graphql');
 var userSchema = require('./graphql/user/schema');
-// var blogSchema =require ('./graphql/article/schema');
-
-
-// var userSchema =require ('./graphql/user/userSchame');
 
 app.use('/graphql', graphqlHTTP({
   schema: userSchema,
   graphiql: true, //启用GraphiQL
 }));
-
-// app.use('/article', graphqlHTTP({
-//     schema: blogSchema,
-//     graphiql: true, //启用GraphiQL
-// }));
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

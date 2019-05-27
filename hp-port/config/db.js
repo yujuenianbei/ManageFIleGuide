@@ -4,7 +4,7 @@ const mysqlConfig = {
     port: '3306',
     user: 'root',
     password: '123456',
-    dbName: 'graphqlTest',
-    timezone:"08:00"
+    dbName: 'hpGraphql',
+    // timezone:"08:00"
 }
 module.exports = mysqlConfig

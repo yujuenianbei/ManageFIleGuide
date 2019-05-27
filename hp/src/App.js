@@ -19,7 +19,7 @@ import zhCN from 'antd/lib/locale-provider/zh_CN';
 import ScrollToTop from './components/ScrollToTop';
 
 const client = new ApolloClient({
-  uri: "https://48p1r2roz4.sse.codesandbox.io"
+  uri: "http://localhost:3004/graphql"
 });
 const App = () => {
   // 判断浏览器的在线状态

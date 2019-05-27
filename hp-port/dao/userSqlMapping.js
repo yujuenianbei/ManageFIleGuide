@@ -5,6 +5,8 @@ var user = {
     update:'update user set name=?, age=? where id=?',
     delete: 'delete from user where id=?',
     queryById: 'select * from user where id=?',
+    queryByUsername: 'select * from user where name=? ',
+    queryByEmail: 'select * from user where email=? ',
     // queryAll: 'select * from user',
     queryAll:"SELECT * FROM `user`",
     addUser:'INSERT INTO user( name, sex, intro) VALUES(?,?,?)',

@@ -1,5 +1,7 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import classify from '@magento/venia-concept/esm/classify';
+import { Query, Mutation } from "react-apollo";
+import { gql } from "apollo-boost";
 import Slider from "react-slick";
 import ProductListMain from '../ProductListMain/index'
 import ProductListBanner from '../ProductListBanner/index'
@@ -7,77 +9,96 @@ import styles from './Main.module.less';
 import { Link } from 'react-router-dom';
 import { Icon } from '@material-ui/core';
 import './Main.css';
-class Main extends Component {
+
+const GET_BANNER = gql`
+query banner{
+    banners{
+        title
+        img
+        link
+        __typename
+    }
+}
+`;
+
+const GET_PROMISEING = gql`
+query promiseing{
+    promiseing{
+        title
+        img
+        link
+        __typename
+    }
+}
+`;
+
+const GET_PRODUCTLIST = gql`
+query productList{
+    productList{
+        id
+        title
+        img
+        link
+    }
+}
+`;
+
+
+class Main extends PureComponent {
+    state = {
+
+    }
     render() {
-        var dots = [
-            {
-                title: "PAVILION星系列"
-            },
-            {
-                title: "星14微边框轻薄本"
-            },
-            {
-                title: "战66二代"
-            },
-            {
-                title: "暗影精灵4代游戏本"
-            },
-        ]
-        var settings = {
-            customPaging: function (i) {
-                return (
-                    <Link to={`/productList/` + 2313213}>
-                        {dots[i].title}
-                    </Link>
-                );
-            },
-            dots: true,
-            dotsClass: "slick-dots slick-thumb",
-            infinite: true,
-            speed: 500,
-            slidesToShow: 1,
-            slidesToScroll: 1,
-            autoplay: true,
-            autoplaySpeed: 5000
-        };
         return (
             <div className="container">
-                <Slider {...settings}>
-                    <div>
-                        <img src="https://media.hpstore.cn/wysiwyg/CN_OLS/banner/public/pavilon_0219_pc_nx.jpg" alt="" />
-                    </div>
-                    <div>
-                        <img src="https://media.hpstore.cn/wysiwyg/CN_OLS/banner/public/XINGPC-20190508.jpg" alt="" />
-                    </div>
-                    <div>
-                        <img src="https://media.hpstore.cn/wysiwyg/CN_OLS/banner/public/BannerZHAN66-20190426PC.jpg" alt="" />
-                    </div>
-                    <div>
-                        <img src="https://media.hpstore.cn/wysiwyg/CN_OLS/banner/public/20190403_nx.jpg" alt="" />
-                    </div>
-                </Slider>
+                <Query query={GET_BANNER}>
+                    {({ loading, error, data, refetch }) => {
+                        if (loading) return "Loading...";
+                        if (error) return `Error! ${error.message}`;
+                        return <Slider {...{
+                            customPaging: function (i) {
+                                if (data.banners.length > 0) {
+                                    return (
+                                        <Link to={data.banners[i].link}>
+                                            {data.banners[i].title}
+                                        </Link>
+                                    );
+                                }
+                            },
+                            dots: true,
+                            dotsClass: "slick-dots slick-thumb",
+                            infinite: true,
+                            speed: 500,
+                            slidesToShow: 1,
+                            slidesToScroll: 1,
+                            autoplay: true,
+                            autoplaySpeed: 5000
+                        }}>
+                            {data.banners.map((item, index) => (
+                                <Link to={item.link} key={index + 'mainBanner_weqsdqwe'}>
+                                    <div>
+                                        <img src={item.img} alt={item.title} />
+                                    </div>
+                                </Link>
+                            ))}
+                        </Slider>
+                    }}
+                </Query>
                 <div className={styles.commonadds}>
                     <ul className={styles.topStaticAdds}>
-                        <li>
-                            <Link to={`/productList/` + 2313213}>
-                                <img src="https://adbutler-fermion.com/getad.img/;libID=653547" alt="" />
-                            </Link>
-                        </li>
-                        <li>
-                            <Link to={`/productList/` + 2313213}>
-                                <img src="https://adbutler-fermion.com/getad.img/;libID=653547" alt="" />
-                            </Link>
-                        </li>
-                        <li>
-                            <Link to={`/productList/` + 2313213}>
-                                <img src="https://adbutler-fermion.com/getad.img/;libID=653547" alt="" />
-                            </Link>
-                        </li>
-                        <li>
-                            <Link to={`/productList/` + 2313213}>
-                                <img src="https://adbutler-fermion.com/getad.img/;libID=653547" alt="" />
-                            </Link>
-                        </li>
+                        <Query query={GET_PROMISEING}>
+                            {({ loading, error, data, refetch }) => {
+                                if (loading) return "Loading...";
+                                if (error) return `Error! ${error.message}`;
+                                return data.promiseing.map((item, index) => (
+                                    <li key={index + "promiseing_123sdasd"}>
+                                        <Link to={item.link}>
+                                            <img src={item.img} alt={item.title} />
+                                        </Link>
+                                    </li>
+                                ))
+                            }}
+                        </Query>
                     </ul>
                 </div>
                 <div className={styles.promiseing}>
@@ -102,16 +123,21 @@ class Main extends Component {
                 <div className={styles.productContent}>
                     <div className={styles.productList}>
                         <h2>特色产品</h2>
-                        <ProductListMain />
-                        <ProductListMain />
-                        <ProductListMain />
-                        <ProductListMain />
+                        <Query query={GET_PRODUCTLIST}>
+                            {({ loading, error, data, refetch }) => {
+                                if (loading) return "Loading...";
+                                if (error) return `Error! ${error.message}`;
+                                return data.productList.map((item, index) => (
+                                    <ProductListMain category={item}/>
+                                ))
+                            }}
+                        </Query>
                     </div>
                 </div>
                 <div className={styles.product}>
                     <ProductListBanner />
                 </div>
-            </div>
+            </div >
         );
     }
 }
