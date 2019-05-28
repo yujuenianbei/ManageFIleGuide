@@ -31,7 +31,8 @@ const Mutation=new GraphQLObjectType({
     name:'UserMutation',
     description:'用户信息维护',
     fields:()=>(Object.assign({},
-        userSchema.mutation
+        userSchema.mutation,
+        account.mutation,
     )),
 });
 const schema = new GraphQLSchema({

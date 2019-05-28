@@ -7,6 +7,7 @@ var user = {
     queryById: 'select * from user where id=?',
     queryByUsername: 'select * from user where name=? ',
     queryByEmail: 'select * from user where email=? ',
+    insertUser:'INSERT INTO user(name, email, phonecode, phone, password, createTime, updateTime) VALUES(?,?,?,?,?,NOW(), NOW())',
     // queryAll: 'select * from user',
     queryAll:"SELECT * FROM `user`",
     addUser:'INSERT INTO user( name, sex, intro) VALUES(?,?,?)',

@@ -9,17 +9,41 @@ class Form extends React.Component {
         rulesChecked: false,
         smsChecked: true
     }
-    componentWillMount() {
-        // this.NameDecorator = this.props.form.getFieldDecorator('username', {
-        //     rules: [{ required: true, message: '请输入用户名' }],
-        // });
-    }
 
     submit = () => {
         this.props.form.validateFields((error, value) => {
             console.log(error, value);
             if(!error){
-                this.props.props.history.push('/');
+                var query = `mutation reg($email: String,$name: String, $phonecode: Int! $password: String){
+                    reg(email: $email,name: $name, password: $password){
+                      state
+                    } 
+                  }`;
+                fetch('http://localhost:3004/graphql', {
+                    method: 'POST',
+                    mode: "cors",
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        query,
+                        variables: {
+                            email: value.email,
+                            phonecode: value.phonecode,
+                            phone:  value.phone,
+                            password: value.password,
+                        }
+                    })
+                })
+                    .then(r => r.json())
+                    .then(result => {
+                        if(result.data.login && result.data.login[0].state === "1"){
+                            this.props.props.history.push('/');
+                        } else {
+                            this.openNotification()
+                        }
+                    });
             }
         });
         // 获取单个值
@@ -31,13 +55,13 @@ class Form extends React.Component {
     }
     validateUserNameTimely = (rule, value, callback) => {
         // console.log(value)
-        var regu = /^[1][3][0-9]{9}$/;
-        var re = new RegExp(regu);
-        if (re.test(value)) {
+        // var regu = /^[1][3][0-9]{9}$/;
+        // var re = new RegExp(regu);
+        // if (re.test(value)) {
             callback()
-        } else {
-            callback('false')
-        }
+        // } else {
+        //     callback('false')
+        // }
     }
     confirmPassword = (rule, value, callback) => {
         // console.log(this.props.form.getFieldValue('password'))
@@ -76,7 +100,7 @@ class Form extends React.Component {
                     <div className={styles.regform}>
                         <label required>电子邮件</label>
                         <div className={styles.inputs}>
-                            {getFieldDecorator('username', {
+                            {getFieldDecorator('email', {
                                 initialValue: '',
                                 validateFirst: true,
                                 validate: [{
@@ -87,8 +111,8 @@ class Form extends React.Component {
                                     }],
                                 }],
                                 // rules: [{ required: true, message: '请输入用户名' }],
-                            })(<input type="text" onChange={this.userNameChange} placeholder="请输入电子邮箱" className={(errors = getFieldError('username')) ? styles.input_error : styles.input_normal} />)}
-                            {(errors = getFieldError('username')) ? <div className={styles.error}>{errors.join(',')}</div> : null}
+                            })(<input type="text" onChange={this.userNameChange} placeholder="请输入电子邮箱" className={(errors = getFieldError('email')) ? styles.input_error : styles.input_normal} />)}
+                            {(errors = getFieldError('email')) ? <div className={styles.error}>{errors.join(',')}</div> : null}
                         </div>
                     </div>
                     <div className={styles.regform}>
