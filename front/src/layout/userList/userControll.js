@@ -37,7 +37,7 @@ class UserControll extends Component {
   }
   // 导出
   exportCsv = () => {
-    this.props.onExportCsv('userlist');
+    this.props.onExportCsv('userList');
   }
   render() {
     const { addVisible } = this.state;
