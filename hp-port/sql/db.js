@@ -7,7 +7,7 @@ const Conn = new Sequelize({
     database: 'hpGraphql',
     username: "root",
     password: "123456",
-    host: "172.17.0.3",
+    host: "172.17.0.10",
     dialect: 'mysql', // 'mysql'|'sqlite'|'postgres'|'mssql'
     // 'port': 3306,       // 数据库服务器端口
     // define: {

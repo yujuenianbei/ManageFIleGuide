@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import './App.less';
 // import VeniaAdapter from '@magento/venia-concept/esm/drivers/adapter';
-import store from './store/store';
+import { persistor, store } from './store/store';
 import * as Actions from './actions';
 import ApolloClient from "apollo-boost";
 import './less/font.less'
@@ -17,6 +17,8 @@ import { HashRouter as Router } from 'react-router-dom';
 import { LocaleProvider } from 'antd';
 import zhCN from 'antd/lib/locale-provider/zh_CN';
 import ScrollToTop from './components/ScrollToTop';
+// 状态数据持久化
+import { PersistGate } from 'redux-persist/integration/react'
 
 const client = new ApolloClient({
   uri: "http://localhost:3004/graphql"
@@ -65,6 +67,7 @@ const App = () => {
 
     <ApolloProvider client={client}>
       <ReduxProvider store={store}>
+      <PersistGate persistor={persistor}>
         <Router>
           <ScrollToTop>
           <LocaleProvider locale={zhCN}>
@@ -78,6 +81,7 @@ const App = () => {
           </LocaleProvider>
           </ScrollToTop>
         </Router>
+        </PersistGate>
       </ReduxProvider>
     </ApolloProvider>
 

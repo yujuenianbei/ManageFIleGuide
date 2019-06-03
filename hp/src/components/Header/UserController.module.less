@@ -67,6 +67,13 @@
                     top: -12px;
                 }
 
+                .close {
+                    position: absolute;
+                    right: 12px;
+                    top: 12px;
+                    font-size: 1.6rem;
+                }
+
                 .items {
                     .noneCart {
                         text-align: center;
@@ -145,6 +152,93 @@
                             }
                         }
 
+                    }
+                }
+            }
+
+            .userAccount {
+                display: block;
+                position: absolute;
+                background-color: @white;
+                border: @1 solid @border;
+                right: 0;
+                width: 300px;
+                padding: 20px 20px;
+
+                &:before {
+                    border: 7px solid;
+                    border-color: transparent transparent #828282;
+                    z-index: 1000;
+                    content: '';
+                    display: block;
+                    height: 0;
+                    position: absolute;
+                    width: 0;
+                    transform: translateX(-50%);
+                    right: 0px;
+                    top: -14px;
+                }
+
+                &:after {
+                    border: 6px solid;
+                    border-color: transparent transparent @white;
+                    z-index: 1000;
+                    content: '';
+                    display: block;
+                    height: 0;
+                    position: absolute;
+                    width: 0;
+                    transform: translateX(-50%);
+                    right: 2px;
+                    top: -12px;
+                }
+
+                .login {
+                    width: @f;
+                    font-size: @16;
+                    margin-bottom: @10;
+                    padding: 0;
+                    transition: background-color 0.25s linear, color 0.25s linear;
+                }
+
+                a {
+                    &:last-child {
+                        .login {
+                            margin-bottom: 0;
+                        }
+                    }
+                }
+            }
+
+            .userAccountNoLogin {}
+
+            .userAccountLogin {
+                h5 {
+                    font-size: 1.5rem;
+                    line-height: 1.5rem;
+                }
+
+                .username {
+                    font-weight: 600;
+                }
+
+                .userControllerList {
+                    border-top: @1 solid @border;
+                    margin-bottom: @20;
+
+                    ul {
+                        width: @f;
+                        display: flex;
+                        flex-wrap: wrap;
+
+                        li {
+                            float: left;
+                            width: 40%;
+                            border-bottom: 1px solid #c1c1c1;
+                            margin: 0 10% 0 0;
+                            line-height: 38px;
+                            font-size: 1.6rem;
+                        }
                     }
                 }
             }

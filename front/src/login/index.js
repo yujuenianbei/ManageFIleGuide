@@ -14,10 +14,29 @@ class LoginMain extends Component {
     }
   }
   componentDidMount() {
-    window.addEventListener('resize', this.onWindowResize)
+    window.addEventListener('resize', this.onWindowResize);
+    if(!localStorage.getItem('token')){
+      this.bgImg();
+    }
   }
   componentWillUnmount() {
     window.removeEventListener('resize', this.onWindowResize)
+  }
+  bgImg = () => {
+    console.log(this.refs)
+    let time = 0;
+    this.refs.cover.style.background = 'url(./csgo' + time + '.jpg)'
+    this.refs.cover.style.backgrounSize = 'cover';
+    this.refs.cover.style.backgroundPosition = 'center';
+    setInterval(() => {
+      time++;
+      if (time > 5) {
+        time = 0
+      }
+      this.refs.cover.style.background = 'url(./csgo' + time + '.jpg)'
+      this.refs.cover.style.backgrounSize = 'cover';
+      this.refs.cover.style.backgroundPosition = 'center';
+    }, 60000)
   }
   onWindowResize = () => {
     this.setState({windowH: document.body.clientHeight, windowW: document.body.clientWidth})

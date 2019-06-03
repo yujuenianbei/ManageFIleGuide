@@ -1,14 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './main.less';
-import {Provider} from 'react-redux';
+import { Provider } from 'react-redux';
 // import Main from './main';
 import registerServiceWorker from './registerServiceWorker';
 
-import configureStore from './store'
+import { persistor, store } from './store'
 import PlayerIndex from './play/playerIndex';
 
 import LoginMain from './login/index'
+// 状态数据持久化
+import { PersistGate } from 'redux-persist/integration/react'
+
 
 // // 设置cookie
 // const setCookie = (c_name, value, expiredays) => {
@@ -34,50 +37,16 @@ import LoginMain from './login/index'
 // }
 // const locale = getCookie('locale');
 
-const store = configureStore;
 
-// class SiderDemo extends React.Component {
-//   render() {
-//     return (
-//       <Provider store={store} >
-//         <div>
-//           <Main />
-//           <PlayerIndex />
-//         </div>
-//       </Provider>
-//     );
-//   }
-// }
-// ReactDOM.render(<SiderDemo />, document.getElementById('root'));
-
-
+// const store = configureStore;
 class LoginDemo extends React.Component {
-  componentDidMount() {
-    this.bgImg();
-  }
-  bgImg = () => {
-    console.log(this.refs)
-    let time = 0;
-    this.refs.cover.style.background= 'url(./csgo' + time + '.jpg)'
-    this.refs.cover.style.backgrounSize='cover';
-    this.refs.cover.style.backgroundPosition='center';
-    setInterval(() => {
-      time++;
-      if (time > 5) {
-        time = 0
-      }
-      this.refs.cover.style.background= 'url(./csgo' + time + '.jpg)'
-      this.refs.cover.style.backgrounSize='cover';
-      this.refs.cover.style.backgroundPosition='center';
-    }, 60000)
-  }
   render() {
     let img = 'url(./csgo0.jpg)'
     return (
       <Provider store={store} >
-        <div className='loginCover' ref="cover" >
-          <LoginMain />
-        </div>
+        <PersistGate persistor={persistor}>
+            <LoginMain />
+        </PersistGate>
       </Provider>
     );
   }

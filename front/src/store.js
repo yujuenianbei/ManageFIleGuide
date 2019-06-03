@@ -1,5 +1,9 @@
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
+// store装填数据持久化
+import { persistStore, persistReducer } from 'redux-persist';
+import storage from 'redux-persist/lib/storage'
+
 import {leftsReducer as leftReducer} from './left/redux/index';
 import {rightsReducer as rightReducer} from './right/redux/index';
 import {headersReducer as headerReducer} from './header/redux/index';
@@ -21,6 +25,18 @@ const reducer = combineReducers({
   musicList: musicSongListReducer,
   imgList: imgListReducer
 })
-const store = createStore(reducer, applyMiddleware(thunk));
+// 状态未持久化
+// const store = createStore(reducer, applyMiddleware(thunk));
+// export default store;
 
-export default store;
+// 状态持久化 添加到localstorage
+const persistConfig = {
+  key: 'root',
+  storage,
+}
+const persistedReducer = persistReducer(persistConfig, reducer)
+
+let store = createStore(persistedReducer, applyMiddleware(thunk))
+let persistor = persistStore(store)
+export { store, persistor }
+

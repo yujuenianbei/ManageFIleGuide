@@ -1,3 +1,4 @@
 import mainsReducer from './main.js';
 import cartsReducer from './cart.js';
-export { mainsReducer, cartsReducer }
+import usersReducer from './user.js';
+export { mainsReducer, cartsReducer, usersReducer }

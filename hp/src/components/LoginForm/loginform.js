@@ -1,5 +1,7 @@
 import React, { PureComponent, Fragment } from 'react';
 import classify from '@magento/venia-concept/esm/classify';
+import * as Actions from '../../actions/index';
+import { connect } from 'react-redux';
 import styles from './loginform.module.less';
 import { createForm } from 'rc-form';
 import { Query, Mutation } from "react-apollo";
@@ -9,15 +11,26 @@ import { notification } from 'antd';
 const POST_VERIFYUSER = gql`
 mutation login($email: String,$name: String, $password: String){
   login(email: $email,name: $name, password: $password){
+    name,
     state
   } 
 }`
 
-
-
 class Form extends PureComponent {
     state = {
         error: false
+    }
+    componentDidMount() {
+        window.addEventListener('keydown', this.keypress);
+    }
+    componentWillUnmount() {
+        window.removeEventListener('keydown', this.keypress);
+    }
+    keypress = (e) => {
+        e.stopPropagation();
+        if (e.which === 13) {
+            this.submit();
+        }
     }
 
     submit = (addTodo) => {
@@ -27,6 +40,7 @@ class Form extends PureComponent {
                 // addTodo({ variables: { name: value.username, password: value.password } });
                 var query = `mutation login($email: String,$name: String, $password: String){
                     login(email: $email,name: $name, password: $password){
+                      name,
                       state
                     } 
                   }`;
@@ -47,7 +61,9 @@ class Form extends PureComponent {
                 })
                     .then(r => r.json())
                     .then(result => {
-                        if(result.data.login && result.data.login[0].state === "1"){
+                        if (result.data.login && result.data.login[0].state === "1") {
+                            this.props.changeLoginstate(1);
+                            this.props.changeUsername(result.data.login[0].name)
                             this.props.props.history.push('/');
                         } else {
                             this.openNotification()
@@ -138,5 +154,19 @@ class Form extends PureComponent {
     }
 }
 
-export default classify(styles)(createForm()(Form));
+const mapStateToProps = (state) => {
+    return {
+        state
+    };
+};
+const mapDispatchToProps = (dispatch) => {
+    return {
+        changeLoginstate: (data) => { dispatch(Actions.loginstate(data)); },
+        changeUsername: (data) => { dispatch(Actions.usernanme(data)); },
+    }
+};
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(classify(styles)(createForm()(Form)));
 

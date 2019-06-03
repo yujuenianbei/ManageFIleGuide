@@ -24,8 +24,8 @@ class Left extends Component {
   }
   componentWillMount() {
     this.props.onGetData();
-    this.props.onLink(window.location.hash.split('#')[1]);
-    console.log(window.location.hash.split('#')[1])
+    // this.props.onLink(window.location.hash.split('#')[1]);
+    // console.log(window.location.hash.split('#')[1])
   }
   componentDidMount() {
     this.setState({ link: this.props.addSong.left.link });
