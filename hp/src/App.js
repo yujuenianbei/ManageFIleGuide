@@ -20,10 +20,32 @@ import ScrollToTop from './components/ScrollToTop';
 // 状态数据持久化
 import { PersistGate } from 'redux-persist/integration/react'
 
+// const client = new ApolloClient({
+//   uri: "http://localhost:3004/graphql"
+// });
+
 const client = new ApolloClient({
-  uri: "http://localhost:3004/graphql"
+  uri: "http://localhost:3004/graphql",
+  fetchOptions: {
+    credentials: 'include'
+  },
+  request: async (operation) => {
+    const token = await localStorage.getItem('token');
+    const loginState = await localStorage.getItem('loginState');
+    operation.setContext({
+      headers: {
+        authorization: token,
+        login: loginState
+      }
+    });
+  },
 });
+
 const App = () => {
+  // 
+  if(!localStorage.getItem('loginState')){
+    localStorage.setItem("loginState", 0);
+  }
   // 判断浏览器的在线状态
   let offNote, onnote;
   // 监听在线状态并修改状态

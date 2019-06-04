@@ -40,8 +40,10 @@ class Form extends PureComponent {
                 // addTodo({ variables: { name: value.username, password: value.password } });
                 var query = `mutation login($email: String,$name: String, $password: String){
                     login(email: $email,name: $name, password: $password){
+                      id
                       name,
-                      state
+                      state,
+                      token
                     } 
                   }`;
                 fetch('http://localhost:3004/graphql', {
@@ -50,6 +52,8 @@ class Form extends PureComponent {
                     headers: {
                         'Content-Type': 'application/json',
                         'Accept': 'application/json',
+                        'login' : localStorage.getItem('loginState'),
+                        'token': localStorage.getItem('token')
                     },
                     body: JSON.stringify({
                         query,
@@ -62,6 +66,8 @@ class Form extends PureComponent {
                     .then(r => r.json())
                     .then(result => {
                         if (result.data.login && result.data.login[0].state === "1") {
+                            localStorage.setItem("token", result.data.login[0].token);
+                            localStorage.setItem("id", result.data.login[0].id);
                             this.props.changeLoginstate(1);
                             this.props.changeUsername(result.data.login[0].name)
                             this.props.props.history.push('/');

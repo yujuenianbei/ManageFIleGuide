@@ -15,6 +15,7 @@ const userSchema = require('./user');
 const courseSchema = require('./course');
 
 const account = require('./account');
+const cart = require('./cart');
 const homeSchema = require('./home');
 
 const Query=new GraphQLObjectType({
@@ -22,6 +23,7 @@ const Query=new GraphQLObjectType({
     description:'用户信息查询',
     fields:()=>(Object.assign({},
         account.query,
+        cart.query,
         userSchema.query,
         courseSchema.query,
         homeSchema.query
@@ -33,6 +35,7 @@ const Mutation=new GraphQLObjectType({
     fields:()=>(Object.assign({},
         userSchema.mutation,
         account.mutation,
+        cart.mutation
     )),
 });
 const schema = new GraphQLSchema({

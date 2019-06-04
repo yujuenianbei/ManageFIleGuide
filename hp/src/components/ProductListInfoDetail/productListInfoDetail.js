@@ -38,7 +38,7 @@ class ProductInfoDetail extends Component {
             <div className={styles.productInfo}>
                 <div className={styles.productImg}>
                     {/* <Link to={{ pathname: '/productInfo',state:{ day: 'Friday' }}}> */}
-                    <Link to={this.props.link}>
+                    <Link to={'/productInfo/' +this.props.id}>
                         <img src={this.props.img} alt={this.props.productName}/>
                     </Link>
                 </div>
@@ -50,7 +50,7 @@ class ProductInfoDetail extends Component {
                     <div className={styles.product_promotion_message}>{this.props.promotionMessage}</div>
                     <div className={styles.product_desc_features}>
                         <ul>
-                            {this.props.featrues.map((item, index) => {
+                            {JSON.parse(this.props.featrues).map((item, index) => {
                                 return <li key={index + 'features_asqewq'}>{item}</li>
                             })}
                         </ul>

@@ -7,6 +7,42 @@ import styles from './productListInfo.module.less';
 class ProductInfo extends Component {
     addToCart = () => {
         console.log(this.props.state.cart.productNum)
+        // var query = `mutation login($email: String,$name: String, $password: String){
+        //     login(email: $email,name: $name, password: $password){
+        //       name,
+        //       state,
+        //       token
+        //     } 
+        //   }`;
+        // fetch('http://localhost:3004/graphql', {
+        //     method: 'POST',
+        //     mode: "cors",
+        //     headers: {
+        //         'Content-Type': 'application/json',
+        //         'Accept': 'application/json',
+        //         'login' : localStorage.getItem('loginState'),
+        //         'token': localStorage.getItem('token')
+        //     },
+        //     body: JSON.stringify({
+        //         query,
+        //         variables: {
+        //             name: value.username,
+        //             password: value.password,
+        //         }
+        //     })
+        // })
+        //     .then(r => r.json())
+        //     .then(result => {
+        //         if (result.data.login && result.data.login[0].state === "1") {
+        //             localStorage.setItem("token", result.data.login[0].token);
+        //             this.props.changeLoginstate(1);
+        //             this.props.changeUsername(result.data.login[0].name)
+        //             this.props.props.history.push('/');
+        //         } else {
+        //             this.openNotification()
+        //         }
+        //     });
+
         const product = {
             id: this.props.id,
             img: this.props.img,
@@ -37,7 +73,7 @@ class ProductInfo extends Component {
         return (
             <div className={styles.productInfo}>
                 <div className={styles.productImg}>
-                    <Link to={this.props.link}>
+                    <Link to={'/productInfo/' +this.props.id}>
                         <img src={this.props.img} alt={this.props.productName} />
                     </Link>
                 </div>
@@ -49,7 +85,7 @@ class ProductInfo extends Component {
                     <div className={styles.product_promotion_message}>{this.props.promotionMessage}</div>
                     <div className={styles.product_desc_features}>
                         <ul>
-                            {this.props.featrues.map((item, index) => {
+                            {JSON.parse(this.props.featrues).map((item, index) => {
                                 return <li key={index + 'featrues'}>{item}</li>
                             })}
                         </ul>
