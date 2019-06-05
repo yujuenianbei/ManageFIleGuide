@@ -96,6 +96,7 @@ CREATE TABLE IF NOT EXISTS cartItem
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `cartId` bigint(20) DEFAULT NULL,
   `productId`bigint(20) DEFAULT NULL,
+  `productNum`bigint(20) DEFAULT NULL,
   `createTime` datetime NOT NULL,
   `updateTime` datetime NOT NULL,
   PRIMARY KEY (`id`)
