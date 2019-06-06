@@ -1,4 +1,6 @@
 import React, { PureComponent } from 'react';
+import * as Actions from '../../actions/index';
+import { connect } from 'react-redux';
 import classify from '@magento/venia-concept/esm/classify';
 import { Query, Mutation } from "react-apollo";
 import { gql } from "apollo-boost";
@@ -8,6 +10,7 @@ import ProductListBanner from '../ProductListBanner/index'
 import styles from './Main.module.less';
 import { Link } from 'react-router-dom';
 import { Icon } from '@material-ui/core';
+import { Spin } from 'antd';
 import './Main.css';
 
 const GET_BANNER = gql`
@@ -53,7 +56,9 @@ class Main extends PureComponent {
             <div className="container">
                 <Query query={GET_BANNER}>
                     {({ loading, error, data, refetch }) => {
-                        if (loading) return "Loading...";
+                        if (loading) return <div className={styles.bannerSpin}>
+                            <Spin></Spin>
+                        </div>;
                         if (error) return `Error! ${error.message}`;
                         return <Slider {...{
                             customPaging: function (i) {
@@ -88,7 +93,7 @@ class Main extends PureComponent {
                     <ul className={styles.topStaticAdds}>
                         <Query query={GET_PROMISEING}>
                             {({ loading, error, data, refetch }) => {
-                                if (loading) return "Loading...";
+                                if (loading) return <div className={styles.commonaddsLoading}><Spin></Spin></div>;
                                 if (error) return `Error! ${error.message}`;
                                 return data.promiseing.map((item, index) => (
                                     <li key={index + "promiseing_123sdasd"}>
@@ -125,10 +130,10 @@ class Main extends PureComponent {
                         <h2>特色产品</h2>
                         <Query query={GET_PRODUCTLIST}>
                             {({ loading, error, data, refetch }) => {
-                                if (loading) return "Loading...";
+                                if (loading) return <div className={styles.productListLoading}><Spin></Spin></div>;
                                 if (error) return `Error! ${error.message}`;
                                 return data.productList.map((item, index) => (
-                                    <ProductListMain category={item}/>
+                                    <ProductListMain category={item} />
                                 ))
                             }}
                         </Query>
@@ -137,8 +142,21 @@ class Main extends PureComponent {
                 <div className={styles.product}>
                     <ProductListBanner />
                 </div>
-            </div >
+            </div>
         );
     }
 }
-export default classify()(Main);
+const mapStateToProps = (state) => {
+    return {
+        state
+    };
+};
+const mapDispatchToProps = (dispatch) => {
+    return {
+        loading: (data) => { dispatch(Actions.loadingData(data)); },
+    }
+};
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(classify(styles)(Main));

@@ -18,7 +18,7 @@ var user = {
     //购物车
 
     // 获取指定用户的购物车产品信息
-    queryUserCartProductInfo: "SELECT c.id, c.productName, c.type, c.img, c.promotionMessage, c.featrues, c.promotionMessageSecond, c.usedPrice, c.nowPrice,i.productNum FROM product AS c,cartItem AS i WHERE (SELECT i.productId FROM cart,user WHERE cart.cartId=i.cartId and user.id=cart.userId and i.productId=c.id and user.id = 5 )",
+    queryUserCartProductInfo: "SELECT c.id, c.productName, c.type, c.img, c.promotionMessage, c.featrues, c.promotionMessageSecond, c.usedPrice, c.nowPrice,i.productNum FROM product AS c,cartItem AS i WHERE (SELECT i.productId FROM cart,user WHERE cart.cartId=i.cartId and user.id=cart.userId and i.productId=c.id and user.id = ? )",
     // 查询用户在购物车内有没有购物车内容
     queryCartUser:'SELECT * FROM `cart` where userId= ?',
     // 查询购物车中某个产品个数
@@ -33,7 +33,7 @@ var user = {
     // 更新购物车内某个产品的数量
     updateProductInCartItem:'UPDATE cartItem SET productNum=?, createTime=NOW(), updateTime=NOW() where cartId=? and productId=?',
     // 删除购物车中某个产品
-    deleteProductInCartItem: 'DELETE FROM cartItem WHERE productId=?',
+    deleteProductInCartItem: 'DELETE FROM cartItem WHERE productId=? and cartId=?',
     // 删除购物车中某个购物车的内容
     deleteCartIdCartItem: 'DELETE FROM cartItem WHERE cartId=?',
     // 删除购物车和用户的对应关系

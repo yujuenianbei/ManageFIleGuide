@@ -40,12 +40,20 @@ const client = new ApolloClient({
     });
   },
 });
+// 生成随机数
+function RndNum(n) {
+  var rnd = "";
+  for (var i = 0; i < n; i++)
+      rnd += Math.floor(Math.random() * 10);
+  return rnd;
+}
 
 const App = () => {
   // 
   if(!localStorage.getItem('loginState')){
     localStorage.setItem("loginState", 0);
   }
+  localStorage.setItem("id", RndNum(8));
   // 判断浏览器的在线状态
   let offNote, onnote;
   // 监听在线状态并修改状态

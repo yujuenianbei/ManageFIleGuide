@@ -4,14 +4,15 @@ import { connect } from 'react-redux';
 import classify from '@magento/venia-concept/esm/classify';
 import styles from './UserController.module.less';
 import { Link } from 'react-router-dom';
-// import Icon from '@material-ui/core/Icon';
-import { Badge, Icon, InputNumber } from 'antd';
+import { deleteCartProduct, postCart } from '../../fetch/cart';
+import { Badge, Icon, InputNumber, Spin } from 'antd';
 
 class UserController extends PureComponent {
     state = {
         cartToggle: false,
-        userToggle: false,
+        userToggle: false
     }
+
     // 显示购物车
     showCart = () => {
         this.setState({ cartToggle: !this.state.cartToggle, userToggle: false })
@@ -29,33 +30,56 @@ class UserController extends PureComponent {
         this.props.changeUsername('');
         this.hideToggle();
     }
-
-    changeNum = (id, value) => {
+    // 后台删除产品后，前台更新状态
+    afterChangeNum = (result, id) => {
+        // console.log(result.data.addToCart[0].productNum)
         const productList = Object.assign([], this.props.state.cart.productInfo);
         let num = 0;
         productList.map((item, index) => {
             if (item.id === id) {
-                item.num = value;
+                item.num = result.data.addToCart[0].productNum;
             }
-            num += item.num
+            num += item.num;
         })
-        this.props.addProductNumInCart(num);
-        this.props.addProductInCart(productList)
-    }
-    onDelete = (id) => {
-        const productList = Object.assign([], this.props.state.cart.productInfo);
-        let num = 0, listIndex = 0;
-        productList.map((item, index) => {
-            if (item.id === id) {
-                listIndex = index;
-                num += 0;
-            } else {
-                num += item.num;
-            }
-        })
-        productList.splice(listIndex, 1);
         this.props.addProductNumInCart(num);
         this.props.addProductInCart(productList);
+        this.props.loadingOnHeader(false);
+    }
+    // 修改数量
+    changeNum = (id, value) => {
+        this.props.loadingOnHeader(true)
+        postCart(id, value, this.afterChangeNum);
+    }
+
+    // 后台删除产品后，前台更新状态
+    afterDeleteProduct = (result, id) => {
+        if (result.data.deleteAProductInCart[0].state) {
+            const productList = Object.assign([], this.props.state.cart.productInfo);
+            let num = 0, listIndex = 0;
+            productList.map((item, index) => {
+                if (item.id === id) {
+                    listIndex = index;
+                    num += 0;
+                } else {
+                    num += item.num;
+                }
+            })
+            productList.splice(listIndex, 1);
+            this.props.addProductNumInCart(num);
+            this.props.addProductInCart(productList);
+            this.props.loadingOnHeader(false);
+        } else {
+            console.log(1);
+        }
+    }
+    // 点击删除产品按钮
+    onDelete = (id) => {
+        this.props.loadingOnHeader(true)
+        deleteCartProduct(id, this.afterDeleteProduct)
+    }
+
+    DeleteFetch = () => {
+
     }
     render() {
         return (
@@ -70,6 +94,7 @@ class UserController extends PureComponent {
                             <div className={this.state.cartToggle ? styles.minCart : styles.disno}>
                                 <Icon className={styles.close} onClick={this.hideToggle} type="close" title="close" />
                                 <div className={styles.items}>
+                                    <Spin spinning={this.props.state.main.headerLoading}>
                                     {this.props.state.cart.productNum === 0 && <div className={styles.noneCart}>暂无商品</div>}
                                     {this.props.state.cart.productNum > 0 &&
                                         <Fragment>
@@ -109,6 +134,7 @@ class UserController extends PureComponent {
                                             })}
                                         </Fragment>
                                     }
+                                    </Spin>
                                 </div>
 
                             </div>
@@ -189,9 +215,50 @@ const mapDispatchToProps = (dispatch) => {
         addProductInCart: (data) => { dispatch(Actions.productInCart(data)); },
         changeLoginstate: (data) => { dispatch(Actions.loginstate(data)); },
         changeUsername: (data) => { dispatch(Actions.usernanme(data)); },
+        loadingOnHeader: (data) => { dispatch(Actions.loadingHeader(data)); },
     }
 };
 export default connect(
     mapStateToProps,
     mapDispatchToProps
 )(classify(styles)(UserController));
+
+
+        // var query = `mutation addToCart($userId: Int,$productId: Int, $productNum : Int){
+        //     addToCart(userId: $userId,productId: $productId,productNum: $productNum){
+        //         productId
+        //         productNum
+        //     } 
+        //   }`;
+        // fetch('http://localhost:3004/graphql', {
+        //     method: 'POST',
+        //     mode: "cors",
+        //     headers: {
+        //         'Content-Type': 'application/json',
+        //         'Accept': 'application/json',
+        //         'login': localStorage.getItem('loginState'),
+        //         'token': localStorage.getItem('token')
+        //     },
+        //     body: JSON.stringify({
+        //         query,
+        //         variables: {
+        //             "userId": parseInt(localStorage.getItem('id')),
+        //             "productId": id,
+        //             "productNum": value
+        //         }
+        //     })
+        // })
+        //     .then(r => r.json())
+        //     .then(result => {
+        //         // console.log(result.data.addToCart[0].productNum)
+        //         const productList = Object.assign([], this.props.state.cart.productInfo);
+        //         let num = 0;
+        //         productList.map((item, index) => {
+        //             if (item.id === id) {
+        //                 item.num = result.data.addToCart[0].productNum;
+        //             }
+        //             num += item.num
+        //         })
+        //         this.props.addProductNumInCart(num);
+        //         this.props.addProductInCart(productList)
+        //     });

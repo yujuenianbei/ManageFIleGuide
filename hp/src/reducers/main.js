@@ -1,10 +1,12 @@
 import {
     LOADING,
     OFFLINE,
-    OFFLINENOTE
+    OFFLINENOTE,
+    LOADINGHEADER
     } from '../actions/index'
     
     const initValue = {
+      headerLoading: false,
         loading: false,
         offline: false,
         offlineNote: false
@@ -14,6 +16,9 @@ import {
       switch (action.type) {
         case LOADING: {
           return Object.assign({}, state, {loading: data})
+        }
+        case LOADINGHEADER: {
+          return Object.assign({}, state, {headerLoading: data})
         }
         case OFFLINE: {
           return Object.assign({}, state, {offline: data})

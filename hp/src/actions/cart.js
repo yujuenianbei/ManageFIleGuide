@@ -1,6 +1,7 @@
 export const PRODUCTINFO = 'PRODUCTINFO';
 export const PRODUCTNUM = 'PRODUCTNUM';
 export const USERINFO = 'USERINFO';
+export const EXPRESSINCART = 'EXPRESSINCART';
 // 购物车的产品数量
 export function productNumInCart(data) {
     return {
@@ -20,6 +21,14 @@ export function productInCart(data) {
 export function userinfoInCart(data) {
   return {
     type: USERINFO,
+    data
+  }
+}
+
+// 购物车中的配送方式
+export function expressInCart(data) {
+  return {
+    type: EXPRESSINCART,
     data
   }
 }

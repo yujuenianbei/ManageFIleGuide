@@ -5,44 +5,38 @@ import { connect } from 'react-redux';
 import classify from '@magento/venia-concept/esm/classify';
 import styles from './productListInfo.module.less';
 class ProductInfo extends Component {
+    postCart = (productNum) => {
+        var query = `mutation addToCart($userId: Int,$productId: Int, $productNum : Int){
+            addToCart(userId: $userId,productId: $productId,productNum: $productNum){
+                productId
+                productNum
+            } 
+          }`;
+        fetch('http://localhost:3004/graphql', {
+            method: 'POST',
+            mode: "cors",
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'login': localStorage.getItem('loginState'),
+                'token': localStorage.getItem('token')
+            },
+            body: JSON.stringify({
+                query,
+                variables: {
+                    "userId": parseInt(localStorage.getItem('id')),
+                    "productId": this.props.id,
+                    "productNum": productNum
+                }
+            })
+        })
+            .then(r => r.json())
+            .then(result => {
+                console.log(result);
+                this.props.loadingOnHeader(false);
+            });
+    }
     addToCart = () => {
-        console.log(this.props.state.cart.productNum)
-        // var query = `mutation login($email: String,$name: String, $password: String){
-        //     login(email: $email,name: $name, password: $password){
-        //       name,
-        //       state,
-        //       token
-        //     } 
-        //   }`;
-        // fetch('http://localhost:3004/graphql', {
-        //     method: 'POST',
-        //     mode: "cors",
-        //     headers: {
-        //         'Content-Type': 'application/json',
-        //         'Accept': 'application/json',
-        //         'login' : localStorage.getItem('loginState'),
-        //         'token': localStorage.getItem('token')
-        //     },
-        //     body: JSON.stringify({
-        //         query,
-        //         variables: {
-        //             name: value.username,
-        //             password: value.password,
-        //         }
-        //     })
-        // })
-        //     .then(r => r.json())
-        //     .then(result => {
-        //         if (result.data.login && result.data.login[0].state === "1") {
-        //             localStorage.setItem("token", result.data.login[0].token);
-        //             this.props.changeLoginstate(1);
-        //             this.props.changeUsername(result.data.login[0].name)
-        //             this.props.props.history.push('/');
-        //         } else {
-        //             this.openNotification()
-        //         }
-        //     });
-
         const product = {
             id: this.props.id,
             img: this.props.img,
@@ -53,19 +47,25 @@ class ProductInfo extends Component {
         }
         if (this.props.state.cart.productInfo.length === 0) {
             this.props.addProductInCart([product]);
+            this.props.loadingOnHeader(true)
+            this.postCart(product.num);
         } else {
+            var productNum;
             let productInfo = Object.assign([], this.props.state.cart.productInfo);
             const num = productInfo.findIndex((v, index) => {
                 return product.id === v.id
             })
             if (num === -1) {
                 productInfo.push(product);
+                productNum = product.num;
                 this.props.addProductInCart(productInfo);
             } else {
                 ++productInfo[num].num;
-                console.log(productInfo, productInfo[num].num);
+                productNum = productInfo[num].num
                 this.props.addProductInCart(productInfo)
             }
+            this.props.loadingOnHeader(true);
+            this.postCart(productNum);
         }
         this.props.addProductNumInCart(this.props.state.cart.productNum + 1);
     }
@@ -73,7 +73,7 @@ class ProductInfo extends Component {
         return (
             <div className={styles.productInfo}>
                 <div className={styles.productImg}>
-                    <Link to={'/productInfo/' +this.props.id}>
+                    <Link to={'/productInfo/' + this.props.id}>
                         <img src={this.props.img} alt={this.props.productName} />
                     </Link>
                 </div>
@@ -122,6 +122,7 @@ const mapDispatchToProps = (dispatch) => {
     return {
         addProductNumInCart: (data) => { dispatch(Actions.productNumInCart(data)); },
         addProductInCart: (data) => { dispatch(Actions.productInCart(data)); },
+        loadingOnHeader: (data) => { dispatch(Actions.loadingHeader(data)); },
     }
 };
 export default connect(

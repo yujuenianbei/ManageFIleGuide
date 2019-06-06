@@ -7,13 +7,15 @@ import Crumbs from '../Crumbs';
 import Message from '../Message';
 import ProductWatched from '../ProductWtched';
 import { Link } from 'react-router-dom';
-import { Icon, Collapse } from 'antd';
+import { Icon, Collapse, Radio } from 'antd';
 import { createForm } from 'rc-form';
-
+// 请求函数
+import { deleteCartProduct, postCart } from '../../fetch/cart';
 import Product from '../../data/product';
 const Panel = Collapse.Panel;
 class CheckoutCart extends Component {
     state = {
+        value: 1,
         rightTop: 0,
         totalCost: 0,
         productMayLike: Product.productMayLike,
@@ -52,36 +54,45 @@ class CheckoutCart extends Component {
     addNum = (id, input) => {
         this.refs[input].value = ++this.refs[input].value;
         const value = parseInt(this.refs[input].value)
-        const productList = Object.assign([], this.props.state.cart.productInfo);
-        let num = 0;
-        productList.map((item, index) => {
-            if (item.id === id) {
-                item.num = value;
-            }
-            num += item.num
-            return num;
-        })
-        this.props.addProductNumInCart(num);
-        this.props.addProductInCart(productList);
-        this.countCost(productList);
+
+
+        this.props.loadingOnHeader(true)
+        postCart(id, value, this.afterChangeNum);
+
+        // const productList = Object.assign([], this.props.state.cart.productInfo);
+        // let num = 0;
+        // productList.map((item, index) => {
+        //     if (item.id === id) {
+        //         item.num = value;
+        //     }
+        //     num += item.num
+        //     return num;
+        // })
+        // this.props.addProductNumInCart(num);
+        // this.props.addProductInCart(productList);
+        // this.countCost(productList);
     }
+
     // 减少数量
     reduceNum = (id, input) => {
         this.refs[input].value = --this.refs[input].value;
         console.log(this.refs[input].value)
         const value = parseInt(this.refs[input].value)
-        const productList = Object.assign([], this.props.state.cart.productInfo);
-        let num = 0;
-        productList.map((item, index) => {
-            if (item.id === id) {
-                item.num = value;
-            }
-            num += item.num
-            return num;
-        })
-        this.props.addProductNumInCart(num);
-        this.props.addProductInCart(productList);
-        this.countCost(productList);
+
+        this.props.loadingOnHeader(true)
+        postCart(id, value, this.afterChangeNum);
+        // const productList = Object.assign([], this.props.state.cart.productInfo);
+        // let num = 0;
+        // productList.map((item, index) => {
+        //     if (item.id === id) {
+        //         item.num = value;
+        //     }
+        //     num += item.num
+        //     return num;
+        // })
+        // this.props.addProductNumInCart(num);
+        // this.props.addProductInCart(productList);
+        // this.countCost(productList);
     }
     // 修改数量
     changeNum = (id, input) => {
@@ -92,37 +103,74 @@ class CheckoutCart extends Component {
         } else {
             value = parseInt(this.refs[input].value)
         }
+
+        this.props.loadingOnHeader(true)
+        postCart(id, value, this.afterChangeNum);
+        // const productList = Object.assign([], this.props.state.cart.productInfo);
+        // let num = 0;
+        // productList.map((item, index) => {
+        //     if (item.id === id) {
+        //         item.num = value;
+        //     }
+        //     num += item.num;
+        //     return num;
+        // })
+        // this.props.addProductNumInCart(num);
+        // this.props.addProductInCart(productList);
+        // this.countCost(productList);
+    }
+
+    // 后台删除产品后，前台更新状态
+    afterChangeNum = (result, id) => {
+        // console.log(result.data.addToCart[0].productNum)
         const productList = Object.assign([], this.props.state.cart.productInfo);
         let num = 0;
         productList.map((item, index) => {
             if (item.id === id) {
-                item.num = value;
+                item.num = result.data.addToCart[0].productNum;
             }
             num += item.num;
-            return num;
         })
         this.props.addProductNumInCart(num);
         this.props.addProductInCart(productList);
         this.countCost(productList);
+        this.props.loadingOnHeader(false);
     }
+
     // 删除产品
     onDelete = (id) => {
-        const productList = Object.assign([], this.props.state.cart.productInfo);
-        let num = 0, listIndex = 0;
-        productList.map((item, index) => {
-            if (item.id === id) {
-                listIndex = index;
-                num += 0;
-            } else {
-                num += item.num;
-            }
-            return num;
-        })
-        productList.splice(listIndex, 1);
-        this.props.addProductNumInCart(num);
-        this.props.addProductInCart(productList);
-        this.countCost(productList);
+        this.props.loadingOnHeader(true)
+        deleteCartProduct(id, this.afterDeleteProduct)
     }
+    // 后台删除产品后，前台更新状态
+    afterDeleteProduct = (result, id) => {
+        if (result.data.deleteAProductInCart[0].state) {
+            const productList = Object.assign([], this.props.state.cart.productInfo);
+            let num = 0, listIndex = 0;
+            productList.map((item, index) => {
+                if (item.id === id) {
+                    listIndex = index;
+                    num += 0;
+                } else {
+                    num += item.num;
+                }
+            })
+            productList.splice(listIndex, 1);
+            this.props.addProductNumInCart(num);
+            this.props.addProductInCart(productList);
+            this.countCost(productList);
+            this.props.loadingOnHeader(false);
+        } else {
+            console.log(1);
+        }
+    }
+
+    // 修改配送方式
+    onChangeExpress = e => {
+        console.log('radio checked', e.target.value);
+        this.props.changeExpress(e.target.value)
+    };
+
     // 
     callback = (key) => {
         console.log(key);
@@ -158,6 +206,12 @@ class CheckoutCart extends Component {
     render() {
         let errors;
         const { getFieldError, getFieldDecorator } = this.props.form;
+
+        const radioStyle = {
+            display: 'block',
+            height: '30px',
+            lineHeight: '30px',
+        };
         return (
             <div className={styles.checkoutcart}>
                 <Crumbs links={[{
@@ -210,7 +264,17 @@ class CheckoutCart extends Component {
                                             expandIconPosition={"right"}
                                             expandIcon={({ isActive }) => <Icon type={isActive ? "minus" : "plus"} />}>
                                             <Panel header="配送方式" key="1" className={styles.panel}>
-                                                <span>用户选择配送方式</span>
+                                                <Radio.Group onChange={this.onChangeExpress} value={this.props.state.cart.express}>
+                                                    <Radio style={radioStyle} value={1}>
+                                                        菜鸟配送
+                                                    </Radio>
+                                                    <Radio style={radioStyle} value={2}>
+                                                        京东配送
+                                                    </Radio>
+                                                    <Radio style={radioStyle} value={3}>
+                                                        顺丰快递
+                                                    </Radio>
+                                                </Radio.Group>
                                             </Panel>
                                         </Collapse>
                                     </div>
@@ -304,6 +368,8 @@ const mapDispatchToProps = (dispatch) => {
     return {
         addProductNumInCart: (data) => { dispatch(Actions.productNumInCart(data)); },
         addProductInCart: (data) => { dispatch(Actions.productInCart(data)); },
+        loadingOnHeader: (data) => { dispatch(Actions.loadingHeader(data)); },
+        changeExpress: (data) => { dispatch(Actions.expressInCart(data)); },
     }
 };
 export default connect(

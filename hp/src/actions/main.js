@@ -1,10 +1,19 @@
 export const LOADING = 'LOADING';
+export const LOADINGHEADER = 'LOADINGHEADER';
 export const OFFLINE = 'OFFLINE';
 export const OFFLINENOTE = 'OFFLINENOTE';
 // 用户弹窗
 export function loadingData(data) {
   return {
     type: LOADING,
+    data
+  }
+}
+
+// 用户弹窗
+export function loadingHeader(data) {
+  return {
+    type: LOADINGHEADER,
     data
   }
 }

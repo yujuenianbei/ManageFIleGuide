@@ -2,6 +2,13 @@
 @import "../../less/font.less";
 @import "../../less/button.less";
 
+.bannerSpin{
+    width: 100%;
+    height: 800px;
+    text-align: center;
+    line-height: 800px;
+}
+
 .commonadds {
     width: 100%;
 
@@ -9,6 +16,13 @@
         width: 100%;
         min-height: 10px;
         overflow: hidden;
+
+        .commonaddsLoading{
+            width: @f;
+            min-height: 255px;
+            line-height: 255px;
+            text-align: center;
+        }
 
         li {
             width: 25%;
@@ -74,6 +88,12 @@
         h2 {
             font-size: 40px;
             padding: @pd20 0 @pd10;
+        }
+        .productListLoading{
+            width: @f;
+            min-height: 700px;
+            text-align: center;
+            line-height: 700px;
         }
     }
 }

@@ -6,6 +6,7 @@ import ProductInfo from '../ProductListInfo/index'
 import Data from '../../data/main'
 import { Query, Mutation } from "react-apollo";
 import { gql } from "apollo-boost";
+import { Spin } from 'antd';
 
 const GET_MAINPRODUCTLIST = gql`
 query productListInfoOne($id: Int!){
@@ -36,7 +37,7 @@ class ProductListMain extends Component {
                     </li>
                     <Query query={GET_MAINPRODUCTLIST}  variables={{ id: parseInt(datas.id) }}>
                         {({ loading, error, data, refetch }) => {
-                            if (loading) return "Loading...";
+                            if (loading) return <div className={styles.productsLoading}><Spin></Spin></div>;
                             if (error) return `Error! ${error.message}`;
                             return data.productListInfoOne.map((item, index) => {
                                 return <li key={index + "mainProductListInfoOne"}>
