@@ -1,0 +1,37 @@
+@import "../../less/color.less";
+@import "../../less/font.less";
+@import "../../less/button.less";
+
+.customer {
+    max-width: 1240px;
+    margin: 0 auto;
+
+    .customerContent {
+        width: @f;
+        display: flex;
+
+        .left {
+            width: 18.3%;
+            padding-top: 15px;
+
+            >ul {
+                li {
+                    strong {
+                        display: block;
+                        padding: 15px 18px 15px 0px;
+                        font-size: 1.6rem;
+                    }
+                }
+                .active {
+                    color: @blue;
+                }
+            }
+        }
+
+        .right {
+            border-left: @1 solid @border;
+            width: 81.7%;
+            padding-left: 4%;
+        }
+    }
+}

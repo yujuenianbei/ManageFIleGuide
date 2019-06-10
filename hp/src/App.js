@@ -25,6 +25,7 @@ import { PersistGate } from 'redux-persist/integration/react'
 // });
 
 const client = new ApolloClient({
+  // uri: "https://demo.yujuenianbei.xyz:3001/graphql",
   uri: "http://localhost:3004/graphql",
   fetchOptions: {
     credentials: 'include'

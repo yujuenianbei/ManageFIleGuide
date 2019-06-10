@@ -1,0 +1,163 @@
+@import "../../less/color.less";
+@import "../../less/font.less";
+@import "../../less/button.less";
+.account{
+    h3{
+        font-size: 2.6rem;
+        font-weight: 500;
+        text-align: left;
+        width: 100%;
+    }
+    .infomation{
+        margin-bottom: @15;
+        h3{
+            font-size: 2rem;
+        }
+        .infos{
+            background-color: @nav;
+            padding: @20 @40;
+            .phones{
+                padding: @10 0 0;
+                border-top: @1 solid @border;
+                border-bottom: @1 solid @border;
+            }
+            .padding{
+                height: @10;
+            }
+            .PWDBtns{
+                width: @f;
+                text-align: center;
+                .left{
+                    width: 100px;
+                    margin-right: 15px;
+                }
+                .right{
+                    width: 100px;
+                }
+            }
+            .contents{
+                width: 100%;
+                display: flex;
+                flex-wrap: wrap;
+                label{
+                    width: 20%;
+                    min-width: 200px;
+                    text-align: left;
+                    line-height: 42px;
+                    font-size: 1.5rem;
+                    color: @gray;
+                }
+                .labcontent{
+                    width: 50%;
+                    max-width: 70%;
+                    display: flex;
+                    flex-wrap: wrap;
+                    span{
+                        min-width: 200px;
+                        text-align: left;
+                        line-height: 42px;
+                        font-size: 1.5rem;
+                        color: @gray;
+                    }
+                    .changePhone{
+                        color: @blue;
+                        cursor: pointer;
+                    }
+                    .labelInput {
+                        width: @f;
+                        font-size: 1.5rem;
+                        border: @1 solid @border;
+                        margin-bottom: @10;
+                    }
+                }
+            }
+        }
+    }
+}
+.inputs {
+    width: 50%;
+    max-width: 50%;
+    display: flex;
+    flex-wrap: wrap;
+    input,
+    select {
+        line-height: 3.8rem;
+        padding: 0 @15;
+        font-size: 1.5rem;
+        background-color: @white;
+    }
+
+    .phoneCode_normal {
+        width: 20%;
+        border: @1 solid @border;
+        margin-bottom: @10;
+        border-right: 0;
+    }
+
+    .phoneCode_error {
+        width: 20%;
+        border: @1 solid @red;
+        margin-bottom: 0;
+        border-right: 0;
+    }
+
+    .phonecode_phone_error {
+        border: @1 solid @red;
+    }
+
+    .phonecode_phone_normal {
+        border: @1 solid @border;
+    }
+
+    .messageCode {
+        width: 100%;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+
+        .input_messageCode_error {
+            width: 48%;
+            border: @1 solid @red;
+            margin-bottom: 0;
+        }
+
+        .input_messageCode_normal {
+            width: 48%;
+            border: @1 solid @border;
+            margin-bottom: @10;
+        }
+
+        .getMessageBtn {
+            width: 48%;
+            height: 40px;
+            font-size: 1.5rem;
+        }
+    }
+
+    .input_normal_phone {
+        width: 80%;
+        border: @1 solid @border;
+        margin-bottom: @10;
+    }
+
+    .input_error_phone {
+        width: 80%;
+        border: @1 solid @red;
+        margin-bottom: 0;
+    }
+
+    .input_normal {
+        border: @1 solid @border;
+        margin-bottom: @10;
+    }
+
+    .input_error {
+        border: @1 solid @red;
+        margin-bottom: 0;
+    }
+
+    .error {
+        margin: @5 0;
+        color: @red;
+    }
+}

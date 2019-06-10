@@ -40,14 +40,17 @@ class CheckoutCart extends Component {
         window.removeEventListener('scroll', this.rightScrollListener);
     }
     rightScrollListener = (e) => {
-        if (document.documentElement.scrollTop >= 94) {
-            if (document.documentElement.scrollTop - 94 + 17 + this.product.clientHeight >= this.form.clientHeight) {
+        console.log(this.product, this.form)
+        if (this.product && this.form) {
+            if (document.documentElement.scrollTop >= 94) {
+                if (document.documentElement.scrollTop - 94 + 17 + this.product.clientHeight >= this.form.clientHeight) {
 
+                } else {
+                    this.setState({ rightTop: document.documentElement.scrollTop - 94 })
+                }
             } else {
-                this.setState({ rightTop: document.documentElement.scrollTop - 94 })
+                this.setState({ rightTop: 0 })
             }
-        } else {
-            this.setState({ rightTop: 0 })
         }
     }
     // 增加数量
@@ -322,6 +325,11 @@ class CheckoutCart extends Component {
                                         </button>
                                     </Link>
                                 </div>
+                            </Fragment>
+                        }
+                        {this.props.state.cart.productInfo.length === 0 &&
+                            <Fragment>
+                                <Link to={'/'}>点击此处添加产品</Link>
                             </Fragment>
                         }
                     </div>

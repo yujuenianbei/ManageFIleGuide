@@ -21,7 +21,7 @@ class Header extends PureComponent {
                 <div className={styles.headerContent}>
                     <div className={styles.logo}>
                         <Link to={'/'}>
-                            <img className={styles.logoImg} src="https://media.hpstore.cn/static/version1556143026/frontend/HPOLS/default/zh_Hans_CN/images/logo.svg" alt="HP" />
+                            <img className={styles.logoImg} src="https://media.hpstore.cn/static/version1559772150/frontend/HPOLS/default/zh_Hans_CN/images/logo.svg" alt="HP" />
                         </Link>
                     </div>
                     <div className={styles.contentSearch}>

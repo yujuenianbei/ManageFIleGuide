@@ -6,6 +6,7 @@ const postCart = (id, value, func) => {
             productNum
         } 
       }`;
+    //   https://demo.yujuenianbei.xyz:3001/graphql
     fetch('http://localhost:3004/graphql', {
         method: 'POST',
         mode: "cors",

@@ -95,45 +95,45 @@ class UserController extends PureComponent {
                                 <Icon className={styles.close} onClick={this.hideToggle} type="close" title="close" />
                                 <div className={styles.items}>
                                     <Spin spinning={this.props.state.main.headerLoading}>
-                                    {this.props.state.cart.productNum === 0 && <div className={styles.noneCart}>暂无商品</div>}
-                                    {this.props.state.cart.productNum > 0 &&
-                                        <Fragment>
-                                            <div className={styles.mincartTop}>
-                                                <div className={styles.count}>
-                                                    <span className={styles.productNum}>{this.props.state.cart.productNum}</span>
-                                                    <span className={styles.docOne}>件商品</span>
-                                                </div>
-                                                <div className={styles.title}>
-                                                    <span className={styles.docTwo}>购物车小计:</span>
-                                                </div>
-                                                <Link to={'/checkout/cart'} className={styles.edit}>
-                                                    <button title="查看和编辑购物车" className={styles.prime + " " + styles.edit} onClick={this.hideToggle}>查看和编辑购物车</button>
-                                                </Link>
-                                            </div>
-                                            {this.props.state.cart.productInfo.map((item, index) => {
-                                                return <div className={styles.productInCrat} key={index + 'cartproductInfo1231231'}>
-                                                    <div className={styles.left}>
-                                                        <img src={item.img} />
+                                        {this.props.state.cart.productNum === 0 && <div className={styles.noneCart}>暂无商品</div>}
+                                        {this.props.state.cart.productNum > 0 &&
+                                            <Fragment>
+                                                <div className={styles.mincartTop}>
+                                                    <div className={styles.count}>
+                                                        <span className={styles.productNum}>{this.props.state.cart.productNum}</span>
+                                                        <span className={styles.docOne}>件商品</span>
                                                     </div>
-                                                    <div className={styles.right}>
-                                                        <div className={styles.productName}>
-                                                            <Link to={`/productInfo/` + item.id} onClick={this.hideToggle}>
-                                                                {item.productName}
-                                                            </Link>
-                                                        </div>
-                                                        <div className={styles.controllPrice}>
-                                                            <span className={styles.price}>{item.price}</span>
-                                                        </div>
-                                                        <div className={styles.controllNum}>
-                                                            <InputNumber min={1} defaultValue={item.num} value={item.num} onChange={(value) => this.changeNum(item.id, value)} />
-                                                            <button title="删除" className={styles.prime + " " + styles.delete} onClick={() => this.onDelete(item.id)}>删除</button>
-                                                        </div>
-                                                        <span className={styles.id}>{item.id}</span>
+                                                    <div className={styles.title}>
+                                                        <span className={styles.docTwo}>购物车小计:</span>
                                                     </div>
+                                                    <Link to={'/checkout/cart'} className={styles.edit}>
+                                                        <button title="查看和编辑购物车" className={styles.prime + " " + styles.edit} onClick={this.hideToggle}>查看和编辑购物车</button>
+                                                    </Link>
                                                 </div>
-                                            })}
-                                        </Fragment>
-                                    }
+                                                {this.props.state.cart.productInfo.map((item, index) => {
+                                                    return <div className={styles.productInCrat} key={index + 'cartproductInfo1231231'}>
+                                                        <div className={styles.left}>
+                                                            <img src={item.img} />
+                                                        </div>
+                                                        <div className={styles.right}>
+                                                            <div className={styles.productName}>
+                                                                <Link to={`/productInfo/` + item.id} onClick={this.hideToggle}>
+                                                                    {item.productName}
+                                                                </Link>
+                                                            </div>
+                                                            <div className={styles.controllPrice}>
+                                                                <span className={styles.price}>{item.price}</span>
+                                                            </div>
+                                                            <div className={styles.controllNum}>
+                                                                <InputNumber min={1} defaultValue={item.num} value={item.num} onChange={(value) => this.changeNum(item.id, value)} />
+                                                                <button title="删除" className={styles.prime + " " + styles.delete} onClick={() => this.onDelete(item.id)}>删除</button>
+                                                            </div>
+                                                            <span className={styles.id}>{item.id}</span>
+                                                        </div>
+                                                    </div>
+                                                })}
+                                            </Fragment>
+                                        }
                                     </Spin>
                                 </div>
 
@@ -158,38 +158,38 @@ class UserController extends PureComponent {
                                     <div className={styles.userControllerList}>
                                         <ul>
                                             <li>
-                                                <Link to={"/account/register"}>
+                                                <Link to={"/customer/account"}>
                                                     我的账户
                                                 </Link>
                                             </li>
                                             <li>
-                                                <Link to={"/account/register"}>
-                                                    我的账户
+                                                <Link to={"/customer/order"}>
+                                                    我的订单
                                             </Link>
                                             </li>
                                             <li>
-                                                <Link to={"/account/register"}>
-                                                    我的账户
+                                                <Link to={"/customer/booking"}>
+                                                    我的预约
                                                 </Link>
                                             </li>
                                             <li>
-                                                <Link to={"/account/register"}>
-                                                    我的账户
+                                                <Link to={"/customer/coupon"}>
+                                                    我的优惠券
                                                 </Link>
                                             </li>
                                             <li>
-                                                <Link to={"/account/register"}>
-                                                    我的账户
+                                                <Link to={"/customer/integral"}>
+                                                    用户积分
                                                 </Link>
                                             </li>
                                             <li>
-                                                <Link to={"/account/register"}>
-                                                    我的账户
+                                                <Link to={"/customer/subscribe"}>
+                                                    订阅
                                                 </Link>
                                             </li>
                                             <li>
-                                                <Link to={"/account/register"}>
-                                                    我的账户
+                                                <Link to={"/customer/bill"}>
+                                                    发票设置
                                                 </Link>
                                             </li>
                                         </ul>

@@ -1,0 +1,36 @@
+<html>
+
+<body>
+    <div id="allmap"></div>
+    <!-- <script type="text/javascript">
+        //判断是否支持 获取本地位置
+        if (navigator.geolocation) {
+            var n = navigator.geolocation.getCurrentPosition(function (res) {
+                console.log(res); // 需要的坐标地址就在res中
+            });
+        } else {
+            alert('该浏览器不支持定位');
+        }
+    </script> -->
+
+    <script type="text/javascript">
+        function getPosition(callback) {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function (position) {
+                    latitude = position.coords.latitude;// 获取纬度
+                    longitude = position.coords.longitude;// 获取经度
+                    //alert(latitude + " " + longitude)
+                    callback(latitude, longitude);//回调函数传入经度纬度
+                });
+            } else {
+                alert("不支持定位功能");
+            }
+        }
+
+        getPosition(function (x, y) {
+            alert(x + " " + y);
+        })
+    </script>
+</body>
+
+</html>

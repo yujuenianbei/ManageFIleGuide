@@ -9,6 +9,17 @@
     <button id="aa" role="get-code1">2</button>
     <button id="aa" role="get-code2">3</button>
     <script>
+        var location_lon = '', location_lat = ''; // 经度,纬度
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function (position) {
+                location_lon = position.coords.longitude;
+                location_lat = position.coords.latitude;
+                console.log('h5经度：'+location_lon,'h5纬度：'+location_lat);
+            });
+        } else {
+            alert("您的设备不支持定位功能");
+        }
+
         $('button[role="get-code"]').click(function () {
             // console.log($('button[role="get-code"]').val())
             // var time = parseInt("Please try again after 5 s".match(/\d+/ig)[0]);
