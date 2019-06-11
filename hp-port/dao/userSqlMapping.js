@@ -15,6 +15,9 @@ var user = {
     courses:"SELECT * FROM `course`",
     courseById:"SELECT * FROM `course`  where userId= ? limit 10",
 
+    // 用户
+    updateUserLoginTime: "update user set updateTime=? where id=?",
+
     //购物车
 
     // 获取指定用户的购物车产品信息

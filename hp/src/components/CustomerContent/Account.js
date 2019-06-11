@@ -3,21 +3,29 @@ import classify from '@magento/venia-concept/esm/classify';
 import styles from './Account.module.less';
 import { changeCrumbs } from '../../fetch/links';
 import { createForm } from 'rc-form';
-import Crumbs from '../Crumbs';
+import ChangeAddress from '../ChangeAddress'
 import { Link } from 'react-router-dom';
 import { Icon } from 'antd';
 
 class Account extends Component {
     state = {
         phoneChange: false,
-        phonePWD: false
+        phonePWD: false,
+        addressChange: false
     }
+    // 显示修改手机
     changedPhone = () => {
         this.setState({ phoneChange: !this.state.phoneChange })
     }
+    // 显示修改密码
     changedPWD = () => {
         this.setState({ phonePWD: !this.state.phonePWD })
     }
+    // 显示添加收货地址
+    changeAddress = () => {
+        this.setState({ addressChange: !this.state.addressChange })
+    }
+
     // 发送验证码
     postMessageCode = () => {
         this.props.form.validateFields(['phoneCode', 'phone'], (error, value) => {
@@ -228,6 +236,16 @@ class Account extends Component {
                             </div>
                         </Fragment>
                         }
+                    </div>
+                </div>
+                <div className={styles.infomation}>
+                    <h3>收货地址</h3>
+                    <div className={styles.address}>
+                        <div className={styles.contents}>
+                            <span>有0个已经保存的收货地址。要添加新的收货地址，请点击</span>
+                            <button className={styles.prime} onClick={this.changeAddress}>添加收货地址</button>
+                        </div>
+                        {this.state.addressChange && <ChangeAddress show={this.changeAddress}/>}
                     </div>
                 </div>
             </div>

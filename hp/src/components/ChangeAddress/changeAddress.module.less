@@ -1,0 +1,63 @@
+@import "../../less/color.less";
+@import "../../less/font.less";
+@import "../../less/button.less";
+.infos{
+    background-color: @nav;
+    padding: @20 @40;
+    margin-top: @15;
+    .phones{
+        padding: @10 0 0;
+        border-top: @1 solid @border;
+        border-bottom: @1 solid @border;
+    }
+    .padding{
+        height: @10;
+    }
+    .PWDBtns{
+        width: @f;
+        text-align: center;
+        .left{
+            width: 100px;
+            margin-right: 15px;
+        }
+        .right{
+            width: 100px;
+        }
+    }
+    .contents{
+        width: 100%;
+        display: flex;
+        flex-wrap: wrap;
+        label{
+            width: 20%;
+            min-width: 200px;
+            text-align: left;
+            line-height: 42px;
+            font-size: 1.5rem;
+            color: @gray;
+        }
+        .labcontent{
+            width: 50%;
+            max-width: 70%;
+            display: flex;
+            flex-wrap: wrap;
+            span{
+                min-width: 200px;
+                text-align: left;
+                line-height: 42px;
+                font-size: 1.5rem;
+                color: @gray;
+            }
+            .changePhone{
+                color: @blue;
+                cursor: pointer;
+            }
+            .labelInput {
+                width: @f;
+                font-size: 1.5rem;
+                border: @1 solid @border;
+                margin-bottom: @10;
+            }
+        }
+    }
+}

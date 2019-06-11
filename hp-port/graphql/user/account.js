@@ -181,13 +181,18 @@ module.exports = {
                 email: { type: GraphQLString },
                 name: { type: GraphQLString },
                 password: { type: GraphQLString },
-                state: { type: GraphQLString }
+                state: { type: GraphQLString },
             },
             resolve: async function (source, { name, password, state }) {
                 return await searchSql($sql.queryByUsername, [name])
                     .then((reslut) => {
                         console.log(reslut)
                         if (password === reslut[0].password) {
+                            // 更新用户最后登录时间
+                            const curTime = new Date();
+                            let portDate = curTime.setHours(curTime.getHours() + 8);
+                            console.log(new Date(portDate))
+                            searchSql($sql.updateUserLoginTime, [new Date(portDate), reslut[0].id])
                             // 密钥
                             const secret = 'ILOVENINGHAO'
                             const payload = {
