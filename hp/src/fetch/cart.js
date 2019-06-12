@@ -1,3 +1,39 @@
+// 获取用户购物车的信息
+const getUserCart = (func) => {
+    const query = `query queryUserCartProducts($userId: Int){
+      queryUserCartProducts(userId: $userId){
+        id
+        img
+        productNum
+        nowPrice
+        promotionMessage
+        productName
+        state
+      }
+    }`;
+
+    fetch('http://localhost:3004/graphql', {
+        method: 'POST',
+        mode: "cors",
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'login': localStorage.getItem('loginState'),
+            'token': localStorage.getItem('token')
+        },
+        body: JSON.stringify({
+            query,
+            variables: {
+                "userId": parseInt(localStorage.getItem('id')),
+            }
+        })
+    })
+        .then(r => r.json())
+        .then((result) => { func(result) });
+}
+
+
+
 // 修改购物车信息
 const postCart = (id, value, func) => {
     var query = `mutation addToCart($userId: Int,$productId: Int, $productNum : Int){
@@ -59,4 +95,4 @@ const deleteCartProduct = (id, func) => {
 
 
 
-export { deleteCartProduct, postCart }
+export { deleteCartProduct, postCart, getUserCart }

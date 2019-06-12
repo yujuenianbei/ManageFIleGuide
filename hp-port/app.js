@@ -67,6 +67,40 @@ initMysql();
 // });
 
 
+
+/*
+获取本机IP
+*/
+
+function getIPAdress(){  
+  var interfaces = require('os').networkInterfaces();  
+  for(var devName in interfaces){  
+        var iface = interfaces[devName];  
+        for(var i=0;i<iface.length;i++){  
+             var alias = iface[i];  
+             if(alias.family === 'IPv4' && alias.address !== '127.0.0.1' && !alias.internal){  
+                   return alias.address;  
+             }  
+        }  
+  }  
+} 
+
+/**
+* 获取用户ip
+*/
+function getClientIp(req) {
+		return req.headers['x-wq-realip'] ||
+        req.connection.remoteAddress ||
+        req.socket.remoteAddress ||
+        req.connection.socket.remoteAddress;
+}
+
+app.use(function (req, res, next) {
+  // console.log(getIPAdress());
+  // console.log(getClientIp(req));
+  next();
+})
+
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));

@@ -2,7 +2,7 @@
 @import "../../less/font.less";
 @import "../../less/button.less";
 
-.bannerSpin{
+.bannerSpin {
     width: 100%;
     height: 800px;
     text-align: center;
@@ -17,7 +17,7 @@
         min-height: 10px;
         overflow: hidden;
 
-        .commonaddsLoading{
+        .commonaddsLoading {
             width: @f;
             min-height: 255px;
             line-height: 255px;
@@ -89,7 +89,8 @@
             font-size: 40px;
             padding: @pd20 0 @pd10;
         }
-        .productListLoading{
+
+        .productListLoading {
             width: @f;
             min-height: 700px;
             text-align: center;
@@ -504,6 +505,7 @@
 
                 .productListProductContent {
                     width: @f;
+                    min-height: 550px;
 
                     .common {
                         display: none;
@@ -515,6 +517,12 @@
 
                     .content {
                         width: @f;
+                        min-height: 300px;
+
+                        .spin {
+                            line-height: 550px;
+                            text-align: center;
+                        }
 
                         .product {
                             display: flex;
@@ -525,8 +533,9 @@
                                 background: #f4f4f4;
                                 margin: 0 @5 @5 0;
                                 position: relative;
-                                &:nth-child(3n){
-                                    margin: 0 0 @5 0; 
+
+                                &:nth-child(3n) {
+                                    margin: 0 0 @5 0;
                                 }
                             }
                         }

@@ -54,7 +54,9 @@ const App = () => {
   if(!localStorage.getItem('loginState')){
     localStorage.setItem("loginState", 0);
   }
-  localStorage.setItem("id", RndNum(8));
+  if(!localStorage.getItem('id')){
+    localStorage.setItem("id", RndNum(8));
+  }
   // 判断浏览器的在线状态
   let offNote, onnote;
   // 监听在线状态并修改状态

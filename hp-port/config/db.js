@@ -1,6 +1,6 @@
 const mysqlConfig = {
     // docker中link的ip地址
-    serverName: '172.17.0.3',
+    serverName: '172.17.0.11',
     port: '3306',
     user: 'root',
     password: '123456',

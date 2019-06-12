@@ -59,6 +59,9 @@ var user = {
     // 获取所有产品的类型
     queryProductTypeList: "SELECT id,( SELECT GROUP_CONCAT(c.typeName) FROM `productType` AS c WHERE FIND_IN_SET(c.id,s.type) ) FROM `product` AS s",
     
+
+    // 产品
+    queryProductByPage: "SELECT * FROM product ORDER BY id ASC limit ?,?"
 };
 
 module.exports = user;

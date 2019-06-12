@@ -1,8 +1,9 @@
-import React, { Component } from 'react';
+import React, { PureComponent, Fragment } from 'react';
 import classify from '@magento/venia-concept/esm/classify';
 import styles from './Main.module.less';
 import Crumbs from '../Crumbs';
-import { Collapse, Slider, Checkbox, Row, Col, Icon, Pagination } from 'antd';
+import { Collapse, Slider, Checkbox, Row, Col, Icon, Pagination, Spin } from 'antd';
+import { getProductsByPage } from '../../fetch/product'
 import ProductListData from '../../data/productListData';
 import ProductListInfoDetail from '../ProductListInfoDetail';
 import ProductListLink from '../ProductListLink';
@@ -12,7 +13,7 @@ const CheckboxGroup = Checkbox.Group;
 function callback(key) {
     console.log(key);
 }
-class ProductList extends Component {
+class ProductList extends PureComponent {
     state = {
         sliderSection: ProductListData.sliderSection,
         priceSection: ProductListData.priceSection,
@@ -35,8 +36,20 @@ class ProductList extends Component {
         categoryDescriptionSwtich: false,
 
         tabHeader: ProductListData.tabHeader,
+
         tabIndex: 0,
-        pageSize: 9
+        start: 0,
+        pageSize: 9,
+        loading: false,
+        productListInfo: []
+    }
+    componentDidMount() {
+        this.setState({ loading: true })
+        getProductsByPage(this.state.start, this.state.pageSize, this.loadProducts);
+    }
+    // 加载产品
+    loadProducts = (reslut) => {
+        this.setState({ productListInfo: reslut.data.queryProducts, loading: false })
     }
     onChange = (value) => {
         // console.log('moving: ', value);
@@ -61,11 +74,19 @@ class ProductList extends Component {
     }
     // 分页
     pageChange = (current, pageSize) => {
+        this.setState({ start: (current - 1) * pageSize }, () => {
+            window.scrollTo(0, 0);
+            this.setState({ loading: true })
+            getProductsByPage(this.state.start, this.state.pageSize, this.loadProducts);
+        })
         console.log(current, pageSize);
     }
     onShowSizeChange = (current, pageSize) => {
-        console.log(current, pageSize);
-        this.setState({ pageSize, })
+        // console.log(current, pageSize);
+        this.setState({ pageSize, }, () => {
+            this.setState({ loading: true })
+            getProductsByPage(this.state.start, this.state.pageSize, this.loadProducts);
+        })
     }
     render() {
         return (
@@ -277,63 +298,78 @@ class ProductList extends Component {
                             </div>
                             <div className={styles.productListProductContent}>
                                 <div className={this.state.tabIndex === 0 ? styles.active + ' ' + styles.content : styles.common}>
-                                    <ul className={styles.product}>
-                                        {ProductListData.purpose.map((item, index) => {
-                                            return <li key={index + "purpose_sdasq123"}>
-                                                <ProductListLink
-                                                    img={item.img}
-                                                    title={item.title}
-                                                    link={item.link}
-                                                />
-                                            </li>
-                                        })}
-                                    </ul>
+                                    <div className={styles.spin}><Spin spinning={this.state.loading}></Spin></div>
+                                    {!this.state.loading &&
+                                        <Fragment>
+                                            <ul className={styles.product}>
+                                                {ProductListData.purpose.map((item, index) => {
+                                                    return <li key={index + "purpose_sdasq123"}>
+                                                        <ProductListLink
+                                                            img={item.img}
+                                                            title={item.title}
+                                                            link={item.link}
+                                                        />
+                                                    </li>
+                                                })}
+                                            </ul>
+                                        </Fragment>}
                                 </div>
                                 <div className={this.state.tabIndex === 1 ? styles.active + ' ' + styles.content : styles.common}>
-                                    <ul className={styles.product}>
-                                        {ProductListData.appearance.map((item, index) => {
-                                            return <li key={index + "appearance_123sadacvhh"}>
-                                                <ProductListLink
-                                                    img={item.img}
-                                                    title={item.title}
-                                                    link={item.link}
-                                                />
-                                            </li>
-                                        })}
-                                    </ul>
+                                    <div className={styles.spin}><Spin spinning={this.state.loading}></Spin></div>
+                                    {!this.state.loading &&
+                                        <Fragment>
+                                            <ul className={styles.product}>
+                                                {ProductListData.appearance.map((item, index) => {
+                                                    return <li key={index + "appearance_123sadacvhh"}>
+                                                        <ProductListLink
+                                                            img={item.img}
+                                                            title={item.title}
+                                                            link={item.link}
+                                                        />
+                                                    </li>
+                                                })}
+                                            </ul>
+                                        </Fragment>
+                                    }
                                 </div>
                                 <div className={this.state.tabIndex === 2 ? styles.active + ' ' + styles.content : styles.common}>
-                                    <ul className={styles.product}>
-                                        {ProductListData.series.map((item, index) => {
-                                            return <li key={index + "series_fgdsret"}>
-                                                <ProductListLink
-                                                    img={item.img}
-                                                    title={item.title}
-                                                    link={item.link}
-                                                />
-                                            </li>
-                                        })}
-                                    </ul>
+                                    <div className={styles.spin}><Spin spinning={this.state.loading}></Spin></div>
+                                    {!this.state.loading &&
+                                        <Fragment>
+                                            <ul className={styles.product}>
+                                                {ProductListData.series.map((item, index) => {
+                                                    return <li key={index + "series_fgdsret"}>
+                                                        <ProductListLink
+                                                            img={item.img}
+                                                            title={item.title}
+                                                            link={item.link}
+                                                        />
+                                                    </li>
+                                                })}
+                                            </ul>
+                                        </Fragment>}
                                 </div>
                                 <div className={this.state.tabIndex === 3 ? styles.active + ' ' + styles.content : styles.common}>
-                                    <ul className={styles.product}>
-                                        {ProductListData.productListInfo.map((item, index) => {
-                                            return <li key={index + "productListInfo_qwexca"}>
-                                                <ProductListInfoDetail
-                                                    id={item.id}
-                                                    link={item.link}
-                                                    img={item.img}
-                                                    productName={item.productName}
-                                                    promotionMessage={item.promotionMessage}
-                                                    featrues={item.featrues}
-                                                    promotionMessageSecond={item.promotionMessageSecond}
-                                                    usedPrice={item.usedPrice}
-                                                    nowPrice={item.nowPrice}
-                                                />
-                                            </li>
-                                        })}
-
-                                    </ul>
+                                    <div className={styles.spin}><Spin spinning={this.state.loading}></Spin></div>
+                                    {!this.state.loading &&
+                                        <Fragment>
+                                            <ul className={styles.product}>
+                                                {this.state.productListInfo.length > 0 && this.state.productListInfo.map((item, index) => {
+                                                    return <li key={index + "productListInfo_qwexca"}>
+                                                        <ProductListInfoDetail
+                                                            id={item.id}
+                                                            img={item.img}
+                                                            productName={item.productName}
+                                                            promotionMessage={item.promotionMessage}
+                                                            featrues={item.featrues}
+                                                            promotionMessageSecond={item.promotionMessageSecond}
+                                                            usedPrice={item.usedPrice}
+                                                            nowPrice={item.nowPrice}
+                                                        />
+                                                    </li>
+                                                })}
+                                            </ul>
+                                        </Fragment>}
                                     <Pagination
                                         pageSize={this.state.pageSize}
                                         pageSizeOptions={['6', '9', '12', '15']}

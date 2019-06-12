@@ -26,7 +26,6 @@ query productListInfoOne($id: Int!){
 class ProductListMain extends Component {
     render() {
         const datas = this.props.category
-        console.log(datas)
         return (
             <div className={styles.container}>
                 <ul>

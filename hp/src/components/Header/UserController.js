@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import classify from '@magento/venia-concept/esm/classify';
 import styles from './UserController.module.less';
 import { Link } from 'react-router-dom';
-import { deleteCartProduct, postCart } from '../../fetch/cart';
+import { deleteCartProduct, postCart, getUserCart } from '../../fetch/cart';
 import { Badge, Icon, InputNumber, Spin } from 'antd';
 
 class UserController extends PureComponent {
@@ -12,7 +12,14 @@ class UserController extends PureComponent {
         cartToggle: false,
         userToggle: false
     }
-
+    componentDidMount() {
+        getUserCart(this.afterFetchProduct);
+    }
+    componentWillUpdate(nextPorps) {
+        if (!this.props.state.user.loginState && nextPorps.state.user.loginState !== this.props.state.user.loginState) {
+            getUserCart(this.afterFetchProduct);
+        }
+    }
     // 显示购物车
     showCart = () => {
         this.setState({ cartToggle: !this.state.cartToggle, userToggle: false })
@@ -26,24 +33,49 @@ class UserController extends PureComponent {
         this.setState({ userToggle: false, cartToggle: false })
     }
     signOut = () => {
+        this.props.addProductInCart([]);
+        this.props.addProductNumInCart(0);
+
         this.props.changeLoginstate(0);
         this.props.changeUsername('');
         this.hideToggle();
     }
+    // 请求购物车内容
+    afterFetchProduct = (result) => {
+        if(result.data.queryUserCartProducts[0].state){
+            let productInfos = [];
+            let productNum = 0;
+            const infos = Object.assign([], result.data.queryUserCartProducts);
+            infos.map((item, index) => {
+                productInfos.push({
+                    id: item.id,
+                    img: item.img,
+                    num: item.productNum,
+                    price: item.nowPrice,
+                    promotionMessage: item.promotionMessage,
+                    productName: item.productName
+                })
+                productNum += item.productNum
+            })
+            this.props.addProductInCart(productInfos);
+            this.props.addProductNumInCart(productNum);
+        }
+    }
     // 后台删除产品后，前台更新状态
     afterChangeNum = (result, id) => {
-        // console.log(result.data.addToCart[0].productNum)
-        const productList = Object.assign([], this.props.state.cart.productInfo);
-        let num = 0;
-        productList.map((item, index) => {
-            if (item.id === id) {
-                item.num = result.data.addToCart[0].productNum;
-            }
-            num += item.num;
-        })
-        this.props.addProductNumInCart(num);
-        this.props.addProductInCart(productList);
-        this.props.loadingOnHeader(false);
+        if (result) {
+            const productList = Object.assign([], this.props.state.cart.productInfo);
+            let num = 0;
+            productList.map((item, index) => {
+                if (item.id === id) {
+                    item.num = result.data.addToCart[0].productNum;
+                }
+                num += item.num;
+            })
+            this.props.addProductNumInCart(num);
+            this.props.addProductInCart(productList);
+            this.props.loadingOnHeader(false);
+        }
     }
     // 修改数量
     changeNum = (id, value) => {
@@ -64,6 +96,7 @@ class UserController extends PureComponent {
                     num += item.num;
                 }
             })
+            console.log(productList)
             productList.splice(listIndex, 1);
             this.props.addProductNumInCart(num);
             this.props.addProductInCart(productList);

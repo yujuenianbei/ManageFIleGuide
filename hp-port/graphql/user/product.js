@@ -1,0 +1,103 @@
+const jwt = require('jsonwebtoken')
+const $sql = require('../../dao/userSqlMapping');
+const { searchSql } = require("../../sql/init")
+const {
+    GraphQLID,
+    GraphQLList,
+    GraphQLObjectType,
+    GraphQLSchema,
+    GraphQLString,
+    GraphQLInt,
+    GraphQLFloat,
+    GraphQLEnumType,
+    GraphQLScalarType,
+    GraphQLEnumValue,
+    GraphQLNonNull,
+    GraphQLInterfaceType,
+    GraphQLInputObjectType
+} = require('graphql');
+const Db = require('../../sql/db');
+function RndNum(n) {
+    var rnd = "";
+    for (var i = 0; i < n; i++)
+        rnd += Math.floor(Math.random() * 10);
+    return rnd;
+}
+
+
+// 查询用户购物车内容
+const QueryPorducts = new GraphQLObjectType({
+    name: 'QueryPorducts',
+    description: "查询分页产品",
+    fields: () => {
+        return ({
+            id: {
+                type: GraphQLInt, resolve(data) {
+                    return data.id;
+                }
+            },
+            productName: {
+                type: GraphQLString, resolve(data) {
+                    return data.productName;
+                }
+            },
+            type: {
+                type: GraphQLInt, resolve(data) {
+                    return data.type;
+                }
+            },
+            img: {
+                type: GraphQLString, resolve(data) {
+                    return data.img;
+                }
+            },
+            promotionMessage: {
+                type: GraphQLString, resolve(data) {
+                    return data.promotionMessage;
+                }
+            },
+            featrues: {
+                type: GraphQLString, resolve(data) {
+                    return data.featrues;
+                }
+            },
+            promotionMessageSecond: {
+                type: GraphQLString, resolve(data) {
+                    return data.promotionMessageSecond;
+                }
+            },
+            usedPrice: {
+                type: GraphQLInt, resolve(data) {
+                    return data.usedPrice;
+                }
+            },
+            nowPrice: {
+                type: GraphQLInt, resolve(data) {
+                    return data.nowPrice;
+                }
+            }
+        });
+    },
+});
+
+module.exports = {
+    query: {
+        queryProducts: {
+            type: new GraphQLList(QueryPorducts),
+            description: '查询分页产品',
+            args: {
+                start: { type: GraphQLInt },
+                size: { type: GraphQLInt }
+            },
+            resolve: async function (source, { start, size }) {
+                return await searchSql($sql.queryProductByPage, [start, size])
+                    .then(async (result) => {
+                            return await result
+                    })
+            }
+        },
+    },
+    mutation: {
+
+    }
+};
