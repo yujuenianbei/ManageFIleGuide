@@ -1,9 +1,11 @@
 import React, { PureComponent, Fragment } from 'react';
+import * as Actions from '../../actions/index';
+import { connect } from 'react-redux';
 import classify from '@magento/venia-concept/esm/classify';
 import styles from './Main.module.less';
 import Crumbs from '../Crumbs';
-import { Collapse, Slider, Checkbox, Row, Col, Icon, Pagination, Spin } from 'antd';
-import { getProductsByPage } from '../../fetch/product'
+import { Collapse, Slider, Checkbox, Row, Col, Icon, Pagination, Spin, Menu, Dropdown, Button } from 'antd';
+import { getProductsNum, getProductsByPage } from '../../fetch/product'
 import ProductListData from '../../data/productListData';
 import ProductListInfoDetail from '../ProductListInfoDetail';
 import ProductListLink from '../ProductListLink';
@@ -39,13 +41,19 @@ class ProductList extends PureComponent {
 
         tabIndex: 0,
         start: 0,
+        total: 0,
         pageSize: 9,
         loading: false,
         productListInfo: []
     }
     componentDidMount() {
         this.setState({ loading: true })
+        getProductsNum(this.loadProductNum)
         getProductsByPage(this.state.start, this.state.pageSize, this.loadProducts);
+    }
+    // 加载产品数量
+    loadProductNum = (reslut) => {
+        this.setState({ total: reslut.data.queryProductNum[0].count })
     }
     // 加载产品
     loadProducts = (reslut) => {
@@ -88,7 +96,35 @@ class ProductList extends PureComponent {
             getProductsByPage(this.state.start, this.state.pageSize, this.loadProducts);
         })
     }
+
+    handleMenuClick = (e) => {
+        this.props.selectProductSortFilter(parseInt(e.key));
+        this.props.selectProductSortFilterName(e.item.props.value)
+        console.log('click', e);
+    }
     render() {
+        const menu = (
+            <Menu onClick={this.handleMenuClick}>
+                <Menu.Item key="1" value="惠普推荐">
+                    惠普推荐
+              </Menu.Item>
+                <Menu.Item key="2" value="产品名称">
+                    产品名称
+              </Menu.Item>
+                <Menu.Item key="3" value="价格范围">
+                    价格范围
+              </Menu.Item>
+                <Menu.Item key="4" value="热销">
+                    热销
+              </Menu.Item>
+                <Menu.Item key="5" value="评价">
+                    评价
+              </Menu.Item>
+                <Menu.Item key="6" value="折扣">
+                    折扣
+              </Menu.Item>
+            </Menu>
+        );
         return (
             <div className={styles.productList}>
                 <Crumbs links={[{
@@ -350,6 +386,15 @@ class ProductList extends PureComponent {
                                         </Fragment>}
                                 </div>
                                 <div className={this.state.tabIndex === 3 ? styles.active + ' ' + styles.content : styles.common}>
+                                    <div className={styles.filterProduct}>
+                                        <span>排序方式</span>
+                                        <Dropdown overlay={menu} trigger={['click']}>
+                                            <Button>
+                                                <span key={this.props.state.filter.productSortFilter}>{this.props.state.filter.productSortFilterName}</span>
+                                                <Icon type="down" />
+                                            </Button>
+                                        </Dropdown>
+                                    </div>
                                     <div className={styles.spin}><Spin spinning={this.state.loading}></Spin></div>
                                     {!this.state.loading &&
                                         <Fragment>
@@ -377,7 +422,7 @@ class ProductList extends PureComponent {
                                         showSizeChanger
                                         onShowSizeChange={this.onShowSizeChange}
                                         defaultCurrent={1}
-                                        total={500}
+                                        total={this.state.total}
                                     />
                                 </div>
                             </div>
@@ -388,4 +433,18 @@ class ProductList extends PureComponent {
         );
     }
 }
-export default classify(styles)(ProductList);
+const mapStateToProps = (state) => {
+    return {
+        state
+    };
+};
+const mapDispatchToProps = (dispatch) => {
+    return {
+        selectProductSortFilter: (data) => { dispatch(Actions.productSortFilter(data)); },
+        selectProductSortFilterName: (data) => { dispatch(Actions.productSortFilterName(data)); },
+    }
+};
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(classify(styles)(ProductList));

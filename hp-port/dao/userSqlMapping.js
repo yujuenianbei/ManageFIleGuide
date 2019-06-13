@@ -61,7 +61,10 @@ var user = {
     
 
     // 产品
-    queryProductByPage: "SELECT * FROM product ORDER BY id ASC limit ?,?"
+    // 分页
+    queryProductByPage: "SELECT * FROM product ORDER BY id ASC limit ?,?",
+    // 获取产品数量
+    queryProductNum: "SELECT count(id) count FROM product ORDER BY id ASC"
 };
 
 module.exports = user;

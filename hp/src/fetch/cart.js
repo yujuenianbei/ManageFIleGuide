@@ -1,3 +1,15 @@
+// 获取二维码
+const getQRcode = (func) => {
+    fetch('http://localhost:3004/loginByPhone', {
+        method: 'GET',
+        mode: "cors",
+    })
+        .then(r => r.json())
+        .then((result) => { func(result) }
+    );
+}
+
+
 // 获取用户购物车的信息
 const getUserCart = (func) => {
     const query = `query queryUserCartProducts($userId: Int){
@@ -95,4 +107,4 @@ const deleteCartProduct = (id, func) => {
 
 
 
-export { deleteCartProduct, postCart, getUserCart }
+export { deleteCartProduct, postCart, getUserCart, getQRcode }

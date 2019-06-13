@@ -80,6 +80,20 @@ const QueryPorducts = new GraphQLObjectType({
     },
 });
 
+const QueryPorductsNum = new GraphQLObjectType({
+    name: 'QueryPorductsNum',
+    description: "查询分页产品",
+    fields: () => {
+        return ({
+            count: {
+                type: GraphQLInt, resolve(data) {
+                    return data.count;
+                }
+            },
+        })
+    },
+})
+
 module.exports = {
     query: {
         queryProducts: {
@@ -96,6 +110,15 @@ module.exports = {
                     })
             }
         },
+        queryProductNum: {
+            type: new GraphQLList(QueryPorductsNum),
+            description: '查询产品总数',
+            resolve: async function (source){
+                return await searchSql($sql.queryProductNum).then(async (result) => {
+                    return await result
+                })
+            }
+        }
     },
     mutation: {
 

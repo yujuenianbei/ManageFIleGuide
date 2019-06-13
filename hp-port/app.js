@@ -1,5 +1,6 @@
 var createError = require('http-errors');
 var express = require('express');
+var session = require('express-session');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
@@ -100,6 +101,15 @@ app.use(function (req, res, next) {
   // console.log(getClientIp(req));
   next();
 })
+
+app.use(session({
+  name: 'test',
+  secret: "123123",
+  cookie: ({ maxAge: 120 * 60000 }),
+  resave: true,
+  saveUninitialized: false
+}));
+
 
 app.use(logger('dev'));
 app.use(express.json());

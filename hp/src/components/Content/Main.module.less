@@ -416,6 +416,8 @@
 
         .productListProduct {
             width: 79%;
+            // min-width: 979px;
+            // max-width: 979px;
 
             .productListTitle {
                 display: flex;
@@ -518,6 +520,16 @@
                     .content {
                         width: @f;
                         min-height: 300px;
+                        position: relative;
+
+                        .filterProduct {
+                            position: absolute;
+                            margin-top: -40px;
+                            left: calc(~'100% - 195px');
+                            span{
+                                margin-right: @10;
+                            }
+                        }
 
                         .spin {
                             line-height: 550px;

@@ -76,3 +76,6 @@ port/config/dbConfig.js
 # 
 /reactpwa/build
 reactpwa/src/http.js
+
+
+/test

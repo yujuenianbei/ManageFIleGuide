@@ -4,13 +4,15 @@ import { connect } from 'react-redux';
 import classify from '@magento/venia-concept/esm/classify';
 import styles from './UserController.module.less';
 import { Link } from 'react-router-dom';
-import { deleteCartProduct, postCart, getUserCart } from '../../fetch/cart';
+import { deleteCartProduct, postCart, getUserCart, getQRcode } from '../../fetch/cart';
 import { Badge, Icon, InputNumber, Spin } from 'antd';
 
 class UserController extends PureComponent {
     state = {
         cartToggle: false,
-        userToggle: false
+        userToggle: false,
+        qrToggle: false,
+        uid_img: ''
     }
     componentDidMount() {
         getUserCart(this.afterFetchProduct);
@@ -22,15 +24,28 @@ class UserController extends PureComponent {
     }
     // 显示购物车
     showCart = () => {
-        this.setState({ cartToggle: !this.state.cartToggle, userToggle: false })
+        this.setState({ cartToggle: !this.state.cartToggle, userToggle: false, qrToggle: false })
     }
     // 显示用户
     showUser = () => {
-        this.setState({ userToggle: !this.state.userToggle, cartToggle: false })
+        this.setState({ userToggle: !this.state.userToggle, cartToggle: false, qrToggle: false })
+    }
+    // 显示二维码
+    showQr = () => {
+        this.setState({ qrToggle: !this.state.qrToggle, cartToggle: false, userToggle: false })
+        // getQRcode(this.loadQRcode)
+        this.loadQRcode()
+    }
+    // 加载二维码
+    loadQRcode = () => {
+        // let data = new Buffer(result).toString('base64');
+        // let base64 = 'data:image/png;base64,' + data;
+        // console.log(data, base64)
+        this.setState({ uid_img: "http://localhost:3004/loginByPhone?"+ new Date() }) 
     }
     // 收起所有状态
     hideToggle = () => {
-        this.setState({ userToggle: false, cartToggle: false })
+        this.setState({ userToggle: false, cartToggle: false, qrToggle: false })
     }
     signOut = () => {
         this.props.addProductInCart([]);
@@ -42,7 +57,7 @@ class UserController extends PureComponent {
     }
     // 请求购物车内容
     afterFetchProduct = (result) => {
-        if(result.data.queryUserCartProducts[0].state){
+        if (result.data.queryUserCartProducts[0].state) {
             let productInfos = [];
             let productNum = 0;
             const infos = Object.assign([], result.data.queryUserCartProducts);
@@ -231,32 +246,38 @@ class UserController extends PureComponent {
                                 </div>}
                             </div>
                         </li>
+                        <li>
+                            <Icon className={styles.userIcon} onClick={this.showQr} type="qrcode" title="扫码登录" />
+                            <div className={this.state.qrToggle ? styles.userAccount : styles.disno}>
+                                <img src={this.state.uid_img} />
+                            </div>
+                        </li>
                     </ul>
                 </div>
             </Fragment>
-        );
-    }
-}
+                );
+            }
+        }
 const mapStateToProps = (state) => {
     return {
-        state
-    };
-};
+                    state
+                };
+            };
 const mapDispatchToProps = (dispatch) => {
     return {
-        addProductNumInCart: (data) => { dispatch(Actions.productNumInCart(data)); },
-        addProductInCart: (data) => { dispatch(Actions.productInCart(data)); },
-        changeLoginstate: (data) => { dispatch(Actions.loginstate(data)); },
-        changeUsername: (data) => { dispatch(Actions.usernanme(data)); },
-        loadingOnHeader: (data) => { dispatch(Actions.loadingHeader(data)); },
-    }
-};
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(classify(styles)(UserController));
-
-
+                    addProductNumInCart: (data) => {dispatch(Actions.productNumInCart(data)); },
+        addProductInCart: (data) => {dispatch(Actions.productInCart(data)); },
+        changeLoginstate: (data) => {dispatch(Actions.loginstate(data)); },
+        changeUsername: (data) => {dispatch(Actions.usernanme(data)); },
+        loadingOnHeader: (data) => {dispatch(Actions.loadingHeader(data)); },
+            }
+        };
+        export default connect(
+            mapStateToProps,
+            mapDispatchToProps
+        )(classify(styles)(UserController));
+        
+        
         // var query = `mutation addToCart($userId: Int,$productId: Int, $productNum : Int){
         //     addToCart(userId: $userId,productId: $productId,productNum: $productNum){
         //         productId
