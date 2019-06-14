@@ -1,6 +1,6 @@
 // 获取二维码
 const getQRcode = (func) => {
-    fetch('http://localhost:3004/loginByPhone', {
+    fetch('http://localhost:3004/loadUid', {
         method: 'GET',
         mode: "cors",
     })
@@ -8,6 +8,40 @@ const getQRcode = (func) => {
         .then((result) => { func(result) }
     );
 }
+
+// verify
+const verifyQRcode = (func, uid) => {
+    fetch('http://localhost:3004/verify', {
+        method: 'POST',
+        mode: "cors",
+        headers: {
+            'content-type': 'application/json'
+        },
+        body: JSON.stringify({
+            uid,
+        })
+    })
+        .then(r => r.json())
+        .then((result) => { func(result) }
+    );
+}
+
+const deleteQRcode = (func, uid) => {
+    fetch('http://localhost:3004/delete', {
+        method: 'POST',
+        mode: "cors",
+        headers: {
+            'content-type': 'application/json'
+        },
+        body: JSON.stringify({
+            uid,
+        })
+    })
+        .then(r => r.json())
+        .then((result) => { func(result) }
+    );
+}
+
 
 
 // 获取用户购物车的信息
@@ -107,4 +141,4 @@ const deleteCartProduct = (id, func) => {
 
 
 
-export { deleteCartProduct, postCart, getUserCart, getQRcode }
+export { deleteCartProduct, postCart, getUserCart, getQRcode, verifyQRcode, deleteQRcode }

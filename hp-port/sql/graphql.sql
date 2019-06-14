@@ -10,6 +10,7 @@ SET NAMES utf8;
 CREATE TABLE IF NOT EXISTS user
 (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `uuid` varchar(255) NOT NULL,
   `name` varchar(255) DEFAULT NULL,
   `sex` varchar(255) DEFAULT '1',
   `phoneCode` int(6) DEFAULT NULL,
@@ -102,12 +103,34 @@ CREATE TABLE IF NOT EXISTS cartItem
   PRIMARY KEY (`id`)
 ) ENGINE = INNODB CHARACTER SET utf8;
 
+-- 二维码登录
+CREATE TABLE IF NOT EXISTS qrcode
+(
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `uuid` varchar(255) DEFAULT NULL,
+  `uid` varchar(255) NOT NULL,
+  `state`bigint(20) DEFAULT NULL,
+  `createTime` datetime NOT NULL,
+  `updateTime` datetime NOT NULL,
+  UNIQUE (`uid`),
+  PRIMARY KEY (`id`)
+) ENGINE = INNODB CHARACTER SET utf8;
+
+
+-- INSERT INTO qrcode(uid,state)  
+-- SELECT 'b8466408-20b7-460c-8907-9fbca82eaba0', 2
+-- FROM qrcode  
+-- WHERE NOT EXISTS(  
+--       SELECT *  
+--       FROM qrcode  
+--       WHERE uid = 'b8466408-20b7-460c-8907-9fbca82eaba1'
+-- );
 
 -- ----------------------------
 --  Records of `user`
 -- ----------------------------
 -- BEGIN;
--- INSERT INTO `user` VALUES (1, 'admin', '1', 086, '18966823501', 'wangad@shinetechchina.com', '123456', 'shinetech', NOW(), NOW());
+-- INSERT INTO `user` VALUES (1, REPLACE(UUID(), "-", ""), 'admin', '1', 086, '18966823501', 'wangad@shinetechchina.com', '123456', 'shinetech',NOW(), NOW());
 -- COMMIT;
 -- INSERT INTO `banner` VALUES (1, 'PAVILION星系列','https://media.hpstore.cn/wysiwyg/CN_OLS/banner/public/pavilon_0219_pc_nx.jpg', '/productList/', NOW(), NOW());
 -- INSERT INTO `banner` VALUES (2, '星14微边框轻薄本','https://media.hpstore.cn/wysiwyg/CN_OLS/banner/public/XINGPC-20190508.jpg', '/productList/', NOW(), NOW());

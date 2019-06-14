@@ -162,7 +162,6 @@
                 background-color: @white;
                 border: @1 solid @border;
                 right: 0;
-                width: 300px;
                 padding: 20px 20px;
 
                 &:before {
@@ -208,11 +207,19 @@
                         }
                     }
                 }
+
+                .qrcodeState {
+                    font-size: 1.3rem;
+                }
             }
 
-            .userAccountNoLogin {}
+            .userAccountNoLogin {
+                width: 300px;
+            }
 
             .userAccountLogin {
+                width: 300px;
+                
                 h5 {
                     font-size: 1.5rem;
                     line-height: 1.5rem;
@@ -245,4 +252,8 @@
         }
     }
 
+}
+
+.qrcode {
+    width: 120px;
 }

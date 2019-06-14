@@ -7,7 +7,8 @@ var user = {
     queryById: 'select * from user where id=?',
     queryByUsername: 'select * from user where name=? ',
     queryByEmail: 'select * from user where email=? ',
-    insertUser:'INSERT INTO user(name, email, phonecode, phone, password, createTime, updateTime) VALUES(?,?,?,?,?,NOW(), NOW())',
+
+    insertUser:'INSERT INTO user(uuid, name, email, phonecode, phone, password, createTime, updateTime) VALUES(REPLACE(UUID(),"-",""),?,?,?,?,?,NOW(), NOW())',
     // queryAll: 'select * from user',
     queryAllUser:"SELECT * FROM `user`",
     addUser:'INSERT INTO user( name, sex, intro) VALUES(?,?,?)',
@@ -18,6 +19,12 @@ var user = {
     // 用户
     updateUserLoginTime: "update user set updateTime=? where id=?",
 
+    // 用户扫描的状态
+    queryUserUid: "select * from user where uuid=?",
+    inserUidQr: "INSERT IGNORE INTO qrcode(uid, uuid, state, createTime, updateTime) VALUES(?,?,?,NOW(),NOW())",
+    searchUidState: "SELECT * FROM `qrcode` where uid= ? ",
+    updateUidState: "UPDATE qrcode set uuid=?, state=? where uid=?",
+    deleteUidState: "DELETE FROM `qrcode` where uid= ? ",
     //购物车
 
     // 获取指定用户的购物车产品信息

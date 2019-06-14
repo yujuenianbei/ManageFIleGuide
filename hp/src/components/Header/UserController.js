@@ -4,15 +4,18 @@ import { connect } from 'react-redux';
 import classify from '@magento/venia-concept/esm/classify';
 import styles from './UserController.module.less';
 import { Link } from 'react-router-dom';
-import { deleteCartProduct, postCart, getUserCart, getQRcode } from '../../fetch/cart';
+import { deleteCartProduct, postCart, getUserCart, getQRcode, verifyQRcode, deleteQRcode } from '../../fetch/cart';
 import { Badge, Icon, InputNumber, Spin } from 'antd';
 
+let timeout, interval;
 class UserController extends PureComponent {
     state = {
         cartToggle: false,
         userToggle: false,
         qrToggle: false,
-        uid_img: ''
+        uid_img: '',
+        qrcode: '',
+        scanner: '请扫描二维码'
     }
     componentDidMount() {
         getUserCart(this.afterFetchProduct);
@@ -33,15 +36,91 @@ class UserController extends PureComponent {
     // 显示二维码
     showQr = () => {
         this.setState({ qrToggle: !this.state.qrToggle, cartToggle: false, userToggle: false })
-        // getQRcode(this.loadQRcode)
-        this.loadQRcode()
+        if (this.state.qrToggle) {
+            clearInterval(interval);
+            clearTimeout(timeout);
+        } else {
+            this.loadQRcode();
+        }
     }
     // 加载二维码
     loadQRcode = () => {
-        // let data = new Buffer(result).toString('base64');
-        // let base64 = 'data:image/png;base64,' + data;
-        // console.log(data, base64)
-        this.setState({ uid_img: "http://localhost:3004/loginByPhone?"+ new Date() }) 
+        this.setState({ uid_img: "http://localhost:3004/loginByPhone?" + new Date() })
+        timeout = setTimeout(() => {
+            getQRcode(this.verifying)
+        }, 100)
+    }
+    // 校验扫码状态
+    verifying = (c) => {
+        this.setState({ qrcode: c.reqUid.hex }, () => {
+            interval = setInterval(() => {
+                verifyQRcode(this.scanState, this.state.qrcode)
+            }, 1000)
+        })
+    }
+
+    // 扫码状态
+    scanState = (c) => {
+        if (c.state === 1) {
+            this.setState({ scanner: "请扫描二维码" })
+        } else if (c.state === 2) {
+            this.setState({ scanner: "请在手机上确认登录" })
+        } else if (c.state === 3) {
+            this.setState({ scanner: "已登录" });
+            setTimeout(() => {
+                this.login(c.uuid)
+                deleteQRcode(this.deleteQrcode, c.uid)
+            }, 500)
+        } else if (c.state === 4) {
+            this.setState({ scanner: "请重新扫描二维码" })
+        }
+    }
+
+    // 触发登录
+    login = (uuid) => {
+        var query = `mutation loginUuid($uuid: String){
+            loginUuid(uuid: $uuid){
+                id
+                name,
+                state,
+                token
+            } 
+          }
+          `;
+        fetch('http://localhost:3004/graphql', {
+            method: 'POST',
+            mode: "cors",
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'login': localStorage.getItem('loginState'),
+                'token': localStorage.getItem('token')
+            },
+            body: JSON.stringify({
+                query,
+                variables: {
+                    uuid: uuid,
+                }
+            })
+        })
+            .then(r => r.json())
+            .then(result => {
+                if (result.data.loginUuid && result.data.loginUuid[0].state === "1") {
+                    clearInterval(interval);
+                    clearTimeout(timeout);
+                    localStorage.setItem("token", result.data.loginUuid[0].token);
+                    localStorage.setItem("id", result.data.loginUuid[0].id);
+                    this.props.changeLoginstate(1);
+                    this.props.changeUsername(result.data.loginUuid[0].name)
+                    this.hideToggle();
+                } else {
+                    this.openNotification()
+                }
+            });
+    }
+    // 
+    deleteQrcode = (r) => {
+        console.log(r)
     }
     // 收起所有状态
     hideToggle = () => {
@@ -246,38 +325,41 @@ class UserController extends PureComponent {
                                 </div>}
                             </div>
                         </li>
-                        <li>
-                            <Icon className={styles.userIcon} onClick={this.showQr} type="qrcode" title="扫码登录" />
-                            <div className={this.state.qrToggle ? styles.userAccount : styles.disno}>
-                                <img src={this.state.uid_img} />
-                            </div>
-                        </li>
+                        {!this.props.state.user.loginState &&
+                            <li>
+                                <Icon className={styles.userIcon} onClick={this.showQr} type="qrcode" title="扫码登录" />
+                                <div className={this.state.qrToggle ? styles.userAccount : styles.disno}>
+                                    <img className={styles.qrcode} src={this.state.uid_img} />
+                                    <span className={styleMedia.qrcodeState}>{this.state.scanner}</span>
+                                </div>
+                            </li>
+                        }
                     </ul>
                 </div>
             </Fragment>
-                );
-            }
-        }
+        );
+    }
+}
 const mapStateToProps = (state) => {
     return {
-                    state
-                };
-            };
+        state
+    };
+};
 const mapDispatchToProps = (dispatch) => {
     return {
-                    addProductNumInCart: (data) => {dispatch(Actions.productNumInCart(data)); },
-        addProductInCart: (data) => {dispatch(Actions.productInCart(data)); },
-        changeLoginstate: (data) => {dispatch(Actions.loginstate(data)); },
-        changeUsername: (data) => {dispatch(Actions.usernanme(data)); },
-        loadingOnHeader: (data) => {dispatch(Actions.loadingHeader(data)); },
-            }
-        };
-        export default connect(
-            mapStateToProps,
-            mapDispatchToProps
-        )(classify(styles)(UserController));
-        
-        
+        addProductNumInCart: (data) => { dispatch(Actions.productNumInCart(data)); },
+        addProductInCart: (data) => { dispatch(Actions.productInCart(data)); },
+        changeLoginstate: (data) => { dispatch(Actions.loginstate(data)); },
+        changeUsername: (data) => { dispatch(Actions.usernanme(data)); },
+        loadingOnHeader: (data) => { dispatch(Actions.loadingHeader(data)); },
+    }
+};
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(classify(styles)(UserController));
+
+
         // var query = `mutation addToCart($userId: Int,$productId: Int, $productNum : Int){
         //     addToCart(userId: $userId,productId: $productId,productNum: $productNum){
         //         productId
