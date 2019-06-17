@@ -62,7 +62,10 @@ var user = {
     queryBanner: "SELECT * FROM banner",
     queryBrefIntro: "SELECT * FROM brefIntro",
     queryProductListBanner: "SELECT * FROM productListBanner",
-    queryProduct: "SELECT * FROM product where type= ? limit 4",
+    queryProductType: "SELECT * FROM product where type= ? limit 4",
+
+    // 查询产品详情
+    queryProductInfo: "SELECT * FROM product where id= ?",
     // 获取所有产品的类型
     queryProductTypeList: "SELECT id,( SELECT GROUP_CONCAT(c.typeName) FROM `productType` AS c WHERE FIND_IN_SET(c.id,s.type) ) FROM `product` AS s",
     

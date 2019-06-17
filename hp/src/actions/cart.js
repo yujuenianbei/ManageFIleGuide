@@ -2,6 +2,10 @@ export const PRODUCTINFO = 'PRODUCTINFO';
 export const PRODUCTNUM = 'PRODUCTNUM';
 export const USERINFO = 'USERINFO';
 export const EXPRESSINCART = 'EXPRESSINCART';
+
+export const CARTERROR = 'CARTERROR';
+export const MESSAGEPRODUCT = 'MESSAGEPRODUCT';
+export const MESSAGEEXPRESS = 'MESSAGEEXPRESS';
 // 购物车的产品数量
 export function productNumInCart(data) {
     return {
@@ -29,6 +33,30 @@ export function userinfoInCart(data) {
 export function expressInCart(data) {
   return {
     type: EXPRESSINCART,
+    data
+  }
+}
+
+// 修改错误提示状态
+export function cartError(data) {
+  return {
+    type: CARTERROR,
+    data
+  }
+}
+
+// 修改产品错误信息
+export function messageInProduct(data) {
+  return {
+    type: MESSAGEPRODUCT,
+    data
+  }
+}
+
+// 修改配送错误提示
+export function messageInExpress(data) {
+  return {
+    type: MESSAGEEXPRESS,
     data
   }
 }

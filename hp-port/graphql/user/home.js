@@ -203,7 +203,7 @@ module.exports = {
             },
             resolve: async function (root, args) {
                 // console.log(args);
-                return await searchSql($sql.queryProduct, [args.id])
+                return await searchSql($sql.queryProductType, [args.id])
                 // if(args.id === 1){
                 //     return await searchSql($sql.queryProduct, [args.id])
                 // } else if(args.id === 2){

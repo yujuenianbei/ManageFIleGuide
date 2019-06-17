@@ -1,10 +1,13 @@
 import React, { Component, Fragment } from 'react';
 import classify from '@magento/venia-concept/esm/classify';
+import * as Actions from '../../actions/index';
+import { connect } from 'react-redux';
 import styles from './Main.module.less';
 import Crumbs from '../Crumbs';
 import ProductImg from '../ProductImg';
 import ProductDetailInfo from '../ProductDetailInfo';
 import ProductWatched from '../ProductWtched';
+import { getProductInfo } from '../../fetch/product'
 
 import Product from '../../data/product';
 class Main extends Component {
@@ -17,17 +20,29 @@ class Main extends Component {
     }
     componentDidMount() {
         window.addEventListener('scroll', this.handleScroll) //监听滚动
+        const productId = parseInt(this.props.match.params.id);
+        getProductInfo(productId, this.setProductInfo)
     }
-    componentWillUnmount(){
+    componentWillUnmount() {
         window.removeEventListener('scroll', this.handleScroll) //监听滚动
     }
     handleScroll = (e) => {
-        console.log(document.documentElement.scrollTop)
         if (document.documentElement.scrollTop < 990) {
             this.setState({ detailHeaderFixed: false });
         } else {
             this.setState({ detailHeaderFixed: true });
         }
+    }
+
+    setProductInfo = (result) => {
+        const data = result.data.queryProduct[0];
+        this.props.changeProductImg(data.img);
+        this.props.changeProductName(data.productName);
+        this.props.changeProductFeatrues(data.featrues);
+        this.props.changeProductPromotionMessage(data.promotionMessage);
+        this.props.changeProductPromotionMessageSecond(data.promotionMessageSecond);
+        this.props.changeProductUsedPrice(data.usedPrice);
+        this.props.changeProductNowPrice(data.nowPrice);
     }
 
     changeProductDetails = (index) => {
@@ -57,13 +72,13 @@ class Main extends Component {
                 <Crumbs links={[{
                     link: '/productList',
                     name: '家用'
-                },{
+                }, {
                     link: '/',
-                    name: '惠普暗影精灵4代- 15-dc0006tx 15.6 英寸游戏笔记本电脑'
+                    name: this.props.state.product.productName
                 }]} />
                 <div className={styles.product}>
                     <div className={styles.productImg}>
-                        <h1>{Product.productName}</h1>
+                        <h1>{this.props.state.product.productName}</h1>
                         <ProductImg />
                     </div>
                     <div className={styles.productDetailInfo}>
@@ -91,11 +106,11 @@ class Main extends Component {
                                 })}
                             </div>
                             <div className={styles.moreContent}>
-                                <ul>
-                                    {Product.productFirst.moreContent.map((item, index) => {
+                                {this.props.state.product.productFeatrues && <ul>
+                                    {JSON.parse(this.props.state.product.productFeatrues).map((item, index) => {
                                         return <li key={index + "productFirst_moreContent"}>{item}</li>
                                     })}
-                                </ul>
+                                </ul>}
                             </div>
                         </div>
                         <div className={this.state.type === 1 ? styles.active + ' ' + styles.second : styles.common}>
@@ -361,4 +376,23 @@ class Main extends Component {
         );
     }
 }
-export default classify(styles)(Main);
+const mapStateToProps = (state) => {
+    return {
+        state
+    };
+};
+const mapDispatchToProps = (dispatch) => {
+    return {
+        changeProductImg: (data) => { dispatch(Actions.productImg(data)); },
+        changeProductName: (data) => { dispatch(Actions.productName(data)); },
+        changeProductFeatrues: (data) => { dispatch(Actions.productFeatrues(data)); },
+        changeProductPromotionMessage: (data) => { dispatch(Actions.productPromotionMessage(data)); },
+        changeProductPromotionMessageSecond: (data) => { dispatch(Actions.productPromotionMessageSecond(data)); },
+        changeProductUsedPrice: (data) => { dispatch(Actions.productUsedPrice(data)); },
+        changeProductNowPrice: (data) => { dispatch(Actions.productNowPrice(data)); },
+    }
+};
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(classify(styles)(Main));

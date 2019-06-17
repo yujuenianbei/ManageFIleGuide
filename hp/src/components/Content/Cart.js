@@ -19,7 +19,7 @@ class CheckoutCart extends Component {
         rightTop: 0,
         totalCost: 0,
         productMayLike: Product.productMayLike,
-        productWatched: Product.productWatched
+        productWatched: Product.productWatched,
     }
     countCost = (data) => {
         let cost = 0;
@@ -31,6 +31,9 @@ class CheckoutCart extends Component {
         return false;
     }
     componentWillMount() {
+        this.props.changeCartError(false)
+        this.props.changeMessageInProduct('');
+        this.props.changeMessageInExpress('');
         this.countCost(this.props.state.cart.productInfo);
     }
     componentDidMount() {
@@ -57,8 +60,6 @@ class CheckoutCart extends Component {
     addNum = (id, input) => {
         this.refs[input].value = ++this.refs[input].value;
         const value = parseInt(this.refs[input].value)
-
-
         this.props.loadingOnHeader(true)
         postCart(id, value, this.afterChangeNum);
 
@@ -79,11 +80,11 @@ class CheckoutCart extends Component {
     // 减少数量
     reduceNum = (id, input) => {
         this.refs[input].value = --this.refs[input].value;
-        console.log(this.refs[input].value)
+        // console.log(this.refs[input].value)
         const value = parseInt(this.refs[input].value)
-
         this.props.loadingOnHeader(true)
         postCart(id, value, this.afterChangeNum);
+
         // const productList = Object.assign([], this.props.state.cart.productInfo);
         // let num = 0;
         // productList.map((item, index) => {
@@ -106,9 +107,9 @@ class CheckoutCart extends Component {
         } else {
             value = parseInt(this.refs[input].value)
         }
-
         this.props.loadingOnHeader(true)
         postCart(id, value, this.afterChangeNum);
+
         // const productList = Object.assign([], this.props.state.cart.productInfo);
         // let num = 0;
         // productList.map((item, index) => {
@@ -163,6 +164,8 @@ class CheckoutCart extends Component {
             this.props.addProductInCart(productList);
             this.countCost(productList);
             this.props.loadingOnHeader(false);
+            this.changeError();
+            this.toCheckout();
         } else {
             console.log(1);
         }
@@ -206,6 +209,39 @@ class CheckoutCart extends Component {
         }
     }
 
+    // 跳转checkout
+    toCheckout = () => {
+        const productLength = this.props.state.cart.productInfo.length;
+        const express = this.props.state.cart.express;
+        this.changeError();
+        if (productLength && express) {
+            this.props.history.push('/onestepcheckout');
+            this.props.changeMessageInProduct('');
+            this.props.changeMessageInExpress('');
+        } else if (!productLength && express) {
+            this.props.changeMessageInProduct('请添加产品');
+            this.props.changeMessageInExpress('');
+        } else if (productLength && !express) {
+            this.props.changeMessageInProduct('');
+            this.props.changeMessageInExpress('请选择配送方式');
+        } else {
+            this.props.changeMessageInProduct('请添加产品');
+            this.props.changeMessageInExpress('请选择配送方式');
+        }
+    }
+
+    // change cartError
+    changeError = () => {
+        const productLength = this.props.state.cart.productInfo.length;
+        const express = this.props.state.cart.express;
+        if (productLength && express) {
+            this.props.changeCartError(false)
+        } else {
+            this.props.changeCartError(true)
+        }
+    }
+
+
     render() {
         let errors;
         const { getFieldError, getFieldDecorator } = this.props.form;
@@ -228,8 +264,6 @@ class CheckoutCart extends Component {
                             <Fragment>
                                 <div className={styles.form} ref={ref => { this.form = ref }}>
                                     <Message type="warn">立即结账并获得该订单的4649积分。 这仅适用于注册用户，并且在用户登录时可能会有所不同。</Message>
-                                    {/* <Message type="success">6666</Message>
-                                    <Message type="alert">6666</Message> */}
                                     <div className={styles.productList}>
                                         {this.props.state.cart.productInfo.map((item, index) => {
                                             return <div className={styles.product} key={index + "cart_produc_123asdas"}>
@@ -240,7 +274,8 @@ class CheckoutCart extends Component {
                                                 <div className={styles.productInfo}>
                                                     <Link to={'/productInfo/' + item.id} className={styles.productName}>{item.productName}</Link>
                                                     <p className={styles.id}>产品编号：{item.id}</p>
-                                                    <span className={styles.promotion}>{item.promotionMessage}</span>
+                                                    <p className={styles.promotion}>{item.promotionMessage}</p>
+                                                    <p className={styles.promotion}>{item.productPromotionMessageSecond}</p>
                                                 </div>
                                                 <div className={styles.productNum}>
                                                     <input type="text" ref={index + "input"} className={styles.productNumber} value={item.num} onChange={() => this.changeNum(item.id, index + "input")} />
@@ -267,6 +302,10 @@ class CheckoutCart extends Component {
                                             expandIconPosition={"right"}
                                             expandIcon={({ isActive }) => <Icon type={isActive ? "minus" : "plus"} />}>
                                             <Panel header="配送方式" key="1" className={styles.panel}>
+                                                {
+                                                    this.props.state.cart.cartError && this.props.state.cart.messageExpress &&
+                                                    <Message type="warn">{this.props.state.cart.messageExpress}</Message>
+                                                }
                                                 <Radio.Group onChange={this.onChangeExpress} value={this.props.state.cart.express}>
                                                     <Radio style={radioStyle} value={1}>
                                                         菜鸟配送
@@ -319,17 +358,23 @@ class CheckoutCart extends Component {
                                         <div className={styles.infoTitle}>总金额</div>
                                         <div className={styles.infoPrice}>￥{this.state.totalCost}</div>
                                     </div>
-                                    <Link to={"/onestepcheckout"}>
-                                        <button className={styles.confirmDiscountsBtn + " " + styles.prime}>
-                                            进行结算
+                                    {/* <Link to={"/onestepcheckout"}> */}
+                                    <button className={styles.confirmDiscountsBtn + " " + styles.prime} onClick={this.toCheckout}>
+                                        进行结算
                                         </button>
-                                    </Link>
+                                    {/* </Link> */}
                                 </div>
                             </Fragment>
                         }
-                        {this.props.state.cart.productInfo.length === 0 &&
+                        {(this.props.state.cart.productInfo.length === 0 && this.props.state.user.loginState === 1) &&
                             <Fragment>
+                                <Message type="warn">请添加产品</Message>
                                 <Link to={'/'}>点击此处添加产品</Link>
+                            </Fragment>
+                        }
+                        {(this.props.state.cart.productInfo.length === 0 && this.props.state.user.loginState === 0) &&
+                            <Fragment>
+                                <Message type="warn">请先<Link to={'/account/login'}>登录</Link>后再添加产品</Message>
                             </Fragment>
                         }
                     </div>
@@ -378,6 +423,9 @@ const mapDispatchToProps = (dispatch) => {
         addProductInCart: (data) => { dispatch(Actions.productInCart(data)); },
         loadingOnHeader: (data) => { dispatch(Actions.loadingHeader(data)); },
         changeExpress: (data) => { dispatch(Actions.expressInCart(data)); },
+        changeCartError: (data) => { dispatch(Actions.cartError(data)); },
+        changeMessageInProduct: (data) => { dispatch(Actions.messageInProduct(data)); },
+        changeMessageInExpress: (data) => { dispatch(Actions.messageInExpress(data)); },
     }
 };
 export default connect(

@@ -1,28 +1,61 @@
 @import "../../less/color.less";
 @import "../../less/font.less";
 @import "../../less/button.less";
-.deliveryProduct{
-    display: flex;
+
+.deliveryProduct {
     margin-bottom: @20;
-    .productImg{
+    min-height: 10px;
+    overflow: hidden;
+
+    .productImg {
         width: 75px;
         margin: 10px;
-        img{
+        float: left;
+
+        img {
             width: @f;
         }
     }
-    .productInfo{
+
+    .productInfo {
         width: 50%;
-        .message{
+        float: left;
+
+        .message {
             color: @red;
         }
     }
-    .num{
-        width: 20%;
+
+    .num {
+        float: right;
+        width: 15%;
         text-align: center;
     }
-    .price{
+
+    .price {
+        float: right;
         width: calc(~' 30% - 75px');
         text-align: center;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .deliveryProduct {
+        min-height: 10px;
+        overflow: hidden;
+
+        .productImg {
+            margin: 0 10px;
+        }
+
+        .productInfo {
+            width: 100%;
+        }
+
+        .num {}
+
+        .price {
+            width: 75px;
+        }
     }
 }

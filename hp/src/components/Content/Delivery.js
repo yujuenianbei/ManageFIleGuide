@@ -35,7 +35,7 @@ class Delivery extends Component {
         const data = this.product.clientHeight + this.state.rightTop
         console.log(document.documentElement.scrollTop - 94 + this.product.clientHeight)
         if (document.documentElement.scrollTop >= 94) {
-            console.log(document.documentElement.scrollTop - 94 + this.product.clientHeight, this.form.clientHeight, )
+            console.log(document.documentElement.scrollTop - 94 + this.product.clientHeight, this.form.clientHeight)
             if (document.documentElement.scrollTop - 94 + 145 + this.product.clientHeight >= this.form.clientHeight) {
 
             } else {
@@ -181,6 +181,7 @@ class Delivery extends Component {
                         </div>
                         <div className={styles.leftContent + " " + styles.deliveryAddress}>
                             <h2>安全付款方式</h2>
+                            {this.state.paymentMessage && <Message type="warn">请指定付款方式。</Message>}
                             <RadioGroup onChange={this.changePaymentMethod} value={this.state.paymentMethod}>
                                 <Radio style={radioStyle} value={1}>
                                     货到付款
@@ -192,7 +193,6 @@ class Delivery extends Component {
                                     银行转账
                                 </Radio>
                             </RadioGroup>
-                            {this.state.paymentMessage && <Message type="warn">请指定付款方式。</Message>}
                         </div>
                         <div className={styles.leftContent + " " + styles.deliveryAddress}>
                             <h2>发票设置</h2>
@@ -212,7 +212,7 @@ class Delivery extends Component {
                                             }
                                             {this.state.billType === 2 &&
                                                 <Fragment>
-                                                    <input placeholder="公司发票抬头"></input>
+                                                    <input placeholder="公司发票抬头"></input><br/>
                                                     <input placeholder="纳税人识别号"></input>
                                                 </Fragment>
                                             }

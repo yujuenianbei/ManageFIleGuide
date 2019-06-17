@@ -195,10 +195,11 @@
                 }
 
                 .totalCount {
-                    display: flex;
+                    display: block;
 
                     .infoTitle {
                         width: 50%;
+                        float: left;
                         padding: @10 @10 @10 0;
                         font-size: 2rem;
                         font-weight: 700;
@@ -206,6 +207,7 @@
 
                     .infoPrice {
                         width: 50%;
+                        float: right;
                         padding: @10 @10 @10 0;
                         font-size: 2rem;
                         font-weight: 700;
@@ -246,6 +248,100 @@
                 display: flex;
                 flex-wrap: wrap;
 
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .checkoutcart {
+        padding: 0 15px;
+
+        .cart {
+            .cartContent {
+                .form {
+                    .productList {
+                        .product {
+                            .productImg {
+                                width: 65px;
+
+                                img {
+                                    width: 65px;
+                                    height: 65px;
+                                }
+                            }
+
+                            .productInfo {
+                                width: 250px;
+
+                                .productName {
+                                    font-size: 1.5rem;
+                                }
+
+                                .promotion {
+                                    font-size: 1.4rem;
+                                }
+                            }
+
+                            .productNum {
+                                width: 75px;
+                                padding: 0 @5;
+
+                                .productNumber {
+                                    width: @30;
+                                    height: 75px;
+                                    padding: 0 @2;
+                                }
+
+                                .numControll {
+                                    width: @30;
+
+                                    .albedo {
+                                        height: @35;
+                                        line-height: 24px;
+                                        width: @30;
+                                        padding: 0;
+                                        text-align: center;
+                                    }
+                                }
+                            }
+
+                            .totalNum {
+                                min-width: 105px;
+
+                                h3 {
+                                    font-size: 1.6rem;
+                                }
+                            }
+                        }
+                    }
+
+                    .collapse {
+                        width: @f;
+
+                        .panel {
+                            .inputs {
+                                .inputsContent {
+                                    display: flex;
+                                    flex-wrap: wrap;
+
+                                    .confirmDiscountsBtn {
+                                        font-size: 1.4rem;
+                                    }
+                                }
+                            }
+
+                        }
+                    }
+                }
+
+                .cartInfo {
+                    .totalCount {
+                        .infoPrice {
+                            float: none;
+                        }
+                    }
+                }
             }
         }
     }

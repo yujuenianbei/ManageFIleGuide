@@ -80,6 +80,61 @@ const QueryPorducts = new GraphQLObjectType({
     },
 });
 
+// 查询产品详情
+const QueryPorduct = new GraphQLObjectType({
+    name: 'QueryPorduct',
+    description: "查询产品详情",
+    fields: () => {
+        return ({
+            id: {
+                type: GraphQLInt, resolve(data) {
+                    return data.id;
+                }
+            },
+            productName: {
+                type: GraphQLString, resolve(data) {
+                    return data.productName;
+                }
+            },
+            type: {
+                type: GraphQLInt, resolve(data) {
+                    return data.type;
+                }
+            },
+            img: {
+                type: GraphQLString, resolve(data) {
+                    return data.img;
+                }
+            },
+            promotionMessage: {
+                type: GraphQLString, resolve(data) {
+                    return data.promotionMessage;
+                }
+            },
+            featrues: {
+                type: GraphQLString, resolve(data) {
+                    return data.featrues;
+                }
+            },
+            promotionMessageSecond: {
+                type: GraphQLString, resolve(data) {
+                    return data.promotionMessageSecond;
+                }
+            },
+            usedPrice: {
+                type: GraphQLInt, resolve(data) {
+                    return data.usedPrice;
+                }
+            },
+            nowPrice: {
+                type: GraphQLInt, resolve(data) {
+                    return data.nowPrice;
+                }
+            }
+        });
+    },
+});
+
 const QueryPorductsNum = new GraphQLObjectType({
     name: 'QueryPorductsNum',
     description: "查询分页产品",
@@ -105,6 +160,19 @@ module.exports = {
             },
             resolve: async function (source, { start, size }) {
                 return await searchSql($sql.queryProductByPage, [start, size])
+                    .then(async (result) => {
+                            return await result
+                    })
+            }
+        },
+        queryProduct: {
+            type: new GraphQLList(QueryPorduct),
+            description: '查询产品详情',
+            args: {
+                id: { type: GraphQLInt }
+            },
+            resolve: async function (source, { id }) {
+                return await searchSql($sql.queryProductInfo, [id])
                     .then(async (result) => {
                             return await result
                     })

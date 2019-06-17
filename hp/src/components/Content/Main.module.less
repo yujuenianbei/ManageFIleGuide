@@ -32,6 +32,12 @@
                 width: 100%;
             }
         }
+
+        @media screen and (max-width: 768px) {
+            li {
+                width: 50%;
+            }
+        }
     }
 }
 
@@ -95,6 +101,12 @@
             min-height: 700px;
             text-align: center;
             line-height: 700px;
+        }
+    }
+
+    @media screen and (max-width: 768px) {
+        .productList {
+            padding: 0 @20;
         }
     }
 }
@@ -526,7 +538,8 @@
                             position: absolute;
                             margin-top: -40px;
                             left: calc(~'100% - 195px');
-                            span{
+
+                            span {
                                 margin-right: @10;
                             }
                         }

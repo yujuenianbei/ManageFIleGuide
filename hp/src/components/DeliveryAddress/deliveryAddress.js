@@ -103,7 +103,6 @@ class DeliveryAddress extends Component {
                         }],
                     })(
                         <select className={(errors = getFieldError('phone') || getFieldError('pin')) ? styles.userInputPhonePin_error : styles.phonePin}>
-                            <option value=""></option>
                             <option value="086">086</option>
                         </select>
                     )}

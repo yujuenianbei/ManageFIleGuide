@@ -25,7 +25,7 @@ const verifyQRcode = (func, uid) => {
         .then((result) => { func(result) }
     );
 }
-
+// 删除二维码
 const deleteQRcode = (func, uid) => {
     fetch('http://localhost:3004/delete', {
         method: 'POST',
@@ -41,7 +41,6 @@ const deleteQRcode = (func, uid) => {
         .then((result) => { func(result) }
     );
 }
-
 
 
 // 获取用户购物车的信息
@@ -121,7 +120,7 @@ const deleteCartProduct = (id, func) => {
     fetch('http://localhost:3004/graphql', {
         method: 'POST',
         mode: "cors",
-        headers: {
+        headers: { 
             'Content-Type': 'application/json',
             'Accept': 'application/json',
             'login': localStorage.getItem('loginState'),

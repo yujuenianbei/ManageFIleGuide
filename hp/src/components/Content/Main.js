@@ -110,17 +110,17 @@ class Main extends PureComponent {
                     <ul className={styles.promise_ul}>
                         <li>
                             <Icon className={styles.promise_icon}>search</Icon>
-                            <h4>专属客服</h4><br />
+                            <h4>专属客服</h4>
                             <span className={styles.promise_info}>致电 <a href="tel:400-820-1015">400-820-1015</a></span>
                         </li>
                         <li>
                             <Icon className={styles.promise_icon}>search</Icon>
-                            <h4>极速发货</h4><br />
+                            <h4>极速发货</h4>
                             <span className={styles.promise_info}>多仓直发</span>
                         </li>
                         <li>
                             <Icon className={styles.promise_icon}>search</Icon>
-                            <h4>快捷支付</h4><br />
+                            <h4>快捷支付</h4>
                             <span className={styles.promise_info}>多种支付方式</span>
                         </li>
                     </ul>

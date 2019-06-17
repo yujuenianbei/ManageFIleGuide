@@ -60,4 +60,42 @@ const getProductsByPage = (start, size, func) => {
         .then((result) => { func(result) });
 }
 
-export { getProductsNum, getProductsByPage }
+
+const getProductInfo = (id, func) => {
+  const query = `query queryProduct($id: Int){
+      queryProduct(id: $id){
+        id
+        img
+        productName
+        promotionMessage
+        featrues
+        promotionMessageSecond
+        usedPrice
+        nowPrice
+      }
+    }`;
+
+    fetch('http://localhost:3004/graphql', {
+        method: 'POST',
+        mode: "cors",
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+        },
+        body: JSON.stringify({
+            query,
+            variables: {
+                "id": id,
+            }
+        })
+    })
+        .then(r => r.json())
+        .then((result) => { func(result) });
+}
+
+
+
+
+
+
+export { getProductsNum, getProductsByPage, getProductInfo }

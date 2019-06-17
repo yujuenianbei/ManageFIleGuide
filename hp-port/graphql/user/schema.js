@@ -26,7 +26,7 @@ const Query=new GraphQLObjectType({
         account.query,
         cart.query,
         userSchema.query,
-        courseSchema.query,
+        // courseSchema.query,
         homeSchema.query,
         product.query
     )),

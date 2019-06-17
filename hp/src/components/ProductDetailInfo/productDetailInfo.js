@@ -1,4 +1,6 @@
 import React, { Component, Fragment } from 'react';
+import * as Actions from '../../actions/index';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import classify from '@magento/venia-concept/esm/classify';
 import styles from './productDetailInfo.module.less';
@@ -6,6 +8,8 @@ import Icon from '@material-ui/core/Icon';
 import SelectCity from '../SelectCity';
 class ProductDetailInfo extends Component {
     render() {
+        const spreadPrice = this.props.state.product.productUsedPrice - this.props.state.product.productNowPrice;
+        const spreadPricePercent = ((this.props.state.product.productUsedPrice - this.props.state.product.productNowPrice)* 100 /this.props.state.product.productUsedPrice).toFixed(0)
         return (
             <Fragment>
                 <div className={styles.productDetailInfo_ad}>
@@ -52,11 +56,11 @@ class ProductDetailInfo extends Component {
                 </div>
                 <div className={styles.cost}>
                     <div className={styles.suggest}>
-                        <span className={styles.suggestCost}>厂商指导价 <span className={styles.usedSuggestCost}>￥ 6499</span></span>
-                        <span className={styles.nowCost}>￥6099</span>
+                        <span className={styles.suggestCost}>厂商指导价 <span className={styles.usedSuggestCost}>￥ {this.props.state.product.productUsedPrice}</span></span>
+                        <span className={styles.nowCost}>￥{this.props.state.product.productNowPrice}</span>
                     </div>
                     <div className={styles.dis}>
-                        <span className={styles.disCost}>节省了: <span className={styles.disCostMoney}>￥ 400 (6%)</span></span>
+                        <span className={styles.disCost}>节省了: <span className={styles.disCostMoney}>￥ {spreadPrice} ({spreadPricePercent}%)</span></span>
                     </div>
                     <button className={styles.addToCartButton + " " + styles.prime}>添加到购物车</button>
                 </div>
@@ -80,14 +84,30 @@ class ProductDetailInfo extends Component {
                     <span>比较</span>
                 </div>
                 <div className={styles.productSell}>
-                     <p>日常销售价6199抢购价5799</p>
-                     <p>5月13日10点-5月15日10点，限时抢购使用优惠券:Flashsale201905136KL73PA400，数量有限，售完即止，不与其他优惠同享！</p>
-                     <p>随主机购买配件更优惠，请点击推荐产品查询优惠价格！</p>
-                     <p>随主机购买暗影鼠标、耳机更优惠，请点击推荐产品查询优惠价格</p>
+                     <p>{this.props.state.product.productPromotionMessageSecond}</p>
                      <span>因为专注，所以优异</span>
                 </div>
             </Fragment>
         );
     }
 }
-export default classify(styles)(ProductDetailInfo);
+const mapStateToProps = (state) => {
+    return {
+        state
+    };
+};
+const mapDispatchToProps = (dispatch) => {
+    return {
+        // changeProductImg: (data) => { dispatch(Actions.productImg(data)); },
+        // changeProductName: (data) => { dispatch(Actions.productName(data)); },
+        // changeProductFeatrues: (data) => { dispatch(Actions.productFeatrues(data)); },
+        // changeProductPromotionMessage: (data) => { dispatch(Actions.productPromotionMessage(data)); },
+        // changeProductPromotionMessageSecond: (data) => { dispatch(Actions.productPromotionMessageSecond(data)); },
+        // changeProductUsedPrice: (data) => { dispatch(Actions.productUsedPrice(data)); },
+        // changeProductNowPrice: (data) => { dispatch(Actions.productNowPrice(data)); },
+    }
+};
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(classify(styles)(ProductDetailInfo));

@@ -2,14 +2,20 @@ import {
   PRODUCTINFO,
   PRODUCTNUM,
   USERINFO,
-  EXPRESSINCART
+  EXPRESSINCART,
+  CARTERROR,
+  MESSAGEPRODUCT,
+  MESSAGEEXPRESS
 } from '../actions/index'
 
 const initValue = {
   productInfo: [],
   productNum: 0,
   userInfo: null,
-  express: null
+  express: null,
+  cartError: false,
+  messageProduct: '',
+  messageExpress: ''
 }
 export default (state = initValue, action) => {
   const data = action.data
@@ -25,6 +31,15 @@ export default (state = initValue, action) => {
     }
     case EXPRESSINCART: {
       return Object.assign({}, state, { express: data })
+    }
+    case CARTERROR: {
+      return Object.assign({}, state, { cartError: data })
+    }
+    case MESSAGEPRODUCT: {
+      return Object.assign({}, state, { messageProduct: data })
+    }
+    case MESSAGEEXPRESS: {
+      return Object.assign({}, state, { messageExpress: data })
     }
     default: {
       return state;

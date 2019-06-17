@@ -10,18 +10,18 @@ class DeliveryProduct extends Component {
                 <div className={styles.productImg}>
                     <img src={item.img} alt="" />
                 </div>
+                <div className={styles.price}>
+                    <span>￥{item.price}</span>
+                </div>
+                <div className={styles.num}>
+                    <span>x {item.num}</span>
+                </div>
                 <div className={styles.productInfo}>
                     <Link to="/">
                         {item.productName} 
                     </Link>
                     <p><span>(商品编码：{item.id})</span><span>有货</span></p>
                     <p className={styles.message}>{item.promotionMessage}</p>
-                </div>
-                <div className={styles.num}>
-                    <span>x {item.num}</span>
-                </div>
-                <div className={styles.price}>
-                    <span>￥{item.price}</span>
                 </div>
             </div>
         );

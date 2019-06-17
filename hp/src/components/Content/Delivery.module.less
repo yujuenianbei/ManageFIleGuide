@@ -45,7 +45,7 @@
 
                 .paymethod {
                     margin-left: @25;
-                    width: 400px;
+                    // width: 100%;
 
                     .paycheck {
                         margin-bottom: @10;
@@ -57,6 +57,7 @@
                         input {
                             margin-bottom: @10;
                             font-size: 1.4rem;
+                            width: 300px;
                         }
                     }
                 }
@@ -155,6 +156,24 @@
                 position: absolute;
                 right: 0;
                 bottom: -50px;
+            }
+        }
+    }
+}
+@media screen and (max-width: 768px) {
+    .delivery{
+        padding: 0 15px;
+        .deliveryContent {
+            .userInfo {
+                .deliveryPwd {
+                    .deliveryAddressList{
+                        .labels{
+                            line-height: 20px;
+                            float: left;
+                            max-width: 75px;
+                        }
+                    }
+                }
             }
         }
     }
