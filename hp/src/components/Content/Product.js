@@ -66,6 +66,71 @@ class Main extends Component {
         //     }, 10)
         // }   
     }
+
+    addToCart = () => {
+        const product = {
+            id: this.props.state.product.productId,
+            img: this.props.state.product.productImg,
+            productName: this.props.state.product.productName,
+            promotionMessage: this.props.state.product.productPromotionMessage,
+            price: this.props.state.product.productNowPrice,
+            num: 1
+        }
+        if (this.props.state.cart.productInfo.length === 0) {
+            this.props.addProductInCart([product]);
+            this.props.loadingOnHeader(true)
+            this.postCart(product.num);
+        } else {
+            var productNum;
+            let productInfo = Object.assign([], this.props.state.cart.productInfo);
+            const num = productInfo.findIndex((v, index) => {
+                return product.id === v.id
+            })
+            if (num === -1) {
+                productInfo.push(product);
+                productNum = product.num;
+                this.props.addProductInCart(productInfo);
+            } else {
+                ++productInfo[num].num;
+                productNum = productInfo[num].num
+                this.props.addProductInCart(productInfo)
+            }
+            this.props.loadingOnHeader(true);
+            this.postCart(productNum);
+        }
+        this.props.addProductNumInCart(this.props.state.cart.productNum + 1);
+    }
+    postCart = (productNum) => {
+        var query = `mutation addToCart($userId: Int,$productId: Int, $productNum : Int){
+            addToCart(userId: $userId,productId: $productId,productNum: $productNum){
+                productId
+                productNum
+            } 
+          }`;
+        fetch('http://localhost:3004/graphql', {
+            method: 'POST',
+            mode: "cors",
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'login': localStorage.getItem('loginState'),
+                'token': localStorage.getItem('token')
+            },
+            body: JSON.stringify({
+                query,
+                variables: {
+                    "userId": parseInt(localStorage.getItem('id')),
+                    "productId": this.props.id,
+                    "productNum": productNum
+                }
+            })
+        })
+            .then(r => r.json())
+            .then(result => {
+                console.log(result);
+                this.props.loadingOnHeader(false);
+            });
+    }
     render() {
         return (
             <div className={styles.productInfo}>
@@ -82,7 +147,7 @@ class Main extends Component {
                         <ProductImg />
                     </div>
                     <div className={styles.productDetailInfo}>
-                        <ProductDetailInfo />
+                        <ProductDetailInfo add={this.addToCart}/>
                     </div>
                 </div>
                 <div className={styles.productDetail}>
@@ -383,6 +448,9 @@ const mapStateToProps = (state) => {
 };
 const mapDispatchToProps = (dispatch) => {
     return {
+        addProductNumInCart: (data) => { dispatch(Actions.productNumInCart(data)); },
+        addProductInCart: (data) => { dispatch(Actions.productInCart(data)); },
+        loadingOnHeader: (data) => { dispatch(Actions.loadingHeader(data)); },
         changeProductImg: (data) => { dispatch(Actions.productImg(data)); },
         changeProductName: (data) => { dispatch(Actions.productName(data)); },
         changeProductFeatrues: (data) => { dispatch(Actions.productFeatrues(data)); },

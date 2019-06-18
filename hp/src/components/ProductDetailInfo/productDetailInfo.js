@@ -62,7 +62,7 @@ class ProductDetailInfo extends Component {
                     <div className={styles.dis}>
                         <span className={styles.disCost}>节省了: <span className={styles.disCostMoney}>￥ {spreadPrice} ({spreadPricePercent}%)</span></span>
                     </div>
-                    <button className={styles.addToCartButton + " " + styles.prime}>添加到购物车</button>
+                    <button className={styles.addToCartButton + " " + styles.prime} onClick={this.props.add}>添加到购物车</button>
                 </div>
                 <div className={styles.pincode}>
                     <div className={styles.pincodeTitle}>

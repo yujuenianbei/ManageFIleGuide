@@ -1,0 +1,174 @@
+@import "./less/color.less";
+@import "./less/font.less";
+@import "./less/button.less";
+
+* {
+    box-sizing: border-box;
+}
+
+// :root {
+//   --venia-anim-bounce: cubic-bezier(0.5, 1.8, 0.9, 0.8);
+//   --venia-anim-in: cubic-bezier(0, 0, 0.2, 1);
+//   --venia-anim-out: cubic-bezier(0.4, 0, 1, 1);
+//   --venia-anim-standard: cubic-bezier(0.4, 0, 0.2, 1);
+//   --venia-border: 224, 224, 224;
+//   --venia-error: 192, 18, 63;
+//   --venia-error-alt: 255, 226, 234;
+//   --venia-font: Muli, -apple-system, BlinkMacSystemFont, sans-serif;
+//   --venia-grey: 246, 246, 246;
+//   --venia-grey-dark: 209, 209, 209;
+//   --venia-orange: 241, 99, 33;
+//   --venia-teal: 0, 115, 120;
+//   --venia-teal-alt: 224, 240, 241;
+//   --venia-teal-dark: 0, 104, 108;
+//   --venia-teal-light: 212, 243, 238;
+//   --venia-text: 33, 33, 33;
+//   --venia-text-alt: 112, 112, 112;
+//   --venia-text-hint: 158, 158, 158;
+//   --venia-text-spot: 255, 99, 51;
+//   --venia-warning-dark: 249, 93, 94;
+//   --venia-warning-light: 254, 229, 232;
+// }
+
+html {
+    background-color: white;
+    font-size: 10px;
+    font-weight: 400;
+    line-height: 1;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+}
+
+body {
+    background-color: white;
+    margin: 0;
+    padding: 0;
+}
+
+body,
+input,
+select,
+textarea {
+    font-family: 'HP Simplified Regular', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-size: 1rem;
+    font-weight: 400;
+    margin: 0;
+}
+
+h1 {
+    font-size: 1.5rem;
+}
+
+h2 {
+    font-size: 1.25rem;
+}
+
+a {
+    color: currentColor;
+    text-decoration: none;
+}
+
+p {
+    margin: 0 !important;
+}
+
+dl,
+ol,
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+}
+
+dd,
+dt {
+    margin: 0;
+}
+
+button {
+    background: none;
+    border: 0;
+    cursor: pointer;
+    font-family: 'HP Simplified Regular', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size: 100%;
+    padding: 0;
+    touch-action: manipulation;
+    user-select: none;
+    -webkit-appearance: none;
+}
+
+button:disabled {
+    cursor: default;
+    touch-action: none;
+}
+
+:focus {
+    outline-offset: 0px;
+    outline: -webkit-focus-ring-color auto 0px;
+}
+
+label[required] {
+    &:after {
+        content: '*';
+        color: #e02b27;
+        font-size: 1.2rem;
+        margin: 0 0 0 5px;
+    }
+}
+
+select {
+    background: #fff url(https://media.hpstore.cn/static/version1557351442/frontend/HPOLS/default/zh_Hans_CN/images/select-bg.svg) no-repeat 100% 45%;
+    appearance: none;
+}
+
+.ant-checkbox-inner::after {
+    left: 22% !important;
+}
+
+.ant-collapse-borderless {
+    background-color: @bg1  !important;
+}
+
+// .App {
+//   text-align: center;
+// }
+
+// .App-logo {
+//   animation: App-logo-spin infinite 20s linear;
+//   height: 40vmin;
+//   pointer-events: none;
+// }
+
+// .App-header {
+//   background-color: #282c34;
+//   min-height: 100vh;
+//   display: flex;
+//   flex-direction: column;
+//   align-items: center;
+//   justify-content: center;
+//   font-size: calc(10px + 2vmin);
+//   color: white;
+// }
+
+// .App-link {
+//   color: #61dafb;
+// }
+
+// @keyframes App-logo-spin {
+//   from {
+//     transform: rotate(0deg);
+//   }
+//   to {
+//     transform: rotate(360deg);
+//   }
+// }

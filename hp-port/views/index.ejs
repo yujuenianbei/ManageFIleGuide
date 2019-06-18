@@ -11,19 +11,30 @@
 <body>
   <div class="container white">
     <div class="info">
-      <p>Application Name</p>
+      <div class="header">
+        <img src="https://media.hpstore.cn/static/version1560379864/frontend/HPOLS/default/zh_Hans_CN/images/logo.svg">
+        <p>惠普中国</p>
+      </div>
       <div class="line"></div>
       <div class="message">
         <p>即将登录你的账号，请确认是本人操作</p>
-
         <ul>
           <li>获取你的头像</li>
           <li>获取你的昵称</li>
           <li>使用你的账号登录应用</li>
         </ul>
-
         <a id="confirmlBtn" class="confirm" href="#">确认登录</a>
         <a id="cancelBtn" class="cancel" href="#">取消登录</a>
+      </div>
+      <div class="loginInput">
+        <div class="userInput">
+          <label class="title">用户名</label><input class="inputs username" type="text">
+        </div>
+        <div class="userInput">
+          <label class="title">密码</label><input class="inputs password" type="password">
+        </div>
+        <a id="confirmUserBtn" class="confirm" href="#">确认登录</a>
+        <a id="cancelUserBtn" class="cancel" href="#">取消登录</a>
       </div>
     </div>
   </div>
@@ -31,26 +42,96 @@
   <script src="/js/jquery-3.3.1.min.js"></script>
   <script>
     var uid = "<%= uid %>";
-    var uuid = 'affb8d778e8211e9bf5f0242ac110003';
+    var uuid = '';
     var postState = function () {
       $.post("/scanner", { uid: uid }, function (result) {
-        console.log(result)
+        if (uuid !== '' && state === 1) {
+          $(".loginInput").hide();
+          $(".message").show();
+        } else {
+          $(".loginInput").show();
+          $(".message").hide();
+        }
       })
     }
     $("#cancelBtn").click(function () {
-      $.post("/confirm", { uuid: uuid, uid: uid, operation: "cancel" }, function (result) {
-        console.log(result.state)
+      $.post("/confirm", { uid: uid, operation: "cancel" }, function (result) {
+        if (WeixinJSBridge) {
+          WeixinJSBridge.call('closeWindow');
+        } else {
+          window.opener = null;
+          window.open('', '_self');
+          window.close();
+        }
       })
     })
 
     $("#confirmlBtn").click(function () {
       $.post("/confirm", { uuid: uuid, uid: uid, operation: "login" }, function (result) {
         alert('登陆成功')
-        if(result.state === 3){
-          setTimeout(function(){
-            WeixinJSBridge.call('closeWindow')
-          },2000)
+        if (result.state === 3) {
+          setTimeout(function () {
+            if (WeixinJSBridge) {
+              WeixinJSBridge.call('closeWindow');
+            } else {
+              window.opener = null;
+              window.open('', '_self');
+              window.close();
+            }
+          }, 1000)
         }
+      })
+    })
+
+    $("#cancelUserBtn").click(function () {
+      $.post("/confirm", { uid: uid, operation: "cancel" }, function (result) {
+        if (WeixinJSBridge) {
+          WeixinJSBridge.call('closeWindow');
+        } else {
+          window.opener = null;
+          window.open('', '_self');
+          window.close();
+        }
+      })
+    })
+
+    $("#confirmUserBtn").click(function () {
+      var userName = $(".username").val();
+      var password = $(".password").val();
+      $.ajax({
+        method: "POST",
+        url: "http://192.168.1.128:3004/graphql",
+        contentType: "application/json",
+        headers: {
+
+        },
+        data: JSON.stringify({
+          query: `mutation login($email: String,$name: String, $password: String){
+                    login(email: $email,name: $name, password: $password){
+                      id
+                      name,
+                      state,
+                      token,
+                      uuid
+                    } 
+                  }`,
+          variables: {
+            "name": userName,
+            "password": password
+          }
+        }),
+        success: function (data) {
+          uuid = data.data.login[0].uuid;
+          var state = data.data.login[0].state;
+          console.log(uuid)
+          if (uuid !== '' && state === "1") {
+            $(".loginInput").hide();
+            $(".message").show();
+          } else {
+            $(".loginInput").show();
+            $(".message").hide();
+          }
+        },
       })
     })
     postState()

@@ -55,6 +55,11 @@ const Login = new GraphQLObjectType({
                     return data.id;
                 }
             },
+            uuid: {
+                type: GraphQLString, resolve(data) {
+                    return data.uuid;
+                }
+            },
         });
     },
 });
@@ -140,56 +145,40 @@ const LoginUuid = new GraphQLObjectType({
     },
 });
 
-const ProductListInfoOne = new GraphQLObjectType({
-    name: 'ProductInfo',
-    description: "ProductInfo",
+const QueryAllUser = new GraphQLObjectType({
+    name: 'QueryAllUser',
+    description: "查询所有用户",
     fields: () => {
         return ({
             // 这种可以
-            id: {
+            email: {
+                type: GraphQLString, resolve(data) {
+                    return data.email;
+                }
+            },
+            name: {
+                type: GraphQLString, resolve(data) {
+                    return data.name;
+                }
+            },
+            phonecode: {
                 type: GraphQLInt, resolve(data) {
-                    return data.id;
+                    return data.phonecode;
                 }
             },
-            link: {
+            phone: {
                 type: GraphQLString, resolve(data) {
-                    return data.link;
+                    return data.phone;
                 }
             },
-            img: {
+            password: {
                 type: GraphQLString, resolve(data) {
-                    return data.img;
+                    return data.password;
                 }
             },
-            productName: {
+            company: {
                 type: GraphQLString, resolve(data) {
-                    return data.productName;
-                }
-            },
-            promotionMessage: {
-                type: GraphQLString, resolve(data) {
-                    return data.promotionMessage;
-                }
-            },
-            featrues: {
-                // 返回数组
-                type: new GraphQLList(GraphQLString), resolve(data) {
-                    return data.featrues;
-                }
-            },
-            promotionMessageSecond: {
-                type: GraphQLString, resolve(data) {
-                    return data.promotionMessageSecond;
-                }
-            },
-            usedPrice: {
-                type: GraphQLString, resolve(data) {
-                    return data.usedPrice;
-                }
-            },
-            nowPrice: {
-                type: GraphQLString, resolve(data) {
-                    return data.nowPrice;
+                    return data.company;
                 }
             }
         });
@@ -197,22 +186,15 @@ const ProductListInfoOne = new GraphQLObjectType({
 });
 
 
-
-const UserInput = new GraphQLInputObjectType({
-    name: 'UserInput',
-    description: "用户信息Input实体",
-    fields: () => ({
-        id: { type: GraphQLInt },
-        name: { type: GraphQLString },
-        sex: { type: GraphQLString },
-        intro: { type: GraphQLString },
-    }),
-});
-
-
 module.exports = {
     query: {
-
+        queryAllUsers:{
+            type: new GraphQLList(QueryAllUser),
+            description: '获取全部用户信息',
+            resolve: async function () {
+                return await searchSql($sql.queryAllUser);
+            }
+        }
     },
     mutation: {
         loginUuid:{

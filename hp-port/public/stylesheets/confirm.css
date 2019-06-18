@@ -12,7 +12,7 @@ body{
 .container{
   display: block;
   width: 300px;
-  height: 400px;
+  padding-bottom: 20px;
   margin: 50px auto;
   text-align: center;
 }
@@ -50,6 +50,36 @@ body{
   padding: 20px;
   font-size: 0.8em;
 }
+.info .header{
+
+}
+
+.info .loginInput .userInput{
+  margin-bottom: 5px;
+}
+
+.info .loginInput .title {
+  float: left;
+  width: 100%;
+  text-align: left;
+  line-height: 26px;
+}
+
+.info .loginInput .inputs{
+  width: calc(100% - 8px);
+  line-height: 26px;
+  padding-left: 5px;
+}
+
+
+.info .header img{
+  width: 30px;
+  vertical-align: middle;
+}
+
+.info .header p{
+  margin-top: 5px;
+}
 
 .info ul{
   display: block;
@@ -59,42 +89,47 @@ body{
 }
 
 .info ul li{
-  padding: 8px 0 ;
+  padding: 5px 0;
+  font-size: 12px;
 }
 
 .info .message{
   text-align: left;
 }
 
+.info .message p{
+  line-height: 24px;
+}
+
 .confirm{
   display: block;
-  height: 2em;
-  width: 80%;
+  height: 2.5em;
+  width: 100%;
   margin: 8px auto;
   color: white;
-  line-height: 2em;
+  line-height: 2.5em;
   text-decoration: none;
   text-align: center;
   border-radius: 5px;
-  background-color: #1a1;
+  background-color: #0197d6;
 }
 
 .confirm:hover{
-  background-color: green;
+  background-color: #40a8d4;
 }
 
 .cancel{
   display: block;
-  height: 2em;
-  width: 80%;
+  height: 2.5em;
+  width: 100%;
   margin: 8px auto;
   color: #333;
-  line-height: 2em;
+  line-height: 2.5em;
   text-decoration: none;
   text-align: center;
   border: 1px solid #aaa;
   border-radius: 5px;
-  background-color: #fef;
+  background-color: #fff;
 }
 
 .cancel:hover{

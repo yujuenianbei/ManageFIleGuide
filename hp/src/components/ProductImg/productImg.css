@@ -46,7 +46,7 @@
     display: block;
     margin: auto;
     width: 100%;
-    height: 500px;
+    /* height: 500px; */
 }
 
 .productImg .slick-slide img.slick-loading {
@@ -55,7 +55,7 @@
 
 .productImg .slick-list {
     width: 100%;
-    height: 500px;
+    /* height: 500px; */
     margin-bottom: 30px;
 }
 
