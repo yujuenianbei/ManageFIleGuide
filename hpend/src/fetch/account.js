@@ -10,7 +10,7 @@ const getUserInfo = (func) => {
         }
     }`;
 
-    fetch('http://localhost:3004/graphql', {
+    fetch('http://localhost:3004/graphqlPort', {
         method: 'POST',
         mode: "cors",
         headers: {
@@ -28,4 +28,52 @@ const getUserInfo = (func) => {
         .then((result) => { func(result) });
 }
 
-export { getUserInfo }
+// 新增后台用户
+const createAccount = (data, func) => {
+    const query = `mutation regAccount($userName: String, $sex: Int, $email: String, $firstName: String, $lastName: String,
+        $phoneCode: Int, $phone: String, $password: String, $company: String){
+          regAccount(userName: $userName, sex: $sex, email: $email, 
+            firstName: $firstName , lastName: $lastName, phoneCode: $phoneCode, 
+            phone: $phone, password: $password, company: $company){
+                userName, 
+                sex, 
+                email, 
+                firstName, 
+                lastName, 
+                phoneCode,
+                phone, 
+                company,
+                password,
+                state
+          }
+      }`;
+
+    fetch('http://localhost:3004/graphqlPort', {
+        method: 'POST',
+        mode: "cors",
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            // 'login': localStorage.getItem('loginState'),
+            // 'token': localStorage.getItem('token')
+        },
+        body: JSON.stringify({
+            query,
+            variables: {
+                userName: data.userName,
+                sex: parseInt(data.sex),
+                email: data.email,
+                firstName: data.firstName,
+                lastName: data.lastName,
+                phoneCode: parseInt(data.phoneCode),
+                phone: data.phone,
+                password: data.password,
+                company: data.company
+              }
+        })
+    })
+        .then(r => r.json())
+        .then((result) => { func(result) });
+}
+
+export { getUserInfo, createAccount }

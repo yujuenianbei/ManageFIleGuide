@@ -122,12 +122,21 @@ app.use('/users', usersRouter);
 
 //graphql
 var graphqlHTTP = require('express-graphql');
-var userSchema = require('./graphql/user/schema');
-
+// 前台接口
+var FrontSchema = require('./graphql/frontport/schema');
 app.use('/graphql', graphqlHTTP({
-  schema: userSchema,
+  schema: FrontSchema,
   graphiql: true, //启用GraphiQL
 }));
+
+// 后台接口
+var EndSchema = require('./graphql/endport/schema');
+app.use('/graphqlPort', graphqlHTTP({
+  schema: EndSchema,
+  graphiql: true, //启用GraphiQL
+}));
+
+
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

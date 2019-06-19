@@ -11,34 +11,25 @@ var {
     GraphQLInputObjectType
 } = require('graphql');
 
-const userSchema = require('./user');
-const courseSchema = require('./course');
 
+// 前台
 const account = require('./account');
-const cart = require('./cart');
-const homeSchema = require('./home');
-const product = require('./product');
+// 后台
+
+
 
 const Query=new GraphQLObjectType({
     name:'UserQuery',
     description:'用户信息查询',
     fields:()=>(Object.assign({},
         account.query,
-        cart.query,
-        userSchema.query,
-        // courseSchema.query,
-        homeSchema.query,
-        product.query
     )),
 });
 const Mutation=new GraphQLObjectType({
     name:'UserMutation',
     description:'用户信息维护',
     fields:()=>(Object.assign({},
-        userSchema.mutation,
         account.mutation,
-        cart.mutation,
-        product.mutation
     )),
 });
 const schema = new GraphQLSchema({

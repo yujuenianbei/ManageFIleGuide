@@ -1,25 +1,25 @@
 import {
-    LOGINSTATE,
-    USERNAME,
-    MODELSTATE
+    MODELSTATE,
+    ACCOUNTDATA,
+    ACCOUNTLOADING,
   } from '../actions/index'
   
   const initValue = {
     modelState: false,
-    loginState: 0,
-    userName: ''
+    accountLoading: false,
+    accountData: []
   }
   export default (state = initValue, action) => {
     const data = action.data
     switch (action.type) {
-      case LOGINSTATE: {
-        return Object.assign({}, state, { loginState: data })
-      }
       case MODELSTATE: {
         return Object.assign({}, state, { modelState: data })
       }
-      case USERNAME: {
-        return Object.assign({}, state, { userName: data })
+      case ACCOUNTDATA: {
+        return Object.assign({}, state, { accountData: data })
+      }
+      case ACCOUNTLOADING: {
+        return Object.assign({}, state, { accountLoading: data })
       }
       default: {
         return state;

@@ -29,7 +29,7 @@ const { Content } = Layout;
 
 const client = new ApolloClient({
   // uri: "https://demo.yujuenianbei.xyz:3001/graphql",
-  uri: "http://localhost:3004/graphql",
+  uri: "http://localhost:3004/graphqlPort",
   fetchOptions: {
     credentials: 'include'
   },

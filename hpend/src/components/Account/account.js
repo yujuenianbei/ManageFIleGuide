@@ -6,8 +6,8 @@ import classify from '@magento/venia-concept/esm/classify';
 // const SearchBar = React.lazy(() => import('src/components/SearchBar'));
 import styles from './account.module.less';
 import { getUserInfo } from '../../fetch/account'
-
-import { Table, Divider, Tag, Breadcrumb, Input, Col, Row, Select, Button, Modal } from 'antd';
+import { Table, Divider, Tag, Breadcrumb, Input, Col, Row, Select, Button, Modal, Spin } from 'antd';
+import AccountModle from './model'
 
 const Search = Input.Search;
 const InputGroup = Input.Group;
@@ -21,14 +21,14 @@ const columns = [
         render: text => <a href="javascript:;">{text}</a>,
     },
     {
-        title: 'Age',
-        dataIndex: 'age',
-        key: 'age',
+        title: 'Phone',
+        dataIndex: 'phone',
+        key: 'phone',
     },
     {
-        title: 'Address',
-        dataIndex: 'address',
-        key: 'address',
+        title: 'E-mail',
+        dataIndex: 'email',
+        key: 'email',
     },
     {
         title: 'Tags',
@@ -55,91 +55,52 @@ const columns = [
         key: 'action',
         render: (text, record) => (
             <span>
-                <a href="javascript:;">Invite {record.name}</a>
+                <a href="javascript:;">修改</a>
                 <Divider type="vertical" />
-                <a href="javascript:;">Delete</a>
+                <a href="javascript:;">删除</a>
             </span>
         ),
     },
 ];
 
-// const data = [
-//     {
-//         key: '1',
-//         name: 'John Brown',
-//         age: 32,
-//         address: 'New York No. 1 Lake Park',
-//         tags: ['nice', 'developer'],
-//     },
-//     {
-//         key: '2',
-//         name: 'Jim Green',
-//         age: 42,
-//         address: 'London No. 1 Lake Park',
-//         tags: ['loser'],
-//     },
-//     {
-//         key: '3',
-//         name: 'Joe Black',
-//         age: 32,
-//         address: 'Sidney No. 1 Lake Park',
-//         tags: ['cool', 'teacher'],
-//     },
-// ];
-
-class Left extends PureComponent {
+class Account extends PureComponent {
     state = {
-        ModalText: 'Content of the modal',
-        visible: false,
-        confirmLoading: false,
-        data: [],
+        data: [{
+            key: 0,
+            name: null,
+            phone: null,
+            email: null,
+            tags: []
+        }],
         loading: true
     };
 
     componentDidMount() {
-        getUserInfo(this.setData)
+        this.props.changeAccountDataLoading(true);
+        getUserInfo(this.setData);
     }
 
-    // 
+    // 将返回数据写入
     setData = (result) => {
         let data = []
         result.data.queryAllUsers.map((item, index) => (
             data[index] = {
                 key: index + 1,
                 name: item.name,
-                age: item.phone,
-                address: item.email,
+                phone: item.phone,
+                email: item.email,
                 tags: ['cool', 'teacher']
             }
         ))
-        this.setState({ data: data, loading: false })
+        this.props.changeAccountData(data)
+        this.props.changeAccountDataLoading(false)
     }
 
+    // 显示弹出框
     showModal = () => {
-        this.setState({
-            visible: true,
-        });
+        this.props.changeModleState(true)
     };
 
-    handleOk = () => {
-        this.setState({
-            ModalText: 'The modal will be closed after two seconds',
-            confirmLoading: true,
-        });
-        setTimeout(() => {
-            this.setState({
-                visible: false,
-                confirmLoading: false,
-            });
-        }, 2000);
-    };
-
-    handleCancel = () => {
-        console.log('Clicked cancel button');
-        this.setState({
-            visible: false,
-        });
-    };
     render() {
         return (
             <Fragment>
@@ -147,16 +108,10 @@ class Left extends PureComponent {
                     <Breadcrumb.Item>首页</Breadcrumb.Item>
                     <Breadcrumb.Item>用户管理</Breadcrumb.Item>
                 </Breadcrumb>
-                <Modal
-                    title="Title"
-                    visible={this.state.visible}
-                    onOk={this.handleOk}
-                    confirmLoading={this.state.confirmLoading}
-                    onCancel={this.handleCancel}
-                    maskClosable={false}
-                >
-                    <p>{this.state.ModalText}</p>
-                </Modal>
+                <AccountModle 
+                    visible={this.props.state.user.modelState}
+                    setData={this.setData}
+                />
                 <div className={styles.content}>
                     <div className={styles.search}>
                         <Row>
@@ -184,7 +139,7 @@ class Left extends PureComponent {
                             </Col>
                         </Row>
                     </div>
-                    {!this.state.loading && <Table columns={columns} dataSource={this.state.data} />}
+                    <Table columns={columns} dataSource={this.props.state.account.accountData} loading={this.props.state.account.accountLoading} />
                 </div>
             </Fragment>
         );
@@ -195,6 +150,14 @@ const mapStateToProps = (state) => {
         state
     };
 };
+const mapDispatchToProps = (dispatch) => {
+    return {
+        changeModleState: (data) => { dispatch(Actions.modleState(data)); },
+        changeAccountDataLoading: (data) => { dispatch(Actions.accountDataLoading(data)); },
+        changeAccountData: (data) => { dispatch(Actions.accountData(data)); },
+    }
+};
 export default connect(
     mapStateToProps,
-)(classify(styles)(Left));
+    mapDispatchToProps
+)(classify(styles)(Account));

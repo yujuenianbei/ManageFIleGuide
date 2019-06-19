@@ -23,6 +23,26 @@ CREATE TABLE IF NOT EXISTS user
   PRIMARY KEY (`id`)
 ) ENGINE = INNODB CHARACTER SET utf8;
 
+
+CREATE TABLE IF NOT EXISTS account
+(
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `uid` varchar(255) NOT NULL,
+  `uuid` varchar(255) NOT NULL,
+  `userName` varchar(255) DEFAULT NULL,
+  `sex` int(2) DEFAULT 1,
+  `firstName` varchar(255) DEFAULT NULL,
+  `lastName` varchar(255) DEFAULT NULL,
+  `phoneCode` int(6) DEFAULT NULL,
+  `phone` varchar(20) DEFAULT NULL,
+  `email` varchar(255) DEFAULT NULL,
+  `password` varchar(255) DEFAULT NULL,
+  `company` varchar(255) DEFAULT NULL,
+  `createTime` datetime NOT NULL,
+  `updateTime` datetime NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE = INNODB CHARACTER SET utf8;
+
 CREATE TABLE IF NOT EXISTS banner
 (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,

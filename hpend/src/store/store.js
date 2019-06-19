@@ -11,11 +11,12 @@ import { createStore, combineReducers, applyMiddleware } from 'redux';
 import { persistStore, persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage'
 import thunk from 'redux-thunk';
-import { mainsReducer, usersReducer } from '../reducers';
+import { mainsReducer, usersReducer, accountsReducer } from '../reducers';
 
 const reducer = combineReducers({
   main: mainsReducer,
   user: usersReducer,
+  account: accountsReducer
 })
 
 // 状态未持久化
