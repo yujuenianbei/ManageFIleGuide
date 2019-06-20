@@ -10,48 +10,48 @@ import { Modal, Spin, Form, Icon } from 'antd';
 
 import CreateAccount from './createAccount';
 
-
-function hasErrors(fieldsError) {
-    return Object.keys(fieldsError).some(field => fieldsError[field]);
-  }
 class AccountModle extends PureComponent {
     state = {
-        ModalText: 'Content of the modal',
         confirmLoading: false,
     };
-    handleOk = () => {
+
+    handleOk = (e) => {
         this.setState({
-            ModalText: 'The modal will be closed after two seconds',
             confirmLoading: true,
         });
+        // 父组件调用子组件方法
+        this.child.handleSubmit(e);
         setTimeout(() => {
-            this.props.changeModleState(false)
+            this.props.changeModleState(false);
+            this.props.changeModleTitle('');
+            this.props.changeModleName('');
             this.setState({
-                visible: false,
                 confirmLoading: false,
             });
         }, 2000);
+
     };
 
-    handleCancel = (e) => {
-        console.log('Clicked cancel button');
+    handleCancel = () => {
+        this.child.cancelSubmit();
         this.props.changeModleState(false);
-        // 父组件调用子组件方法
-        this.child.handleSubmit(e);
+        this.props.changeModleTitle('');
+        this.props.changeModleName('');
     };
 
     render() {
         return (
             <Fragment>
                 <Modal
-                    title="Title"
+                    centered
+                    title={this.props.state.account.modelTitle}
                     visible={this.props.visible}
                     onOk={this.handleOk}
                     confirmLoading={this.state.confirmLoading}
                     onCancel={this.handleCancel}
                     maskClosable={false}
                 >
-                    <CreateAccount onRef={(ref) => {this.child = ref}} />
+                    <CreateAccount onRef={(ref) => { this.child = ref }} setData={this.props.setData} />
                 </Modal>
             </Fragment>
         );
@@ -68,6 +68,9 @@ const mapDispatchToProps = (dispatch) => {
         changeModleState: (data) => { dispatch(Actions.modleState(data)); },
         changeAccountDataLoading: (data) => { dispatch(Actions.accountDataLoading(data)); },
         changeAccountData: (data) => { dispatch(Actions.accountData(data)); },
+        changeModleTitle: (data) => { dispatch(Actions.modleTitle(data)); },
+        changeModleName: (data) => { dispatch(Actions.modleName(data)); },
+        changeModleTitle: (data) => { dispatch(Actions.modleTitle(data)); },
     }
 };
 export default connect(

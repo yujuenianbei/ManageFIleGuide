@@ -5,31 +5,132 @@ import { connect } from 'react-redux';
 import classify from '@magento/venia-concept/esm/classify';
 // const SearchBar = React.lazy(() => import('src/components/SearchBar'));
 import styles from './account.module.less';
-import { createAccount } from '../../fetch/account'
+import { getUserInfo, createAccount } from '../../fetch/account'
+import { transSex } from '../../func/account'
 import { Input, Col, Row, Select, Button, Modal, Spin, Form, Icon } from 'antd';
 const { Option } = Select;
 
 function hasErrors(fieldsError) {
     return Object.keys(fieldsError).some(field => fieldsError[field]);
 }
+let myClear, modelData = {
+    email: '',
+    userName: '',
+    password: '',
+    lastName: '',
+    firstName: '',
+    phoneCode: '',
+    phone: '',
+    sex: 0,
+    company: '',
+};
 class AccountForm extends PureComponent {
 
     componentDidMount() {
         this.props.onRef(this);
+        if (this.props.state.account.modelName == 'add') {
+            this.props.form.setFieldsValue({
+                email: '',
+                userName: '',
+                password: '',
+                lastName: '',
+                firstName: '',
+                phoneCode: '',
+                phone: '',
+                sex: transSex(0),
+                company: '',
+            })
+        } else if (this.props.state.account.modelName == 'edit') {
+            const data = this.props.state.account.modelData;
+            this.props.form.setFieldsValue({
+                email: data.email,
+                userName: data.userName,
+                password: data.password,
+                lastName: data.lastName,
+                firstName: data.firstName,
+                phoneCode: data.phoneCode,
+                phone: data.phone,
+                sex: transSex(data.sex),
+                company: data.company,
+            })
+        } else if (this.props.state.account.modelName == 'delete') {
+
+        }
     }
 
+    componentWillUnmount() {
+        // 清除定时器
+        clearTimeout(myClear)
+    };
+
+    // 组件更新
+    componentWillUpdate(nextPorps) {
+        if (this.props.state.account.modelName !== nextPorps.state.account.modelName) {
+            if (nextPorps.state.account.modelName == 'add') {
+                this.props.form.setFieldsValue({
+                    email: '',
+                    userName: '',
+                    password: '',
+                    lastName: '',
+                    firstName: '',
+                    phoneCode: '',
+                    phone: '',
+                    sex: 0,
+                    company: '',
+                })
+            } else if (nextPorps.state.account.modelName == 'edit') {
+                const data = nextPorps.state.account.modelData;
+                this.props.form.setFieldsValue({
+                    email: data.email,
+                    userName: data.userName,
+                    password: data.password,
+                    lastName: data.lastName,
+                    firstName: data.firstName,
+                    phoneCode: data.phoneCode,
+                    phone: data.phone,
+                    sex: transSex(data.sex),
+                    company: data.company,
+                })
+            } else if (nextPorps.state.account.modelName == 'delete') {
+
+            }
+        }
+    }
+
+    // 提交数据
     handleSubmit = (e) => {
         e.preventDefault();
         this.props.form.validateFields((err, values) => {
+            console.log(this.props.state.account.modelName)
             if (!err) {
                 console.log('Received values of form: ', values);
-                createAccount(values, this.createFinish)
+                console.log(values.keys(obj))
+                
+
+                // if (this.props.state.account.modelName === 'add') {
+                //     createAccount(values, this.createFinish)
+                // } else if (this.props.state.account.modelName == 'edit') {
+                //     createAccount(values, this.createFinish)
+                // }
+
             }
+            // 清空表单内容
+            myClear = setTimeout(this.props.form.resetFields, 0);
         });
     };
-    createFinish = (result)=> {
-        if(result.data.regAccount[0].state === 1){
+
+    // 取消提交
+    cancelSubmit = () => {
+        myClear = setTimeout(this.props.form.resetFields, 0);
+    }
+
+    // 提交数据后返回
+    createFinish = (result) => {
+        if (result.data.regAccount[0].state === 1) {
             this.props.changeModleState(false);
+            // 更新数据
+            this.props.changeAccountDataLoading(true);
+            getUserInfo(this.props.setData);
         } else {
             // this.props.changeModleState(false);
         }
@@ -39,7 +140,7 @@ class AccountForm extends PureComponent {
     confirmPassword = (rule, value, callback) => {
         if (this.props.form.getFieldValue('password') === value) {
             callback()
-        } else if( value == '') {
+        } else if (value == '') {
             callback()
         } else {
             callback('false')
@@ -49,9 +150,9 @@ class AccountForm extends PureComponent {
     // 验证用户名
     confirmUserName = (rule, value, callback) => {
         // 调用查询用户名的接口进行返回
-        if (this.props.form.getFieldValue('userName')) {
+        if (this.props.form.getFieldValue('userName') !== null) {
             callback()
-        } else if( value == '') {
+        } else if (value == '') {
             callback()
         } else {
             callback('false')
@@ -60,22 +161,17 @@ class AccountForm extends PureComponent {
 
     render() {
         const { getFieldDecorator, getFieldsError, getFieldError, isFieldTouched } = this.props.form;
-
-        // Only show error after a field is touched.
-        // const emailError = isFieldTouched('email') && getFieldError('email');
-        // const passwordError = isFieldTouched('password') && getFieldError('password');
-
         const formItemLayout = {
             labelCol: { span: 5 },
             wrapperCol: { span: 19 },
         };
-        const buttonItemLayout = {
-            wrapperCol: { span: 14, offset: 4 },
-        };
         return (
             <Form layout="horizontal" onSubmit={this.handleSubmit} labelAlign="left">
-                <Form.Item label="邮箱"  hasFeedback={true} validateStatus="validating" {...formItemLayout} style={{marginBottom:'10px'}}>
+                <Form.Item label="邮箱" hasFeedback={true} validateStatus="validating" {...formItemLayout} style={{ marginBottom: '10px' }}>
                     {getFieldDecorator('email', {
+                        initialValue: '',
+                        validateFirst: true,
+                        validateTrigger: 'onBlur',
                         rules: [
                             {
                                 type: 'email',
@@ -86,24 +182,26 @@ class AccountForm extends PureComponent {
                                 message: '请输入邮箱',
                             },
                         ],
-                    })(<Input placeholder="请输入邮箱"  />)}
+                    })(<Input placeholder="请输入邮箱" />)}
                 </Form.Item>
-                <Form.Item label="用户名" {...formItemLayout} style={{marginBottom:'10px'}}>
+                <Form.Item label="用户名" {...formItemLayout} style={{ marginBottom: '10px' }}>
                     {getFieldDecorator('userName', {
+                        initialValue: '',
                         rules: [
                             {
                                 required: true,
                                 message: '请输入用户名',
                             },
                             {
-                                message: '请输入正确的密码',
+                                message: '用户名已被注册',
                                 validator: (rule, value, cb) => this.confirmUserName(rule, value, cb),
                             }
                         ],
                     })(<Input placeholder="请输入用户名" />)}
                 </Form.Item>
-                <Form.Item label="密码" {...formItemLayout} style={{marginBottom:'10px'}}>
+                <Form.Item label="密码" {...formItemLayout} style={{ marginBottom: '10px' }}>
                     {getFieldDecorator('password', {
+                        initialValue: '',
                         rules: [
                             {
                                 required: true,
@@ -112,7 +210,7 @@ class AccountForm extends PureComponent {
                         ],
                     })(<Input type="password" placeholder="请输入密码" />)}
                 </Form.Item>
-                <Form.Item label="重复密码" {...formItemLayout} style={{marginBottom:'10px'}}>
+                {this.props.state.account.modelName === 'add' && <Form.Item label="重复密码" {...formItemLayout} style={{ marginBottom: '10px' }}>
                     {getFieldDecorator('confirmPassword', {
                         rules: [
                             {
@@ -126,8 +224,10 @@ class AccountForm extends PureComponent {
                         ],
                     })(<Input type="password" placeholder="请再次输入密码" />)}
                 </Form.Item>
-                <Form.Item label="姓" {...formItemLayout} style={{marginBottom:'10px'}}>
+                }
+                <Form.Item label="姓" {...formItemLayout} style={{ marginBottom: '10px' }}>
                     {getFieldDecorator('lastName', {
+                        initialValue: '',
                         rules: [
                             {
                                 required: true,
@@ -136,8 +236,9 @@ class AccountForm extends PureComponent {
                         ],
                     })(<Input placeholder="请输入姓氏" />)}
                 </Form.Item>
-                <Form.Item label="名" {...formItemLayout} style={{marginBottom:'10px'}}>
+                <Form.Item label="名" {...formItemLayout} style={{ marginBottom: '10px' }}>
                     {getFieldDecorator('firstName', {
+                        initialValue: '',
                         rules: [
                             {
                                 required: true,
@@ -146,8 +247,9 @@ class AccountForm extends PureComponent {
                         ],
                     })(<Input placeholder="请输入名字" />)}
                 </Form.Item>
-                <Form.Item label="区号" {...formItemLayout} style={{marginBottom:'10px'}}>
+                <Form.Item label="区号" {...formItemLayout} style={{ marginBottom: '10px' }}>
                     {getFieldDecorator('phoneCode', {
+                        initialValue: '',
                         rules: [
                             {
                                 required: true,
@@ -155,12 +257,13 @@ class AccountForm extends PureComponent {
                             },
                         ],
                     })(<Select placeholder="请选择区号">
-                    <Option value="086">086</Option>
-                    <Option value="007">007</Option>
-                  </Select>,)}
+                        <Option value="086">086</Option>
+                        <Option value="007">007</Option>
+                    </Select>)}
                 </Form.Item>
-                <Form.Item label="手机号" {...formItemLayout} style={{marginBottom:'10px'}}>
+                <Form.Item label="手机号" {...formItemLayout} style={{ marginBottom: '10px' }}>
                     {getFieldDecorator('phone', {
+                        initialValue: '',
                         rules: [
                             {
                                 required: true,
@@ -169,8 +272,9 @@ class AccountForm extends PureComponent {
                         ],
                     })(<Input type="number" placeholder="请输入手机号" />)}
                 </Form.Item>
-                <Form.Item label="性别" {...formItemLayout} style={{marginBottom:'10px'}}>
+                <Form.Item label="性别" {...formItemLayout} style={{ marginBottom: '10px' }}>
                     {getFieldDecorator('sex', {
+                        initialValue: '',
                         rules: [
                             {
                                 required: true,
@@ -178,12 +282,13 @@ class AccountForm extends PureComponent {
                             },
                         ],
                     })(<Select placeholder="请选择性别">
-                    <Option value="1">男</Option>
-                    <Option value="2">女</Option>
-                  </Select>)}
+                        <Option value="1">男</Option>
+                        <Option value="2">女</Option>
+                    </Select>)}
                 </Form.Item>
-                <Form.Item label="公司名" {...formItemLayout} style={{marginBottom:'10px'}}>
+                <Form.Item label="公司名" {...formItemLayout} style={{ marginBottom: '10px' }}>
                     {getFieldDecorator('company', {
+                        initialValue: '',
                         rules: [
                             {
                                 required: true,
@@ -191,11 +296,6 @@ class AccountForm extends PureComponent {
                             },
                         ],
                     })(<Input placeholder="请输入公司名" />)}
-                </Form.Item>
-                <Form.Item>
-                    <Button type="primary" htmlType="submit" disabled={hasErrors(getFieldsError())}>
-                        Log in
-                    </Button>
                 </Form.Item>
             </Form >
         );
@@ -214,6 +314,9 @@ const mapDispatchToProps = (dispatch) => {
         changeModleState: (data) => { dispatch(Actions.modleState(data)); },
         changeAccountDataLoading: (data) => { dispatch(Actions.accountDataLoading(data)); },
         changeAccountData: (data) => { dispatch(Actions.accountData(data)); },
+        changeModleTitle: (data) => { dispatch(Actions.modleTitle(data)); },
+        changeModleName: (data) => { dispatch(Actions.modleName(data)); },
+        changeModleTitle: (data) => { dispatch(Actions.modleTitle(data)); },
     }
 };
 export default connect(

@@ -24,6 +24,10 @@ class Left extends PureComponent {
     render() {
         return (
             <Sider collapsible collapsed={this.state.collapsed} onCollapse={this.onCollapse}>
+                <div className={styles.menuIcon}>
+                    <img src="https://media.hpstore.cn/static/version1559772150/frontend/HPOLS/default/zh_Hans_CN/images/logo.svg" alt="hp" />
+                    <div className={styles.leftTitle}><span>HP</span></div>
+                </div>
                 <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
                     <Menu.Item key="1">
                         <Link to="/">

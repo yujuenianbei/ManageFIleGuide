@@ -140,6 +140,71 @@ const Reg = new GraphQLObjectType({
 });
 
 
+const UpdateAccount = new GraphQLObjectType({
+    name: 'UpdateAccount',
+    description: "更新用户信息",
+    fields: () => {
+        return ({
+            email: {
+                type: GraphQLString, resolve(data) {
+                    return data.email;
+                }
+            },
+            firstName: {
+                type: GraphQLString, resolve(data) {
+                    return data.firstName;
+                }
+            },
+            lastName: {
+                type: GraphQLString, resolve(data) {
+                    return data.lastName;
+                }
+            },
+            userName: {
+                type: GraphQLString, resolve(data) {
+                    return data.userName;
+                }
+            },
+            sex: {
+                type: GraphQLInt, resolve(data) {
+                    return data.sex;
+                }
+            },
+            phoneCode: {
+                type: GraphQLInt, resolve(data) {
+                    return data.phoneCode;
+                }
+            },
+            phone: {
+                type: GraphQLString, resolve(data) {
+                    return data.phone;
+                }
+            },
+            password: {
+                type: GraphQLString, resolve(data) {
+                    return data.password;
+                }
+            },
+            company: {
+                type: GraphQLString, resolve(data) {
+                    return data.company;
+                }
+            },
+            updateTime: {
+                type: GraphQLString, resolve(data) {
+                    return data.updateTime;
+                }
+            },
+            state: {
+                type: GraphQLInt, resolve(data) {
+                    return data.state;
+                }
+            }
+        });
+    },
+});
+
+// UUID登录
 const LoginUuid = new GraphQLObjectType({
     name: 'LoginUuid',
     description: "用户uuid登录",
@@ -175,25 +240,56 @@ const LoginUuid = new GraphQLObjectType({
     },
 });
 
+
 const QueryAllUser = new GraphQLObjectType({
     name: 'QueryAllUser',
     description: "查询所有用户",
     fields: () => {
         return ({
-            // 这种可以
+             // 这种可以
+             id: {
+                type: GraphQLID, resolve(data) {
+                    return data.id;
+                }
+            },
+             uuid: {
+                type: GraphQLInt, resolve(data) {
+                    return data.uuid;
+                }
+            },
+            uid: {
+                type: GraphQLInt, resolve(data) {
+                    return data.uid;
+                }
+            },
             email: {
                 type: GraphQLString, resolve(data) {
                     return data.email;
                 }
             },
-            name: {
+            firstName: {
                 type: GraphQLString, resolve(data) {
-                    return data.name;
+                    return data.firstName;
                 }
             },
-            phonecode: {
+            lastName: {
+                type: GraphQLString, resolve(data) {
+                    return data.lastName;
+                }
+            },
+            userName: {
+                type: GraphQLString, resolve(data) {
+                    return data.userName;
+                }
+            },
+            sex: {
                 type: GraphQLInt, resolve(data) {
-                    return data.phonecode;
+                    return data.sex;
+                }
+            },
+            phoneCode: {
+                type: GraphQLInt, resolve(data) {
+                    return data.phoneCode;
                 }
             },
             phone: {
@@ -209,6 +305,16 @@ const QueryAllUser = new GraphQLObjectType({
             company: {
                 type: GraphQLString, resolve(data) {
                     return data.company;
+                }
+            },
+            updateTime: {
+                type: GraphQLString, resolve(data) {
+                    return data.updateTime;
+                }
+            },
+            state: {
+                type: GraphQLInt, resolve(data) {
+                    return data.state;
                 }
             }
         });
@@ -312,17 +418,60 @@ module.exports = {
                 company: { type: GraphQLString }
             },
             resolve: async function (source, { userName, sex, email, firstName, lastName, phoneCode, phone, password, company }) {
+                // 查询用户名注册没
                 return await searchSql($sql.queryEndUserByUserName, [userName])
                     .then(async (reslut) => {
                         if (reslut.length === 0) {
+                            // 新增用户
                             return await searchSql($sql.insertEndUser, [userName, sex, email, firstName, lastName, phoneCode, phone, password, company])
                                 .then(async (resluts) => {
+                                    // 查询用户
                                     return await searchSql($sql.queryEndUserById, [resluts.id]).then(async (reslutData) => {
                                         reslutData[0].state = 1;
                                         return await reslutData;
                                     });
                                 })
                         } else {
+                            // 已有用户
+                            reslutData = [{}];
+                            reslutData[0].state = 0;
+                            return await reslutData;
+                        }
+                    })
+            }
+        },
+
+        updateAccount: {
+            type: new GraphQLList(UpdateAccount),
+            description: '后台用户注册',
+            args: {
+                id: { type: GraphQLInt },
+                userName: { type: GraphQLString },
+                sex: { type: GraphQLInt },
+                email: { type: GraphQLString },
+                firstName: { type: GraphQLString },
+                lastName: { type: GraphQLString },
+                phoneCode: { type: GraphQLInt },
+                phone: { type: GraphQLString },
+                password: { type: GraphQLString },
+                company: { type: GraphQLString }
+            },
+            resolve: async function (source, { userName, sex, email, firstName, lastName, phoneCode, phone, password, company, id }) {
+                // 查询用户名注册没
+                return await searchSql($sql.queryEndUserByUserName, [userName])
+                    .then(async (reslut) => {
+                        if (reslut.length === 1) {
+                            // 新增用户
+                            return await searchSql($sql.updateEndUser, [userName, sex, email, firstName, lastName, phoneCode, phone, password, company, id])
+                                .then(async (resluts) => {
+                                    // 查询用户
+                                    return await searchSql($sql.queryEndUserById, [id]).then(async (reslutData) => {
+                                        reslutData[0].state = 1;
+                                        return await reslutData;
+                                    });
+                                })
+                        } else {
+                            // 已有用户
                             reslutData = [{}];
                             reslutData[0].state = 0;
                             return await reslutData;

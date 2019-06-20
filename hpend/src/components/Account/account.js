@@ -13,69 +13,10 @@ const Search = Input.Search;
 const InputGroup = Input.Group;
 const { Option } = Select;
 
-const columns = [
-    {
-        title: 'Name',
-        dataIndex: 'name',
-        key: 'name',
-        render: text => <a href="javascript:;">{text}</a>,
-    },
-    {
-        title: 'Phone',
-        dataIndex: 'phone',
-        key: 'phone',
-    },
-    {
-        title: 'E-mail',
-        dataIndex: 'email',
-        key: 'email',
-    },
-    {
-        title: 'Tags',
-        key: 'tags',
-        dataIndex: 'tags',
-        render: tags => (
-            <span>
-                {tags.map(tag => {
-                    let color = tag.length > 5 ? 'geekblue' : 'green';
-                    if (tag === 'loser') {
-                        color = 'volcano';
-                    }
-                    return (
-                        <Tag color={color} key={tag}>
-                            {tag.toUpperCase()}
-                        </Tag>
-                    );
-                })}
-            </span>
-        ),
-    },
-    {
-        title: 'Action',
-        key: 'action',
-        render: (text, record) => (
-            <span>
-                <a href="javascript:;">修改</a>
-                <Divider type="vertical" />
-                <a href="javascript:;">删除</a>
-            </span>
-        ),
-    },
-];
 
 class Account extends PureComponent {
-    state = {
-        data: [{
-            key: 0,
-            name: null,
-            phone: null,
-            email: null,
-            tags: []
-        }],
-        loading: true
-    };
-
     componentDidMount() {
+        // 首次加载用户数据
         this.props.changeAccountDataLoading(true);
         getUserInfo(this.setData);
     }
@@ -85,11 +26,16 @@ class Account extends PureComponent {
         let data = []
         result.data.queryAllUsers.map((item, index) => (
             data[index] = {
-                key: index + 1,
-                name: item.name,
-                phone: item.phone,
+                key: item.id,
+                userName: item.userName,
+                sex: item.sex,
                 email: item.email,
-                tags: ['cool', 'teacher']
+                firstName: item.firstName,
+                lastName: item.lastName,
+                phoneCode: item.phoneCode,
+                phone: item.phone,
+                company: item.company,
+                password: item.password,
             }
         ))
         this.props.changeAccountData(data)
@@ -97,18 +43,90 @@ class Account extends PureComponent {
     }
 
     // 显示弹出框
-    showModal = () => {
+    AddAccount = (e) => {
+        if (e === 'add') {
+            this.props.changeModleTitle('新增');
+            this.props.changeModleName(e);
+            this.props.changeModelData('')
+        } else if (e === 'edit') {
+            this.props.changeModleTitle('修改');
+            this.props.changeModleName(e);
+        }
+        else if (e === 'delete') {
+            this.props.changeModleTitle('删除');
+            this.props.changeModleName(e);
+        }
         this.props.changeModleState(true)
     };
 
     render() {
+        const columns = [
+            {
+                title: 'userName',
+                dataIndex: 'userName',
+                key: 'userName',
+                render: text => <a href="javascript:;">{text}</a>,
+            },
+            {
+                title: 'Sex',
+                dataIndex: 'sex',
+                key: 'sex',
+            },
+            {
+                title: 'Email',
+                dataIndex: 'email',
+                key: 'email',
+            },
+            {
+                title: 'FirstName',
+                dataIndex: 'firstName',
+                key: 'firstName',
+            },
+            {
+                title: 'LastName',
+                dataIndex: 'lastName',
+                key: 'lastName',
+            },
+            {
+                title: 'PhoneCode',
+                dataIndex: 'phoneCode',
+                key: 'phoneCode',
+            },
+            {
+                title: 'Phone',
+                dataIndex: 'phone',
+                key: 'phone',
+            },
+            {
+                title: 'Company',
+                dataIndex: 'company',
+                key: 'company',
+            },
+            {
+                title: 'Password',
+                dataIndex: 'password',
+                key: 'password',
+            },
+            {
+                title: 'Action',
+                key: 'action',
+                render: (text, record) => (
+                    <span>
+                        <Button type="primary" onClick={() => this.AddAccount('edit')}>修改</Button>
+                        <Divider type="vertical" />
+                        <Button type="default" onClick={() => this.AddAccount('delete')}>删除</Button>
+                    </span>
+                ),
+            },
+        ];
+
         return (
             <Fragment>
                 <Breadcrumb style={{ margin: '16px 0' }}>
                     <Breadcrumb.Item>首页</Breadcrumb.Item>
                     <Breadcrumb.Item>用户管理</Breadcrumb.Item>
                 </Breadcrumb>
-                <AccountModle 
+                <AccountModle
                     visible={this.props.state.user.modelState}
                     setData={this.setData}
                 />
@@ -116,7 +134,7 @@ class Account extends PureComponent {
                     <div className={styles.search}>
                         <Row>
                             <Col span={8}>
-                                <Button type="primary" onClick={this.showModal}>新增</Button>
+                                <Button type="primary" onClick={() => this.AddAccount('add')}>新增</Button>
                             </Col>
                             <Col span={12} offset={4}>
                                 <Row>
@@ -139,7 +157,17 @@ class Account extends PureComponent {
                             </Col>
                         </Row>
                     </div>
-                    <Table columns={columns} dataSource={this.props.state.account.accountData} loading={this.props.state.account.accountLoading} />
+                    <Table
+                        columns={columns}
+                        dataSource={this.props.state.account.accountData}
+                        loading={this.props.state.account.accountLoading}
+                        onRow={(record) => {
+                            return {
+                                onClick: () => {
+                                    this.props.changeModelData(record)
+                                }
+                            }
+                        }} />
                 </div>
             </Fragment>
         );
@@ -155,6 +183,9 @@ const mapDispatchToProps = (dispatch) => {
         changeModleState: (data) => { dispatch(Actions.modleState(data)); },
         changeAccountDataLoading: (data) => { dispatch(Actions.accountDataLoading(data)); },
         changeAccountData: (data) => { dispatch(Actions.accountData(data)); },
+        changeModleName: (data) => { dispatch(Actions.modleName(data)); },
+        changeModleTitle: (data) => { dispatch(Actions.modleTitle(data)); },
+        changeModelData: (data) => { dispatch(Actions.modelData(data)); },  
     }
 };
 export default connect(
