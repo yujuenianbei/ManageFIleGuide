@@ -10,7 +10,7 @@ import { transSex, editTransToSex } from '../../func/account'
 import { Input, Col, Row, Select, Button, Modal, Spin, Form, Icon } from 'antd';
 const { Option } = Select;
 
-let myClear, clearData, modelData = {
+let myClear,myClear1, modelData = {
     email: '',
     userName: '',
     password: '',
@@ -60,6 +60,7 @@ class AccountForm extends PureComponent {
     }
 
     componentWillUnmount() {
+        console.log(11111)
         // 清除定时器
         clearTimeout(myClear);
     };
@@ -99,46 +100,37 @@ class AccountForm extends PureComponent {
     // 提交数据
     handleSubmit = (e) => {
         e.preventDefault();
-        console.log(this.props.form.getFieldValue('sex'))
-        // this.props.form.validateFields((err, values) => {
-        //     if (!err) {
-        //         this.props.changeConfirmLoading(true);
-        //         if (this.props.state.account.modelName === 'add') {
-        //             createAccount(values, this.createFinish)
-        //         } else if (this.props.state.account.modelName == 'edit') {
-        //             // 将id添加到请求内容中
-        //             values.id = parseInt(this.props.state.account.modelData.key);
-        //             editTransToSex(values);
-        //             updateAccount(values, this.createFinish)
-        //         }
-        //     }
-        // }); 
+        this.props.form.validateFields((err, values) => {
+            if (!err) {
+                if (this.props.state.account.modelName === 'add') {
+                    createAccount(values, this.createFinish)
+                } else if (this.props.state.account.modelName == 'edit') {
+                    // 将id添加到请求内容中
+                    values.id = parseInt(this.props.state.account.modelData.key);
+                    editTransToSex(values);
+                    updateAccount(values, this.createFinish)
+                }
+                // 清空表单内容
+                myClear = setTimeout(this.props.form.resetFields, 0);
+            }
+        });
     };
 
     // 取消提交
     cancelSubmit = () => {
-        this.props.changeModleState(false);
-        this.props.changeConfirmLoading(false);
-        clearData = setTimeout(() => {
-            myClear = setTimeout(this.props.form.resetFields, 0);
-            this.props.changeModelData('');
-            this.props.changeModleTitle('');
-            this.props.changeModleName('');
-            clearTimeout(clearData);
-        }, 0);
+        // if (this.props.state.account.modelName !== 'delete') {
+        //     myClear = setTimeout(this.props.form.resetFields, 0);
+        // }
     }
 
     // 提交数据后返回
     createFinish = (result) => {
         if (this.props.state.account.modelName === 'add') {
             if (result.data.regAccount[0].state === 1) {
-                this.props.changeConfirmLoading(false);
                 this.props.changeModleState(false);
                 this.props.changeModelData('');
                 this.props.changeModleTitle('');
                 this.props.changeModleName('');
-                // 清空表单内容
-                myClear = setTimeout(this.props.form.resetFields, 0);
                 // 更新数据
                 this.props.changeAccountDataLoading(true);
                 getUserInfo(this.props.setData);
@@ -147,13 +139,10 @@ class AccountForm extends PureComponent {
             }
         } else if (this.props.state.account.modelName == 'edit') {
             if (result.data.updateAccount[0].state === 1) {
-                this.props.changeConfirmLoading(false);
                 this.props.changeModleState(false);
                 this.props.changeModelData('');
                 this.props.changeModleTitle('');
                 this.props.changeModleName('');
-                // 清空表单内容
-                myClear = setTimeout(this.props.form.resetFields, 0);
                 // 更新数据
                 this.props.changeAccountDataLoading(true);
                 getUserInfo(this.props.setData);
@@ -165,14 +154,10 @@ class AccountForm extends PureComponent {
 
     // 验证密码是否一致
     confirmPassword = (rule, value, callback) => {
-        if (value !== "") {
-            if (this.props.form.getFieldValue('password') === value) {
-                callback()
-            } else {
-                callback('false')
-            }
-        } else {
+        if (this.props.form.getFieldValue('password') === value) {
             callback()
+        } else {
+            callback('false')
         }
     }
 
@@ -180,24 +165,24 @@ class AccountForm extends PureComponent {
     confirmUserName = (rule, value, callback) => {
         // 调用查询用户名的接口进行返回
         // this.props.form.getFieldValue('userName')
-        if (value !== "") {
-            if (this.props.state.account.modelName === 'edit' && value === this.props.state.account.modelData.userName) {
+        if ( value !== null) {
+            if(this.props.state.account.modelName === 'edit' && value === this.props.state.account.modelData.userName){
                 callback()
             } else {
                 this.setState({ userNameFeedback: true })
-                // 校验用户名是否存在
                 validateAccount(value, (data) => {
-                    this.setState({ userNameFeedback: false })
                     if (data.data.validateAccount[0].state === 1) {
+                        this.setState({ userNameFeedback: false })
                         callback()
                     } else if (data.data.validateAccount[0].state === 0) {
+                        this.setState({ userNameFeedback: false })
                         callback('false')
                     }
                 })
             }
         } else {
             this.setState({ userNameFeedback: false })
-            callback()
+            callback('false')
         }
     }
 
@@ -246,27 +231,24 @@ class AccountForm extends PureComponent {
                     <Form.Item label="密码" {...formItemLayout} style={{ marginBottom: '10px' }}>
                         {getFieldDecorator('password', {
                             initialValue: '',
-                            validateTrigger: 'onBlur',
                             rules: [
                                 {
                                     required: true,
                                     message: '请输入密码',
                                 },
                             ],
-                        })(<Input type="password" placeholder="请输入密码" disabled={this.props.state.account.modelName === 'edit' ? "disabled" : ""} />)}
+                        })(<Input type="password" placeholder="请输入密码" />)}
                     </Form.Item>
                     {this.props.state.account.modelName === 'add' && <Form.Item label="重复密码" {...formItemLayout} style={{ marginBottom: '10px' }}>
                         {getFieldDecorator('confirmPassword', {
-                            initialValue: '',
-                            validateTrigger: 'onBlur',
                             rules: [
                                 {
                                     required: true,
                                     message: '请再次输入密码',
                                 },
                                 {
-                                    validator: (rule, value, cb) => this.confirmPassword(rule, value, cb),
                                     message: '请输入正确的密码',
+                                    validator: (rule, value, cb) => this.confirmPassword(rule, value, cb),
                                 }
                             ],
                         })(<Input type="password" placeholder="请再次输入密码" />)}
@@ -275,7 +257,6 @@ class AccountForm extends PureComponent {
                     <Form.Item label="姓" {...formItemLayout} style={{ marginBottom: '10px' }}>
                         {getFieldDecorator('lastName', {
                             initialValue: '',
-                            validateTrigger: 'onBlur',
                             rules: [
                                 {
                                     required: true,
@@ -287,7 +268,6 @@ class AccountForm extends PureComponent {
                     <Form.Item label="名" {...formItemLayout} style={{ marginBottom: '10px' }}>
                         {getFieldDecorator('firstName', {
                             initialValue: '',
-                            validateTrigger: 'onBlur',
                             rules: [
                                 {
                                     required: true,
@@ -299,7 +279,6 @@ class AccountForm extends PureComponent {
                     <Form.Item label="区号" {...formItemLayout} style={{ marginBottom: '10px' }}>
                         {getFieldDecorator('phoneCode', {
                             initialValue: '',
-                            validateTrigger: 'onBlur',
                             rules: [
                                 {
                                     required: true,
@@ -314,7 +293,6 @@ class AccountForm extends PureComponent {
                     <Form.Item label="手机号" {...formItemLayout} style={{ marginBottom: '10px' }}>
                         {getFieldDecorator('phone', {
                             initialValue: '',
-                            validateTrigger: 'onBlur',
                             rules: [
                                 {
                                     required: true,
@@ -325,8 +303,7 @@ class AccountForm extends PureComponent {
                     </Form.Item>
                     <Form.Item label="性别" {...formItemLayout} style={{ marginBottom: '10px' }}>
                         {getFieldDecorator('sex', {
-                            initialValue: '',
-                            validateTrigger: 'onBlur',
+                            initialValue: '1',
                             rules: [
                                 {
                                     required: true,
@@ -334,14 +311,13 @@ class AccountForm extends PureComponent {
                                 },
                             ],
                         })(<Select placeholder="请选择性别">
-                            <Option value="0">男</Option>
-                            <Option value="1">女</Option>
+                            <Option value="1">男</Option>
+                            <Option value="2">女</Option>
                         </Select>)}
                     </Form.Item>
                     <Form.Item label="公司名" {...formItemLayout} style={{ marginBottom: '10px' }}>
                         {getFieldDecorator('company', {
                             initialValue: '',
-                            validateTrigger: 'onBlur',
                             rules: [
                                 {
                                     required: true,
@@ -371,7 +347,7 @@ const mapDispatchToProps = (dispatch) => {
         changeModleTitle: (data) => { dispatch(Actions.modleTitle(data)); },
         changeModleName: (data) => { dispatch(Actions.modleName(data)); },
         changeModelData: (data) => { dispatch(Actions.modelData(data)); },
-        changeConfirmLoading: (data) => { dispatch(Actions.confirmLoading(data)); },
+        changeModleTitle: (data) => { dispatch(Actions.modleTitle(data)); },
     }
 };
 export default connect(

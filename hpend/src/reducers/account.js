@@ -4,10 +4,12 @@ import {
     ACCOUNTLOADING,
     MODLENAME,
     MODELTITLE,
-    MODELDATA
+    MODELDATA,
+    CONFIRMLOADING
   } from '../actions/index'
   
   const initValue = {
+    confirmLoading: false,
     modelName: '',
     modelTitle: '',
     modelState: false,
@@ -35,6 +37,9 @@ import {
       }
       case ACCOUNTLOADING: {
         return Object.assign({}, state, { accountLoading: data })
+      }
+      case CONFIRMLOADING: {
+        return Object.assign({}, state, { confirmLoading: data })
       }
       default: {
         return state;

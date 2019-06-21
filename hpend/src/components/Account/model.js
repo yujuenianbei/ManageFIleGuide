@@ -9,34 +9,25 @@ import { getUserInfo } from '../../fetch/account'
 import { Modal, Spin, Form, Icon } from 'antd';
 
 import CreateAccount from './createAccount';
+import DeleteAccount from './delete';
 
 class AccountModle extends PureComponent {
-    state = {
-        confirmLoading: false,
-    };
 
     handleOk = (e) => {
-        this.setState({
-            confirmLoading: true,
-        });
         // 父组件调用子组件方法
-        this.child.handleSubmit(e);
-        setTimeout(() => {
-            this.props.changeModleState(false);
-            this.props.changeModleTitle('');
-            this.props.changeModleName('');
-            this.setState({
-                confirmLoading: false,
-            });
-        }, 2000);
-
+        if(this.props.state.account.modelName !== 'delete'){
+            this.child.handleSubmit(e);
+        } else {
+            this.del.handleSubmit(e);  
+        }
     };
 
     handleCancel = () => {
-        this.child.cancelSubmit();
-        this.props.changeModleState(false);
-        this.props.changeModleTitle('');
-        this.props.changeModleName('');
+        if(this.props.state.account.modelName !== 'delete'){
+            this.child.cancelSubmit();
+        } else {
+            this.del.cancelSubmit();  
+        }
     };
 
     render() {
@@ -47,11 +38,13 @@ class AccountModle extends PureComponent {
                     title={this.props.state.account.modelTitle}
                     visible={this.props.visible}
                     onOk={this.handleOk}
-                    confirmLoading={this.state.confirmLoading}
+                    confirmLoading={this.props.state.account.confirmLoading}
                     onCancel={this.handleCancel}
                     maskClosable={false}
                 >
-                    <CreateAccount onRef={(ref) => { this.child = ref }} setData={this.props.setData} />
+                {this.props.state.account.modelName !== 'delete' && <CreateAccount onRef={(ref) => { this.child = ref }} setData={this.props.setData} />}
+                {this.props.state.account.modelName === 'delete' && <DeleteAccount onDel={(ref) => { this.del = ref }} setData={this.props.setData}/>} 
+                    
                 </Modal>
             </Fragment>
         );

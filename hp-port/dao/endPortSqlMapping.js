@@ -7,6 +7,7 @@ var endPort = {
     updateEndUser: 'UPDATE account set userName=?, sex=?, email=?, firstName=?, lastName=?, phoneCode=?, phone=?, password=?, company=?, updateTime=NOW() where id=?',
     queryAllEndUser:"SELECT * FROM `account`",
     queryEndUserById: 'SELECT * FROM `account` WHERE id=?',
+    deleteEndUserById: 'DELETE FROM `account` WHERE id=?',
     queryEndUserByUserName: 'SELECT * FROM `account` WHERE userName=?',
 
 

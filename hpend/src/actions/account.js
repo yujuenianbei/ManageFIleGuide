@@ -1,9 +1,10 @@
 export const MODELSTATE = 'MODLESTATE';
 export const ACCOUNTDATA = 'ACCOUNTDATA';
 export const ACCOUNTLOADING = 'ACCOUNTLOADING';
+export const CONFIRMLOADING = 'CONFIRMLOADING'
 export const MODLENAME = 'MODLENAME';
 export const MODELTITLE = 'MODELTITLE';
-export const MODELDATA = 'MODELDATA'
+export const MODELDATA = 'MODELDATA';
 // 弹出框状态
 export function modleState(data) {
   return {
@@ -28,6 +29,13 @@ export function modleTitle(data) {
 export function accountDataLoading(data) {
   return {
     type: ACCOUNTLOADING,
+    data
+  }
+}
+// 提交loading
+export function confirmLoading(data) {
+  return {
+    type: CONFIRMLOADING,
     data
   }
 }

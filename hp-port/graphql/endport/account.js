@@ -80,6 +80,11 @@ const Reg = new GraphQLObjectType({
                     return data.uid;
                 }
             },
+            id: {
+                type: GraphQLID, resolve(data) {
+                    return data.id;
+                }
+            },
             email: {
                 type: GraphQLString, resolve(data) {
                     return data.email;
@@ -145,6 +150,11 @@ const UpdateAccount = new GraphQLObjectType({
     description: "更新用户信息",
     fields: () => {
         return ({
+            id: {
+                type: GraphQLID, resolve(data) {
+                    return data.id;
+                }
+            },
             email: {
                 type: GraphQLString, resolve(data) {
                     return data.email;
@@ -246,13 +256,13 @@ const QueryAllUser = new GraphQLObjectType({
     description: "查询所有用户",
     fields: () => {
         return ({
-             // 这种可以
-             id: {
+            // 这种可以
+            id: {
                 type: GraphQLID, resolve(data) {
                     return data.id;
                 }
             },
-             uuid: {
+            uuid: {
                 type: GraphQLInt, resolve(data) {
                     return data.uuid;
                 }
@@ -322,6 +332,46 @@ const QueryAllUser = new GraphQLObjectType({
 });
 
 
+const DeleteAcoount = new GraphQLObjectType({
+    name: 'DeleteAcoount',
+    description: "删除用户",
+    fields: () => {
+        return ({
+            userName: {
+                type: GraphQLString, resolve(data) {
+                    return data.userName;
+                }
+            },
+            state: {
+                type: GraphQLInt, resolve(data) {
+                    return data.state;
+                }
+            }
+        });
+    },
+});
+
+
+const ValidateAcoount = new GraphQLObjectType({
+    name: 'ValidateAcoount',
+    description: "验证用户名是否存在",
+    fields: () => {
+        return ({
+            id: {
+                type: GraphQLID, resolve(data) {
+                    return data.id;
+                }
+            },
+            state: {
+                type: GraphQLInt, resolve(data) {
+                    return data.state;
+                }
+            }
+        });
+    },
+});
+
+
 module.exports = {
     query: {
         queryAllUsers: {
@@ -335,7 +385,7 @@ module.exports = {
     mutation: {
         loginUuid: {
             type: new GraphQLList(LoginUuid),
-            description: '后台用户登录',
+            description: '后台用户登录uuid',
             args: {
                 uuid: { type: GraphQLString },
             },
@@ -443,7 +493,7 @@ module.exports = {
 
         updateAccount: {
             type: new GraphQLList(UpdateAccount),
-            description: '后台用户注册',
+            description: '后台用户编辑',
             args: {
                 id: { type: GraphQLInt },
                 userName: { type: GraphQLString },
@@ -458,10 +508,10 @@ module.exports = {
             },
             resolve: async function (source, { userName, sex, email, firstName, lastName, phoneCode, phone, password, company, id }) {
                 // 查询用户名注册没
-                return await searchSql($sql.queryEndUserByUserName, [userName])
+                return await searchSql($sql.queryEndUserById, [id])
                     .then(async (reslut) => {
                         if (reslut.length === 1) {
-                            // 新增用户
+                            // 修改用户
                             return await searchSql($sql.updateEndUser, [userName, sex, email, firstName, lastName, phoneCode, phone, password, company, id])
                                 .then(async (resluts) => {
                                     // 查询用户
@@ -474,6 +524,64 @@ module.exports = {
                             // 已有用户
                             reslutData = [{}];
                             reslutData[0].state = 0;
+                            return await reslutData;
+                        }
+                    })
+            }
+        },
+
+        deleteAccount: {
+            type: new GraphQLList(DeleteAcoount),
+            description: '后台用户删除',
+            args: {
+                id: { type: GraphQLID }
+            },
+            resolve: async function (source, { id }) {
+                // 查询用户名注册没
+                return await searchSql($sql.queryEndUserById, [id])
+                    .then(async (reslut) => {
+                        console.log(reslut.length)
+                        if (reslut.length === 1) {
+                            // 新增用户
+                            return await searchSql($sql.deleteEndUserById, [id])
+                                .then(async (resluts) => {
+                                    let reslutData = [{}];
+                                    if (resluts.affectedRows > 0) {
+                                        reslutData[0].state = 1;
+                                    } else {
+                                        reslutData[0].state = 0;
+                                    }
+                                    return await reslutData;
+                                })
+                        } else {
+                            // 已有用户
+                            let resluts = [{}];
+                            resluts[0].state = 0;
+                            return await resluts;
+                        }
+                    })
+            }
+        },
+
+        validateAccount: {
+            type: new GraphQLList(ValidateAcoount),
+            description: '后台用户验证',
+            args: {
+                userName: { type: GraphQLString },
+            },
+            resolve: async function (source, { userName }) {
+                // 查询用户名注册没
+                return await searchSql($sql.queryEndUserByUserName, [userName])
+                    .then(async (reslut) => {
+                        if (reslut.length === 1) {
+                           // 已有用户
+                           reslutData = [{}];
+                           reslutData[0].state = 0;
+                           return await reslutData;
+                        } else {
+                            // 已有用户
+                            reslutData = [{}];
+                            reslutData[0].state = 1;
                             return await reslutData;
                         }
                     })

@@ -71,6 +71,11 @@ class Account extends PureComponent {
                 title: 'Sex',
                 dataIndex: 'sex',
                 key: 'sex',
+                render: (text, record) => (
+                    <span>
+                        {record.sex === 0 ? "男" : "女"}
+                    </span>
+                ),
             },
             {
                 title: 'Email',
@@ -185,7 +190,7 @@ const mapDispatchToProps = (dispatch) => {
         changeAccountData: (data) => { dispatch(Actions.accountData(data)); },
         changeModleName: (data) => { dispatch(Actions.modleName(data)); },
         changeModleTitle: (data) => { dispatch(Actions.modleTitle(data)); },
-        changeModelData: (data) => { dispatch(Actions.modelData(data)); },  
+        changeModelData: (data) => { dispatch(Actions.modelData(data)); },
     }
 };
 export default connect(
