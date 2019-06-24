@@ -6,7 +6,7 @@ import classify from '@magento/venia-concept/esm/classify';
 // const SearchBar = React.lazy(() => import('src/components/SearchBar'));
 import styles from './account.module.less';
 import { getUserInfo, createAccount, updateAccount, validateAccount } from '../../fetch/account'
-import { transSex, editTransToSex } from '../../func/account'
+import { transSex, editTransToSex, transToSex } from '../../func/account'
 import { Input, Col, Row, Select, Button, Modal, Spin, Form, Icon } from 'antd';
 const { Option } = Select;
 
@@ -100,19 +100,21 @@ class AccountForm extends PureComponent {
     handleSubmit = (e) => {
         e.preventDefault();
         console.log(this.props.form.getFieldValue('sex'))
-        // this.props.form.validateFields((err, values) => {
-        //     if (!err) {
-        //         this.props.changeConfirmLoading(true);
-        //         if (this.props.state.account.modelName === 'add') {
-        //             createAccount(values, this.createFinish)
-        //         } else if (this.props.state.account.modelName == 'edit') {
-        //             // 将id添加到请求内容中
-        //             values.id = parseInt(this.props.state.account.modelData.key);
-        //             editTransToSex(values);
-        //             updateAccount(values, this.createFinish)
-        //         }
-        //     }
-        // }); 
+        this.props.form.validateFields((err, values) => {
+            if (!err) {
+                this.props.changeConfirmLoading(true);
+                if (this.props.state.account.modelName === 'add') {
+                    values.sex = transToSex(this.props.form.getFieldValue('sex'));
+                    createAccount(values, this.createFinish)
+                } else if (this.props.state.account.modelName == 'edit') {
+                    // 将id添加到请求内容中
+                    values.id = parseInt(this.props.state.account.modelData.key);
+                    // 将性别转换格式
+                    editTransToSex(values);
+                    updateAccount(values, this.createFinish)
+                }
+            }
+        }); 
     };
 
     // 取消提交

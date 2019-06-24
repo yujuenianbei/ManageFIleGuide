@@ -5,6 +5,10 @@ export const CONFIRMLOADING = 'CONFIRMLOADING'
 export const MODLENAME = 'MODLENAME';
 export const MODELTITLE = 'MODELTITLE';
 export const MODELDATA = 'MODELDATA';
+export const CHECKLISTCOL = 'CHECKLISTCOL';
+export const ALLCHECKCOL = 'ALLCHECKCOL';
+export const PAGESIZE = 'PAGESIZE'
+
 // 弹出框状态
 export function modleState(data) {
   return {
@@ -50,6 +54,28 @@ export function accountData(data) {
 export function modelData(data) {
   return {
     type: MODELDATA,
+    data
+  }
+}
+
+// 所有列 数组
+export function allCheckCols(data){
+  return {
+    type: ALLCHECKCOL,
+    data
+  }
+}
+// 选择列 数组
+export function checkListCol(data){
+  return {
+    type: CHECKLISTCOL,
+    data
+  }
+}
+// 
+export function pageSize(data){
+  return {
+    type: PAGESIZE,
     data
   }
 }

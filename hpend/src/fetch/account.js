@@ -161,8 +161,7 @@ const deleteAccount = (data, func) => {
         .then((result) => { func(result) });
 }
 
-
-// 新增后台用户
+// 校验后台用户名是否重复
 const validateAccount = (data, func) => {
     const query = `mutation validateAccount($userName: String){
         validateAccount(userName: $userName){
@@ -190,4 +189,53 @@ const validateAccount = (data, func) => {
         .then((result) => { func(result) });
 }
 
-export { getUserInfo, createAccount, updateAccount, deleteAccount, validateAccount }
+// 根据指定条件进行查询用户
+const searchAccount = (type, search, pageSize, func) => {
+    let intvalue, value ;
+    if(type === "sex" || type === "phoneCode"){
+        intvalue = search;
+        value = type;
+    } else {
+        intvalue = 1;
+        value = search;
+    }
+    const query = `mutation searchAccount($type: String, $value: String, $intvalue: Int, $pageSize: Int){
+        searchAccount(type: $type, value: $value, intvalue: $intvalue, pageSize: $pageSize){
+            userName, 
+            sex, 
+            email, 
+            firstName, 
+            lastName, 
+            phoneCode,
+            phone, 
+            company,
+            password,
+            total
+        }
+      }
+      `;
+
+    fetch('http://localhost:3004/graphqlPort', {
+        method: 'POST',
+        mode: "cors",
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            // 'login': localStorage.getItem('loginState'),
+            // 'token': localStorage.getItem('token')
+        },
+        body: JSON.stringify({
+            query,
+            variables: {
+                type,
+                value,
+                intvalue,
+                pageSize
+              }
+        })
+    })
+        .then(r => r.json())
+        .then((result) => { func(result) });
+}
+
+export { getUserInfo, createAccount, updateAccount, deleteAccount, validateAccount, searchAccount }

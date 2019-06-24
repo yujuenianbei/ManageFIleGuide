@@ -17,363 +17,11 @@ const {
     GraphQLInputObjectType
 } = require('graphql');
 const Db = require('../../sql/db');
-
-//定义schema及resolver
-const Login = new GraphQLObjectType({
-    name: 'Login',
-    description: "用户登录",
-    fields: () => {
-        return ({
-            // 这种可以
-            email: {
-                type: GraphQLString, resolve(data) {
-                    return data.email;
-                }
-            },
-            name: {
-                type: GraphQLString, resolve(data) {
-                    return data.name;
-                }
-            },
-            password: {
-                type: GraphQLString, resolve(data) {
-                    return data.password;
-                }
-            },
-            state: {
-                type: GraphQLString, resolve(data) {
-                    return data.state;
-                }
-            },
-            token: {
-                type: GraphQLString, resolve(data) {
-                    return data.token;
-                }
-            },
-            id: {
-                type: GraphQLID, resolve(data) {
-                    return data.id;
-                }
-            },
-            uuid: {
-                type: GraphQLString, resolve(data) {
-                    return data.uuid;
-                }
-            },
-        });
-    },
-});
-
-const Reg = new GraphQLObjectType({
-    name: 'Reg',
-    description: "用户注册",
-    fields: () => {
-        return ({
-            // 这种可以
-            uuid: {
-                type: GraphQLInt, resolve(data) {
-                    return data.uuid;
-                }
-            },
-            uid: {
-                type: GraphQLInt, resolve(data) {
-                    return data.uid;
-                }
-            },
-            id: {
-                type: GraphQLID, resolve(data) {
-                    return data.id;
-                }
-            },
-            email: {
-                type: GraphQLString, resolve(data) {
-                    return data.email;
-                }
-            },
-            firstName: {
-                type: GraphQLString, resolve(data) {
-                    return data.firstName;
-                }
-            },
-            lastName: {
-                type: GraphQLString, resolve(data) {
-                    return data.lastName;
-                }
-            },
-            userName: {
-                type: GraphQLString, resolve(data) {
-                    return data.userName;
-                }
-            },
-            sex: {
-                type: GraphQLInt, resolve(data) {
-                    return data.sex;
-                }
-            },
-            phoneCode: {
-                type: GraphQLInt, resolve(data) {
-                    return data.phoneCode;
-                }
-            },
-            phone: {
-                type: GraphQLString, resolve(data) {
-                    return data.phone;
-                }
-            },
-            password: {
-                type: GraphQLString, resolve(data) {
-                    return data.password;
-                }
-            },
-            company: {
-                type: GraphQLString, resolve(data) {
-                    return data.company;
-                }
-            },
-            updateTime: {
-                type: GraphQLString, resolve(data) {
-                    return data.updateTime;
-                }
-            },
-            state: {
-                type: GraphQLInt, resolve(data) {
-                    return data.state;
-                }
-            }
-        });
-    },
-});
-
-
-const UpdateAccount = new GraphQLObjectType({
-    name: 'UpdateAccount',
-    description: "更新用户信息",
-    fields: () => {
-        return ({
-            id: {
-                type: GraphQLID, resolve(data) {
-                    return data.id;
-                }
-            },
-            email: {
-                type: GraphQLString, resolve(data) {
-                    return data.email;
-                }
-            },
-            firstName: {
-                type: GraphQLString, resolve(data) {
-                    return data.firstName;
-                }
-            },
-            lastName: {
-                type: GraphQLString, resolve(data) {
-                    return data.lastName;
-                }
-            },
-            userName: {
-                type: GraphQLString, resolve(data) {
-                    return data.userName;
-                }
-            },
-            sex: {
-                type: GraphQLInt, resolve(data) {
-                    return data.sex;
-                }
-            },
-            phoneCode: {
-                type: GraphQLInt, resolve(data) {
-                    return data.phoneCode;
-                }
-            },
-            phone: {
-                type: GraphQLString, resolve(data) {
-                    return data.phone;
-                }
-            },
-            password: {
-                type: GraphQLString, resolve(data) {
-                    return data.password;
-                }
-            },
-            company: {
-                type: GraphQLString, resolve(data) {
-                    return data.company;
-                }
-            },
-            updateTime: {
-                type: GraphQLString, resolve(data) {
-                    return data.updateTime;
-                }
-            },
-            state: {
-                type: GraphQLInt, resolve(data) {
-                    return data.state;
-                }
-            }
-        });
-    },
-});
-
-// UUID登录
-const LoginUuid = new GraphQLObjectType({
-    name: 'LoginUuid',
-    description: "用户uuid登录",
-    fields: () => {
-        return ({
-            // 这种可以
-            id: {
-                type: GraphQLID, resolve(data) {
-                    return data.id;
-                }
-            },
-            name: {
-                type: GraphQLString, resolve(data) {
-                    return data.name;
-                }
-            },
-            uuid: {
-                type: GraphQLString, resolve(data) {
-                    return data.uuid;
-                }
-            },
-            state: {
-                type: GraphQLString, resolve(data) {
-                    return data.state;
-                }
-            },
-            token: {
-                type: GraphQLString, resolve(data) {
-                    return data.token;
-                }
-            }
-        });
-    },
-});
-
-
-const QueryAllUser = new GraphQLObjectType({
-    name: 'QueryAllUser',
-    description: "查询所有用户",
-    fields: () => {
-        return ({
-            // 这种可以
-            id: {
-                type: GraphQLID, resolve(data) {
-                    return data.id;
-                }
-            },
-            uuid: {
-                type: GraphQLInt, resolve(data) {
-                    return data.uuid;
-                }
-            },
-            uid: {
-                type: GraphQLInt, resolve(data) {
-                    return data.uid;
-                }
-            },
-            email: {
-                type: GraphQLString, resolve(data) {
-                    return data.email;
-                }
-            },
-            firstName: {
-                type: GraphQLString, resolve(data) {
-                    return data.firstName;
-                }
-            },
-            lastName: {
-                type: GraphQLString, resolve(data) {
-                    return data.lastName;
-                }
-            },
-            userName: {
-                type: GraphQLString, resolve(data) {
-                    return data.userName;
-                }
-            },
-            sex: {
-                type: GraphQLInt, resolve(data) {
-                    return data.sex;
-                }
-            },
-            phoneCode: {
-                type: GraphQLInt, resolve(data) {
-                    return data.phoneCode;
-                }
-            },
-            phone: {
-                type: GraphQLString, resolve(data) {
-                    return data.phone;
-                }
-            },
-            password: {
-                type: GraphQLString, resolve(data) {
-                    return data.password;
-                }
-            },
-            company: {
-                type: GraphQLString, resolve(data) {
-                    return data.company;
-                }
-            },
-            updateTime: {
-                type: GraphQLString, resolve(data) {
-                    return data.updateTime;
-                }
-            },
-            state: {
-                type: GraphQLInt, resolve(data) {
-                    return data.state;
-                }
-            }
-        });
-    },
-});
-
-
-const DeleteAcoount = new GraphQLObjectType({
-    name: 'DeleteAcoount',
-    description: "删除用户",
-    fields: () => {
-        return ({
-            userName: {
-                type: GraphQLString, resolve(data) {
-                    return data.userName;
-                }
-            },
-            state: {
-                type: GraphQLInt, resolve(data) {
-                    return data.state;
-                }
-            }
-        });
-    },
-});
-
-
-const ValidateAcoount = new GraphQLObjectType({
-    name: 'ValidateAcoount',
-    description: "验证用户名是否存在",
-    fields: () => {
-        return ({
-            id: {
-                type: GraphQLID, resolve(data) {
-                    return data.id;
-                }
-            },
-            state: {
-                type: GraphQLInt, resolve(data) {
-                    return data.state;
-                }
-            }
-        });
-    },
-});
-
+const { Login, Reg, UpdateAccount, LoginUuid, QueryAllUser, DeleteAcoount, ValidateAcoount, SearchAccount } = require('./accountSchema');
 
 module.exports = {
     query: {
+        // 查询所有的用户
         queryAllUsers: {
             type: new GraphQLList(QueryAllUser),
             description: '获取全部后台用户信息',
@@ -383,6 +31,7 @@ module.exports = {
         }
     },
     mutation: {
+        // uuid登录
         loginUuid: {
             type: new GraphQLList(LoginUuid),
             description: '后台用户登录uuid',
@@ -416,6 +65,7 @@ module.exports = {
                     })
             }
         },
+        // 用户名密码登录
         login: {
             type: new GraphQLList(Login),
             description: '后台用户登录',
@@ -453,6 +103,7 @@ module.exports = {
                 // return (await searchSql($sql.queryByUsername, [name]));
             }
         },
+        // 注册用户
         regAccount: {
             type: new GraphQLList(Reg),
             description: '后台用户注册',
@@ -490,7 +141,7 @@ module.exports = {
                     })
             }
         },
-
+        // 更新用户
         updateAccount: {
             type: new GraphQLList(UpdateAccount),
             description: '后台用户编辑',
@@ -529,7 +180,7 @@ module.exports = {
                     })
             }
         },
-
+        // 删除用户
         deleteAccount: {
             type: new GraphQLList(DeleteAcoount),
             description: '后台用户删除',
@@ -562,7 +213,7 @@ module.exports = {
                     })
             }
         },
-
+        // 校验用户名
         validateAccount: {
             type: new GraphQLList(ValidateAcoount),
             description: '后台用户验证',
@@ -574,10 +225,10 @@ module.exports = {
                 return await searchSql($sql.queryEndUserByUserName, [userName])
                     .then(async (reslut) => {
                         if (reslut.length === 1) {
-                           // 已有用户
-                           reslutData = [{}];
-                           reslutData[0].state = 0;
-                           return await reslutData;
+                            // 已有用户
+                            reslutData = [{}];
+                            reslutData[0].state = 0;
+                            return await reslutData;
                         } else {
                             // 已有用户
                             reslutData = [{}];
@@ -587,5 +238,42 @@ module.exports = {
                     })
             }
         },
+        //搜索
+        searchAccount: {
+            type: new GraphQLList(SearchAccount),
+            description: '根据条件进行搜索',
+            args: {
+                value: { type: GraphQLString },
+                intvalue: { type: GraphQLInt },
+                type: { type: GraphQLString },
+                pageSize : { type: GraphQLInt }
+            },
+            resolve: async function (source, { intvalue, value, type, pageSize }) {
+                if (type !== "sex" && type !== "phoneCode") {
+                    return await searchSql(`SELECT * FROM account WHERE ${type} like ? limit ${pageSize}`, [`%${value}%`])
+                        .then(async (reslut) => {
+                            return await searchSql($sql.queryEndUserByUserName).then(
+                                async (resluts) => {
+                                    reslut.total = resluts
+                                    return reslut;
+                                }
+                            )
+                            
+                        })
+                } else {
+                    return await searchSql(`SELECT * FROM account WHERE ${type} like ? limit ${pageSize}`, [`%${intvalue}%`])
+                    .then(async (reslut) => {
+                        return await searchSql($sql.queryEndUserByUserName).then(
+                            async (resluts) => {
+                                reslut.total = resluts
+                                return reslut;
+                            }
+                        )
+                    })
+                }
+
+            }
+        }
+
     }
 };
