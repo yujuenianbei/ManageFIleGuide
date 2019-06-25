@@ -388,11 +388,6 @@ const SearchAccount = new GraphQLObjectType({
                     return data.uid;
                 }
             },
-            total: {
-                type: GraphQLInt, resolve(data) {
-                    return data.total;
-                }
-            },
             email: {
                 type: GraphQLString, resolve(data) {
                     return data.email;
@@ -447,7 +442,21 @@ const SearchAccount = new GraphQLObjectType({
                 type: GraphQLInt, resolve(data) {
                     return data.state;
                 }
-            }
+            },
+        });
+    },
+});
+
+const AccountTotal = new GraphQLObjectType({
+    name: 'AccountTotal',
+    description: "查询符合条件的用户总数",
+    fields: () => {
+        return ({
+            total: {
+                type: GraphQLInt, resolve(data) {
+                    return data.total;
+                }
+            },
         });
     },
 });
@@ -460,5 +469,6 @@ module.exports = {
     QueryAllUser, 
     DeleteAcoount, 
     ValidateAcoount, 
-    SearchAccount 
+    SearchAccount,
+    AccountTotal
 }

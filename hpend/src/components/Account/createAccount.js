@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import classify from '@magento/venia-concept/esm/classify';
 // const SearchBar = React.lazy(() => import('src/components/SearchBar'));
 import styles from './account.module.less';
-import { getUserInfo, createAccount, updateAccount, validateAccount } from '../../fetch/account'
+import { getUserInfo, createAccount, updateAccount, validateAccount, searchAccount, searchAccountTotal } from '../../fetch/account'
 import { transSex, editTransToSex, transToSex } from '../../func/account'
 import { Input, Col, Row, Select, Button, Modal, Spin, Form, Icon } from 'antd';
 const { Option } = Select;
@@ -114,7 +114,7 @@ class AccountForm extends PureComponent {
                     updateAccount(values, this.createFinish)
                 }
             }
-        }); 
+        });
     };
 
     // 取消提交
@@ -143,7 +143,21 @@ class AccountForm extends PureComponent {
                 myClear = setTimeout(this.props.form.resetFields, 0);
                 // 更新数据
                 this.props.changeAccountDataLoading(true);
-                getUserInfo(this.props.setData);
+
+                let data = {};
+                data.search = this.props.state.account.searchValue ? this.props.state.account.searchValue : ""
+                data.searchType = this.props.state.account.searchType ? this.props.state.account.searchType : "";
+                data.pageSize = this.props.state.account.pageSize;
+                data.start = this.props.state.account.pageNow;
+                data.sort = this.props.state.account.pageSort;
+                // 如果搜索性别需要装换
+                if (data.searchType === "sex") {
+                    data.search = transToSex(this.props.state.account.searchValue);
+                }
+                searchAccountTotal(data, this.setPageTotal)
+                searchAccount(data, this.searchData)
+
+                // getUserInfo(this.props.setData);
             } else {
                 // this.props.changeModleState(false);
             }
@@ -158,12 +172,53 @@ class AccountForm extends PureComponent {
                 myClear = setTimeout(this.props.form.resetFields, 0);
                 // 更新数据
                 this.props.changeAccountDataLoading(true);
-                getUserInfo(this.props.setData);
+
+
+                let data = {};
+                data.search = this.props.state.account.searchValue ? this.props.state.account.searchValue : ""
+                data.searchType = this.props.state.account.searchType ? this.props.state.account.searchType : "";
+                data.pageSize = this.props.state.account.pageSize;
+                data.start = this.props.state.account.pageNow;
+                data.sort = this.props.state.account.pageSort;
+                // 如果搜索性别需要装换
+                if (data.searchType === "sex") {
+                    data.search = transToSex(this.props.state.account.searchValue);
+                }
+                searchAccountTotal(data, this.setPageTotal)
+                searchAccount(data, this.searchData);
+
+                // getUserInfo(this.props.setData);
             } else {
                 // this.props.changeModleState(false);
             }
         }
     }
+
+    // 修改总数
+    setPageTotal = (result) => {
+        this.props.changePageTotal(result.data.total.total)
+    }
+    // 搜索结果写入表中
+    searchData = (result) => {
+        let data = []
+        result.data.searchAccount.map((item, index) => (
+            data[index] = {
+                key: item.id,
+                userName: item.userName,
+                sex: item.sex,
+                email: item.email,
+                firstName: item.firstName,
+                lastName: item.lastName,
+                phoneCode: item.phoneCode,
+                phone: item.phone,
+                company: item.company,
+                password: item.password,
+            }
+        ))
+        this.props.changeAccountData(data)
+        this.props.changeAccountDataLoading(false)
+    }
+
 
     // 验证密码是否一致
     confirmPassword = (rule, value, callback) => {
@@ -374,6 +429,12 @@ const mapDispatchToProps = (dispatch) => {
         changeModleName: (data) => { dispatch(Actions.modleName(data)); },
         changeModelData: (data) => { dispatch(Actions.modelData(data)); },
         changeConfirmLoading: (data) => { dispatch(Actions.confirmLoading(data)); },
+
+        changePageSize: (data) => { dispatch(Actions.pageSize(data)); },
+        changePageNow: (data) => { dispatch(Actions.pageNow(data)); },
+        changePageTotal: (data) => { dispatch(Actions.pageTotal(data)); },
+        changeSearchValue: (data) => { dispatch(Actions.searchUserValue(data)); },
+        changeSearchType: (data) => { dispatch(Actions.searchUserType(data)); },
     }
 };
 export default connect(

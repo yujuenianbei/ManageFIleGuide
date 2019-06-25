@@ -17,7 +17,7 @@ const {
     GraphQLInputObjectType
 } = require('graphql');
 const Db = require('../../sql/db');
-const { Login, Reg, UpdateAccount, LoginUuid, QueryAllUser, DeleteAcoount, ValidateAcoount, SearchAccount } = require('./accountSchema');
+const { Login, Reg, UpdateAccount, LoginUuid, QueryAllUser, DeleteAcoount, ValidateAcoount, SearchAccount, AccountTotal } = require('./accountSchema');
 
 module.exports = {
     query: {
@@ -246,30 +246,76 @@ module.exports = {
                 value: { type: GraphQLString },
                 intvalue: { type: GraphQLInt },
                 type: { type: GraphQLString },
-                pageSize : { type: GraphQLInt }
+                start: { type: GraphQLInt },
+                pageSize: { type: GraphQLInt },
+                sort: { type: GraphQLString }  //ASC DEC
             },
-            resolve: async function (source, { intvalue, value, type, pageSize }) {
-                if (type !== "sex" && type !== "phoneCode") {
-                    return await searchSql(`SELECT * FROM account WHERE ${type} like ? limit ${pageSize}`, [`%${value}%`])
+            resolve: async function (source, { intvalue, value, type, start, pageSize, sort }) {
+                // type 没选 全局搜
+                if (type !== '' && value !== '' && type !== 'sex' && type !== 'phoneCode') {
+                    value = '%'+value+'%'
+                    return await searchSql(`SELECT * FROM account WHERE ${type} like ${JSON.stringify(value)} ORDER BY ${type} ${sort} limit ${start},${pageSize}`)
                         .then(async (reslut) => {
-                            return await searchSql($sql.queryEndUserByUserName).then(
-                                async (resluts) => {
-                                    reslut.total = resluts
-                                    return reslut;
-                                }
-                            )
-                            
+                            return reslut;
+                        })
+                } else if ((type === 'sex' || type === 'phoneCode') && intvalue !== 9) {
+                    console.log(`SELECT * FROM account WHERE ${type} like %${intvalue}% ORDER BY ${type} ${sort} limit ${start},${pageSize}`)
+                    return await searchSql(`SELECT * FROM account WHERE ${type} like ? ORDER BY ${type} ${sort} limit ${start},${pageSize}`, [`%${intvalue}%`])
+                        .then(async (reslut) => {
+                            return reslut;
                         })
                 } else {
-                    return await searchSql(`SELECT * FROM account WHERE ${type} like ? limit ${pageSize}`, [`%${intvalue}%`])
-                    .then(async (reslut) => {
-                        return await searchSql($sql.queryEndUserByUserName).then(
-                            async (resluts) => {
-                                reslut.total = resluts
-                                return reslut;
-                            }
-                        )
-                    })
+                    return await searchSql(`SELECT * FROM account limit ${start},${pageSize}`)
+                        .then(async (reslut) => {
+                            return reslut;
+                        })
+                }
+            }
+
+        },
+        // 搜索的总数
+        total: {
+            type: AccountTotal,
+            description: '根据条件进行搜索',
+            args: {
+                value: { type: GraphQLString },
+                intvalue: { type: GraphQLInt },
+                type: { type: GraphQLString }
+            },
+            resolve: async function (source, { intvalue, value, type }) {
+                console.log(intvalue, value, type)
+                if (type === "" || value === "") {
+                    return await searchSql($sql.queryAllEndUser)
+                        .then(async (reslut) => {
+                            return await searchSql($sql.searchTotal).then(
+                                async (resluts) => {
+                                    console.log(1, resluts);
+                                    return await resluts[0];
+                                }
+                            )
+                        })
+                } else {
+                    if (type !== "sex" && type !== "phoneCode") {
+                        return await searchSql(`SELECT * FROM account WHERE ${type} like ?`, [`%${value}%`])
+                            .then(async (reslut) => {
+                                return await searchSql($sql.searchTotal).then(
+                                    async (resluts) => {
+                                        console.log(2, resluts);
+                                        return await resluts[0];
+                                    }
+                                )
+                            })
+                    } else {
+                        return await searchSql(`SELECT * FROM account WHERE ${type} like ? `, [`%${intvalue}%`])
+                            .then(async (reslut) => {
+                                return await searchSql($sql.searchTotal).then(
+                                    async (resluts) => {
+                                        console.log(3, resluts);
+                                        return await resluts[0];
+                                    }
+                                )
+                            })
+                    }
                 }
 
             }

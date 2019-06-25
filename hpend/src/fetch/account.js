@@ -75,7 +75,7 @@ const createAccount = (data, func) => {
                 phone: data.phone,
                 password: data.password,
                 company: data.company
-              }
+            }
         })
     })
         .then(r => r.json())
@@ -125,7 +125,7 @@ const updateAccount = (data, func) => {
                 phone: data.phone,
                 password: data.password,
                 company: data.company
-              }
+            }
         })
     })
         .then(r => r.json())
@@ -154,7 +154,7 @@ const deleteAccount = (data, func) => {
             query,
             variables: {
                 id: parseInt(data.key),
-              }
+            }
         })
     })
         .then(r => r.json())
@@ -182,7 +182,7 @@ const validateAccount = (data, func) => {
             query,
             variables: {
                 userName: data
-              }
+            }
         })
     })
         .then(r => r.json())
@@ -190,17 +190,31 @@ const validateAccount = (data, func) => {
 }
 
 // 根据指定条件进行查询用户
-const searchAccount = (type, search, pageSize, func) => {
-    let intvalue, value ;
-    if(type === "sex" || type === "phoneCode"){
-        intvalue = search;
-        value = type;
+const searchAccount = (data, func) => {
+    let intvalue, value;
+    if (data.searchType === "sex" || data.searchType === "phoneCode") {
+        console.log(data)
+        if(!data.search && data.search !== 0){
+            intvalue = 9;
+            value = data.searchType;
+        } else {
+            intvalue = data.search;
+            value = data.searchType;
+        }
     } else {
         intvalue = 1;
-        value = search;
+        value = data.search;
     }
-    const query = `mutation searchAccount($type: String, $value: String, $intvalue: Int, $pageSize: Int){
-        searchAccount(type: $type, value: $value, intvalue: $intvalue, pageSize: $pageSize){
+
+    if (data.start > 1) {
+        data.start = (data.start - 1) * data.pageSize
+    } else if (data.start = 1) {
+        data.start = data.start -1
+    }
+
+    const query = `mutation searchAccount($type: String, $value: String, $intvalue: Int, $pageSize: Int, $start: Int, $sort: String){
+        searchAccount(type: $type, value: $value, intvalue: $intvalue, pageSize: $pageSize, start: $start, sort: $sort){
+            id,
             userName, 
             sex, 
             email, 
@@ -209,8 +223,7 @@ const searchAccount = (type, search, pageSize, func) => {
             phoneCode,
             phone, 
             company,
-            password,
-            total
+            password
         }
       }
       `;
@@ -227,15 +240,56 @@ const searchAccount = (type, search, pageSize, func) => {
         body: JSON.stringify({
             query,
             variables: {
-                type,
+                type: data.searchType,
                 value,
                 intvalue,
-                pageSize
-              }
+                pageSize: data.pageSize,
+                start: data.start,
+                sort: data.sort
+            }
         })
     })
         .then(r => r.json())
         .then((result) => { func(result) });
 }
 
-export { getUserInfo, createAccount, updateAccount, deleteAccount, validateAccount, searchAccount }
+// 根据指定条件进行查询用户总数
+const searchAccountTotal = (data, func) => {
+    let intvalue, value;
+    if (data.searchType === "sex" || data.searchType === "phoneCode") {
+        intvalue = data.search;
+        value = data.searchType;
+    } else {
+        intvalue = 0;
+        value = data.search;
+    }
+    const query = `mutation total($intvalue: Int, $type: String, $value: String){
+        total(intvalue: $intvalue, type: $type, value: $value) {
+          total
+        }
+      }`;
+
+    fetch('http://localhost:3004/graphqlPort', {
+        method: 'POST',
+        mode: "cors",
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            // 'login': localStorage.getItem('loginState'),
+            // 'token': localStorage.getItem('token')
+        },
+        body: JSON.stringify({
+            query,
+            variables: {
+                type: data.searchType,
+                value,
+                intvalue,
+            }
+        })
+    })
+        .then(r => r.json())
+        .then((result) => { func(result) });
+}
+
+
+export { getUserInfo, createAccount, updateAccount, deleteAccount, validateAccount, searchAccount, searchAccountTotal }

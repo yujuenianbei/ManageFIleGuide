@@ -8,7 +8,13 @@ import {
   CONFIRMLOADING,
   CHECKLISTCOL,
   ALLCHECKCOL,
-  PAGESIZE
+  PAGESIZE,
+  PAGETOTAL,
+  PAGENOW,
+  PAGESORT,
+  PAGESORTCOL,
+  SEARCHVALUE,
+  SEARCHTYPE
 } from '../actions/index'
 
 const initValue = {
@@ -19,7 +25,13 @@ const initValue = {
   modelData: '',
   accountLoading: false,
   accountData: [],
+  pageTotal: 10,
   pageSize: 10,
+  pageNow: 0,
+  pageSort: 'ASC',
+  pageSortCol: 'sex',
+  searchValue: '',
+  searchType: '',
   checkListCol: ['性别', '邮箱'],
   allCheckcols: ['性别', '邮箱', '名', '姓', '区号', '电话', '公司', '密码']
 }
@@ -55,6 +67,24 @@ export default (state = initValue, action) => {
     }
     case PAGESIZE: {
       return Object.assign({}, state, { pageSize: data })
+    }
+    case PAGENOW: {
+      return Object.assign({}, state, { pageNow: data })
+    }
+    case PAGETOTAL: {
+      return Object.assign({}, state, { pageTotal: data })
+    }
+    case PAGESORT: {
+      return Object.assign({}, state, { pageSort: data })
+    }
+    case PAGESORTCOL: {
+      return Object.assign({}, state, { pageSortCol: data })
+    }
+    case SEARCHVALUE: {
+      return Object.assign({}, state, { searchValue: data })
+    } 
+    case SEARCHTYPE: {
+      return Object.assign({}, state, { searchType: data }) 
     }
     default: {
       return state;

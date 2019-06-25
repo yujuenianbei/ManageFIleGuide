@@ -7,7 +7,13 @@ export const MODELTITLE = 'MODELTITLE';
 export const MODELDATA = 'MODELDATA';
 export const CHECKLISTCOL = 'CHECKLISTCOL';
 export const ALLCHECKCOL = 'ALLCHECKCOL';
-export const PAGESIZE = 'PAGESIZE'
+export const PAGESIZE = 'PAGESIZE';  
+export const PAGETOTAL = 'PAGETOTAL'//总页数
+export const PAGENOW = 'PAGENOW';  //当前页数
+export const PAGESORT = 'PAGESORT';  //排序
+export const PAGESORTCOL = 'PAGESORTCOL'; // 排序字段
+export const SEARCHTYPE = 'SEARCHTYPE'; //搜索类型
+export const SEARCHVALUE = 'SEARCHVALUE'; //搜索内容
 
 // 弹出框状态
 export function modleState(data) {
@@ -72,10 +78,53 @@ export function checkListCol(data){
     data
   }
 }
-// 
+// 每页显示条数
 export function pageSize(data){
   return {
     type: PAGESIZE,
     data
   }
 }
+// 总页数
+export function pageTotal(data){
+  return {
+    type: PAGETOTAL,
+    data
+  }
+}
+// 当前页数
+export function pageNow(data){
+  return {
+    type: PAGENOW,
+    data
+  }
+}
+// 排序
+export function pageSort(data){
+  return {
+    type: PAGESORT,
+    data
+  }
+}
+// 排序字段
+export function pageSortCol(data){
+  return {
+    type: PAGESORTCOL,
+    data
+  }
+}
+// 搜索内容
+export function searchUserValue(data) {
+  return {
+    type: SEARCHVALUE,
+    data
+  }
+}
+// 
+export function searchUserType(data) {
+  return {
+    type: SEARCHTYPE,
+    data
+  }
+}
+
