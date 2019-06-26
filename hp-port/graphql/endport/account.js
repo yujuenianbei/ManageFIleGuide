@@ -8,6 +8,7 @@ const {
     GraphQLSchema,
     GraphQLString,
     GraphQLInt,
+    GraphQLBoolean,
     GraphQLFloat,
     GraphQLEnumType,
     GraphQLScalarType,
@@ -67,40 +68,41 @@ module.exports = {
         },
         // 用户名密码登录
         login: {
-            type: new GraphQLList(Login),
+            type: Login,
             description: '后台用户登录',
             args: {
-                email: { type: GraphQLString },
-                name: { type: GraphQLString },
+                userName: { type: GraphQLString },
                 password: { type: GraphQLString },
-                state: { type: GraphQLString },
+                remember: { type: GraphQLBoolean }
             },
-            resolve: async function (source, { name, password, state }) {
-                return await searchSql($sql.queryByUsername, [name])
+            resolve: async function (source, { userName, password, state }) {
+                return await searchSql($sql.queryEndUserByUserName, [userName])
                     .then((reslut) => {
                         console.log(reslut)
+                        let res = {};
                         if (password === reslut[0].password) {
                             // 更新用户最后登录时间
                             const curTime = new Date();
                             let portDate = curTime.setHours(curTime.getHours() + 8);
                             console.log(new Date(portDate))
-                            searchSql($sql.updateUserLoginTime, [new Date(portDate), reslut[0].id])
+                            searchSql($sql.updateEndUserLoginTime, [new Date(portDate), reslut[0].id])
                             // 密钥
                             const secret = 'ILOVENINGHAO'
                             const payload = {
-                                name: name.username,
+                                name: reslut[0].uid,
                                 admin: true
                             }
                             const token = jwt.sign(payload, secret, { expiresIn: '1day' })
-                            reslut[0].state = 1;
-                            reslut[0].token = token
+                            res.uuid = reslut[0].uid;
+                            res.state = 1;
+                            res.token = token
                         } else {
-                            reslut[0].state = 2
-                            reslut[0].token = null
+                            res.uuid = null;
+                            res.state = 0;
+                            res.token = null;
                         }
-                        return reslut
+                        return res
                     })
-                // return (await searchSql($sql.queryByUsername, [name]));
             }
         },
         // 注册用户
@@ -253,7 +255,7 @@ module.exports = {
             resolve: async function (source, { intvalue, value, type, start, pageSize, sort }) {
                 // type 没选 全局搜
                 if (type !== '' && value !== '' && type !== 'sex' && type !== 'phoneCode') {
-                    value = '%'+value+'%'
+                    value = '%' + value + '%'
                     return await searchSql(`SELECT * FROM account WHERE ${type} like ${JSON.stringify(value)} ORDER BY ${type} ${sort} limit ${start},${pageSize}`)
                         .then(async (reslut) => {
                             return reslut;
@@ -285,35 +287,23 @@ module.exports = {
             resolve: async function (source, { intvalue, value, type }) {
                 console.log(intvalue, value, type)
                 if (type === "" || value === "") {
-                    return await searchSql($sql.queryAllEndUser)
+                    return await searchSql($sql.searchAllAccount)
                         .then(async (reslut) => {
-                            return await searchSql($sql.searchTotal).then(
-                                async (resluts) => {
-                                    console.log(1, resluts);
-                                    return await resluts[0];
-                                }
-                            )
+                            console.log(1, reslut);
+                            return await reslut[0];
                         })
                 } else {
                     if (type !== "sex" && type !== "phoneCode") {
-                        return await searchSql(`SELECT * FROM account WHERE ${type} like ?`, [`%${value}%`])
+                        return await searchSql(`SELECT count(*) as total FROM account WHERE ${type} like ?`, [`%${value}%`])
                             .then(async (reslut) => {
-                                return await searchSql($sql.searchTotal).then(
-                                    async (resluts) => {
-                                        console.log(2, resluts);
-                                        return await resluts[0];
-                                    }
-                                )
+                                console.log(2, reslut);
+                                return await reslut[0];
                             })
                     } else {
-                        return await searchSql(`SELECT * FROM account WHERE ${type} like ? `, [`%${intvalue}%`])
+                        return await searchSql(`SELECT count(*) as total FROM account WHERE ${type} like ? `, [`%${intvalue}%`])
                             .then(async (reslut) => {
-                                return await searchSql($sql.searchTotal).then(
-                                    async (resluts) => {
-                                        console.log(3, resluts);
-                                        return await resluts[0];
-                                    }
-                                )
+                                console.log(3, reslut);
+                                return await reslut[0];
                             })
                     }
                 }

@@ -8,23 +8,54 @@ import classify from '@magento/venia-concept/esm/classify';
 // const SearchBar = React.lazy(() => import('src/components/SearchBar'));
 import styles from './header.module.less';
 
-import { Layout, BackTop, Icon } from 'antd';
+import { Layout, BackTop, Icon, Menu, Dropdown, Avatar } from 'antd';
 
 const { Header } = Layout;
 
 class Headers extends PureComponent {
     state = {
-        collapsed: false,
+
     };
 
-    onCollapse = collapsed => {
-        console.log(collapsed);
-        this.setState({ collapsed });
-    };
+    menuclick = (e) => {
+        if(e.key === "0"){
+
+        } else if(e.key === "1"){
+
+        } else if(e.key === "2"){
+            this.props.changeLoginstate(0);
+            localStorage.removeItem("uuid", null);
+            console.log(localStorage.getItem('persist:root'))
+        }
+    }
+
     render() {
+        const menu = (
+            <Menu onClick={this.menuclick}>
+                <Menu.Item key="0">
+                    <Icon type="user" />
+                    用户中心
+                </Menu.Item>
+                <Menu.Item key="1">
+                    <Icon type="setting" />
+                    个人设置
+                </Menu.Item>
+                <Menu.Divider />
+                <Menu.Item key="2">
+                    <Icon type="logout" />
+                    退出登录
+                </Menu.Item>
+            </Menu>
+        )
         return (
             <Fragment>
-                <Header style={{ background: '#fff', padding: 0 }} />
+                <Header style={{ background: '#fff', padding: 0 }}>
+                    <Dropdown overlay={menu} trigger={['click']}>
+                        <div className={styles.userContol}>
+                            <Avatar size="large" icon="user" title="用户管理" />
+                        </div>
+                    </Dropdown>
+                </Header>
                 <BackTop>
                     <Icon className={styles.up} type="up" />
                 </BackTop>
@@ -37,6 +68,12 @@ const mapStateToProps = (state) => {
         state
     };
 };
+const mapDispatchToProps = (dispatch) => {
+    return {
+        changeLoginstate: (data) => { dispatch(Actions.loginstate(data)); }, 
+    }
+};
 export default connect(
     mapStateToProps,
+    mapDispatchToProps
 )(classify(styles)(Headers));

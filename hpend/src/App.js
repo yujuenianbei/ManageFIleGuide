@@ -6,11 +6,6 @@ import * as Actions from './actions';
 import ApolloClient from "apollo-boost";
 
 import './less/font.less'
-import Headers from './components/Header';
-import Left from './components/Left';
-
-import Notification from './components/Notification';
-import Routers from './router/routers';
 
 import { ApolloProvider } from 'react-apollo';
 import { Provider as ReduxProvider } from 'react-redux';
@@ -20,8 +15,7 @@ import zhCN from 'antd/lib/locale-provider/zh_CN';
 import ScrollToTop from './components/ScrollToTop';
 // 状态数据持久化
 import { PersistGate } from 'redux-persist/integration/react'
-import { Layout, Icon } from 'antd';
-const { Content } = Layout;
+import Main from './components/Main';
 
 // const client = new ApolloClient({
 //   uri: "http://localhost:3004/graphql"
@@ -55,11 +49,11 @@ function RndNum(n) {
 const App = () => {
   // 
   if (!localStorage.getItem('loginState')) {
-    localStorage.setItem("loginState", 0);
+    localStorage.setItem("loginState", false);
   }
-  if (!localStorage.getItem('id')) {
-    localStorage.setItem("id", RndNum(8));
-  }
+  // if (!localStorage.getItem('uuid')) {
+  //   localStorage.setItem("uuid", RndNum(16));
+  // }
   // 判断浏览器的在线状态
   let offNote, onnote;
   // 监听在线状态并修改状态
@@ -93,18 +87,7 @@ const App = () => {
           <Router>
             <ScrollToTop>
               <LocaleProvider locale={zhCN}>
-                <Fragment>
-                  <Layout style={{ minHeight: '100vh' }}>
-                    <Left />
-                    <Layout>
-                      <Headers />
-                      <Content style={{ margin: '0 16px' }}>
-                        <Routers />
-                      </Content>
-                    </Layout>
-                  </Layout>
-                  <Notification />
-                </Fragment>
+                <Main />
               </LocaleProvider>
             </ScrollToTop>
           </Router>
@@ -113,7 +96,5 @@ const App = () => {
     </ApolloProvider>
   )
 }
-
-
 
 export default App;

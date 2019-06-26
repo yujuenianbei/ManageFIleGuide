@@ -19,6 +19,7 @@ class Account extends PureComponent {
 
     constructor(props) {
         super(props);
+        this.myRef = React.createRef();
     }
 
     componentDidMount() {
@@ -32,12 +33,12 @@ class Account extends PureComponent {
         indeterminate: true,
         checkAll: false,
         defaultColumns: [
-            {
-                title: '用户名',
-                dataIndex: 'userName',
-                key: 'userName',
-                render: text => <a href="javascript:;">{text}</a>,
-            },
+            // {
+            //     title: '用户名',
+            //     dataIndex: 'userName',
+            //     key: 'userName',
+            //     render: text => <a href="javascript:;">{text}</a>,
+            // },
             {
                 title: '性别',
                 dataIndex: 'sex',
@@ -83,41 +84,20 @@ class Account extends PureComponent {
                 dataIndex: 'password',
                 key: 'password',
             },
-            {
-                title: '操作',
-                key: 'action',
-                render: (text, record) => (
-                    <span>
-                        <Button type="primary" onClick={() => this.AddAccount('edit')}>修改</Button>
-                        <Divider type="vertical" />
-                        <Button type="default" onClick={() => this.AddAccount('delete')}>删除</Button>
-                    </span>
-                ),
-            },
+            // {
+            //     title: '操作',
+            //     key: 'action',
+            //     render: (text, record) => (
+            //         <span>
+            //             <Button type="primary" onClick={() => this.AddAccount('edit')}>修改</Button>
+            //             <Divider type="vertical" />
+            //             <Button type="default" onClick={() => this.AddAccount('delete')}>删除</Button>
+            //         </span>
+            //     ),
+            // },
         ],
         columns: [],
     };
-
-    // 将返回数据写入
-    setData = (result) => {
-        let data = []
-        result.data.queryAllUsers.map((item, index) => (
-            data[index] = {
-                key: item.id,
-                userName: item.userName,
-                sex: item.sex,
-                email: item.email,
-                firstName: item.firstName,
-                lastName: item.lastName,
-                phoneCode: item.phoneCode,
-                phone: item.phone,
-                company: item.company,
-                password: item.password,
-            }
-        ))
-        this.props.changeAccountData(data)
-        this.props.changeAccountDataLoading(false)
-    }
 
     // 显示弹出框
     AddAccount = (e) => {
@@ -136,13 +116,9 @@ class Account extends PureComponent {
         this.props.changeModleState(true)
     };
 
-
+    // 筛选列 点击事件
     handleButtonClick = (e) => {
-        console.log('click left button', e);
-    }
-
-    handleMenuClick = (e) => {
-        console.log('click', e);
+        console.log(e);
     }
     // 选择列
     checkBoxOnChange = checkedList => {
@@ -152,6 +128,16 @@ class Account extends PureComponent {
         });
         this.props.changeCheckListCol(checkedList);
         this.setState({ columns: this.mixColData(checkedList) })
+
+        let title = '';
+        this.state.defaultColumns.map(item => {
+            if (item.key === this.props.state.account.searchType) {
+                title = item.title
+            }
+        })
+        if (checkedList.indexOf(title) == -1) {
+            this.props.changeSearchType("")
+        }
     };
     // 全选
     onCheckAllChange = e => {
@@ -198,12 +184,31 @@ class Account extends PureComponent {
 
     // 修改每页展示行数
     ChangePageSize = (current, size) => {
+        this.props.changeAccountDataLoading(true);
+        // 修改行数
         this.props.changePageSize(size);
-        
+        // 跳转第一页
+        this.props.changePageNow(1);
+
+        let data = {};
+        data.search = this.props.state.account.searchValue ? this.props.state.account.searchValue : ""
+        data.searchType = this.props.state.account.searchType ? this.props.state.account.searchType : "";
+        data.pageSize = size;
+        data.start = 0;
+        data.sort = this.props.state.account.pageSort;
+        // 如果搜索性别需要装换
+        if (data.searchType && data.searchType === "sex") {
+            data.search = transToSex(data.search);
+        }
+        searchAccountTotal(data, this.setPageTotal)
+        searchAccount(data, this.searchData);
     }
     // 分页
     ChangePage = (page, pageSize) => {
+        this.props.changeAccountDataLoading(true);
+        // 修改当前页数字
         this.props.changePageNow(page);
+
         let data = {};
         data.search = this.props.state.account.searchValue ? this.props.state.account.searchValue : ""
         data.searchType = this.props.state.account.searchType ? this.props.state.account.searchType : "";
@@ -220,15 +225,17 @@ class Account extends PureComponent {
 
     // 切换搜索类型 
     changeType = (value) => {
-        this.props.changeSearchType(value)
+        this.props.changeSearchType(value);
     }
     // 搜索input
     searchValueChange = (value) => {
-        this.props.changeSearchValue(value)
+        this.props.changeSearchValue(value);
     }
 
     // 加载上一次的搜索
     searchAccountMount = () => {
+        this.props.changeAccountDataLoading(true)
+
         let data = {};
         data.search = this.props.state.account.searchValue ? this.props.state.account.searchValue : ""
         data.searchType = this.props.state.account.searchType ? this.props.state.account.searchType : "";
@@ -246,23 +253,32 @@ class Account extends PureComponent {
 
     // 搜索
     searchAccount = (value) => {
+        this.props.changeAccountDataLoading(true)
+        // 写入搜索内容
         this.props.changeSearchValue(value);
-        let data = {};
-        data.search = value ? value : ""
-        data.searchType = this.props.state.account.searchType ? this.props.state.account.searchType : "";
-        data.pageSize = this.props.state.account.pageSize;
-        data.start = this.props.state.account.pageNow;
-        data.sort = this.props.state.account.pageSort;
+        this.props.changePageNow(1);
+
+        let data = {
+            search: value !== "" ? value : "",
+            searchType: this.props.state.account.searchType ? this.props.state.account.searchType : "",
+            pageSize: this.props.state.account.pageSize,
+            start: 1,
+            sort: this.props.state.account.pageSort
+        };
         // 如果搜索性别需要装换
-        if (data.searchType === "sex") {
+        if (data.searchType && data.searchType === "sex") {
             data.search = transToSex(value);
         }
         searchAccountTotal(data, this.setPageTotal)
         searchAccount(data, this.searchData);
     }
+
+
+
     // 修改总数
     setPageTotal = (result) => {
-        this.props.changePageTotal(result.data.total.total)
+        this.props.changePageTotal(result.data.total.total);
+        this.props.changeAccountDataLoading(false)
     }
     // 搜索结果写入表中
     searchData = (result) => {
@@ -314,7 +330,6 @@ class Account extends PureComponent {
                 </Breadcrumb>
                 <AccountModle
                     visible={this.props.state.user.modelState}
-                    setData={this.setData}
                 />
                 <div className={styles.content}>
                     <div className={styles.search}>
@@ -330,12 +345,13 @@ class Account extends PureComponent {
                                     <InputGroup compact >
                                         <Col span={8}>
                                             <Select
-                                                defaultValue={this.props.state.account.searchType}
+                                                value={this.props.state.account.searchType}
                                                 style={{ width: '100%' }}
                                                 onChange={(value) => this.changeType(value)}>
+                                                <Option value="">无</Option>
                                                 {this.state.columns.map((item, index) => {
                                                     if (item.key !== 'action') {
-                                                        return <Option value={item.key}>{item.title}</Option>
+                                                        return <Option value={item.key} key={"searchType_"+index}>{item.title}</Option>
                                                     }
                                                 })}
                                             </Select>
@@ -366,6 +382,7 @@ class Account extends PureComponent {
                             }
                         }}
                         pagination={{
+                            current: this.props.state.account.pageNow,
                             total: this.props.state.account.pageTotal,
                             onChange: this.ChangePage,
                             showSizeChanger: true,

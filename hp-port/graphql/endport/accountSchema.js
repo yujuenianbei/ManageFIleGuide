@@ -37,7 +37,7 @@ const Login = new GraphQLObjectType({
                 }
             },
             state: {
-                type: GraphQLString, resolve(data) {
+                type: GraphQLInt, resolve(data) {
                     return data.state;
                 }
             },

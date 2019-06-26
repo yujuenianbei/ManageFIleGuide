@@ -5,13 +5,14 @@ import { connect } from 'react-redux';
 import classify from '@magento/venia-concept/esm/classify';
 // const SearchBar = React.lazy(() => import('src/components/SearchBar'));
 import styles from './account.module.less';
-import { getUserInfo, deleteAccount } from '../../fetch/account'
+import { deleteAccount, searchAccount, searchAccountTotal } from '../../fetch/account'
+import { transToSex } from '../../func/account'
 
 
 let clearData;
 class DeleteAccount extends PureComponent {
 
-    componentDidMount(){
+    componentDidMount() {
         this.props.onDel(this);
     }
 
@@ -35,14 +36,72 @@ class DeleteAccount extends PureComponent {
     // 提交数据后返回
     deleteFinish = (result) => {
         // 根据接口返回状态判断成功与否
-        if(result.data.deleteAccount[0].state === 1){
+        if (result.data.deleteAccount[0].state === 1) {
             this.props.changeModleState(false);
             this.props.changeModelData('');
             this.props.changeModleTitle('');
             this.props.changeModleName('');
             // 更新数据
             this.props.changeAccountDataLoading(true);
-            getUserInfo(this.props.setData);
+
+            // 加载上一次的配置
+            let data = {};
+            data.search = this.props.state.account.searchValue ? this.props.state.account.searchValue : ""
+            data.searchType = this.props.state.account.searchType ? this.props.state.account.searchType : "";
+            data.pageSize = this.props.state.account.pageSize;
+            data.start = this.props.state.account.pageNow;
+            data.sort = this.props.state.account.pageSort;
+            // 如果搜索性别需要装换
+            if (data.searchType === "sex") {
+                data.search = transToSex(this.props.state.account.searchValue);
+            }
+            searchAccountTotal(data, this.setPageTotal)
+            searchAccount(data, this.searchData);
+        }
+    }
+
+    // 修改总数
+    setPageTotal = (result) => {
+        this.props.changePageTotal(result.data.total.total)
+    }
+    // 搜索结果写入表中
+    searchData = (result) => {
+        // 删除最后一条数据
+        if (result.data.searchAccount.length === 0) {
+            const pageNow = this.props.state.account.pageNow - 1;
+            this.props.changePageNow(pageNow);
+
+            // 加载上一次的配置
+            let data = {};
+            data.search = this.props.state.account.searchValue ? this.props.state.account.searchValue : ""
+            data.searchType = this.props.state.account.searchType ? this.props.state.account.searchType : "";
+            data.pageSize = this.props.state.account.pageSize;
+            data.start = pageNow;
+            data.sort = this.props.state.account.pageSort;
+            // 如果搜索性别需要装换
+            if (data.searchType === "sex") {
+                data.search = transToSex(this.props.state.account.searchValue);
+            }
+            searchAccountTotal(data, this.setPageTotal)
+            searchAccount(data, this.searchData);
+        } else {
+            let data = []
+            result.data.searchAccount.map((item, index) => (
+                data[index] = {
+                    key: item.id,
+                    userName: item.userName,
+                    sex: item.sex,
+                    email: item.email,
+                    firstName: item.firstName,
+                    lastName: item.lastName,
+                    phoneCode: item.phoneCode,
+                    phone: item.phone,
+                    company: item.company,
+                    password: item.password,
+                }
+            ))
+            this.props.changeAccountData(data)
+            this.props.changeAccountDataLoading(false)
         }
     }
 
@@ -70,8 +129,10 @@ const mapDispatchToProps = (dispatch) => {
         changeAccountData: (data) => { dispatch(Actions.accountData(data)); },
         changeModleTitle: (data) => { dispatch(Actions.modleTitle(data)); },
         changeModleName: (data) => { dispatch(Actions.modleName(data)); },
-        changeModelData: (data) => { dispatch(Actions.modelData(data)); },  
+        changeModelData: (data) => { dispatch(Actions.modelData(data)); },
         changeModleTitle: (data) => { dispatch(Actions.modleTitle(data)); },
+        changePageTotal: (data) => { dispatch(Actions.pageTotal(data)); },
+        changePageNow: (data) => { dispatch(Actions.pageNow(data)); },
     }
 };
 export default connect(

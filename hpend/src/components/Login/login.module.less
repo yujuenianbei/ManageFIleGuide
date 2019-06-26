@@ -1,0 +1,48 @@
+@import "../../less/color.less";
+@import "../../less/font.less";
+@import "../../less/button.less";
+
+.loginBg {
+    // background-color: @plbg;
+    background-image: url('https://gw.alipayobjects.com/zos/rmsportal/TVYTbAXWheQpRcWDaDMu.svg');
+    width: @f;
+    height: @f;
+    position: absolute;
+
+    .loginForm {
+        background-color: #e8e8e8;
+        margin: auto auto;
+        width: 350px;
+        min-height: 302px;
+
+        [class="ant-tabs-nav ant-tabs-nav-animated"] {
+            width: @f;
+
+            [class="ant-tabs-tab-active ant-tabs-tab"] {
+                width: calc(~'50% - 40px');
+                text-align: center;
+                margin: 0 20px;
+            }
+
+            [class=" ant-tabs-tab"] {
+                width: calc(~'50% - 40px');
+                text-align: center;
+                margin: 0 20px;
+            }
+        }
+    }
+}
+
+[class='ant-checkbox-inner'] {
+    &::after {
+        left: 25% !important;
+    }
+}
+
+.loginFormContent {
+    margin: 10px 20px;
+
+    .submitLogin{
+        width: @f;
+    }
+}

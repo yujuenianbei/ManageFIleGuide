@@ -6,7 +6,6 @@ export function loginstate(data) {
   localStorage.setItem("loginState", data);
   if(data === 0){
     localStorage.setItem("token", null);
-    localStorage.setItem("id", null);
   }
   return {
     type: LOGINSTATE,

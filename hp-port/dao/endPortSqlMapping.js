@@ -9,6 +9,8 @@ var endPort = {
     queryEndUserById: 'SELECT * FROM `account` WHERE id=?',
     deleteEndUserById: 'DELETE FROM `account` WHERE id=?',
     queryEndUserByUserName: 'SELECT * FROM `account` WHERE userName=?',
+    updateEndUserLoginTime: "update `account` set updateTime=? where id=?",
+    searchAllAccount: 'SELECT count(*) as total FROM account',
     searchTotal: 'SELECT FOUND_ROWS() as total'
 
 

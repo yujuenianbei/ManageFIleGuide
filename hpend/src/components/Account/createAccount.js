@@ -144,6 +144,7 @@ class AccountForm extends PureComponent {
                 // 更新数据
                 this.props.changeAccountDataLoading(true);
 
+                // 加载上一次的配置
                 let data = {};
                 data.search = this.props.state.account.searchValue ? this.props.state.account.searchValue : ""
                 data.searchType = this.props.state.account.searchType ? this.props.state.account.searchType : "";
@@ -155,11 +156,9 @@ class AccountForm extends PureComponent {
                     data.search = transToSex(this.props.state.account.searchValue);
                 }
                 searchAccountTotal(data, this.setPageTotal)
-                searchAccount(data, this.searchData)
-
-                // getUserInfo(this.props.setData);
+                searchAccount(data, this.searchData);
             } else {
-                // this.props.changeModleState(false);
+                this.props.changeModleState(false);
             }
         } else if (this.props.state.account.modelName == 'edit') {
             if (result.data.updateAccount[0].state === 1) {
@@ -173,7 +172,7 @@ class AccountForm extends PureComponent {
                 // 更新数据
                 this.props.changeAccountDataLoading(true);
 
-
+                // 加载上一次的配置
                 let data = {};
                 data.search = this.props.state.account.searchValue ? this.props.state.account.searchValue : ""
                 data.searchType = this.props.state.account.searchType ? this.props.state.account.searchType : "";
@@ -186,10 +185,8 @@ class AccountForm extends PureComponent {
                 }
                 searchAccountTotal(data, this.setPageTotal)
                 searchAccount(data, this.searchData);
-
-                // getUserInfo(this.props.setData);
             } else {
-                // this.props.changeModleState(false);
+                this.props.changeModleState(false);
             }
         }
     }

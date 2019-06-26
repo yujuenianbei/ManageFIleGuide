@@ -42,8 +42,8 @@ class AccountModle extends PureComponent {
                     onCancel={this.handleCancel}
                     maskClosable={false}
                 >
-                {this.props.state.account.modelName !== 'delete' && <CreateAccount onRef={(ref) => { this.child = ref }} setData={this.props.setData} />}
-                {this.props.state.account.modelName === 'delete' && <DeleteAccount onDel={(ref) => { this.del = ref }} setData={this.props.setData}/>} 
+                {this.props.state.account.modelName !== 'delete' && <CreateAccount onRef={(ref) => { this.child = ref }} />}
+                {this.props.state.account.modelName === 'delete' && <DeleteAccount onDel={(ref) => { this.del = ref }}/>} 
                     
                 </Modal>
             </Fragment>
