@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title><%= title %></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/stylesheets/confirm.css">
+</head>
+
+<body>
+    <div class="container white">
+        <div class="info">
+            <div class="header">
+                <img
+                    src="https://media.hpstore.cn/static/version1560379864/frontend/HPOLS/default/zh_Hans_CN/images/logo.svg">
+                <p>惠普中国</p>
+            </div>
+            <div class="line"></div>
+            <div class="loginInput">
+                <div class="userInput">
+                    <label class="title">用户名</label><input class="inputs username" type="text">
+                </div>
+                <div class="userInput">
+                    <label class="title">密码</label><input class="inputs password" type="password">
+                </div>
+                <a id="confirmUserBtn" class="confirm" href="#">确认登录</a>
+                <a id="cancelUserBtn" class="cancel" href="#">取消登录</a>
+            </div>
+        </div>
+    </div>
+    <div class="model">
+        <div class="modelContent">
+            <div class="errorContent">用户名或密码有误</div>
+            <a id="errorBtn" class="confirm" href="#">确定</a>
+        </div>
+    </div>
+</body>
+<script src="/js/jquery-3.3.1.min.js"></script>
+<script src="/js/socket.io.js"></script>
+<script>
+    var qruid = "<%= qruid %>";
+    var socket = io();
+    $('#confirmUserBtn').click(function (e) {
+        e.preventDefault(); // prevents page reloading
+        $('.model').show();
+        if (!$(".username").val() && $(".password").val()) {
+            $('.errorContent').html('请输入用户名');
+        } else if ($(".username").val() && !$(".password").val()) {
+            $('.errorContent').html('请输入密码');
+        } else if (!$(".username").val() && !$(".password").val()) {
+            $('.errorContent').html('请输入用户名和密码');
+        } else {
+            socket.emit('loginMessage', {
+                qruid: qruid,
+                userName: $(".username").val(),
+                password: $(".password").val()
+            });
+            $('#m').val('');
+        }
+        var loader = setTimeout(function () {
+            $('.model').hide();
+            clearTimeout(loader);
+        }, 2000)
+        return false;
+    });
+
+    $('#cancel').click(function () {
+        if (WeixinJSBridge) {
+            WeixinJSBridge.call('closeWindow');
+        } else {
+            window.opener = null;
+            window.open('', '_self');
+            window.close();
+        }
+    })
+
+    $('#errorBtn').click(function () {
+        $('.model').hide();
+    })
+
+    $(function () {
+        socket.emit('scanned', function (msg) {
+            console.log(msg)
+        });
+        socket.on('scanned', function (msg) {
+            console.log(msg)
+        });
+        socket.on('loginMessage', function (msg) {
+            if (msg.qrState === 3) {
+                if (WeixinJSBridge) {
+                    WeixinJSBridge.call('closeWindow');
+                } else {
+                    window.opener = null;
+                    window.open('', '_self');
+                    window.close();
+                }
+            } else if (msg.qrState === 4) {
+                $('.model').show();
+            }
+        });
+    });
+
+</script>
+
+</html>

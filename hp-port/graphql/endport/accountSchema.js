@@ -26,9 +26,9 @@ const Login = new GraphQLObjectType({
                     return data.email;
                 }
             },
-            name: {
+            userName: {
                 type: GraphQLString, resolve(data) {
-                    return data.name;
+                    return data.userName;
                 }
             },
             password: {
@@ -51,9 +51,9 @@ const Login = new GraphQLObjectType({
                     return data.id;
                 }
             },
-            uuid: {
+            uid: {
                 type: GraphQLString, resolve(data) {
-                    return data.uuid;
+                    return data.uid;
                 }
             },
         });

@@ -22,9 +22,10 @@ class LoginFormNormal extends PureComponent {
     loginCallback = (result) => {
         if(result.data.login.state){
             // 登陆成功
-            localStorage.setItem("uuid", result.data.login.uuid);
+            localStorage.setItem("uid", result.data.login.uid);
             localStorage.setItem("token", result.data.login.token);
-            this.props.changeLoginstate(result.data.login.state)
+            this.props.changeLoginstate(result.data.login.state);
+            this.props.changeUsername(result.data.login.userName);
         } else {
             // 用户名密码不对
             this.props.changeLoginstate(result.data.login.state)
@@ -64,10 +65,10 @@ class LoginFormNormal extends PureComponent {
                             {getFieldDecorator('remember', {
                                 valuePropName: 'checked',
                                 initialValue: true,
-                            })(<Checkbox>Remember me</Checkbox>)}
+                            })(<Checkbox>记住我</Checkbox>)}
                             
                             <Button type="primary" htmlType="submit" className={styles.submitLogin}>
-                                Log in
+                                登录
                             </Button>
                         </Form.Item>
                     </Form>
@@ -85,6 +86,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         changeLoginstate: (data) => { dispatch(Actions.loginstate(data)); },  
+        changeUsername: (data) => { dispatch(Actions.username(data)) },
     }
 };
 export default connect(

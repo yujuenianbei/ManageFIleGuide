@@ -24,7 +24,11 @@ class Headers extends PureComponent {
 
         } else if(e.key === "2"){
             this.props.changeLoginstate(0);
-            localStorage.removeItem("uuid", null);
+            this.props.changeQrState(1);
+            this.props.changeQrMessage('请扫描二维码')
+            this.props.changeUsername('');
+            this.props.changePageUid('')
+            localStorage.removeItem("uid");
             console.log(localStorage.getItem('persist:root'))
         }
     }
@@ -53,6 +57,7 @@ class Headers extends PureComponent {
                     <Dropdown overlay={menu} trigger={['click']}>
                         <div className={styles.userContol}>
                             <Avatar size="large" icon="user" title="用户管理" />
+                            <span className={styles.userName}>{this.props.state.user.userName}</span>
                         </div>
                     </Dropdown>
                 </Header>
@@ -70,7 +75,11 @@ const mapStateToProps = (state) => {
 };
 const mapDispatchToProps = (dispatch) => {
     return {
-        changeLoginstate: (data) => { dispatch(Actions.loginstate(data)); }, 
+        changeLoginstate: (data) => { dispatch(Actions.loginstate(data)) }, 
+        changePageUid: (data) => { dispatch(Actions.pageUid(data)) },
+        changeQrState: (data) => { dispatch(Actions.qrState(data)) },
+        changeQrMessage: (data) => { dispatch(Actions.qrMessage(data)) },
+        changeUsername: (data) => { dispatch(Actions.username(data)) },
     }
 };
 export default connect(

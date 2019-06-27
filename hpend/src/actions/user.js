@@ -1,11 +1,13 @@
 export const LOGINSTATE = 'LOGINSTATE';
 export const USERNAME = 'USERNAME';
-export const MODELSTATE = 'MODLESTATE';
+export const PAGEUID = 'PAGEUID';
+export const QRSTATE = 'QRSTATE';
+export const QRMESSAGE = 'QRMESSAGE';
 // 登录状态
 export function loginstate(data) {
   localStorage.setItem("loginState", data);
-  if(data === 0){
-    localStorage.setItem("token", null);
+  if (data === 0) {
+    localStorage.removeItem("token");
   }
   return {
     type: LOGINSTATE,
@@ -14,9 +16,31 @@ export function loginstate(data) {
 }
 
 // 登录的用户名
-export function usernanme(data) {
-    return {
-      type: USERNAME,
-      data
-    }
+export function username(data) {
+  return {
+    type: USERNAME,
+    data
   }
+}
+
+// 二维码UID
+export function pageUid(data) {
+  return {
+    type: PAGEUID,
+    data
+  }
+}
+// 二维码扫描状态
+export function qrState(data) {
+  return {
+    type: QRSTATE,
+    data
+  }
+}
+// 二维码状态信息
+export function qrMessage(data) {
+  return {
+    type: QRMESSAGE,
+    data
+  }
+}

@@ -93,13 +93,19 @@ module.exports = {
                                 admin: true
                             }
                             const token = jwt.sign(payload, secret, { expiresIn: '1day' })
-                            res.uuid = reslut[0].uid;
-                            res.state = 1;
-                            res.token = token
+                            res = {
+                                userName: reslut[0].userName,
+                                uid: reslut[0].uid,
+                                state: 1,
+                                token: token
+                            }
                         } else {
-                            res.uuid = null;
-                            res.state = 0;
-                            res.token = null;
+                            res = {
+                                userName: null,
+                                uid: null,
+                                state: 0,
+                                token: null
+                            }
                         }
                         return res
                     })

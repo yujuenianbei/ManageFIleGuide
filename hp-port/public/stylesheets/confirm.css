@@ -10,11 +10,14 @@ body{
 }
 
 .container{
-  display: block;
-  width: 300px;
-  padding-bottom: 20px;
-  margin: 50px auto;
+  position: absolute;
+  width: 280px;
+  padding: 10px;
+  background: #fff;
+  left: calc(50% - 155px);
   text-align: center;
+  top: calc(50% - 175px);
+  border-radius: 5px;
 }
 
 .qrcode-main img{
@@ -134,4 +137,35 @@ body{
 
 .cancel:hover{
   background-color: #bbb;
+}
+
+
+
+
+
+.model{
+  display: none;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+.modelContent{
+  position: absolute;
+  width: 200px;
+  padding: 10px;
+  background: #fff;
+  left: calc(50% - 110px);
+  text-align: center;
+  top: calc(50% - 70px);
+  border-radius: 5px;
+}
+.model .errorContent{
+  padding: 10px 0;
+}
+#errorBtn{
+  width: 50%;
+  height: 2em;
+  line-height: 2.2em;
 }

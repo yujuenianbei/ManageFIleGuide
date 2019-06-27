@@ -9,6 +9,7 @@ var cors = require('cors');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+var accountRouter = require('./routes/accountLogin');
 
 var { query, initMysql, checkTables } = require('./sql/init');
 var app = express();
@@ -119,7 +120,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-
+app.use('/aclogin', accountRouter.router);
 //graphql
 var graphqlHTTP = require('express-graphql');
 // 前台接口

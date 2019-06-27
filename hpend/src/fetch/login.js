@@ -2,7 +2,8 @@
 const loginAccount = (val, func) => {
     const query = `mutation login($userName: String, $password: String, $remember: Boolean){
         login(userName: $userName, password: $password, remember: $remember){
-          uuid
+          userName
+          uid
           state
           token
         } 
