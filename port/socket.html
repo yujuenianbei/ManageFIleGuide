@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+<h1>Socket.IO Example</h1>
+<h2 id="msg" style="color: red;"></h2>
+<script src="../hp-port//public/js/socket.io.js"></script>
+<script src="../hp-port//public/js/jquery-3.3.1.min.js" type="text/javascript"></script>
+<script>
+    var socket = io.connect("http://127.0.0.1:8880");
+    socket.on('users', function(data) {
+        $('#msg').html(("当前有" + data.number+"个用户登录"));
+    })
+</script>
+</body>
+</html>

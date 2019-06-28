@@ -9,8 +9,13 @@ import LoginQr from './loginqr'
 // 插件
 import { Layout, Tabs } from 'antd';
 import UID from 'uuid-js';
+import io from 'socket.io-client'
+const socket = io("http://192.168.1.128:3004", {
+    // query: params,
+    //此处大坑，设置为true才会开启新的连接
+    forceNew: true
+});
 const { TabPane } = Tabs;
-
 
 class Login extends PureComponent {
     state = {
@@ -18,14 +23,30 @@ class Login extends PureComponent {
     }
 
     tabClick = (key) => {
-        this.setState({key,})
-        if(key === "2"){
+        this.setState({ key, })
+        if (key === "2") {
             const uid = UID.create();
-            this.props.changePageUid(uid)
+            const aid = UID.create();
+            this.props.changePageUid(uid);
+            if (sessionStorage.getItem("wsId")) {
+                sessionStorage.removeItem("wsId");
+                socket.on("join", function (msg) {
+                    console.log(msg)
+                });
+            }
+            sessionStorage.setItem("wsId", uid)
+            sessionStorage.setItem("AcId", aid)
+            socket.emit('join', {
+                id: uid,
+                aid: aid
+            }); 
+            socket.on('sys', function (msg) {
+                console.log(msg)   
+            })   
         } else {
             this.props.changePageUid('')
             this.props.changeQrState(1);
-            this.props.changeQrMessage('请扫描二维码')
+            this.props.changeQrMessage('请扫描二维码');
         }
     }
 
@@ -43,7 +64,7 @@ class Login extends PureComponent {
                                 <LoginForm />
                             </TabPane>
                             <TabPane tab="扫码登录" key="2">
-                                <LoginQr tabkey={this.state.key}/>
+                                <LoginQr tabkey={this.state.key} />
                             </TabPane>
                         </Tabs>
                     </div>

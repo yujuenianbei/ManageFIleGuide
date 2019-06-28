@@ -10,12 +10,16 @@ import styles from './header.module.less';
 
 import { Layout, BackTop, Icon, Menu, Dropdown, Avatar } from 'antd';
 
+// import io from 'socket.io-client'
+// const socket = io("http://192.168.1.128:3004");
+
 const { Header } = Layout;
 
 class Headers extends PureComponent {
-    state = {
 
-    };
+    componentDidMount(){
+        // socket.emit("join", this.props.state.user.userName)
+    }
 
     menuclick = (e) => {
         if(e.key === "0"){

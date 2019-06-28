@@ -6,40 +6,47 @@ import styles from './login.module.less';
 // 第三方组件
 import UID from 'uuid-js';
 import io from 'socket.io-client'
-const socket = io("http://192.168.1.128:3004");
+const socket = io("http://192.168.1.128:3004", {
+    // query: params,
+    //此处大坑，设置为true才会开启新的连接
+    forceNew: false
+});
 
 class LoginQr extends PureComponent {
-    constructor(props){
+    constructor(props) {
         super(props);
     }
 
     componentDidMount() {
         let _this = this;
-
         _this.props.changeQrState(1);
         _this.props.changeQrMessage('请扫描二维码')
 
-        socket.on("scanned", function (msg) {
-            if (msg.qrState === 2) {
-                _this.props.changeQrState(msg.qrState);
-                _this.props.changeQrMessage('请在手机上确认登录')
-            }
-        })
-        socket.on("loginMessage", function (msg) {
-            if (msg.qrState === 3) {
-                _this.props.changeQrState(msg.qrState);
-                _this.props.changeQrMessage('已登录')
-                _this.props.changeLoginstate(msg.state);
-                _this.props.changeUsername(msg.userName);
-                localStorage.setItem("uid", msg.uid);
-                localStorage.setItem("token", msg.token);
-                socket.close();
-            } else if(msg.qrState === 4){
-                const uid = UID.create();
-                _this.props.changePageUid(uid);
-                _this.props.changeQrMessage('请重新扫描二维码');
-            }
-        })
+        // socket.emit('scanned', function (msg) {
+        //     console.log(msg)
+        // });
+        // socket.on("scanned", function (msg) {
+        //     if (msg.qrState === 2) {
+        //         console.log(msg)
+        //         _this.props.changeQrState(msg.qrState);
+        //         _this.props.changeQrMessage('请在手机上确认登录')
+        //     }
+        // })
+        // socket.on("loginMessage", function (msg) {
+        //     if (msg.qrState === 3) {
+        //         _this.props.changeQrState(msg.qrState);
+        //         _this.props.changeQrMessage('已登录')
+        //         _this.props.changeLoginstate(msg.state);
+        //         _this.props.changeUsername(msg.userName);
+        //         localStorage.setItem("uid", msg.uid);
+        //         localStorage.setItem("token", msg.token);
+        //         socket.close();
+        //     } else if(msg.qrState === 4){
+        //         const uid = UID.create();
+        //         _this.props.changePageUid(uid);
+        //         _this.props.changeQrMessage('请重新扫描二维码');
+        //     }
+        // })
     }
 
     render() {
