@@ -105,10 +105,9 @@
             console.log('sys  ' + data)
         });
 
-        //收到我离开的信息
-        socket.on('msg', function (msg) {
-            console.log(msg)
-        });
+        socket.on('logstate', function(data){
+            console.log(data)
+        })
 
 
         // if (sessionStorage.getItem("wsId")) {

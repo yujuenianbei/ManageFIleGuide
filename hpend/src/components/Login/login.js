@@ -65,7 +65,9 @@ class Login extends PureComponent {
             }
             console.log(data)
         });
-        // socket.on('logstate')
+        socket.on('logstate', function(data){
+            console.log(data)
+        })
     }
 
 

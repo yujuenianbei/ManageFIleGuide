@@ -84,7 +84,7 @@ socketio.getSocketio = function (server) {
             } else {
                 console.log(msg.userName, msg.password)
             }
-            // io.to(roomID).emit('logstate', { msg, user }, msg);
+            io.to(roomID).emit('logstate', { msg, user }, msg);
         });
 
 
