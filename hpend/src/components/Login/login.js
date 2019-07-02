@@ -6,6 +6,9 @@ import styles from './login.module.less';
 // 组件
 import LoginForm from './loginForm';
 import LoginQr from './loginqr'
+// 请求
+import { getRid } from '../../fetch/login'
+
 // 插件
 import { Layout, Tabs } from 'antd';
 import UID from 'uuid-js';
@@ -25,30 +28,47 @@ class Login extends PureComponent {
     tabClick = (key) => {
         this.setState({ key, })
         if (key === "2") {
+            // 生成一个房间号
             const uid = UID.create();
-            const aid = UID.create();
-            this.props.changePageUid(uid);
-            if (sessionStorage.getItem("wsId")) {
-                sessionStorage.removeItem("wsId");
-                socket.on("join", function (msg) {
-                    console.log(msg)
-                });
-            }
-            sessionStorage.setItem("wsId", uid)
-            sessionStorage.setItem("AcId", aid)
-            socket.emit('join', {
-                id: uid,
-                aid: aid
-            }); 
-            socket.on('sys', function (msg) {
-                console.log(msg)   
-            })   
+            this.props.changePageUid(uid.hex);
+            getRid(this.socket)
         } else {
+            socket.emit('leave', {
+                room: sessionStorage.getItem("room"),
+                pageId: 1
+            });
             this.props.changePageUid('')
             this.props.changeQrState(1);
             this.props.changeQrMessage('请扫描二维码');
         }
     }
+
+    socket = (result) => {
+        const _this = this;
+        sessionStorage.setItem("room", result.rid.hex)
+        socket.emit('join', {
+            room: result.rid.hex,
+            pageId: 1
+        });
+        socket.on('sys', function (data) {
+            if (data.phone === 1) {
+                _this.props.changeQrState(2);
+                _this.props.changeQrMessage('请在手机上确认登录信息');
+            } else if (data.phone === 0) {
+                _this.props.changeQrState(4);
+                _this.props.changeQrMessage('二维码已失效，请刷新二维码');
+                // 二维码失效后删除会话
+                socket.emit('leave', {
+                    room: sessionStorage.getItem("room"),
+                    pageId: 1
+                });
+            }
+            console.log(data)
+        });
+        // socket.on('logstate')
+    }
+
+
 
     render() {
         return (

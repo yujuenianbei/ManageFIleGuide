@@ -9,10 +9,11 @@ router.get('/scanned', function (req, res, next) {
 });
 
 
-let qruid = UUID.create();
+let qruid;
 //生成二维码
 router.get('/loginByPhone', function (req, res) {
   // 生成唯一的ID
+  qruid = UUID.create()
   try {
     if (typeof (qruid) !== "undefined") {
       // 写入二维码内的网址，微信扫描后自动跳转
@@ -32,5 +33,11 @@ router.get('/loginByPhone', function (req, res) {
   }
   console.log(qruid.hex)
 });
+router.get('/loginByPhoneRid', function (req, res) {
+  res.send({
+    rid: qruid,
+  });
+})
+
 
 module.exports = { router, qruid };

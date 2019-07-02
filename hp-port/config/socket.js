@@ -1,21 +1,20 @@
 // socketio.js
 const jwt = require('jsonwebtoken')
 var socket_io = require('socket.io');
+var UUID = require('uuid-js');
 const { searchSql } = require("../sql/init");
 const $sql = require('../dao/endPortSqlMapping');
 var socketio = {};
-var roomUser = [];
-
-let SockList = [];
-
-let count = 0;
+// 房间用户名单
+var roomInfo = {};
+var home = {};
 //获取io
 socketio.getSocketio = function (server) {
     var io = socket_io.listen(server);
 
     io.on('connection', function (socket) {
-        SockList.push(socket);
-        count++
+        // SockList.push(socket);
+        // count++
         // socket.on("join", function (name) {
         //     usocket[name] = socket
         //     io.emit("join", name)
@@ -36,50 +35,107 @@ socketio.getSocketio = function (server) {
         //     }
         // })
         // 用户扫码状态
-        socket.on("scanned", function (msg) {
-            // usocket.push(socket.id)
-            SockList.forEach(item => {
-                if (item === socket) {
-                    io.emit("scanned", {
-                        wsId: socket.id,
-                        qrState: 2,
-                        socketLength: SockList.length
-                    })
+
+
+        var url = socket.request.headers.referer;
+        var splited = url.split('qruid=');
+        var roomID = splited[splited.length - 1];
+        socket.on('join', function (data) {
+            if (data.pageId === 1) {
+                home = data.pageId;
+                roomID = data.room
+                if (!roomInfo[roomID]) {
+                    roomInfo[roomID] = [];
                 }
-            });
-        })
-
-        socket.on('join', function(msg){
-            let roomid = msg.id.hex;
-            let userid = msg.aid.hex
-            if (!roomUser[msg.id.hex]) {
-                roomUser[msg.id.hex] = [];
+                roomInfo[roomID].push(home);
+                socket.join(roomID);    // 二维码创建房间并加入
+                // 通知房间内人员
+                io.to(roomID).emit('sys', { main: true }, roomInfo[roomID]);
+                console.log(home + '加入了' + roomID, roomInfo);
+            } else {
+                user = data.pageId;
+                // 将用户昵称加入房间名单中
+                // user 不存在且 home存在 再进行填加
+                if (roomInfo[roomID].indexOf(user) === -1 && roomInfo[roomID].indexOf(1) !== -1) {
+                    roomInfo[roomID].push(user);
+                    // 加入房间
+                    socket.join(roomID);
+                    // 通知页面手机端已扫描
+                    io.to(roomID).emit('sys', { phone: 1 }, roomInfo[roomID]);
+                    console.log(user + ' 加入了 ' + roomID, roomInfo);
+                } else if (roomInfo[roomID].indexOf(1) === -1) {
+                    // 如果home关闭了 一起关闭手机端
+                    socket.leave(roomID);
+                    delete roomInfo[roomID]
+                    socket.emit('disconnect');
+                } else if (roomInfo[roomID].indexOf(user) !== -1 && roomInfo[roomID].indexOf(1) !== -1) {
+                    // 用户刷新或者分享二维码后 将本会话在前端调用删除
+                    io.to(roomID).emit('sys', { phone: 0 }, roomInfo[roomID]);
+                }
             }
-            roomUser[roomid].push(userid)
-            socket.join(roomid);
-            socket.to(roomid).emit('sys', userid + '加入了房间');
-            // socket.emit('sys',user + '加入了房间');
-            socket.emit('join',{
-                id: msg.id.hex,
-            })
-            console.log(roomid, userid, count, roomUser)
-        })
+        });
 
-        // socket.on('ready', function (roomId, data) {
-        //     pub.publish(roomId, JSON.stringify({
-        //         "event": 'ready',
-        //         "data": '',
-        //         "namespace": '/user'
-        //     }))
-        // })
+        // 接收用户消息,发送相应的房间
+        socket.on('message', function (msg) {
+            console.log(roomID, user, msg)
+            // 验证如果用户不在房间内则不给发送
+            if (roomInfo[roomID].indexOf(user) === -1) {
+                return false;
+            } else {
+                console.log(msg.userName, msg.password)
+            }
+            // io.to(roomID).emit('logstate', { msg, user }, msg);
+        });
 
-        // socket.on('button-start', function (id) {
-        //     pub.publish(id, JSON.stringify({
-        //         "event": 'button-start',
-        //         "data": '',
-        //         "namespace": '/user'
-        //     }));
-        // })
+
+        // 退出
+        socket.on('leave', function (data) {
+            if (data.pageId === 1) {
+                const user = data.pageId;
+                const roomID = data.room;
+                // 从房间名单中移除  
+                // 判断会话是否存在
+                if (roomInfo[roomID]) {
+                    var index = roomInfo[roomID].indexOf(user);
+                    if (index !== -1) {
+                        roomInfo[roomID].splice(index, 1);
+                    }
+                    // 退出房间
+                    socket.leave(roomID);
+                    // 删除聊天室id
+                    delete roomInfo[roomID]
+                    io.to(roomID).emit('sys', { main: false }, roomInfo[roomID]);
+                    console.log(user + '退出了' + roomID);
+                    socket.emit('disconnect');
+                }
+            } else {
+                const user = data.pageId;
+                // 从房间名单中移除
+                var index = roomInfo[roomID].indexOf(user);
+                if (index !== -1) {
+                    roomInfo[roomID].splice(index, 1);
+                }
+                // 退出房间
+                socket.leave(roomID);    
+                // 删除聊天室id
+                delete roomInfo[roomID]
+                io.to(roomID).emit('sys', user + '退出了房间', roomInfo[roomID]);
+                console.log(user + '退出了' + roomID);
+                socket.emit('disconnect');
+            }
+        });
+        // 断开链接
+        socket.on('disconnect', function (data) {
+            console.log('disconnected');
+        });
+
+        // socket.on('message', function (msg) {
+        //     // 验证如果用户不在房间内则不给发送
+        //     if (roomInfo[roomID].indexOf(user) === -1) {  
+        //       return false;
+        //     }
+        //     socketIO.to(roomID).emit('msg', user, msg);
+        //   });
 
         // //针对namespace发送消息
         // io.of(namespace).emit('message', message)
@@ -93,7 +149,7 @@ socketio.getSocketio = function (server) {
         //             // 更新用户最后登录时间
         //             const curTime = new Date();
         //             let portDate = curTime.setHours(curTime.getHours() + 8);
-        //             searchSql($sql.updateEndUserLoginTime, [new Date(portDate), result[0].id])
+        //             室rchSql($sql.updateEndUserLoginTime, [new Date(portDate), result[0].id])
         //             // 密钥
         //             const secret = 'ILOVENINGHAO'
         //             const payload = {
@@ -120,10 +176,9 @@ socketio.getSocketio = function (server) {
         //         return res
         //     })
         // })
-        socket.on('disconnect', function () {
-            count--
-            console.log('disconnected');
-        });
+        // socket.on('disconnect', function () {
+        //     console.log('disconnected');
+        // });
     });
 };
 

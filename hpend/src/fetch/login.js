@@ -29,4 +29,17 @@ const loginAccount = (val, func) => {
         .then((result) => { func(result) });
 }
 
-export { loginAccount }
+const getRid = (func) => {
+  fetch('http://localhost:3004/aclogin/loginByPhoneRid', {
+      method: 'GET',
+      mode: "cors",
+      headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+      },
+  })
+      .then(r => r.json())
+      .then((result) => { func(result) });
+}
+
+export { loginAccount, getRid }
