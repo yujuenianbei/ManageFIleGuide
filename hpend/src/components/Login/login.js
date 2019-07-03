@@ -7,7 +7,7 @@ import styles from './login.module.less';
 import LoginForm from './loginForm';
 import LoginQr from './loginqr'
 // 请求
-import { getRid } from '../../fetch/login'
+import { getQrcode } from '../../fetch/login'
 
 // 插件
 import { Layout, Tabs } from 'antd';
@@ -27,27 +27,25 @@ class Login extends PureComponent {
 
     tabClick = (key) => {
         this.setState({ key, })
+        const _this = this;
         if (key === "2") {
-            // 生成一个房间号
-            const uid = UID.create();
-            this.props.changePageUid(uid.hex);
-            getRid(this.socket)
+            getQrcode(this.getQrcode)
         } else {
             socket.emit('leave', {
-                room: sessionStorage.getItem("room"),
+                room: _this.props.state.user.qrRoom,
                 pageId: 1
             });
-            this.props.changePageUid('')
             this.props.changeQrState(1);
             this.props.changeQrMessage('请扫描二维码');
         }
     }
-
-    socket = (result) => {
+    // 获取二维码 并加入socket
+    getQrcode = (result) => {
         const _this = this;
-        sessionStorage.setItem("room", result.rid.hex)
+        this.props.changeQrcode(Buffer(result.qrcode).toString('base64'))
+        this.props.changeQrRoom(result.qruid.hex)
         socket.emit('join', {
-            room: result.rid.hex,
+            room: result.qruid.hex,
             pageId: 1
         });
         socket.on('sys', function (data) {
@@ -59,14 +57,38 @@ class Login extends PureComponent {
                 _this.props.changeQrMessage('二维码已失效，请刷新二维码');
                 // 二维码失效后删除会话
                 socket.emit('leave', {
-                    room: sessionStorage.getItem("room"),
+                    room: _this.props.state.user.qrRoom,
                     pageId: 1
                 });
+                _this.props.changeQrRoom('');
             }
-            console.log(data)
         });
-        socket.on('logstate', function(data){
-            console.log(data)
+        socket.on('logstate', function (data) {
+            if (data.state === 1) {
+                socket.emit('leave', {
+                    room: _this.props.state.user.qrRoom,
+                    pageId: 1
+                });
+                socket.emit('userList', {
+                    type: 'in',
+                    userName: data.userName
+                });
+                _this.props.changeQrMessage('请扫描二维码');
+                _this.props.changeQrState(data.qrState);
+                _this.props.changeLoginstate(data.state);
+                _this.props.changeUsername(data.userName);
+                _this.props.changeQrRoom('');
+
+                localStorage.setItem("uid", data.uid);
+                localStorage.setItem("token", data.token);
+            } else {
+                // 用户名密码不对
+                _this.props.changeLoginstate(data.state);
+                _this.props.changeQrRoom('');
+            }
+        })
+        socket.on('userList', function (data) {
+            _this.props.changeUserOnlineList(data.userList)
         })
     }
 
@@ -104,8 +126,12 @@ const mapDispatchToProps = (dispatch) => {
     return {
         changePageUid: (data) => { dispatch(Actions.pageUid(data)); },
         changeQrState: (data) => { dispatch(Actions.qrState(data)) },
+        changeLoginstate: (data) => { dispatch(Actions.loginstate(data)); },
         changeQrMessage: (data) => { dispatch(Actions.qrMessage(data)) },
         changeUsername: (data) => { dispatch(Actions.username(data)) },
+        changeQrcode: (data) => { dispatch(Actions.qrcode(data)) },
+        changeQrRoom: (data) => { dispatch(Actions.qrRoom(data)) },
+        changeUserOnlineList: (data) => { dispatch(Actions.userOnlineList(data)) },
     }
 };
 export default connect(

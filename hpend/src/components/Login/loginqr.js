@@ -16,43 +16,10 @@ class LoginQr extends PureComponent {
     constructor(props) {
         super(props);
     }
-
-    componentDidMount() {
-        let _this = this;
-        _this.props.changeQrState(1);
-        _this.props.changeQrMessage('请扫描二维码')
-
-        // socket.emit('scanned', function (msg) {
-        //     console.log(msg)
-        // });
-        // socket.on("scanned", function (msg) {
-        //     if (msg.qrState === 2) {
-        //         console.log(msg)
-        //         _this.props.changeQrState(msg.qrState);
-        //         _this.props.changeQrMessage('请在手机上确认登录')
-        //     }
-        // })
-        // socket.on("loginMessage", function (msg) {
-        //     if (msg.qrState === 3) {
-        //         _this.props.changeQrState(msg.qrState);
-        //         _this.props.changeQrMessage('已登录')
-        //         _this.props.changeLoginstate(msg.state);
-        //         _this.props.changeUsername(msg.userName);
-        //         localStorage.setItem("uid", msg.uid);
-        //         localStorage.setItem("token", msg.token);
-        //         socket.close();
-        //     } else if(msg.qrState === 4){
-        //         const uid = UID.create();
-        //         _this.props.changePageUid(uid);
-        //         _this.props.changeQrMessage('请重新扫描二维码');
-        //     }
-        // })
-    }
-
     render() {
         return (
             <div className={styles.qr}>
-                <img className={styles.qrImg} src={"http://localhost:3004/aclogin/loginByPhone?" + this.props.state.user.pageUid} />
+                <img className={styles.qrImg} src={'data:image/png;base64,' + this.props.state.user.qrcode} />
                 <div className={styles.qrMessage}>{this.props.state.user.qrMessage}</div>
             </div>
         );

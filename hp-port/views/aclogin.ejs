@@ -39,57 +39,53 @@
 <script src="/js/socket.io.js"></script>
 <script>
     var socket = io();
-    // $('#confirmUserBtn').click(function (e) {
-    //     e.preventDefault(); // prevents page reloading
-    //     $('.model').show();
-    //     if (!$(".username").val() && $(".password").val()) {
-    //         $('.errorContent').html('请输入用户名');
-    //     } else if ($(".username").val() && !$(".password").val()) {
-    //         $('.errorContent').html('请输入密码');
-    //     } else if (!$(".username").val() && !$(".password").val()) {
-    //         $('.errorContent').html('请输入用户名和密码');
-    //     } else {
-    //         socket.emit('loginMessage', {
-    //             userName: $(".username").val(),
-    //             password: $(".password").val()
-    //         });
-    //         $('#m').val('');
-    //     }
-    //     var loader = setTimeout(function () {
-    //         $('.model').hide();
-    //         clearTimeout(loader);
-    //     }, 2000)
-    //     return false;
-    // });
 
-    // $('#cancel').click(function () {
-    //     if (WeixinJSBridge) {
-    //         WeixinJSBridge.call('closeWindow');
-    //     } else {
-    //         window.opener = null;
-    //         window.open('', '_self');
-    //         window.close();
-    //     }
-    // })
+    // 点击提交按钮
+    $('#confirmUserBtn').click(function (e) {
+        e.preventDefault(); // prevents page reloading
+        if (!$(".username").val() && $(".password").val()) {
+            $('.model').show();
+            $('.errorContent').html('请输入用户名');
+        } else if ($(".username").val() && !$(".password").val()) {
+            $('.model').show();
+            $('.errorContent').html('请输入密码');
+        } else if (!$(".username").val() && !$(".password").val()) {
+            $('.model').show();
+            $('.errorContent').html('请输入用户名和密码');
+        } else {
+            socket.emit('message', {
+                userName: $(".username").val(),
+                password: $(".password").val()
+            })
+        }
+        var loader = setTimeout(function () {
+            $('.model').hide();
+            clearTimeout(loader);
+        }, 2000)
+        return false;
+    });
 
+    // 点击取消提交按钮
     $('#cancelUserBtn').click(function () {
-        // $('.model').hide();
-        // socket.emit('message', {
-        //     username: 111111,
-        //     password: 11231232
-        // })
         socket.emit('leave', {
             pageId: "<%= qruid %>"
         });
+        if (WeixinJSBridge) {
+            WeixinJSBridge.call('closeWindow');
+        } else {
+            window.opener = null;
+            window.open('', '_self');
+            window.close();
+        }
     })
-    $('#confirmUserBtn').click(function () {
-        // var userName = $(".username").val();
-        // var password = $(".password").val();
-        socket.emit('message', {
-            userName: $(".username").val(),
-            password: $(".password").val()
-        })
+
+    // 点击关闭提示框按钮
+    $('#errorBtn').click(function(){
+        $('.model').hide();
+        $(".username").val('');
+        $(".password").val('');
     })
+
     $(function () {
         //向服务器端发送自定义消息
         socket.on('join', function (data) {
@@ -105,8 +101,22 @@
             console.log('sys  ' + data)
         });
 
-        socket.on('logstate', function(data){
-            console.log(data)
+        socket.on('logstate', function (data) {
+            console.log(data);
+            localStorage.setItem("uid", data.uid);
+            if (data.state === 1) {
+                if (WeixinJSBridge) {
+                    WeixinJSBridge.call('closeWindow');
+                } else {
+                    window.opener = null;
+                    window.open('', '_self');
+                    window.close();
+                }
+            } else {
+                // 用户名密码不对
+                $('.errorContent').html('用户名或密码有误');
+                $('.model').show();
+            }
         })
 
 

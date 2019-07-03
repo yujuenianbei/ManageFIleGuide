@@ -7,7 +7,8 @@ import styles from './main.module.less';
 import Headers from '../Header';
 import Left from '../Left';
 import Notification from '../Notification';
-import Login from '../Login'
+import Login from '../Login';
+import ChatContent from '../Chat';
 // 路由
 import Routers from '../../router/routers';
 // 插件
@@ -27,6 +28,7 @@ class Main extends PureComponent {
                                 <Content style={{ margin: '0 16px' }}>
                                     <Routers />
                                 </Content>
+                                <ChatContent />
                             </Layout>
                         </Layout>
                         <Notification />

@@ -7,7 +7,13 @@ import styles from './login.module.less';
 import { loginAccount } from '../../fetch/login'
 // 插件
 import { Form, Icon, Input, Button, Checkbox } from 'antd';
-
+// socket
+import io from 'socket.io-client'
+const socket = io("http://192.168.1.128:3004", {
+    // query: params,
+    //此处大坑，设置为true才会开启新的连接
+    forceNew: true
+});
 class LoginFormNormal extends PureComponent {
     handleSubmit = e => {
         e.preventDefault();
@@ -20,16 +26,24 @@ class LoginFormNormal extends PureComponent {
     };
 
     loginCallback = (result) => {
-        if(result.data.login.state){
+        const _this = this;
+        if (result.data.login.state) {
             // 登陆成功
             localStorage.setItem("uid", result.data.login.uid);
             localStorage.setItem("token", result.data.login.token);
             this.props.changeLoginstate(result.data.login.state);
             this.props.changeUsername(result.data.login.userName);
+            socket.emit('userList', {
+                type: 'in',
+                userName: result.data.login.userName
+            });
         } else {
             // 用户名密码不对
             this.props.changeLoginstate(result.data.login.state)
         }
+        socket.on('userList', function (data) {
+            _this.props.changeUserOnlineList(data.userList)
+        })
     }
 
     render() {
@@ -66,7 +80,7 @@ class LoginFormNormal extends PureComponent {
                                 valuePropName: 'checked',
                                 initialValue: true,
                             })(<Checkbox>记住我</Checkbox>)}
-                            
+
                             <Button type="primary" htmlType="submit" className={styles.submitLogin}>
                                 登录
                             </Button>
@@ -85,8 +99,9 @@ const mapStateToProps = (state) => {
 };
 const mapDispatchToProps = (dispatch) => {
     return {
-        changeLoginstate: (data) => { dispatch(Actions.loginstate(data)); },  
+        changeLoginstate: (data) => { dispatch(Actions.loginstate(data)); },
         changeUsername: (data) => { dispatch(Actions.username(data)) },
+        changeUserOnlineList: (data) => { dispatch(Actions.userOnlineList(data)) },
     }
 };
 export default connect(

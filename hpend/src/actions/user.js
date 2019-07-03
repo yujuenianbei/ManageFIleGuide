@@ -3,6 +3,8 @@ export const USERNAME = 'USERNAME';
 export const PAGEUID = 'PAGEUID';
 export const QRSTATE = 'QRSTATE';
 export const QRMESSAGE = 'QRMESSAGE';
+export const QRCODE = 'QRCODE';
+export const SOCKETROOM = 'SOCKETROOM'
 // 登录状态
 export function loginstate(data) {
   localStorage.setItem("loginState", data);
@@ -41,6 +43,20 @@ export function qrState(data) {
 export function qrMessage(data) {
   return {
     type: QRMESSAGE,
+    data
+  }
+}
+// 登录二维码
+export function qrcode(data) {
+  return {
+    type: QRCODE,
+    data
+  }
+}
+// 二维码ROOM
+export function qrRoom(data) {
+  return {
+    type: SOCKETROOM,
     data
   }
 }

@@ -8,33 +8,41 @@ import classify from '@magento/venia-concept/esm/classify';
 // const SearchBar = React.lazy(() => import('src/components/SearchBar'));
 import styles from './header.module.less';
 
-import { Layout, BackTop, Icon, Menu, Dropdown, Avatar } from 'antd';
+import { Layout, BackTop, Icon, Menu, Dropdown, Avatar, Badge } from 'antd';
 
-// import io from 'socket.io-client'
-// const socket = io("http://192.168.1.128:3004");
+import io from 'socket.io-client'
+const socket = io("http://192.168.1.128:3004", {
+    // query: params,
+    //此处大坑，设置为true才会开启新的连接
+    forceNew: true
+});
 
 const { Header } = Layout;
 
 class Headers extends PureComponent {
-
-    componentDidMount(){
-        // socket.emit("join", this.props.state.user.userName)
-    }
-
     menuclick = (e) => {
-        if(e.key === "0"){
+        if (e.key === "0") {
 
-        } else if(e.key === "1"){
+        } else if (e.key === "1") {
 
-        } else if(e.key === "2"){
+        } else if (e.key === "2") {
+            socket.emit('userList', {
+                type: 'out',
+                userName: this.props.state.user.userName
+            });
             this.props.changeLoginstate(0);
             this.props.changeQrState(1);
             this.props.changeQrMessage('请扫描二维码')
             this.props.changeUsername('');
             this.props.changePageUid('')
+            this.props.changeUserOnlineList('')
             localStorage.removeItem("uid");
-            console.log(localStorage.getItem('persist:root'))
+            // console.log(localStorage.getItem('persist:root'))
         }
+    }
+
+    chatList=() => {
+        this.props.changeChatListState(!this.props.state.chat.chatListState)
     }
 
     render() {
@@ -58,6 +66,11 @@ class Headers extends PureComponent {
         return (
             <Fragment>
                 <Header style={{ background: '#fff', padding: 0 }}>
+                    <div className={styles.chatList} onClick={this.chatList}>
+                        <Badge count={99}>
+                            <Icon type="team" style={{ fontSize: '28px', verticalAlign: 'middle' }} />
+                        </Badge>
+                    </div>
                     <Dropdown overlay={menu} trigger={['click']}>
                         <div className={styles.userContol}>
                             <Avatar size="large" icon="user" title="用户管理" />
@@ -79,11 +92,14 @@ const mapStateToProps = (state) => {
 };
 const mapDispatchToProps = (dispatch) => {
     return {
-        changeLoginstate: (data) => { dispatch(Actions.loginstate(data)) }, 
+        changeLoginstate: (data) => { dispatch(Actions.loginstate(data)) },
         changePageUid: (data) => { dispatch(Actions.pageUid(data)) },
         changeQrState: (data) => { dispatch(Actions.qrState(data)) },
         changeQrMessage: (data) => { dispatch(Actions.qrMessage(data)) },
         changeUsername: (data) => { dispatch(Actions.username(data)) },
+        // 聊天
+        changeChatListState: (data) => { dispatch(Actions.chatListState(data)) },
+        changeUserOnlineList: (data) => { dispatch(Actions.userOnlineList(data)) },
     }
 };
 export default connect(

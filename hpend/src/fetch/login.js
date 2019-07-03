@@ -29,17 +29,17 @@ const loginAccount = (val, func) => {
         .then((result) => { func(result) });
 }
 
-const getRid = (func) => {
-  fetch('http://localhost:3004/aclogin/loginByPhoneRid', {
-      method: 'GET',
-      mode: "cors",
-      headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-      },
-  })
-      .then(r => r.json())
-      .then((result) => { func(result) });
-}
+const getQrcode = (func) => {
+    fetch('http://localhost:3004/aclogin/loginByPhone', {
+        method: 'GET',
+        mode: "cors",
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+        },
+    })
+        .then(r => r.json())
+        .then((result) => { func(result) });
+  }
 
-export { loginAccount, getRid }
+export { loginAccount, getQrcode }
