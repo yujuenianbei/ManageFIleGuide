@@ -1,0 +1,50 @@
+
+@import "../../less/color.less";
+@import "../../less/font.less";
+@import "../../less/button.less";
+.chat{
+    [class="ant-tabs-tab-active ant-tabs-tab"]{
+        text-align: center;
+        width: calc(400px/3);
+        // background-color: #0197d6;
+        // color: @white;
+        // transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+    }
+    [class=" ant-tabs-tab"]{
+        text-align: center;
+        width: calc(400px/3);
+    }
+    .chatContent{
+        margin-top: 44px;
+        padding: 0;
+        [class="ant-list-item-meta-title"]{
+            line-height: 35px;
+        }
+        .chatUser{
+            [class="ant-tabs-tab-active ant-tabs-tab"]{
+                border: 0;
+                border-bottom: 0 !important;
+                width: @f;
+            }
+            [class=" ant-tabs-tab"]{
+                width: @f;
+                border: 0;
+                border-bottom: 0 !important;
+            }
+            [class="ant-tabs-content ant-tabs-content-no-animated ant-tabs-right-content ant-tabs-card-content"]{
+                padding-right: 0;
+            }
+            .chatContents{
+                
+            }
+            
+        }
+        .userList{
+            cursor: pointer;
+            padding-left: @12;
+            &:hover{
+                background-color: @border;
+            }
+        }
+    }
+}

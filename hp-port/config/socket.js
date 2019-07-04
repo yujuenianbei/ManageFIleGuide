@@ -8,6 +8,7 @@ var socketio = {};
 // 房间用户名单
 var roomInfo = {};
 var home = {};
+var chatRoom = {};
 // 已登录用户列表
 var loginUserList = [];
 //获取io
@@ -155,6 +156,48 @@ socketio.getSocketio = function (server) {
                 socket.emit('disconnect');
             }
         });
+
+        // 聊天室
+        socket.on('chat', function (data) {
+            // 发起端
+            console.log(data)
+            if (data.roomId === null) {
+                var date = new Date().getTime();
+                roomId = UUID.fromTime(date, true);
+                io.emit('chat', { userNameMy: data.userNameMy, userNameClient: data.userNameClient, roomId, })
+                // 写入用户列表
+                if (!chatRoom[roomId]) {
+                    chatRoom[roomId] = [];
+                }
+                chatRoom[roomId].push(data.userNameMy);
+                // 创建房间并加入
+                socket.join(roomId);
+                // // 通知房间内人员
+                // io.to(roomId).emit('chatMessage', { roomId }, chatRoom[roomID]);
+                console.log([data.userNameMy] + '加入了' + chatRoom[roomId]);
+            } else {
+                // 写入用户列表
+                if (!chatRoom[data.roomId]) {
+                    chatRoom[data.roomId] = [];
+                }
+                chatRoom[data.roomId].push(data.userNameClient);
+                // 创建房间并加入
+                socket.join(data.roomId);
+                // 通知房间内人员
+                // io.to(data.roomId).emit('chatMessage', { roomId: data.roomId }, chatRoom[roomID]);
+                console.log(chatRoom);
+            }
+
+        });
+
+        socket.on('chatMessage', function (data) {
+            console.log(data);
+            io.to(data.roomId).emit('chatMsg', { name: data.name, message: data.message });
+        })
+
+
+
+
         // 断开链接
         socket.on('disconnect', function (data) {
             console.log('disconnected');

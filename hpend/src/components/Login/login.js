@@ -90,6 +90,7 @@ class Login extends PureComponent {
         socket.on('userList', function (data) {
             _this.props.changeUserOnlineList(data.userList)
         })
+
     }
 
 

@@ -1,5 +1,6 @@
 export const USERONLINELIST = 'USERONLINELIST';
 export const CHATLISTSTATE = 'CHATLISTSTATE';
+export const CHATOBJECT = 'CHATOBJECT';
 // 登录的用户名
 export function userOnlineList(data) {
   return {
@@ -14,4 +15,12 @@ export function chatListState(data) {
     type: CHATLISTSTATE,
     data
   }
+}
+
+// 聊天对象
+export function chatUsers(data) {
+  return {
+    type: CHATOBJECT,
+    data
+  } 
 }
