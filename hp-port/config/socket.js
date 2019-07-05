@@ -161,38 +161,67 @@ socketio.getSocketio = function (server) {
         socket.on('chat', function (data) {
             // 发起端
             console.log(data)
-            if (data.roomId === null) {
+            // 如果房间存在
+            if (data.state === 1) {
+                // console.log(data)
+                roomId = data.roomId
+                io.emit('chat', { userNameMy: data.userNameMy, userNameClient: data.userNameClient, roomId, })
+                // 写入用户
+                if (!chatRoom[roomId]) {
+                    chatRoom[roomId] = [];
+                }
+                // console.log(chatRoom[roomId])
+                // 判断名称是否已添加
+                if (!chatRoom[roomId]) {
+                    chatRoom[roomId].push(data.userNameMy);
+                }
+                // 创建房间并加入
+                socket.join(roomId);
+                // // 通知房间内人员
+                // io.to(roomId).emit('chatMessage', { roomId }, chatRoom[roomID]);
+                console.log('房间名存在' + chatRoom[roomId]);
+            } else if (data.state === 0) {
+                // 如果房间不存在
+                // console.log(data)
+                // 生成房间号
                 var date = new Date().getTime();
                 roomId = UUID.fromTime(date, true);
+                // 将房间号传给对应的用户
                 io.emit('chat', { userNameMy: data.userNameMy, userNameClient: data.userNameClient, roomId, })
                 // 写入用户列表
                 if (!chatRoom[roomId]) {
                     chatRoom[roomId] = [];
                 }
+                // console.log(chatRoom[roomId])
                 chatRoom[roomId].push(data.userNameMy);
                 // 创建房间并加入
                 socket.join(roomId);
                 // // 通知房间内人员
                 // io.to(roomId).emit('chatMessage', { roomId }, chatRoom[roomID]);
-                console.log([data.userNameMy] + '加入了' + chatRoom[roomId]);
-            } else {
+                console.log('房间名不存在' + chatRoom[roomId]);
+            } else if (data.state === 10) {
+                // 接受方加入聊天室
                 // 写入用户列表
-                if (!chatRoom[data.roomId]) {
-                    chatRoom[data.roomId] = [];
+                // console.log(data)
+                // 判断名称是否已添加
+                console.log(chatRoom[data.roomId])
+                if (chatRoom[data.roomId]) {
+                    chatRoom[data.roomId].push(data.userNameClient);
                 }
-                chatRoom[data.roomId].push(data.userNameClient);
+
                 // 创建房间并加入
                 socket.join(data.roomId);
                 // 通知房间内人员
                 // io.to(data.roomId).emit('chatMessage', { roomId: data.roomId }, chatRoom[roomID]);
-                console.log(chatRoom);
+                console.log(11111 + chatRoom[data.roomId]);
             }
 
         });
 
         socket.on('chatMessage', function (data) {
-            console.log(data);
-            io.to(data.roomId).emit('chatMsg', { name: data.name, message: data.message });
+            console.log(chatRoom[data.roomId]);
+            const to = chatRoom[data.roomId].filter(item => item !== data.name);
+            io.to(data.roomId).emit('chatMsg', { from: data.name, to: to[0], message: data.message, time: data.time });
         })
 
 

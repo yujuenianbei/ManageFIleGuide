@@ -10,6 +10,7 @@ export function loginstate(data) {
   localStorage.setItem("loginState", data);
   if (data === 0) {
     localStorage.removeItem("token");
+    localStorage.removeItem("room");
   }
   return {
     type: LOGINSTATE,

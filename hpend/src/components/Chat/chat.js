@@ -7,6 +7,7 @@ import styles from './chat.module.less';
 // import UUID from 'uuid-js';
 import { Drawer, Tabs, List, Avatar, Icon, Input } from 'antd';
 import io from 'socket.io-client'
+import { object } from 'prop-types';
 const socket = io("http://192.168.1.128:3004", {
     // query: params,
     //此处大坑，设置为true才会开启新的连接
@@ -29,18 +30,61 @@ class ChatContent extends PureComponent {
         const _this = this;
         window.addEventListener('resize', this.onWindowResize);
         socket.on('chat', function (data) {
-            localStorage.setItem('room', data.roomId.hex)
-            if(_this.props.state.user.userName !== data.userNameMy){
+            // 用户有用过聊天
+            if (localStorage.getItem('room')) {
+                const rooms = Object.keys(JSON.parse(localStorage.getItem('room')));
+                rooms.map(item => {
+                    // 房间号不存在时
+                    if ((item.split('-')[0] !== data.userNameMy &&
+                        item.split('-')[1] !== data.userNameClient) &&
+                        (item.split('-')[1] !== data.userNameMy &&
+                            item.split('-')[0] !== data.userNameClient)) {
+                        const roomList = JSON.parse(localStorage.getItem('room'));
+                        // 发起人-接收人  将房间号写入
+                        roomList[data.userNameMy + '-' + data.userNameClient] = data.roomId.hex;
+                        localStorage.setItem('room', JSON.stringify(roomList));
+                        // 存储chatrooms 
+                        _this.props.changeChatRooms(roomList);
+                    }
+                })
+            } else {
+                let roomList = {};
+                roomList[data.userNameMy + '-' + data.userNameClient] = data.roomId.hex;
+                localStorage.setItem('room', JSON.stringify(roomList));
+                // 存储chatrooms 
+                _this.props.changeChatRooms(roomList);
+            }
+            // console.log(data.roomId.hex)
+            // 判断本用户是不是目标用户 不能和自己聊天呢
+            if (_this.props.state.user.userName !== data.userNameMy) {
                 socket.emit('chat', {
+                    state: 10,
                     roomId: data.roomId.hex,
                     userNameMy: null,
                     userNameClient: _this.props.state.user.userName,
                 });
             }
         })
-        socket.on('chatMsg', function(data){
+        socket.on('chatMsg', function (data) {
             console.log(data)
+            // 让用户跳转  其实不需要进行改变用户跳转 只要把内容添加到里面就行了
+            if(data){
+               _this.addChatUser(data.from)
+            }
+            const contents = _this.props.state.chat.chatContent
+            const from = data.from;
+            const to = data.to;
+            const roomkeys = Object.keys(_this.props.state.chat.chatRooms)
+            const roomkey = roomkeys.filter(item => (item.split('-')[0] === from && item.split('-')[1] === to) || (item.split('-')[1] === from && item.split('-')[0] === to))
+            if (!contents[roomkey]) {
+                contents[roomkey] = [];
+            }
+            contents[roomkey].push(data);
+            console.log(contents)
+            _this.props.changeChatContent(contents);
         })
+
+        // this.props.state.chat.chatRooms
     }
     componentWillUnmount() {
         window.removeEventListener('resize', this.onWindowResize)
@@ -58,27 +102,31 @@ class ChatContent extends PureComponent {
         this.props.changeChatListState(!this.props.state.chat.chatListState)
     }
     callback = (key) => {
-        console.log(key);
+        this.props.changeChatTopTab(key)
     }
 
     onChange = activeKey => {
+        console.log(activeKey)
         this.setState({ activeKey });
+        this.props.changeChatNowUser({
+            userName: this.props.state.chat.chatUsers[activeKey].title,
+            key: activeKey
+        })
     };
 
     onEdit = (targetKey, action) => {
+        console.log(targetKey, action)
         this[action](targetKey);
     };
 
     remove = targetKey => {
-        console.log(targetKey)
-        let { activeKey } = this.state;
+        let activeKey = this.props.state.chat.chatNowUser.key;
         let lastIndex;
         this.props.state.chat.chatUsers.forEach((pane, i) => {
             if (pane.key === targetKey) {
                 lastIndex = i - 1;
             }
         });
-        console.log(lastIndex)
         const panes = this.props.state.chat.chatUsers.filter(pane => pane.key !== targetKey);
         if (panes.length && activeKey === targetKey) {
             if (lastIndex >= 0) {
@@ -87,8 +135,15 @@ class ChatContent extends PureComponent {
                 activeKey = panes[0].key;
             }
         }
-        this.setState({ activeKey });
-        this.props.changeChatUsers(panes)
+        const active = this.props.state.chat.chatUsers.filter(function (item) {
+            return item.key === activeKey
+        });
+        // 跳转至上面一个窗口
+        this.props.changeChatUsers(panes);
+        this.props.changeChatNowUser({
+            userName: active[0].title,
+            key: activeKey
+        })
     };
 
     addChatUser = (data) => {
@@ -104,34 +159,83 @@ class ChatContent extends PureComponent {
         const isDuplicate = titleArr.some(function (item, idx) {
             return titleArr.indexOf(panes.title) === -1
         });
-        if (isDuplicate) {
+        if (isDuplicate && data !== myName) {
             chatObjects.push(panes);
             this.props.changeChatUsers(chatObjects);
-            // // 未添加过则生成新的roomId
-            // var date = new Date().getTime();
-            // roomId = UUID.fromTime(date, true);
-        } else {
-            // roomId = chatObjects[titleArr.indexOf(panes.title)].roomId
+            // 跳转到对应的聊天框
+            this.props.changeChatTopTab("1")
+            this.props.changeChatNowUser({
+                userName: data,
+                key: key
+            })
+        } else if (data !== myName) {
+            // 获取到已经打开的用户沟通框
+            const activekey = this.props.state.chat.chatUsers.filter(function (item) {
+                return item.title === panes.title
+            });
+            this.props.changeChatTopTab("1")
+            this.props.changeChatNowUser({
+                userName: activekey[0].title,
+                key: activekey[0].key
+            })
         }
 
-        socket.emit('chat', {
-            roomId: null,
-            userNameMy: myName,
-            userNameClient: clientName,
-        });
+        // 判断两个用户是否之前聊过 通过判断localstorage里面的room
+        if (localStorage.getItem('room')) {
+            // 获取本用户所有的聊天房间号
+            const rooms = JSON.parse(localStorage.getItem('room'));
+            const roomskey = Object.keys(JSON.parse(localStorage.getItem('room')));
+            roomskey.map(item => {
+                console.log(item)
+                if ((item.split('-')[0] !== myName &&
+                    item.split('-')[1] !== clientName) &&
+                    (item.split('-')[1] !== myName &&
+                        item.split('-')[0] !== clientName)) {
+                    // 没有房间号则roomid为null  state为0 之前没聊过
+                    socket.emit('chat', {
+                        state: 0,
+                        roomId: null,
+                        userNameMy: myName,
+                        userNameClient: clientName,
+                    });
+                } else if ((item.split('-')[0] === myName &&
+                    item.split('-')[1] === clientName) ||
+                    (item.split('-')[1] === myName &&
+                        item.split('-')[0] === clientName)) {
+                    socket.emit('chat', {
+                        state: 1,
+                        roomId: rooms[item],
+                        userNameMy: myName,
+                        userNameClient: clientName,
+                    });
+                }
+            })
+        } else {
+            // 没有房间号则roomid为null  state为0 之前没聊过
+            socket.emit('chat', {
+                state: 0,
+                roomId: null,
+                userNameMy: myName,
+                userNameClient: clientName,
+            });
+        }
     }
 
     uploadMeg = () => {
         const _this = this;
-        console.log(ref.current.state.value)
+        const from = this.props.state.user.userName;
+        const to = this.props.state.chat.chatNowUser.userName;
+        const roomids = JSON.parse(localStorage.getItem('room'))
+        const roomkeys = Object.keys(JSON.parse(localStorage.getItem('room')));
+        const roomkey = roomkeys.filter(item => (item.split('-')[0] === from && item.split('-')[1] === to) || (item.split('-')[1] === from && item.split('-')[0] === to))
         socket.emit('chatMessage', {
-            roomId: localStorage.getItem('room'),
+            roomId: roomids[roomkey],
+            time: new Date().getTime(),
             name: _this.props.state.user.userName,
             message: ref.current.state.value
         });
     }
     render() {
-        console.log(this.props.state)
         return (
             <Fragment>
                 <Drawer
@@ -147,6 +251,7 @@ class ChatContent extends PureComponent {
                     <Tabs
                         defaultActiveKey="1"
                         onChange={this.callback}
+                        activeKey={this.props.state.chat.chatTopTab}
                         tabBarGutter={0}
                         tabBarStyle={{ width: 400, margin: 0, position: 'fixed', backgroundColor: '#fff', zIndex: 99 }}
                         className={styles.chat}
@@ -156,7 +261,7 @@ class ChatContent extends PureComponent {
                                 <Tabs
                                     tabPosition="right"
                                     onChange={this.onChange}
-                                    activeKey={this.state.activeKey}
+                                    activeKey={this.props.state.chat.chatNowUser.key}
                                     type="editable-card"
                                     tabBarGutter={0}
                                     onEdit={this.onEdit}
@@ -213,9 +318,13 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         // 聊天
+        changeChatTopTab: (data) => { dispatch(Actions.chatTopTab(data)) },
         changeChatListState: (data) => { dispatch(Actions.chatListState(data)) },
         changeUserOnlineList: (data) => { dispatch(Actions.userOnlineList(data)) },
         changeChatUsers: (data) => { dispatch(Actions.chatUsers(data)) },
+        changeChatContent: (data) => { dispatch(Actions.chatContent(data)) },
+        changeChatNowUser: (data) => { dispatch(Actions.chatNowUser(data)) },
+        changeChatRooms: (data) => { dispatch(Actions.chatRooms(data)) }
     }
 };
 export default connect(
