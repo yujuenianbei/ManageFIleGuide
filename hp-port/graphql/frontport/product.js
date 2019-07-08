@@ -75,6 +75,11 @@ const QueryPorducts = new GraphQLObjectType({
                 type: GraphQLInt, resolve(data) {
                     return data.nowPrice;
                 }
+            },
+            updateTime: {
+                type: GraphQLInt, resolve(data) {
+                    return data.updateTime;
+                }
             }
         });
     },

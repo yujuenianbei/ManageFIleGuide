@@ -12,24 +12,28 @@ var {
 } = require('graphql');
 
 
-// 前台
 const account = require('./account');
-// 后台
+const product = require('./product');
+const productType = require('./productType');
 
 
 
 const Query=new GraphQLObjectType({
-    name:'UserQuery',
+    name:'EndQuery',
     description:'用户信息查询',
     fields:()=>(Object.assign({},
         account.query,
+        product.query,
+        productType.query
     )),
 });
 const Mutation=new GraphQLObjectType({
-    name:'UserMutation',
+    name:'EndMutation',
     description:'用户信息维护',
     fields:()=>(Object.assign({},
         account.mutation,
+        product.mutation,
+        productType.mutation
     )),
 });
 const schema = new GraphQLSchema({

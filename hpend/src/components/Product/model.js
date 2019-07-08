@@ -4,18 +4,18 @@ import { connect } from 'react-redux';
 // import PropTypes from 'prop-types';
 import classify from '@magento/venia-concept/esm/classify';
 // const SearchBar = React.lazy(() => import('src/components/SearchBar'));
-import styles from './account.module.less';
+import styles from './product.module.less';
 import { getUserInfo } from '../../fetch/account'
 import { Modal, Spin, Form, Icon } from 'antd';
 
-import CreateAccount from './createAccount';
+import CreateAccount from './createProduct';
 import DeleteAccount from './delete';
 
 class AccountModle extends PureComponent {
 
     handleOk = (e) => {
         // 父组件调用子组件方法
-        if(this.props.state.account.modelName !== 'delete'){
+        if(this.props.state.product.modelName !== 'delete'){
             this.child.handleSubmit(e);
         } else {
             this.del.handleSubmit(e);  
@@ -23,7 +23,7 @@ class AccountModle extends PureComponent {
     };
 
     handleCancel = () => {
-        if(this.props.state.account.modelName !== 'delete'){
+        if(this.props.state.product.modelName !== 'delete'){
             this.child.cancelSubmit();
         } else {
             this.del.cancelSubmit();  
@@ -35,15 +35,15 @@ class AccountModle extends PureComponent {
             <Fragment>
                 <Modal
                     centered
-                    title={this.props.state.account.modelTitle}
-                    visible={this.props.state.account.modelState}
+                    title={this.props.state.product.modelTitle}
+                    visible={this.props.state.product.modelState}
                     onOk={this.handleOk}
-                    confirmLoading={this.props.state.account.confirmLoading}
+                    confirmLoading={this.props.state.product.confirmLoading}
                     onCancel={this.handleCancel}
                     maskClosable={false}
                 >
-                {this.props.state.account.modelName !== 'delete' && <CreateAccount onRef={(ref) => { this.child = ref }} />}
-                {this.props.state.account.modelName === 'delete' && <DeleteAccount onDel={(ref) => { this.del = ref }}/>} 
+                {this.props.state.product.modelName !== 'delete' && <CreateAccount onRef={(ref) => { this.child = ref }} />}
+                {this.props.state.product.modelName === 'delete' && <DeleteAccount onDel={(ref) => { this.del = ref }}/>} 
                     
                 </Modal>
             </Fragment>
@@ -58,12 +58,12 @@ const mapStateToProps = (state) => {
 };
 const mapDispatchToProps = (dispatch) => {
     return {
-        changeModleState: (data) => { dispatch(Actions.modleState(data)); },
-        changeAccountDataLoading: (data) => { dispatch(Actions.accountDataLoading(data)); },
-        changeAccountData: (data) => { dispatch(Actions.accountData(data)); },
-        changeModleTitle: (data) => { dispatch(Actions.modleTitle(data)); },
-        changeModleName: (data) => { dispatch(Actions.modleName(data)); },
-        changeModleTitle: (data) => { dispatch(Actions.modleTitle(data)); },
+        changeModleState: (data) => { dispatch(Actions.productModleState(data)); },
+        changeAccountDataLoading: (data) => { dispatch(Actions.productAccountDataLoading(data)); },
+        changeAccountData: (data) => { dispatch(Actions.productAccountData(data)); },
+        changeModleTitle: (data) => { dispatch(Actions.productModleTitle(data)); },
+        changeModleName: (data) => { dispatch(Actions.productModleName(data)); },
+        changeModleTitle: (data) => { dispatch(Actions.productModleTitle(data)); },
     }
 };
 export default connect(

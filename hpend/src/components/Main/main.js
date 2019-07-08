@@ -3,6 +3,7 @@ import * as Actions from '../../actions/index';
 import { connect } from 'react-redux';
 import classify from '@magento/venia-concept/esm/classify';
 import styles from './main.module.less';
+import './main.css';
 // 组件
 import Headers from '../Header';
 import Left from '../Left';

@@ -2,19 +2,32 @@
 // CRUD SQL语句
 var endPort = {
 
-
-    insertEndUser:'INSERT INTO account(uuid, uid, userName, sex, email, firstName, lastName, phoneCode, phone, password, company, createTime, updateTime) VALUES(REPLACE(UUID(),"-",""),REPLACE(UUID(),"-",""),?,?,?,?,?,?,?,?,?,NOW(), NOW())',
+    // account
+    insertEndUser: 'INSERT INTO account(uuid, uid, userName, sex, email, firstName, lastName, phoneCode, phone, password, company, createTime, updateTime) VALUES(REPLACE(UUID(),"-",""),REPLACE(UUID(),"-",""),?,?,?,?,?,?,?,?,?,NOW(), NOW())',
     updateEndUser: 'UPDATE account set userName=?, sex=?, email=?, firstName=?, lastName=?, phoneCode=?, phone=?, password=?, company=?, updateTime=NOW() where id=?',
-    queryAllEndUser:"SELECT * FROM `account`",
+    queryAllEndUser: "SELECT * FROM `account`",
     queryEndUserById: 'SELECT * FROM `account` WHERE id=?',
     deleteEndUserById: 'DELETE FROM `account` WHERE id=?',
     queryEndUserByUserName: 'SELECT * FROM `account` WHERE userName=?',
     updateEndUserLoginTime: "update `account` set updateTime=? where id=?",
     searchAllAccount: 'SELECT count(*) as total FROM account',
-    searchTotal: 'SELECT FOUND_ROWS() as total'
+    searchTotal: 'SELECT FOUND_ROWS() as total',
 
 
+    // product
+    queryEndProductByName: 'SELECT * FROM `product` WHERE productName=?',
+    insertEndProduct: 'INSERT INTO product(productName, type, img, promotionMessage, featrues, promotionMessageSecond, usedPrice, nowPrice, createTime, updateTime) VALUES(?,?,?,?,?,?,?,?,NOW(), NOW())',
+    queryEndProductById: 'SELECT * FROM `product` WHERE id=?',
+    searchAllProduct: 'SELECT count(*) as total FROM product',
+    searchTotalProduct: 'SELECT FOUND_ROWS() as total',
 
+    // productType
+    queryAllEndProductType: 'SELECT * FROM `productType`',
+    insertEndProductType: 'INSERT INTO productType(typeName, createTime, updateTime) VALUES(?,NOW(), NOW())',
+    deleteEndProductType: 'DELETE FROM `productType` WHERE id=?',
+    countAllProduct: 'SELECT count(*) as total FROM product',
+    
+    
     // insert:'INSERT INTO user(id, name, age) VALUES(0,?,?)',
     // update:'update user set name=?, age=? where id=?',
     // delete: 'delete from user where id=?',
@@ -22,9 +35,9 @@ var endPort = {
     // queryByUsername: 'select * from user where name=? ',
     // queryByEmail: 'select * from user where email=? ',
 
-    
+
     // // queryAll: 'select * from user',
-    
+
     // addUser:'INSERT INTO user( name, sex, intro) VALUES(?,?,?)',
     // searchUser:'SELECT * FROM `user` where id= ? ',
     // courses:"SELECT * FROM `course`",
@@ -72,7 +85,7 @@ var endPort = {
     // // SELECT s.productId ,( SELECT GROUP_CONCAT(c.productName) FROM `product` AS c WHERE FIND_IN_SET(c.id,s.productId) ) FROM `cartItem` AS s,cart,user where cart.cartId=s.cartId and user.id=cart.userId and user.id = 1
     // // SELECT cartItem.productId ,( SELECT product.productName FROM product WHERE product.id=cartItem.productId ) FROM cartItem,cart,user where cart.cartId=cartItem.cartId and user.id=cart.userId and user.id = 5
     // // SELECT * FROM product AS c WHERE (SELECT i.productId FROM cartItem AS i,cart,user WHERE cart.cartId=i.cartId and user.id=cart.userId and i.productId=c.id and user.id = 5 )
-    
+
     // queryBanner: "SELECT * FROM banner",
     // queryBrefIntro: "SELECT * FROM brefIntro",
     // queryProductListBanner: "SELECT * FROM productListBanner",
@@ -82,7 +95,7 @@ var endPort = {
     // queryProductInfo: "SELECT * FROM product where id= ?",
     // // 获取所有产品的类型
     // queryProductTypeList: "SELECT id,( SELECT GROUP_CONCAT(c.typeName) FROM `productType` AS c WHERE FIND_IN_SET(c.id,s.type) ) FROM `product` AS s",
-    
+
 
     // // 产品
     // // 分页

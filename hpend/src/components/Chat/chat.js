@@ -91,10 +91,10 @@ class ChatContent extends PureComponent {
     }
     onWindowResize = () => {
         this.setState({
-            height: document.getElementsByClassName('ant-drawer-content-wrapper')[0].clientHeight - 110,
-            chatContentHeight: document.getElementsByClassName('ant-drawer-content-wrapper')[0].clientHeight - 150,
+            height: document.body.offsetHeight - 110,
+            chatContentHeight: document.body.offsetHeight - 150,
         })
-        console.log(document.getElementsByClassName('ant-drawer-content-wrapper')[0].clientHeight - 110)
+        console.log(document.body.offsetHeight - 110)
     }
 
 
