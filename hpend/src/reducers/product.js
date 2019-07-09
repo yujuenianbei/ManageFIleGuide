@@ -14,7 +14,8 @@ import {
   PRODUCTPAGESORT,
   PRODUCTPAGESORTCOL,
   PRODUCTSEARCHVALUE,
-  PRODUCTSEARCHTYPE
+  PRODUCTSEARCHTYPE,
+  PRODUCTYPELIST
 } from '../actions/index'
 
 const initValue = {
@@ -32,6 +33,7 @@ const initValue = {
   pageSortCol: 'sex',
   searchValue: '',
   searchType: '',
+  productTypeList: [],
   checkListCol: ['类别', '封面', '现价'],
   allCheckcols: ['类别', '封面', '配置参数', '促销信息1', '促销信息2', '原价', '现价', '创建时间', '更新时间']
 }
@@ -85,6 +87,9 @@ export default (state = initValue, action) => {
     }
     case PRODUCTSEARCHTYPE: {
       return Object.assign({}, state, { searchType: data })
+    }
+    case PRODUCTYPELIST: {
+      return Object.assign({}, state, { productTypeList: data })
     }
     default: {
       return state;

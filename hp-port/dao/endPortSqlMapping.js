@@ -16,10 +16,11 @@ var endPort = {
 
     // product
     queryEndProductByName: 'SELECT * FROM `product` WHERE productName=?',
-    insertEndProduct: 'INSERT INTO product(productName, type, img, promotionMessage, featrues, promotionMessageSecond, usedPrice, nowPrice, createTime, updateTime) VALUES(?,?,?,?,?,?,?,?,NOW(), NOW())',
     queryEndProductById: 'SELECT * FROM `product` WHERE id=?',
+    insertEndProduct: 'INSERT INTO product(productName, type, img, promotionMessage, featrues, promotionMessageSecond, usedPrice, nowPrice, createTime, updateTime) VALUES(?,?,?,?,?,?,?,?,NOW(), NOW())',
     searchAllProduct: 'SELECT count(*) as total FROM product',
     searchTotalProduct: 'SELECT FOUND_ROWS() as total',
+    deleteEndProduct: 'DELETE FROM `product` WHERE id=?',
 
     // productType
     queryAllEndProductType: 'SELECT * FROM `productType`',

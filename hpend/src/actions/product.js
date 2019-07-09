@@ -14,6 +14,7 @@ export const PRODUCTPAGESORT = 'PRODUCTPAGESORT';  //排序
 export const PRODUCTPAGESORTCOL = 'PRODUCTPAGESORTCOL'; // 排序字段
 export const PRODUCTSEARCHTYPE = 'PRODUCTSEARCHTYPE'; //搜索类型
 export const PRODUCTSEARCHVALUE = 'PRODUCTSEARCHVALUE'; //搜索内容
+export const PRODUCTYPELIST = 'PRODUCTTYPELIST' //产品类别
 
 // 弹出框状态
 export function productModleState(data) {
@@ -36,7 +37,7 @@ export function productModleTitle(data) {
   }
 }
 // 列表loading
-export function productAccountDataLoading(data) {
+export function productDataLoading(data) {
   return {
     type: PRODUCTACCOUNTLOADING,
     data
@@ -50,7 +51,7 @@ export function productConfirmLoading(data) {
   }
 }
 // 列表中的用户信息
-export function productAccountData(data) {
+export function productData(data) {
   return {
     type: PRODUCTACCOUNTDATA,
     data
@@ -114,17 +115,26 @@ export function productPageSortCol(data){
   }
 }
 // 搜索内容
-export function productSearchUserValue(data) {
+export function productSearchValue(data) {
   return {
     type: PRODUCTSEARCHVALUE,
     data
   }
 }
 // 
-export function productSearchUserType(data) {
+export function productSearchType(data) {
   return {
     type: PRODUCTSEARCHTYPE,
     data
   }
 }
+// 
+export function productTypeList(data) {
+  return {
+    type: PRODUCTYPELIST,
+    data
+  }
+}
+
+
 

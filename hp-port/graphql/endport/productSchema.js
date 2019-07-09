@@ -222,14 +222,14 @@ const UpdateAccount = new GraphQLObjectType({
     },
 });
 
-const DeleteAcoount = new GraphQLObjectType({
-    name: 'DeleteAcoount',
+const DeleteProduct = new GraphQLObjectType({
+    name: 'DeleteProduct',
     description: "删除用户",
     fields: () => {
         return ({
-            userName: {
+            productName: {
                 type: GraphQLString, resolve(data) {
-                    return data.userName;
+                    return data.productName;
                 }
             },
             state: {
@@ -281,5 +281,6 @@ const PorductTotal = new GraphQLObjectType({
 module.exports = { 
     SearchProduct,
     AddProduct,
+    DeleteProduct,
     PorductTotal
 }

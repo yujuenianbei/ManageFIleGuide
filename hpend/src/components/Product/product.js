@@ -6,16 +6,17 @@ import classify from '@magento/venia-concept/esm/classify';
 // const SearchBar = React.lazy(() => import('src/components/SearchBar'));
 import styles from './product.module.less';
 import { searchProduct, searchProductTotal } from '../../fetch/product'
-import { timestampToTime } from '../../func/common'
+import { getAllproductType } from '../../fetch/productType'
+import { timestampToTime, typeToTypeName } from '../../func/common'
 import { Table, Divider, Dropdown, Checkbox, Menu, Icon, Tag, Breadcrumb, Input, Col, Row, Select, Button, Modal, Spin } from 'antd';
-// import AccountModle from './model'
+import ProductModle from './model'
 
 const Search = Input.Search;
 const InputGroup = Input.Group;
 const { Option } = Select;
 const CheckboxGroup = Checkbox.Group;
 
-class Account extends PureComponent {
+class Product extends PureComponent {
 
     constructor(props) {
         super(props);
@@ -24,8 +25,10 @@ class Account extends PureComponent {
 
     componentDidMount() {
         // 首次加载用户数据
-        this.props.changeAccountDataLoading(true);
-        this.searchAccountMount();
+        this.props.changeProductDataLoading(true);
+        // 先查询完产品分类再查产品
+        getAllproductType(this.searchProductMount);
+
         this.checkBoxOnChange(this.props.state.product.checkListCol)
     }
 
@@ -60,7 +63,7 @@ class Account extends PureComponent {
                 width: '15%',
                 render: (text, record) => {
                     return JSON.parse(record.featrues).map((item, index) =>
-                        <li>
+                        <li key={index+ '123123'}>
                             <span title={record.item}>{index + 1}. {item}</span>
                         </li>
                     )
@@ -115,7 +118,7 @@ class Account extends PureComponent {
     };
 
     // 显示弹出框
-    AddAccount = (e) => {
+    AddProduct = (e) => {
         if (e === 'add') {
             this.props.changeModleTitle('新增');
             this.props.changeModleName(e);
@@ -190,9 +193,9 @@ class Account extends PureComponent {
             width: 180,
             render: (text, record) => (
                 <span>
-                    <Button type="primary" onClick={() => this.AddAccount('edit')}>修改</Button>
+                    <Button type="primary" onClick={() => this.AddProduct('edit')}>修改</Button>
                     <Divider type="vertical" />
-                    <Button type="default" onClick={() => this.AddAccount('delete')}>删除</Button>
+                    <Button type="default" onClick={() => this.AddProduct('delete')}>删除</Button>
                 </span>
             ),
         })
@@ -201,41 +204,45 @@ class Account extends PureComponent {
 
     // 修改每页展示行数
     ChangePageSize = (current, size) => {
-        this.props.changeAccountDataLoading(true);
+        this.props.changeProductDataLoading(true);
         // 修改行数
         this.props.changePageSize(size);
         // 跳转第一页
         this.props.changePageNow(1);
-
-        let data = {};
-        data.search = this.props.state.product.searchValue ? this.props.state.product.searchValue : ""
-        data.searchType = this.props.state.product.searchType ? this.props.state.product.searchType : "";
-        data.pageSize = size;
-        data.start = 0;
-        data.sort = this.props.state.product.pageSort;
-        // // 如果搜索性别需要装换
-        // if (data.searchType && data.searchType === "sex") {
-        //     data.search = transToSex(data.search);
-        // }
+        let searchValue;
+        if (this.props.state.product.searchType === 'type' && !!this.props.state.product.searchValue) {
+            searchValue = JSON.stringify(this.props.state.product.productTypeList.filter(item => item.typeName === this.props.state.product.searchValue)[0].id);
+        } else {
+            searchValue = this.props.state.product.searchValue
+        }
+        let data = {
+            search: this.props.state.product.searchValue ? searchValue : "",
+            searchType: this.props.state.product.searchType ? this.props.state.product.searchType : "",
+            pageSize: size,
+            start: 0,
+            sort: this.props.state.product.pageSort,
+        };
         searchProductTotal(data, this.setPageTotal)
         searchProduct(data, this.searchData);
     }
     // 分页
     ChangePage = (page, pageSize) => {
-        this.props.changeAccountDataLoading(true);
+        this.props.changeProductDataLoading(true);
         // 修改当前页数字
         this.props.changePageNow(page);
-
-        let data = {};
-        data.search = this.props.state.product.searchValue ? this.props.state.product.searchValue : ""
-        data.searchType = this.props.state.product.searchType ? this.props.state.product.searchType : "";
-        data.pageSize = this.props.state.product.pageSize;
-        data.start = page;
-        data.sort = this.props.state.product.pageSort;
-        // // 如果搜索性别需要装换
-        // if (data.searchType === "sex") {
-        //     data.search = transToSex(this.props.state.product.searchValue);
-        // }
+        let searchValue;
+        if (this.props.state.product.searchType === 'type' && !!this.props.state.product.searchValue) {
+            searchValue = JSON.stringify(this.props.state.product.productTypeList.filter(item => item.typeName === this.props.state.product.searchValue)[0].id);
+        } else {
+            searchValue = this.props.state.product.searchValue
+        }
+        let data = {
+            search: this.props.state.product.searchValue ? searchValue : "",
+            searchType: this.props.state.product.searchType ? this.props.state.product.searchType : "",
+            pageSize: this.props.state.product.pageSize,
+            start: page,
+            sort: this.props.state.product.pageSort,
+        };
         searchProductTotal(data, this.setPageTotal)
         searchProduct(data, this.searchData);
     }
@@ -246,65 +253,68 @@ class Account extends PureComponent {
     }
     // 搜索input
     searchValueChange = (value) => {
-        this.props.changeSearchValue(value);
+        this.props.changeSearchValue(value.target.value);
     }
 
     // 加载上一次的搜索
-    searchAccountMount = () => {
-        this.props.changeAccountDataLoading(true)
+    searchProductMount = (result) => {
+        this.props.changeProductDataLoading(true)
+        this.props.changeProductTypeList(result.data.AllProductType)
 
-        let data = {};
-        data.search = this.props.state.product.searchValue ? this.props.state.product.searchValue : ""
-        data.searchType = this.props.state.product.searchType ? this.props.state.product.searchType : "";
-        data.pageSize = this.props.state.product.pageSize;
-        data.start = this.props.state.product.pageNow;
-        data.sort = this.props.state.product.pageSort;
-        // 如果搜索性别需要装换
-        // if (data.searchType === "sex") {
-        //     data.search = transToSex(this.props.state.product.searchValue);
-        // }
+        let searchValue;
+        if (this.props.state.product.searchType === 'type' && !!this.props.state.product.searchValue) {
+            searchValue = JSON.stringify(this.props.state.product.productTypeList.filter(item => item.typeName === this.props.state.product.searchValue)[0].id);
+        } else {
+            searchValue = this.props.state.product.searchValue
+        }
+        let data = {
+            search: this.props.state.product.searchValue ? searchValue : "",
+            searchType: this.props.state.product.searchType ? this.props.state.product.searchType : "",
+            pageSize: this.props.state.product.pageSize,
+            start: this.props.state.product.pageNow,
+            sort: this.props.state.product.pageSort,
+        };
         searchProductTotal(data, this.setPageTotal)
         searchProduct(data, this.searchData);
     }
 
 
     // 搜索
-    searchAccount = (value) => {
-        this.props.changeAccountDataLoading(true)
+    searchProduct = (value) => {
+        this.props.changeProductDataLoading(true)
         // 写入搜索内容
         this.props.changeSearchValue(value);
         this.props.changePageNow(1);
-
+        let searchValue;
+        if (this.props.state.product.searchType === 'type' && !!value) {
+            searchValue = JSON.stringify(this.props.state.product.productTypeList.filter(item => item.typeName === value)[0].id);
+        } else {
+            searchValue = value
+        }
         let data = {
-            search: value !== "" ? value : "",
+            search: value !== "" ? searchValue : "",
             searchType: this.props.state.product.searchType ? this.props.state.product.searchType : "",
             pageSize: this.props.state.product.pageSize,
             start: 1,
             sort: this.props.state.product.pageSort
         };
-        // 如果搜索性别需要装换
-        // if (data.searchType && data.searchType === "sex") {
-        //     data.search = transToSex(value);
-        // }
-        searchProductTotal(data, this.setPageTotal)
+        searchProductTotal(data, this.setPageTotal);
         searchProduct(data, this.searchData);
     }
-
-
 
     // 修改总数
     setPageTotal = (result) => {
         this.props.changePageTotal(result.data.totalProduct.total);
-        this.props.changeAccountDataLoading(false)
+        this.props.changeProductDataLoading(false)
     }
     // 搜索结果写入表中
     searchData = (result) => {
         let data = []
-        result.data.searchProduct.map((item, index) => (
-            data[index] = {
+        result.data.searchProduct.map((item, index) => {
+            return data[index] = {
                 key: item.id,
                 productName: item.productName,
-                type: item.type,
+                type: typeToTypeName(this.props.state.product.productTypeList, item.type),
                 img: item.img,
                 featrues: item.featrues,
                 promotionMessage: item.promotionMessage,
@@ -314,9 +324,47 @@ class Account extends PureComponent {
                 createTime: timestampToTime(parseInt(item.createTime)),
                 updateTime: timestampToTime(parseInt(item.updateTime)),
             }
-        ))
-        this.props.changeAccountData(data)
-        this.props.changeAccountDataLoading(false)
+        })
+        this.props.changeProductData(data)
+        this.props.changeProductDataLoading(false)
+    }
+
+    // 清空搜索
+    clearAll = () => {
+        this.props.changeProductDataLoading(true)
+        // 写入搜索内容
+        this.props.changeSearchValue('');
+        this.props.changeSearchType('')
+        this.props.changePageNow(1);
+        let data = {
+            search: "",
+            searchType: "",
+            pageSize: this.props.state.product.pageSize,
+            start: 1,
+            sort: this.props.state.product.pageSort
+        };
+        searchProductTotal(data, this.setPageTotal)
+        searchProduct(data, this.searchData);
+    }
+
+    // 更新
+    refresh = () => {
+        this.props.changeProductDataLoading(true)
+        let searchValue;
+        if (this.props.state.product.searchType === 'type' && !!this.props.state.product.searchValue) {
+            searchValue = JSON.stringify(this.props.state.product.productTypeList.filter(item => item.typeName === this.props.state.product.searchValue)[0].id);
+        } else {
+            searchValue = this.props.state.product.searchValue
+        }
+        let data = {
+            search: this.props.state.product.searchValue ? searchValue : "",
+            searchType: this.props.state.product.searchType ? this.props.state.product.searchType : "",
+            pageSize: this.props.state.product.pageSize,
+            start: this.props.state.product.pageNow,
+            sort: this.props.state.product.pageSort,
+        };
+        searchProductTotal(data, this.setPageTotal)
+        searchProduct(data, this.searchData);
     }
 
     render() {
@@ -346,23 +394,25 @@ class Account extends PureComponent {
                     <Breadcrumb.Item>首页</Breadcrumb.Item>
                     <Breadcrumb.Item>产品管理</Breadcrumb.Item>
                 </Breadcrumb>
-                {/* <AccountModle/> */}
+                <ProductModle />
                 <div className={styles.content}>
                     <div className={styles.search}>
                         <Row>
                             <Col span={8}>
-                                <Button type="primary" onClick={() => this.AddAccount('add')}>新增</Button>
+                                <Button type="primary" onClick={() => this.AddProduct('add')}>新增</Button>
                                 <Dropdown.Button onClick={this.handleButtonClick} overlay={checkSlect} trigger={['click']} style={{ marginLeft: 10 }}>
                                     筛选列
                                 </Dropdown.Button>
                             </Col>
                             <Col span={12} offset={4}>
                                 <Row>
+
                                     <InputGroup compact >
                                         <Col span={8}>
+                                            <Button type="primary" onClick={() => this.clearAll()}>清空</Button>
                                             <Select
                                                 value={this.props.state.product.searchType}
-                                                style={{ width: '100%' }}
+                                                style={{ width: '70%', marginLeft: 10 }}
                                                 onChange={(value) => this.changeType(value)}>
                                                 <Option value="">无</Option>
                                                 {this.state.columns.map((item, index) => {
@@ -374,12 +424,14 @@ class Account extends PureComponent {
                                         </Col>
                                         <Col span={16}>
                                             <Search
-                                                style={{ width: '100%' }}
+                                                style={{ width: '92%' }}
                                                 defaultValue={this.props.state.product.searchValue}
+                                                value={this.props.state.product.searchValue}
                                                 onChange={value => this.searchValueChange(value)}
                                                 placeholder="请输入与筛选选项相对应的搜索内容"
-                                                onSearch={value => this.searchAccount(value)}
+                                                onSearch={value => this.searchProduct(value)}
                                                 enterButton />
+                                            <Button type="primary" icon="redo" style={{ marginLeft: 10 }} title='更新' onClick={this.refresh} />
                                         </Col>
                                     </InputGroup>
                                 </Row>
@@ -420,8 +472,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         changeModleState: (data) => { dispatch(Actions.productModleState(data)); },
-        changeAccountDataLoading: (data) => { dispatch(Actions.productAccountDataLoading(data)); },
-        changeAccountData: (data) => { dispatch(Actions.productAccountData(data)); },
+        changeProductDataLoading: (data) => { dispatch(Actions.productDataLoading(data)); },
+        changeProductData: (data) => { dispatch(Actions.productData(data)); },
         changeModleName: (data) => { dispatch(Actions.productModleName(data)); },
         changeModleTitle: (data) => { dispatch(Actions.productModleTitle(data)); },
         changeModelData: (data) => { dispatch(Actions.productModelData(data)); },
@@ -429,15 +481,17 @@ const mapDispatchToProps = (dispatch) => {
         changePageSize: (data) => { dispatch(Actions.productPageSize(data)); },
         changePageNow: (data) => { dispatch(Actions.productPageNow(data)); },
         changePageTotal: (data) => { dispatch(Actions.productPageTotal(data)); },
-        changeSearchValue: (data) => { dispatch(Actions.productSearchUserValue(data)); },
-        changeSearchType: (data) => { dispatch(Actions.productSearchUserType(data)); },
+        changeSearchValue: (data) => { dispatch(Actions.productSearchValue(data)); },
+        changeSearchType: (data) => { dispatch(Actions.productSearchType(data)); },
 
         // 排序
         changePageSort: (data) => { dispatch(Actions.productPageSort(data)); },
         changePageSortCol: (data) => { dispatch(Actions.productPageSortCol(data)); },
+        // 产品分类
+        changeProductTypeList: (data) => { dispatch(Actions.productTypeList(data)); },
     }
 };
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(classify(styles)(Account));
+)(classify(styles)(Product));

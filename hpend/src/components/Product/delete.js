@@ -5,12 +5,11 @@ import { connect } from 'react-redux';
 import classify from '@magento/venia-concept/esm/classify';
 // const SearchBar = React.lazy(() => import('src/components/SearchBar'));
 import styles from './product.module.less';
-import { deleteAccount, searchAccount, searchAccountTotal } from '../../fetch/account'
-import { transToSex } from '../../func/account'
-
+import { deleteProduct, searchProduct, searchProductTotal } from '../../fetch/product'
+import { timestampToTime, typeToTypeName } from '../../func/common'
 
 let clearData;
-class DeleteAccount extends PureComponent {
+class DeleteProduct extends PureComponent {
 
     componentDidMount() {
         this.props.onDel(this);
@@ -19,7 +18,7 @@ class DeleteAccount extends PureComponent {
     // 提交数据
     handleSubmit = (e) => {
         e.preventDefault();
-        deleteAccount(this.props.state.account.modelData, this.deleteFinish)
+        deleteProduct(this.props.state.product.modelData, this.deleteFinish)
     };
 
     // 取消提交
@@ -36,72 +35,77 @@ class DeleteAccount extends PureComponent {
     // 提交数据后返回
     deleteFinish = (result) => {
         // 根据接口返回状态判断成功与否
-        if (result.data.deleteAccount[0].state === 1) {
+        if (result.data.deleteProduct.state === 1) {
             this.props.changeModleState(false);
             this.props.changeModelData('');
             this.props.changeModleTitle('');
             this.props.changeModleName('');
             // 更新数据
-            this.props.changeAccountDataLoading(true);
-
+            this.props.changePoductDataLoading(true);
             // 加载上一次的配置
-            let data = {};
-            data.search = this.props.state.product.searchValue ? this.props.state.product.searchValue : ""
-            data.searchType = this.props.state.product.searchType ? this.props.state.product.searchType : "";
-            data.pageSize = this.props.state.product.pageSize;
-            data.start = this.props.state.product.pageNow;
-            data.sort = this.props.state.product.pageSort;
-            // 如果搜索性别需要装换
-            if (data.searchType === "sex") {
-                data.search = transToSex(this.props.state.product.searchValue);
+            let searchValue;
+            if (this.props.state.product.searchType === 'type' && !!this.props.state.product.searchValue) {
+                searchValue = JSON.stringify(this.props.state.product.productTypeList.filter(item => item.typeName === this.props.state.product.searchValue)[0].id);
+            } else {
+                searchValue = this.props.state.product.searchValue
             }
-            searchAccountTotal(data, this.setPageTotal)
-            searchAccount(data, this.searchData);
+            let data = {
+                search: this.props.state.product.searchValue ? searchValue : "",
+                searchType: this.props.state.product.searchType ? this.props.state.product.searchType : "",
+                pageSize: this.props.state.product.pageSize,
+                start: this.props.state.product.pageNow,
+                sort: this.props.state.product.pageSort,
+            };
+            searchProductTotal(data, this.setPageTotal);
+            searchProduct(data, this.searchData);
         }
     }
 
     // 修改总数
     setPageTotal = (result) => {
-        this.props.changePageTotal(result.data.total.total)
+        this.props.changePageTotal(result.data.totalProduct.total)
     }
     // 搜索结果写入表中
     searchData = (result) => {
         // 删除最后一条数据
-        if (result.data.searchAccount.length === 0) {
-            const pageNow = this.props.state.account.pageNow - 1;
+        if (result.data.searchProduct.length === 0) {
+            const pageNow = this.props.state.Product.pageNow - 1;
             this.props.changePageNow(pageNow);
-
             // 加载上一次的配置
-            let data = {};
-            data.search = this.props.state.product.searchValue ? this.props.state.product.searchValue : ""
-            data.searchType = this.props.state.product.searchType ? this.props.state.product.searchType : "";
-            data.pageSize = this.props.state.product.pageSize;
-            data.start = pageNow;
-            data.sort = this.props.state.product.pageSort;
-            // 如果搜索性别需要装换
-            if (data.searchType === "sex") {
-                data.search = transToSex(this.props.state.product.searchValue);
+            let searchValue;
+            if (this.props.state.product.searchType === 'type' && !!this.props.state.product.searchValue) {
+                searchValue = JSON.stringify(this.props.state.product.productTypeList.filter(item => item.typeName === this.props.state.product.searchValue)[0].id);
+            } else {
+                searchValue = this.props.state.product.searchValue
             }
-            searchAccountTotal(data, this.setPageTotal)
-            searchAccount(data, this.searchData);
+            let data = {
+                search: this.props.state.product.searchValue ? searchValue : "",
+                searchType: this.props.state.product.searchType ? this.props.state.product.searchType : "",
+                pageSize: this.props.state.product.pageSize,
+                start: this.props.state.product.pageNow,
+                sort: this.props.state.product.pageSort,
+            };
+            searchProductTotal(data, this.setPageTotal)
+            searchProduct(data, this.searchData);
         } else {
             let data = []
-            result.data.searchAccount.map((item, index) => (
-                data[index] = {
+            result.data.searchProduct.map((item, index) => {
+                return data[index] = {
                     key: item.id,
-                    userName: item.userName,
-                    sex: item.sex,
-                    email: item.email,
-                    firstName: item.firstName,
-                    lastName: item.lastName,
-                    phoneCode: item.phoneCode,
-                    phone: item.phone,
-                    company: item.company,
-                    password: item.password,
+                    productName: item.productName,
+                    type: typeToTypeName(this.props.state.product.productTypeList, item.type),
+                    img: item.img,
+                    featrues: item.featrues,
+                    promotionMessage: item.promotionMessage,
+                    promotionMessageSecond: item.promotionMessageSecond,
+                    usedPrice: item.usedPrice,
+                    nowPrice: item.nowPrice,
+                    createTime: timestampToTime(parseInt(item.createTime)),
+                    updateTime: timestampToTime(parseInt(item.updateTime)),
                 }
-            ))
-            this.props.changeAccountData(data)
-            this.props.changeAccountDataLoading(false)
+            })
+            this.props.changeProductData(data)
+            this.props.changeProductDataLoading(false)
         }
     }
 
@@ -110,7 +114,7 @@ class DeleteAccount extends PureComponent {
     render() {
         return (
             <div>
-                <span>是否要删除 {this.props.state.product.modelData.userName} 用户？</span>
+                <span>是否要删除 {this.props.state.product.modelData.productName} ？</span>
             </div>
         );
     }
@@ -125,12 +129,11 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         changeModleState: (data) => { dispatch(Actions.productModleState(data)); },
-        changeAccountDataLoading: (data) => { dispatch(Actions.productAccountDataLoading(data)); },
-        changeAccountData: (data) => { dispatch(Actions.productAccountData(data)); },
+        changeProductDataLoading: (data) => { dispatch(Actions.productDataLoading(data)); },
+        changeProductData: (data) => { dispatch(Actions.productData(data)); },
         changeModleTitle: (data) => { dispatch(Actions.productModleTitle(data)); },
         changeModleName: (data) => { dispatch(Actions.productModleName(data)); },
         changeModelData: (data) => { dispatch(Actions.productModelData(data)); },
-        changeModleTitle: (data) => { dispatch(Actions.productModleTitle(data)); },
         changePageTotal: (data) => { dispatch(Actions.productPageTotal(data)); },
         changePageNow: (data) => { dispatch(Actions.productPageNow(data)); },
     }
@@ -138,4 +141,4 @@ const mapDispatchToProps = (dispatch) => {
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(classify(styles)(DeleteAccount));
+)(classify(styles)(DeleteProduct));

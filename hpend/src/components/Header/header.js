@@ -78,7 +78,7 @@ class Headers extends PureComponent {
                         </div>
                     </Dropdown>
                 </Header>
-                <BackTop>
+                <BackTop className={styles.upCont}>
                     <Icon className={styles.up} type="up" />
                 </BackTop>
             </Fragment>

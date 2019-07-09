@@ -29,7 +29,6 @@ module.exports = {
             resolve: async function () {
                 return await searchSql($sql.queryAllEndProductType)
                 .then(async (reslut) => {
-                    console.log(reslut)
                     return await reslut;
                 })
             }

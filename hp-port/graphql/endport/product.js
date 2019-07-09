@@ -18,7 +18,7 @@ const {
     GraphQLInputObjectType
 } = require('graphql');
 const Db = require('../../sql/db');
-const { AddProduct, DeleteAcoount, ValidateAcoount, SearchProduct, PorductTotal } = require('./productSchema');
+const { AddProduct, DeleteProduct, ValidateAcoount, SearchProduct, PorductTotal } = require('./productSchema');
 
 module.exports = {
     query: {
@@ -109,39 +109,39 @@ module.exports = {
         //             })
         //     }
         // },
-        // // 删除产品
-        // deleteProduct: {
-        //     type: new GraphQLList(DeleteAcoount),
-        //     description: '后台用户删除',
-        //     args: {
-        //         id: { type: GraphQLID }
-        //     },
-        //     resolve: async function (source, { id }) {
-        //         // 查询用户名注册没
-        //         return await searchSql($sql.queryEndUserById, [id])
-        //             .then(async (reslut) => {
-        //                 console.log(reslut.length)
-        //                 if (reslut.length === 1) {
-        //                     // 新增用户
-        //                     return await searchSql($sql.deleteEndUserById, [id])
-        //                         .then(async (resluts) => {
-        //                             let reslutData = [{}];
-        //                             if (resluts.affectedRows > 0) {
-        //                                 reslutData[0].state = 1;
-        //                             } else {
-        //                                 reslutData[0].state = 0;
-        //                             }
-        //                             return await reslutData;
-        //                         })
-        //                 } else {
-        //                     // 已有用户
-        //                     let resluts = [{}];
-        //                     resluts[0].state = 0;
-        //                     return await resluts;
-        //                 }
-        //             })
-        //     }
-        // },
+        // 删除产品
+        deleteProduct: {
+            type: DeleteProduct,
+            description: '删除产品',
+            args: {
+                id: { type: GraphQLID }
+            },
+            resolve: async function (source, { id }) {
+                // 查询用户名注册没
+                return await searchSql($sql.queryEndProductById, [id])
+                    .then(async (reslut) => {
+                        console.log(reslut.length)
+                        if (reslut.length === 1) {
+                            // 删除产品
+                            return await searchSql($sql.deleteEndProduct, [id])
+                                .then(async (resluts) => {
+                                    let reslutData = {};
+                                    if (resluts.affectedRows > 0) {
+                                        reslutData.state = 1;
+                                    } else {
+                                        reslutData.state = 0;
+                                    }
+                                    return await reslutData;
+                                })
+                        } else {
+                            // 已有用户
+                            let resluts = {};
+                            resluts.state = 0;
+                            return await resluts;
+                        }
+                    })
+            }
+        },
         // // 校验用户名
         // validateProduct: {
         //     type: new GraphQLList(ValidateAcoount),
@@ -181,22 +181,15 @@ module.exports = {
                 sort: { type: GraphQLString }  //ASC DEC
             },
             resolve: async function (source, { intvalue, value, type, start, pageSize, sort }) {
-                console.log(intvalue, value, type, start, pageSize, sort)
-                console.log(`SELECT * FROM product WHERE ${type} like ${JSON.stringify(value)} ORDER BY ${type} ${sort} limit ${start},${pageSize}`)
                 // type 没选 全局搜
-                if (type !== '' && value !== '' && type !== 'phoneCode') {
+                if (type !== '' && value !== '') {
                     value = '%' + value + '%'
                     return await searchSql(`SELECT * FROM product WHERE ${type} like ${JSON.stringify(value)} ORDER BY ${type} ${sort} limit ${start},${pageSize}`)
                         .then(async (reslut) => {
                             return reslut;
                         })
-                } else if ((type === 'phoneCode') && intvalue !== 9) {
-                    console.log(`SELECT * FROM product WHERE ${type} like %${intvalue}% ORDER BY ${type} ${sort} limit ${start},${pageSize}`)
-                    return await searchSql(`SELECT * FROM product WHERE ${type} like ? ORDER BY ${type} ${sort} limit ${start},${pageSize}`, [`%${intvalue}%`])
-                        .then(async (reslut) => {
-                            return reslut;
-                        })
-                } else {
+                } 
+                else {
                     return await searchSql(`SELECT * FROM product limit ${start},${pageSize}`)
                         .then(async (reslut) => {
                             return reslut;
@@ -223,8 +216,9 @@ module.exports = {
                             return await reslut[0];
                         })
                 } else {
+                    console.log(`SELECT count(*) as total FROM product WHERE ${type} like %${value}%`)
                     // if (type !== "sex" && type !== "phoneCode") {
-                        return await searchSql(`SELECT count(*) as total FROM account WHERE ${type} like ?`, [`%${value}%`])
+                        return await searchSql(`SELECT count(*) as total FROM product WHERE ${type} like ?`, [`%${value}%`])
                             .then(async (reslut) => {
                                 console.log(2, reslut);
                                 return await reslut[0];

@@ -1,7 +1,7 @@
 
 
 // 获取用户购物车的信息
-const getAlproductType = (func) => {
+const getAllproductType = (func) => {
     const query = `query AllProductType{
         AllProductType{
             id
@@ -29,4 +29,4 @@ const getAlproductType = (func) => {
         .then((result) => { func(result) });
 }
 
-export { getAlproductType }
+export { getAllproductType }
