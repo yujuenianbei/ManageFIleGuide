@@ -41,7 +41,7 @@ class DeleteProduct extends PureComponent {
             this.props.changeModleTitle('');
             this.props.changeModleName('');
             // 更新数据
-            this.props.changePoductDataLoading(true);
+            this.props.changeProductDataLoading(true);
             // 加载上一次的配置
             let searchValue;
             if (this.props.state.product.searchType === 'type' && !!this.props.state.product.searchValue) {

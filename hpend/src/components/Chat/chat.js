@@ -94,7 +94,6 @@ class ChatContent extends PureComponent {
             height: document.body.offsetHeight - 110,
             chatContentHeight: document.body.offsetHeight - 150,
         })
-        console.log(document.body.offsetHeight - 110)
     }
 
 
@@ -106,7 +105,6 @@ class ChatContent extends PureComponent {
     }
 
     onChange = activeKey => {
-        console.log(activeKey)
         this.setState({ activeKey });
         this.props.changeChatNowUser({
             userName: this.props.state.chat.chatUsers[activeKey].title,

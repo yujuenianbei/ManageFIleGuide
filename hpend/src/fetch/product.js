@@ -64,15 +64,14 @@ const createProduct = (data, func) => {
         body: JSON.stringify({
             query,
             variables: {
-                userName: data.userName,
-                sex: parseInt(data.sex),
-                email: data.email,
-                firstName: data.firstName,
-                lastName: data.lastName,
-                phoneCode: parseInt(data.phoneCode),
-                phone: data.phone,
-                password: data.password,
-                company: data.company
+                productName: data.productName, 
+                type: parseInt(data.type), 
+                img: data.img, 
+                promotionMessage: data.promotionMessage, 
+                featrues: data.featrues, 
+                promotionMessageSecond: data.promotionMessageSecond, 
+                usedPrice: parseInt(data.usedPrice), 
+                nowPrice: parseInt(data.nowPrice),
             }
         })
     })

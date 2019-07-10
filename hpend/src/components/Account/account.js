@@ -84,17 +84,6 @@ class Account extends PureComponent {
                 dataIndex: 'password',
                 key: 'password',
             },
-            // {
-            //     title: '操作',
-            //     key: 'action',
-            //     render: (text, record) => (
-            //         <span>
-            //             <Button type="primary" onClick={() => this.AddAccount('edit')}>修改</Button>
-            //             <Divider type="vertical" />
-            //             <Button type="default" onClick={() => this.AddAccount('delete')}>删除</Button>
-            //         </span>
-            //     ),
-            // },
         ],
         columns: [],
     };

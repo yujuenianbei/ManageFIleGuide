@@ -13,5 +13,8 @@ const timestampToTime = (timestamp) => {
 const typeToTypeName = (list, id) => {
     return list.filter(item =>item.id === id)[0].typeName
 }
+const typeNameToType = (list, id) => {
+    return list.filter(item =>item.typeName === id)[0].id
+}
 
-export { timestampToTime, typeToTypeName }
+export { timestampToTime, typeToTypeName, typeNameToType }
