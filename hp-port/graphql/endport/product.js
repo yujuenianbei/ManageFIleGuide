@@ -18,7 +18,7 @@ const {
     GraphQLInputObjectType
 } = require('graphql');
 const Db = require('../../sql/db');
-const { AddProduct, DeleteProduct, ValidateAcoount, SearchProduct, PorductTotal } = require('./productSchema');
+const { AddProduct, UpdateProduct, DeleteProduct, ValidateAcoount, SearchProduct, PorductTotal } = require('./productSchema');
 
 module.exports = {
     query: {
@@ -70,45 +70,46 @@ module.exports = {
                     })
             }
         },
-        // // 更新产品
-        // updateProduct: {
-        //     type: new GraphQLList(UpdateAccount),
-        //     description: '后台用户编辑',
-        //     args: {
-        //         id: { type: GraphQLInt },
-        //         userName: { type: GraphQLString },
-        //         sex: { type: GraphQLInt },
-        //         email: { type: GraphQLString },
-        //         firstName: { type: GraphQLString },
-        //         lastName: { type: GraphQLString },
-        //         phoneCode: { type: GraphQLInt },
-        //         phone: { type: GraphQLString },
-        //         password: { type: GraphQLString },
-        //         company: { type: GraphQLString }
-        //     },
-        //     resolve: async function (source, { userName, sex, email, firstName, lastName, phoneCode, phone, password, company, id }) {
-        //         // 查询用户名注册没
-        //         return await searchSql($sql.queryEndUserById, [id])
-        //             .then(async (reslut) => {
-        //                 if (reslut.length === 1) {
-        //                     // 修改用户
-        //                     return await searchSql($sql.updateEndUser, [userName, sex, email, firstName, lastName, phoneCode, phone, password, company, id])
-        //                         .then(async (resluts) => {
-        //                             // 查询用户
-        //                             return await searchSql($sql.queryEndUserById, [id]).then(async (reslutData) => {
-        //                                 reslutData[0].state = 1;
-        //                                 return await reslutData;
-        //                             });
-        //                         })
-        //                 } else {
-        //                     // 已有用户
-        //                     reslutData = [{}];
-        //                     reslutData[0].state = 0;
-        //                     return await reslutData;
-        //                 }
-        //             })
-        //     }
-        // },
+        // 更新产品
+        updateProduct: {
+            type: new GraphQLList(UpdateProduct),
+            description: '编辑产品',
+            args: {
+                id: { type: GraphQLInt },
+                productName: { type: GraphQLString },
+                type: { type: GraphQLInt },
+                img: { type: GraphQLString },
+                promotionMessage: { type: GraphQLString },
+                featrues: { type: GraphQLString },
+                promotionMessageSecond: { type: GraphQLString },
+                usedPrice: { type: GraphQLInt },
+                nowPrice: { type: GraphQLInt }
+            },
+            resolve: async function (source, { id, productName, type, img, promotionMessage, featrues, promotionMessageSecond, usedPrice, nowPrice }) {
+               console.log(id, productName, type, img, promotionMessage, featrues, promotionMessageSecond, usedPrice, nowPrice)
+                // 查询产品是否存在
+                return await searchSql($sql.queryEndProductById, [id])
+                    .then(async (reslut) => {
+                        console.log(reslut)
+                        if (reslut.length === 1) {
+                            // 修改产品信息
+                            return await searchSql($sql.updateEndProduct, [productName, type, img, promotionMessage, featrues, promotionMessageSecond, usedPrice, nowPrice, id])
+                                .then(async (resluts) => {
+                                    // 查询修改后的产品
+                                    return await searchSql($sql.queryEndProductById, [id]).then(async (reslutData) => {
+                                        reslutData[0].state = 1;
+                                        return await reslutData;
+                                    });
+                                })
+                        } else {
+                            // 已有用户
+                            reslutData = [{}];
+                            reslutData[0].state = 0;
+                            return await reslutData;
+                        }
+                    })
+            }
+        },
         // 删除产品
         deleteProduct: {
             type: DeleteProduct,
@@ -142,32 +143,6 @@ module.exports = {
                     })
             }
         },
-        // // 校验用户名
-        // validateProduct: {
-        //     type: new GraphQLList(ValidateAcoount),
-        //     description: '后台用户验证',
-        //     args: {
-        //         userName: { type: GraphQLString },
-        //     },
-        //     resolve: async function (source, { userName }) {
-        //         // 查询用户名注册没
-        //         return await searchSql($sql.queryEndUserByUserName, [userName])
-        //             .then(async (reslut) => {
-        //                 if (reslut.length === 1) {
-        //                     // 已有用户
-        //                     reslutData = [{}];
-        //                     reslutData[0].state = 0;
-        //                     return await reslutData;
-        //                 } else {
-        //                     // 已有用户
-        //                     reslutData = [{}];
-        //                     reslutData[0].state = 1;
-        //                     return await reslutData;
-        //                 }
-        //             })
-        //     }
-        // },
-
         // 搜索
         searchProduct: {
             type: new GraphQLList(SearchProduct),
@@ -188,7 +163,7 @@ module.exports = {
                         .then(async (reslut) => {
                             return reslut;
                         })
-                } 
+                }
                 else {
                     return await searchSql(`SELECT * FROM product limit ${start},${pageSize}`)
                         .then(async (reslut) => {
@@ -217,19 +192,11 @@ module.exports = {
                         })
                 } else {
                     console.log(`SELECT count(*) as total FROM product WHERE ${type} like %${value}%`)
-                    // if (type !== "sex" && type !== "phoneCode") {
-                        return await searchSql(`SELECT count(*) as total FROM product WHERE ${type} like ?`, [`%${value}%`])
-                            .then(async (reslut) => {
-                                console.log(2, reslut);
-                                return await reslut[0];
-                            })
-                    // } else {
-                    //     return await searchSql(`SELECT count(*) as total FROM account WHERE ${type} like ? `, [`%${intvalue}%`])
-                    //         .then(async (reslut) => {
-                    //             console.log(3, reslut);
-                    //             return await reslut[0];
-                    //         })
-                    // }
+                    return await searchSql(`SELECT count(*) as total FROM product WHERE ${type} like ?`, [`%${value}%`])
+                        .then(async (reslut) => {
+                            console.log(2, reslut);
+                            return await reslut[0];
+                        })
                 }
 
             }

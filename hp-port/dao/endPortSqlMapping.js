@@ -17,6 +17,7 @@ var endPort = {
     // product
     queryEndProductByName: 'SELECT * FROM `product` WHERE productName=?',
     queryEndProductById: 'SELECT * FROM `product` WHERE id=?',
+    updateEndProduct: 'UPDATE product set productName=?, type=?, img=?, promotionMessage=?, featrues=?, promotionMessageSecond=?, usedPrice=?, nowPrice=?, createTime=NOW(), updateTime=NOW() where id=?',
     insertEndProduct: 'INSERT INTO product(productName, type, img, promotionMessage, featrues, promotionMessageSecond, usedPrice, nowPrice, createTime, updateTime) VALUES(?,?,?,?,?,?,?,?,NOW(), NOW())',
     searchAllProduct: 'SELECT count(*) as total FROM product',
     searchTotalProduct: 'SELECT FOUND_ROWS() as total',

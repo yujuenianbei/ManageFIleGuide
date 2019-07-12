@@ -7,7 +7,7 @@ import classify from '@magento/venia-concept/esm/classify';
 import styles from './product.module.less';
 // 组件
 import UploadProductImg from './uploadProductImg'
-import { createProduct, searchProduct, searchProductTotal } from '../../fetch/product'
+import { createProduct, updateProduct, searchProduct, searchProductTotal } from '../../fetch/product'
 import { timestampToTime, typeToTypeName, typeNameToType } from '../../func/common'
 import { Input, Col, Row, Select, Button, Modal, Spin, Form, Icon, Upload } from 'antd';
 const { Option } = Select;
@@ -39,15 +39,11 @@ class ProductForm extends PureComponent {
         previewVisible: false,
         previewImage: '',
         fileList: [],
+        imgState: false
     }
     clearImg = () => {
         this.setState({
-            fileList: [...this.state.fileList, {
-                uid: '',
-                name: '',
-                status: 'done',
-                url: '',
-            }]
+            fileList: []
         })
     }
     componentDidMount() {
@@ -67,26 +63,27 @@ class ProductForm extends PureComponent {
         } else if (this.props.state.product.modelName === 'edit') {
             const data = this.props.state.product.modelData;
             id = JSON.parse(data.featrues).length;
-            console.log(JSON.parse(data.featrues));
             this.props.form.getFieldDecorator('keys', { initialValue: Array.from(new Array(id).keys()) });
             this.setState({
-                fileList: [...this.state.fileList, {
-                    uid: '-1',
+                fileList: [{
+                    uid: data.img,
                     name: data.img,
                     status: 'done',
-                    url: data.img.split('http') > 1 ? data.img : 'http://localhost:3004/static/img/' + data.img
+                    url: data.img.split('http').length > 1 ? data.img : 'http://localhost:3004/static/img/' + data.img
                 }]
-            })
-            this.props.form.setFieldsValue({
-                keys: Array.from(new Array(id).keys()),
-                id: data.key,
-                featrues: JSON.parse(data.featrues),
-                productName: data.productName,
-                type: typeNameToType(this.props.state.product.productTypeList, data.type),
-                promotionMessage: data.promotionMessage,
-                promotionMessageSecond: data.promotionMessageSecond,
-                usedPrice: data.usedPrice,
-                nowPrice: data.nowPrice,
+            }, () => {
+                this.props.form.setFieldsValue({
+                    keys: Array.from(new Array(id).keys()),
+                    id: data.key,
+                    img: this.state.fileList[0].url,
+                    featrues: JSON.parse(data.featrues),
+                    productName: data.productName,
+                    type: typeNameToType(this.props.state.product.productTypeList, data.type),
+                    promotionMessage: data.promotionMessage,
+                    promotionMessageSecond: data.promotionMessageSecond,
+                    usedPrice: data.usedPrice,
+                    nowPrice: data.nowPrice,
+                })
             })
             change = {
                 featrues: JSON.parse(data.featrues)
@@ -98,28 +95,49 @@ class ProductForm extends PureComponent {
         // 清除定时器
         clearTimeout(myClear);
     };
-    componentWillReceiveProps(nextProps) {
+    componentWillReceiveProps(nextProps, nextState) {
+        // console.log(nextState, this.state)
         const data = nextProps.state.product.modelData;
-        if (nextProps.state.product.modelName == 'edit' && this.props.state.product.modelName === nextProps.state.product.modelName && data) {
-            this.setState({
-                fileList: [...this.state.fileList, {
-                    uid: '-1',
-                    name: data.img,
-                    status: 'done',
-                    url: data.img.split('http') > 1 ? data.img : 'http://localhost:3004/static/img/' + data.img
-                }]
-            })
-
+        if (nextProps.state.product.modelName == 'edit' && this.props.state.product.modelName === nextProps.state.product.modelName && data && this.state.fileList[0]) {
+            if (this.state.fileList[0] && !this.state.imgState) {
+                this.setState({
+                    fileList: [{
+                        uid: data.img,
+                        name: data.img,
+                        status: 'done',
+                        url: data.img.split('http').length > 1 ? data.img : 'http://localhost:3004/static/img/' + data.img
+                    }]
+                })
+            }
+        } else if (nextProps.state.product.modelName == 'edit' && this.props.state.product.modelName !== nextProps.state.product.modelName && data) {
+            // 切换成edit的时候
+            if (!this.state.imgState) {
+                this.setState({
+                    fileList: [{
+                        uid: data.img,
+                        name: data.img,
+                        status: 'done',
+                        url: data.img.split('http').length > 1 ? data.img : 'http://localhost:3004/static/img/' + data.img
+                    }]
+                })
+            }
+        } else if (nextProps.state.product.modelName == 'add' && this.props.state.product.modelName !== nextProps.state.product.modelName) {
+            // 切换成add的时候
+            if (!this.state.imgState) {
+                this.setState({
+                    fileList: []
+                })
+            }
         }
     }
     // 组件更新
-    componentWillUpdate(nextProps) {
+    componentWillUpdate(nextProps, nextState) {
         if (this.props.state.product.modelName !== nextProps.state.product.modelName) {
             if (nextProps.state.product.modelName == 'add') {
                 this.props.form.setFieldsValue({
                     id: '',
                     productName: '',
-                    type: 0,
+                    type: '',
                     img: '',
                     featrues: [],
                     promotionMessage: '',
@@ -131,6 +149,7 @@ class ProductForm extends PureComponent {
                 const data = nextProps.state.product.modelData;
                 id = JSON.parse(data.featrues).length;
                 this.props.form.getFieldDecorator('keys', { initialValue: Array.from(new Array(id).keys()) });
+                // console.log(this.state.fileList)
                 this.props.form.setFieldsValue({
                     keys: Array.from(new Array(id).keys()),
                     id: data.key,
@@ -166,12 +185,22 @@ class ProductForm extends PureComponent {
                         usedPrice: values.usedPrice,
                         nowPrice: values.nowPrice
                     }
-                    console.log(values, postData)
                     createProduct(postData, this.createFinish)
                 } else if (this.props.state.product.modelName == 'edit') {
-                    // 将id添加到请求内容中
-                    values.id = parseInt(this.props.state.product.modelData.key);
-                    console.log(values);
+                    const postData = {
+                        productName: values.productName,
+                        type: values.type,
+                        img: this.state.fileList[0].url,
+                        promotionMessage: values.promotionMessage,
+                        featrues: JSON.stringify(values.featrues.filter(item => item)),
+                        promotionMessageSecond: values.promotionMessageSecond,
+                        usedPrice: values.usedPrice,
+                        nowPrice: values.nowPrice
+                    }
+                    postData.id = parseInt(this.props.state.product.modelData.key);
+                    // console.log(postData)
+                    this.setState({ imgState: false })
+                    updateProduct(postData, this.createFinish)
                 }
             }
         });
@@ -189,6 +218,7 @@ class ProductForm extends PureComponent {
             clearTimeout(clearData);
         }, 0);
         this.clearImg();
+        this.setState({ imgState: false });
     }
 
     // 提交数据后返回
@@ -289,6 +319,7 @@ class ProductForm extends PureComponent {
         this.props.changeProductDataLoading(false)
     }
 
+    // feature
     remove = k => {
         const { form } = this.props;
         const keys = form.getFieldValue('keys');
@@ -328,20 +359,31 @@ class ProductForm extends PureComponent {
     };
 
     handleChange = ({ file, fileList, event }) => {
-        console.log(file);
-        console.log(fileList)
-        console.log(event)
         this.setState({ fileList: [...fileList] }, () => {
-            if (this.state.fileList[0].response) {
-                this.props.form.setFieldsValue({ img: this.state.fileList[0].response.reqData })
+            if (file.status === "removed") {
+                this.props.form.setFieldsValue({ img: '' });
+                this.setState({ imgState: true, })
+                return false
             }
-            console.log(this.state)
+            if (this.state.fileList[0].response) {
+                const data = this.state.fileList[0].response.reqData
+                this.props.form.setFieldsValue({ img: data });
+                this.setState({
+                    fileList: [{
+                        uid: data,
+                        name: data,
+                        status: 'done',
+                        url: data.split('http').length > 1 ? data : 'http://localhost:3004/static/img/' + data
+                    }]
+                })
+
+            }
         });
     }
 
 
     normFile = e => {
-        console.log('Upload event:', e);
+        // console.log('Upload event:', e);
         if (Array.isArray(e)) {
             return e;
         }

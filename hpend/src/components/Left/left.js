@@ -28,7 +28,7 @@ class Left extends PureComponent {
                     <img src="https://media.hpstore.cn/static/version1559772150/frontend/HPOLS/default/zh_Hans_CN/images/logo.svg" alt="hp" />
                     <div className={styles.leftTitle}><span>HP</span></div>
                 </div>
-                <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
+                <Menu theme="dark" defaultSelectedKeys={['9']} mode="inline">
                     <Menu.Item key="1">
                         <Link to="/">
                             <Icon type="pie-chart" />
@@ -37,40 +37,40 @@ class Left extends PureComponent {
                     </Menu.Item>
                     <Menu.Item key="2">
                         <Icon type="desktop" />
-                        <span>Option 2</span>
+                        <span>订单管理</span>
                     </Menu.Item>
                     <SubMenu
                         key="sub1"
                         title={
                             <span>
                                 <Icon type="user" />
-                                <span>User</span>
+                                <span>数据分析</span>
                             </span>
                         }
                     >
-                        <Menu.Item key="3">Tom</Menu.Item>
-                        <Menu.Item key="4">Bill</Menu.Item>
-                        <Menu.Item key="5">Alex</Menu.Item>
+                        <Menu.Item key="3">订单分析</Menu.Item>
+                        <Menu.Item key="4">产品销量</Menu.Item>
+                        <Menu.Item key="5">用户浏览</Menu.Item>
                     </SubMenu>
                     <SubMenu
                         key="sub2"
                         title={
                             <span>
                                 <Icon type="team" />
-                                <span>Team</span>
+                                <span>个人信息</span>
                             </span>
                         }
                     >
-                        <Menu.Item key="6">Team 1</Menu.Item>
-                        <Menu.Item key="8">Team 2</Menu.Item>
+                        <Menu.Item key="6">用户中心</Menu.Item>
+                        <Menu.Item key="8">个人设置</Menu.Item>
                     </SubMenu>
-                    <Menu.Item key="8">
+                    <Menu.Item key="9">
                         <Link to="/product">
                             <Icon type="team" />
                             <span>产品管理</span>
                         </Link>
                     </Menu.Item>
-                    <Menu.Item key="9">
+                    <Menu.Item key="10">
                         <Link to="/account">
                             <Icon type="team" />
                             <span>用户管理</span>

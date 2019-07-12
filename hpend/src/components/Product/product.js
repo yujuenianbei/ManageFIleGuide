@@ -53,7 +53,7 @@ class Product extends PureComponent {
                 key: 'img',
                 width: 120,
                 render: (text, record) => {
-                    return <img className={styles.productBreImg} src={record.img} title={record.productName} />
+                    return <img className={styles.productBreImg} src={ record.img.split('http').length > 1 ? record.img : 'http://localhost:3004/static/img/' + record.img} title={record.productName} />
                 },
             },
             {
@@ -428,7 +428,7 @@ class Product extends PureComponent {
                                                 defaultValue={this.props.state.product.searchValue}
                                                 value={this.props.state.product.searchValue}
                                                 onChange={value => this.searchValueChange(value)}
-                                                placeholder="请输入与筛选选项相对应的搜索内容"
+                                                placeholder="请输入与筛选选项相对应的搜索内容(除类型和配置外都支持模糊搜索)"
                                                 onSearch={value => this.searchProduct(value)}
                                                 enterButton />
                                             <Button type="primary" icon="redo" style={{ marginLeft: 10 }} title='更新' onClick={this.refresh} />

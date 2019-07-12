@@ -64,13 +64,13 @@ const createProduct = (data, func) => {
         body: JSON.stringify({
             query,
             variables: {
-                productName: data.productName, 
-                type: parseInt(data.type), 
-                img: data.img, 
-                promotionMessage: data.promotionMessage, 
-                featrues: data.featrues, 
-                promotionMessageSecond: data.promotionMessageSecond, 
-                usedPrice: parseInt(data.usedPrice), 
+                productName: data.productName,
+                type: parseInt(data.type),
+                img: data.img,
+                promotionMessage: data.promotionMessage,
+                featrues: data.featrues,
+                promotionMessageSecond: data.promotionMessageSecond,
+                usedPrice: parseInt(data.usedPrice),
                 nowPrice: parseInt(data.nowPrice),
             }
         })
@@ -80,25 +80,14 @@ const createProduct = (data, func) => {
 }
 
 // 修改后台用户
-const updateAccount = (data, func) => {
-    const query = `mutation updateAccount($id: Int, $userName: String, $sex: Int, $email: String, $firstName: String, $lastName: String,
-      $phoneCode: Int, $phone: String, $password: String, $company: String){
-        updateAccount(id: $id, userName: $userName, sex: $sex, email: $email, 
-          firstName: $firstName , lastName: $lastName, phoneCode: $phoneCode, 
-          phone: $phone, password: $password, company: $company){
-              id,
-              userName, 
-              sex, 
-              email, 
-              firstName, 
-              lastName, 
-              phoneCode,
-              phone, 
-              company,
-              password,
+const updateProduct = (data, func) => {
+    const query = `mutation updateProduct($id: Int,$productName: String, $type: Int, $img: String, $promotionMessage: String, 
+        $featrues: String, $promotionMessageSecond: String, $usedPrice: Int, $nowPrice: Int){
+        updateProduct(id: $id, productName: $productName, type: $type, img: $img, promotionMessage: $promotionMessage,
+          featrues: $featrues, promotionMessageSecond: $promotionMessageSecond, usedPrice: $usedPrice, nowPrice: $nowPrice){
               state
         }
-    }`;
+      }`;
 
     fetch('http://localhost:3004/graphqlPort', {
         method: 'POST',
@@ -111,17 +100,16 @@ const updateAccount = (data, func) => {
         },
         body: JSON.stringify({
             query,
-            variables: {
-                id: data.id,
-                userName: data.userName,
-                sex: parseInt(data.sex),
-                email: data.email,
-                firstName: data.firstName,
-                lastName: data.lastName,
-                phoneCode: parseInt(data.phoneCode),
-                phone: data.phone,
-                password: data.password,
-                company: data.company
+            variables:{
+                id: parseInt(data.id),
+                productName: data.productName,
+                type: parseInt(data.type),
+                img: data.img,
+                promotionMessage: data.promotionMessage,
+                featrues: data.featrues,
+                promotionMessageSecond: data.promotionMessageSecond,
+                usedPrice: parseInt(data.usedPrice),
+                nowPrice: parseInt(data.nowPrice),
             }
         })
     })
@@ -186,23 +174,9 @@ const validateAccount = (data, func) => {
         .then((result) => { func(result) });
 }
 
-// 根据指定条件进行查询用户
+// 根据指定条件进行查询产品
 const searchProduct = (data, func) => {
     let intvalue, value;
-    //   if (data.searchType === "type"){
-    //       console.log(data)
-    //       if(!data.search && data.search !== 0){
-    //           intvalue = 9;
-    //           value = data.searchType;
-    //       } else {
-    //           intvalue = data.search;
-    //           value = data.searchType;
-    //       }
-    //   } else {
-    //       intvalue = 1;
-    //       value = data.search;
-    //   }
-
     intvalue = 1;
     value = data.search;
 
@@ -288,4 +262,4 @@ const searchProductTotal = (data, func) => {
 }
 
 
-export { createProduct, deleteProduct, searchProduct, searchProductTotal }
+export { createProduct, deleteProduct, searchProduct, searchProductTotal, updateProduct }

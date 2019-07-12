@@ -153,59 +153,59 @@ const AddProduct = new GraphQLObjectType({
 });
 
 
-const UpdateAccount = new GraphQLObjectType({
-    name: 'UpdateAccount',
-    description: "更新用户信息",
+const UpdateProduct = new GraphQLObjectType({
+    name: 'UpdateProduct',
+    description: "更新产品信息",
     fields: () => {
         return ({
             id: {
-                type: GraphQLID, resolve(data) {
+                type: GraphQLInt, resolve(data) {
                     return data.id;
                 }
             },
-            email: {
+            productName: {
                 type: GraphQLString, resolve(data) {
-                    return data.email;
+                    return data.productName;
                 }
             },
-            firstName: {
-                type: GraphQLString, resolve(data) {
-                    return data.firstName;
-                }
-            },
-            lastName: {
-                type: GraphQLString, resolve(data) {
-                    return data.lastName;
-                }
-            },
-            userName: {
-                type: GraphQLString, resolve(data) {
-                    return data.userName;
-                }
-            },
-            sex: {
+            type: {
                 type: GraphQLInt, resolve(data) {
-                    return data.sex;
+                    return data.type;
                 }
             },
-            phoneCode: {
+            img: {
+                type: GraphQLString, resolve(data) {
+                    return data.img;
+                }
+            },
+            promotionMessage: {
+                type: GraphQLString, resolve(data) {
+                    return data.promotionMessage;
+                }
+            },
+            featrues: {
+                type: GraphQLString, resolve(data) {
+                    return data.featrues;
+                }
+            },
+            promotionMessageSecond: {
+                type: GraphQLString, resolve(data) {
+                    return data.promotionMessageSecond;
+                }
+            },
+            usedPrice: {
                 type: GraphQLInt, resolve(data) {
-                    return data.phoneCode;
+                    return data.usedPrice;
                 }
             },
-            phone: {
-                type: GraphQLString, resolve(data) {
-                    return data.phone;
+            nowPrice: {
+                type: GraphQLInt, resolve(data) {
+                    return data.nowPrice;
                 }
             },
-            password: {
+            createTime: {
                 type: GraphQLString, resolve(data) {
-                    return data.password;
-                }
-            },
-            company: {
-                type: GraphQLString, resolve(data) {
-                    return data.company;
+                    return data.createTime;
                 }
             },
             updateTime: {
@@ -281,6 +281,7 @@ const PorductTotal = new GraphQLObjectType({
 module.exports = { 
     SearchProduct,
     AddProduct,
+    UpdateProduct,
     DeleteProduct,
     PorductTotal
 }
