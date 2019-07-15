@@ -5,8 +5,8 @@ import styles from './index.moudle.less';
 import Main from '../components/Content/Main';
 import Account from '../components/Account';
 import Product from '../components/Product';
-// import List from '../components/Content/List';
-// import Product from '../components/Content/Product';
+import Order from '../components/Order';
+import Cart from '../components/Cart';
 // import CheckoutCart from '../components/Content/Cart';
 // import Delivery from '../components/Content/Delivery';
 // import Customer from '../components/Content/Customer';
@@ -16,8 +16,11 @@ class Routers extends Component {
             <Fragment>
                 <Route exact path="/" component={Main} />
                 <Route path="/account" component={Account} />
-                {/* <Route path="/account/register" component={RegUser} /> */}
+                <Route path="/order" component={Order} />
+                <Route path="/cart" component={Cart} />
                 <Route path="/product" component={Product} />
+
+                
                 {/* <Route path="/productInfo/:id" component={Product} />
                 <Route path="/checkout/cart" component={CheckoutCart} />
                 <Route path="/onestepcheckout" component={Delivery} />

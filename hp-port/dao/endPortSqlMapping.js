@@ -28,6 +28,20 @@ var endPort = {
     insertEndProductType: 'INSERT INTO productType(typeName, createTime, updateTime) VALUES(?,NOW(), NOW())',
     deleteEndProductType: 'DELETE FROM `productType` WHERE id=?',
     countAllProduct: 'SELECT count(*) as total FROM product',
+
+
+    // cart
+    queryCart: 'SELECT * FROM `cart`',
+    queryUser: 'SELECT * FROM `user` WHERE id in(SELECT userId FROM `cart`)',
+    // 返回所有用户的购物车的产品
+    queryCartItem: 'SELECT * FROM `cartItem` WHERE cartId in(SELECT cartId FROM `cart`)',
+    // 返回所有用户的购物车的产品信息
+    queryAllProductInCart: 'SELECT USER.id,USER.name,USER.email,USER.phoneCode,USER.phone,PTYPE.typeName,PRO.productName,PRO.img,PRO.promotionMessage,PRO.featrues,PRO.promotionMessageSecond, PRO.usedPrice,PRO.nowPrice,ITEM.cartId,ITEM.createTime,ITEM.updateTime,ITEM.productNum FROM (SELECT id,name,email,phoneCode,phone FROM `user` WHERE id in(SELECT userId FROM `cart`)) AS USER, product AS PRO,cartItem AS ITEM,cart AS CART,productType AS PTYPE WHERE PRO.id = ITEM.productId AND USER.id =CART.userId and ITEM.cartId = CART.cartId and PTYPE.id = PRO.type',
+    searchAllCart: 'SELECT count(*) as total FROM cartItem',
+
+    // 获取所有购物车里面的产品信息
+    // 'SELECT * FROM  product,cartItem WHERE product.id = cartItem.productId'
+
     
     
     // insert:'INSERT INTO user(id, name, age) VALUES(0,?,?)',
