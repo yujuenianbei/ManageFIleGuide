@@ -109,7 +109,7 @@ class Cart extends PureComponent {
                 title: '类别',
                 dataIndex: 'type',
                 key: 'type',
-                // width: 105,
+                width: 105,
                 render: (text, record) => (
                     <span title={record.type}>
                         {record.type}
@@ -120,7 +120,7 @@ class Cart extends PureComponent {
                 title: '封面',
                 dataIndex: 'img',
                 key: 'img',
-                width: 120,
+                width: 130,
                 render: (text, record) => {
                     return <img className={styles.productBreImg} src={record.img.split('http').length > 1 ? record.img : 'http://localhost:3004/static/img/' + record.img} title={record.productName} />
                 },
@@ -162,25 +162,25 @@ class Cart extends PureComponent {
                 title: '原价',
                 dataIndex: 'usedPrice',
                 key: 'usedPrice',
-                // width: 105,
+                width: 105,
             },
             {
                 title: '现价',
                 dataIndex: 'nowPrice',
                 key: 'nowPrice',
-                // width: 105,
+                width: 105,
             },
             {
                 title: '创建时间',
                 dataIndex: 'createTime',
                 key: 'createTime',
-                // width: 105,
+                width: 105,
             },
             {
                 title: '更新时间',
                 dataIndex: 'updateTime',
                 key: 'updateTime',
-                // width: 105,
+                width: 105,
             }
         ],
         columns: [],
@@ -293,7 +293,7 @@ class Cart extends PureComponent {
         data.push({
             title: '操作',
             key: 'action',
-            width: 180,
+            width: 100,
             render: (text, record) => (
                 <span>
                     <Button type="primary" onClick={() => console.log('查看')}>查看</Button>
@@ -417,7 +417,7 @@ class Cart extends PureComponent {
                 userName: item.name,
                 userEmail: item.email,
                 phoneCode: item.phoneCode,
-                phone: item.phoneCode,
+                phone: item.phone,
                 productName: item.productName,
                 type: item.typeName,
                 img: item.img,
@@ -545,6 +545,7 @@ class Cart extends PureComponent {
                         </Row>
                     </div>
                     <Table
+                        bordered
                         columns={this.state.columns}
                         dataSource={this.props.state.cart.cartData}
                         loading={this.props.state.cart.cartLoading}
