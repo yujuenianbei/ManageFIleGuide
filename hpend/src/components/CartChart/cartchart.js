@@ -142,12 +142,13 @@ class CartChart extends PureComponent {
                                 }}
                                 animate={{
                                     update: {
-                                    animation: 'fadeIn',
-                                    easing: 'easeElasticOut',
-                                    delay: index => {
-                                      return index * 10;
+                                        animation: 'fadeIn',
+                                        easing: 'easeElasticOut',
+                                        delay: index => {
+                                            return index * 10;
+                                        }
                                     }
-                                    }
+                                }}
                             >
                                 <Label
                                     content="percent"
