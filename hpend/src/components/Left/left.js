@@ -58,7 +58,13 @@ class Left extends PureComponent {
                     >
                         <Menu.Item key="4">订单分析</Menu.Item>
                         <Menu.Item key="5">产品销量</Menu.Item>
-                        <Menu.Item key="6">用户浏览</Menu.Item>
+                        <Menu.Item key="6">
+                            <Link to="/cartchart">
+                                <Icon type="team" />
+                                <span>购物车</span>
+                            </Link>
+                        </Menu.Item>
+                        <Menu.Item key="7">用户浏览</Menu.Item>
                     </SubMenu>
                     <SubMenu
                         key="sub2"
@@ -69,16 +75,16 @@ class Left extends PureComponent {
                             </span>
                         }
                     >
-                        <Menu.Item key="7">用户中心</Menu.Item>
-                        <Menu.Item key="8">个人设置</Menu.Item>
+                        <Menu.Item key="8">用户中心</Menu.Item>
+                        <Menu.Item key="9">个人设置</Menu.Item>
                     </SubMenu>
-                    <Menu.Item key="9">
+                    <Menu.Item key="10">
                         <Link to="/product">
                             <Icon type="team" />
                             <span>产品管理</span>
                         </Link>
                     </Menu.Item>
-                    <Menu.Item key="10">
+                    <Menu.Item key="11">
                         <Link to="/account">
                             <Icon type="team" />
                             <span>用户管理</span>

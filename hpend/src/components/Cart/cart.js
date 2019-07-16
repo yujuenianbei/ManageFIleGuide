@@ -31,14 +31,42 @@ class Cart extends PureComponent {
         this.checkBoxOnChange(this.props.state.cart.checkListCol)
     }
 
+    rowCol = (obj, index) => {
+        let row = [];
+        this.props.state.cart.cartData.map((item, index) => {
+            if (index > 0 && this.props.state.cart.cartData[index].name !== this.props.state.cart.cartData[index - 1].name) {
+                row.push(index - 1);
+            }
+        })
+        row.push(this.props.state.cart.pageSize - 1)
+        row.map((item, i) => {
+            if (i === 0) {
+                if (index === 0) {
+                    obj.props.rowSpan = row[0] + 1;
+                }
+                if (0 < index && index <= row[0]) {
+                    obj.props.rowSpan = 0;
+                }
+            }
+            else {
+                if (index === row[i - 1] + 1) {
+                    obj.props.rowSpan = row[i] - row[i - 1];
+                }
+                if (row[i - 1] + 1 < index && index <= row[i] + 1) {
+                    obj.props.rowSpan = 0;
+                }
+            }
+        })
+    }
+
     state = {
         indeterminate: true,
         checkAll: false,
         defaultColumns: [
             {
                 title: '邮箱',
-                dataIndex: 'userEmail',
-                key: 'userEmail',
+                dataIndex: 'email',
+                key: 'email',
                 // width: 105,
                 render: (value, record, index) => {
                     const obj = {
@@ -47,12 +75,7 @@ class Cart extends PureComponent {
                         </span>,
                         props: {},
                     };
-                    if (index === 0) {
-                        obj.props.rowSpan = 4;
-                    }
-                    if (0 < index && index < 4) {
-                        obj.props.rowSpan = 0;
-                    }
+                    this.rowCol(obj, index)
                     return obj
                 }
             },
@@ -60,7 +83,7 @@ class Cart extends PureComponent {
                 title: '区号',
                 dataIndex: 'phoneCode',
                 key: 'phoneCode',
-                // width: 105,
+                width: 105,
                 render: (value, record, index) => {
                     const obj = {
                         children: <span title={record.phoneCode}>
@@ -68,12 +91,7 @@ class Cart extends PureComponent {
                         </span>,
                         props: {},
                     };
-                    if (index === 0) {
-                        obj.props.rowSpan = 4;
-                    }
-                    if (0 < index && index < 4) {
-                        obj.props.rowSpan = 0;
-                    }
+                    this.rowCol(obj, index)
                     return obj
                 }
             },
@@ -81,7 +99,7 @@ class Cart extends PureComponent {
                 title: '电话',
                 dataIndex: 'phone',
                 key: 'phone',
-                // width: 105,
+                width: 180,
                 render: (value, record, index) => {
                     const obj = {
                         children: <span title={record.phone}>
@@ -89,12 +107,7 @@ class Cart extends PureComponent {
                         </span>,
                         props: {},
                     };
-                    if (index === 0) {
-                        obj.props.rowSpan = 4;
-                    }
-                    if (0 < index && index < 4) {
-                        obj.props.rowSpan = 0;
-                    }
+                    this.rowCol(obj, index)
                     return obj
                 }
             },
@@ -222,9 +235,9 @@ class Cart extends PureComponent {
                 title = item.title
             }
         })
-        if (checkedList.indexOf(title) == -1) {
-            this.props.changeSearchType("")
-        }
+        // if (title !== '用户名称' && checkedList.indexOf(title) == -1) {
+        //     this.props.changeSearchType("")
+        // }
     };
     // 全选
     onCheckAllChange = e => {
@@ -242,42 +255,15 @@ class Cart extends PureComponent {
         // 获取
         let data = [{
             title: '用户名称',
-            dataIndex: 'userName',
-            key: 'userName',
+            dataIndex: 'name',
+            key: 'name',
+            width: 140,
             render: (value, record, index) => {
                 const obj = {
                     children: <a href="javascript:;">{value}</a>,
                     props: {},
                 };
-                let row = [];
-                this.props.state.cart.cartData.map((item, index) => {
-                    if (index > 0 && this.props.state.cart.cartData[index].key !== this.props.state.cart.cartData[index - 1].key) {
-                        console.log(index)
-                        row.push(index);
-                    }
-                })
-                row.push(9)
-                console.log(row)
-                row.map((item, i) => {
-                    if (i === 0) {
-                        if (index === 0) {
-                            obj.props.rowSpan = row[0];
-                        }
-                        if (0 < index && index < row[0]) {
-                            obj.props.rowSpan = 0;
-                        }
-                    }
-                    else {
-                        if (index === row[i - 1]) {
-                            obj.props.rowSpan = row[i] - row[i - 1];
-                            console.log(row[i] - row[i - 1])
-                        }
-                        if (row[i - 1] < index && index < row[i]) {
-                            obj.props.rowSpan = 0;
-                        }
-                    }
-                })
-
+                this.rowCol(obj, index);
                 return obj
             }
         }];
@@ -326,10 +312,10 @@ class Cart extends PureComponent {
         searchCartTotal(data, this.setPageTotal)
         searchCart(data, this.searchData);
     }
-    // 分页
+    // 分页 
     ChangePage = (page, pageSize) => {
         this.props.changeCartDataLoading(true);
-        // 修改当前页数字
+        // 修改当前页数字 
         this.props.changePageNow(page);
         let searchValue;
         if (this.props.state.cart.searchType === 'type' && !!this.props.state.cart.searchValue) {
@@ -339,7 +325,7 @@ class Cart extends PureComponent {
         }
         let data = {
             search: this.props.state.cart.searchValue ? searchValue : "",
-            searchType: this.props.state.cart.searchType ? this.props.state.cart.searchType : "",
+            searchType: this.props.state.cart.searchType ? this.props.state.cart.searchType : "name",
             pageSize: this.props.state.cart.pageSize,
             start: page,
             sort: this.props.state.cart.pageSort,
@@ -413,13 +399,14 @@ class Cart extends PureComponent {
         let data = []
         result.data.searchCart.map((item, index) => {
             return data[index] = {
-                key: item.id,
-                userName: item.name,
-                userEmail: item.email,
+                key: index,
+                id: item.id,
+                name: item.name,
+                email: item.email,
                 phoneCode: item.phoneCode,
                 phone: item.phone,
                 productName: item.productName,
-                type: item.typeName,
+                typeName: item.typeName,
                 img: item.img,
                 featrues: item.featrues,
                 promotionMessage: item.promotionMessage,

@@ -1,6 +1,18 @@
 
 // 修改购物车信息
-const searchCart = (id, func) => {
+const searchCart = (data, func) => {
+
+    console.log(data)
+    let intvalue, value;
+    intvalue = 1;
+    value = data.search;
+
+    if (data.start > 1) {
+        data.start = (data.start - 1) * data.pageSize
+    } else if (data.start = 1) {
+        data.start = data.start - 1
+    }
+
     var query = `mutation searchCart($type: String, $value: String, $intvalue: Int, $pageSize: Int, $start: Int, $sort: String){
         searchCart(type: $type, value: $value, intvalue: $intvalue, pageSize: $pageSize, start: $start, sort: $sort){
             id,
@@ -34,12 +46,12 @@ const searchCart = (id, func) => {
         body: JSON.stringify({
             query,
             variables: {
-                "intvalue": 1,
-                "pageSize": 10,
-                "sort": "ASC",
-                "start": 0,
-                "type": "ProductName",
-                "value": ""
+                type: data.searchType,
+                value,
+                intvalue,
+                pageSize: data.pageSize,
+                start: data.start,
+                sort: data.sort
             }
         })
     })
@@ -70,9 +82,9 @@ const searchCartTotal = (data, func) => {
         body: JSON.stringify({
             query,
             variables:     {
-                "intvalue": 1,
-                "type": "",
-                "value": ""
+                type: data.searchType,
+                value,
+                intvalue,
               }
         })
     })

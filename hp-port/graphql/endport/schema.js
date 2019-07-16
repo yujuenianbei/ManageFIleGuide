@@ -16,7 +16,7 @@ const account = require('./account');
 const product = require('./product');
 const productType = require('./productType');
 const cart = require('./cart');
-
+const cartChart = require('./cartChart');
 
 const Query=new GraphQLObjectType({
     name:'EndQuery',
@@ -25,7 +25,8 @@ const Query=new GraphQLObjectType({
         account.query,
         product.query,
         productType.query,
-        cart.query
+        cart.query,
+        cartChart.query
     )),
 });
 const Mutation=new GraphQLObjectType({
@@ -35,7 +36,8 @@ const Mutation=new GraphQLObjectType({
         account.mutation,
         product.mutation,
         productType.mutation,
-        cart.mutation
+        cart.mutation,
+        cartChart.mutation
     )),
 });
 const schema = new GraphQLSchema({

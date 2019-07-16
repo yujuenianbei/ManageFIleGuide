@@ -153,9 +153,9 @@ class Product extends PureComponent {
                 title = item.title
             }
         })
-        if (checkedList.indexOf(title) == -1) {
-            this.props.changeSearchType("")
-        }
+        // if (checkedList.indexOf(title) == -1) {
+        //     this.props.changeSearchType("")
+        // }
     };
     // 全选
     onCheckAllChange = e => {

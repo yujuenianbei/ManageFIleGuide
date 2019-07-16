@@ -36,8 +36,15 @@ var endPort = {
     // 返回所有用户的购物车的产品
     queryCartItem: 'SELECT * FROM `cartItem` WHERE cartId in(SELECT cartId FROM `cart`)',
     // 返回所有用户的购物车的产品信息
-    queryAllProductInCart: 'SELECT USER.id,USER.name,USER.email,USER.phoneCode,USER.phone,PTYPE.typeName,PRO.productName,PRO.img,PRO.promotionMessage,PRO.featrues,PRO.promotionMessageSecond, PRO.usedPrice,PRO.nowPrice,ITEM.cartId,ITEM.createTime,ITEM.updateTime,ITEM.productNum FROM (SELECT id,name,email,phoneCode,phone FROM `user` WHERE id in(SELECT userId FROM `cart`)) AS USER, product AS PRO,cartItem AS ITEM,cart AS CART,productType AS PTYPE WHERE PRO.id = ITEM.productId AND USER.id =CART.userId and ITEM.cartId = CART.cartId and PTYPE.id = PRO.type',
+    queryAllProductInCart: 'SELECT USER.id,USER.name,USER.email,USER.phoneCode,USER.phone,PTYPE.typeName,PRO.productName,PRO.img,PRO.promotionMessage,PRO.featrues,PRO.promotionMessageSecond, PRO.usedPrice,PRO.nowPrice,ITEM.cartId,ITEM.createTime,ITEM.updateTime,ITEM.productNum FROM (SELECT id,name,email,phoneCode,phone FROM `user` WHERE id in(SELECT userId FROM `cart`)) AS USER, product AS PRO,cartItem AS ITEM,cart AS CART,productType AS PTYPE WHERE PRO.id = ITEM.productId AND USER.id =CART.userId and ITEM.cartId = CART.cartId and PTYPE.id = PRO.type ',
     searchAllCart: 'SELECT count(*) as total FROM cartItem',
+    serachTypeCart: 'SELECT count(*) as total FROM (SELECT id,name,email,phoneCode,phone FROM `user` WHERE id in(SELECT userId FROM `cart`)) AS USER, product AS PRO,cartItem AS ITEM,cart AS CART,productType AS PTYPE WHERE PRO.id = ITEM.productId AND USER.id =CART.userId and ITEM.cartId = CART.cartId and PTYPE.id = PRO.type and ',
+
+    // 获取所有购物车中每个产品分类中的产品数量
+    queryAllProductNumberOfType: 'SELECT PTYPE.typeName as item, sum(ITEM.productNum) as count FROM (SELECT id,name,email,phoneCode,phone FROM `user` WHERE id in(SELECT userId FROM `cart`)) AS USER, product AS PRO,cartItem AS ITEM,cart AS CART,productType AS PTYPE WHERE PRO.id = ITEM.productId AND USER.id =CART.userId and ITEM.cartId = CART.cartId and PTYPE.id = PRO.type GROUP BY PTYPE.typeName',
+    // 获取用户购物车中保存最多的前十个产品
+    queryTopTenProductInCart: 'SELECT PRO.productName,PRO.img,PRO.usedPrice,PRO.nowPrice,ITEM.cartId,ITEM.createTime,ITEM.updateTime,ITEM.productNum FROM (SELECT id,name,email,phoneCode,phone FROM `user` WHERE id in(SELECT userId FROM `cart`)) AS USER, product AS PRO,cartItem AS ITEM,cart AS CART WHERE PRO.id = ITEM.productId AND USER.id =CART.userId and ITEM.cartId = CART.cartId ORDER BY productNum DESC limit 0,10',
+
 
     // 获取所有购物车里面的产品信息
     // 'SELECT * FROM  product,cartItem WHERE product.id = cartItem.productId'

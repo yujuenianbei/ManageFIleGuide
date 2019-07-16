@@ -49,18 +49,25 @@ module.exports = {
                 sort: { type: GraphQLString }  //ASC DEC
             },
             resolve: async function (source, { intvalue, value, type, start, pageSize, sort }) {
+                console.log(intvalue, value, type, start, pageSize, sort)
                 // type 没选 全局搜
                 if (type !== '' && value !== '') {
-                    console.log($sql.queryAllProductInCart + ` ${type} like ${JSON.stringify(value)} ORDER BY ${type} ${sort} limit ${start},${pageSize}`)
+                    console.log($sql.queryAllProductInCart + `and ${type} like ${JSON.stringify(value)} ORDER BY name ${sort} limit ${start},${pageSize}`)
                     value = '%' + value + '%'
-                    return await searchSql($sql.queryAllProductInCart + `${type} like ${JSON.stringify(value)} ORDER BY ${type} ${sort} limit ${start},${pageSize}`)
+                    return await searchSql($sql.queryAllProductInCart + `and ${type} like ${JSON.stringify(value)} ORDER BY name ${sort} limit ${start},${pageSize}`)
                         .then(async (reslut) => {
                             return reslut;
                         })
                 }
-                else {
-                    console.log($sql.queryAllProductInCart + ` limit ${start},${pageSize}`)
-                    return await searchSql($sql.queryAllProductInCart + ` limit ${start},${pageSize}`)
+                else if (type !== '') {
+                    console.log($sql.queryAllProductInCart + `ORDER BY name ${sort} limit ${start},${pageSize}`)
+                    return await searchSql($sql.queryAllProductInCart + `ORDER BY name ${sort} limit ${start},${pageSize}`)
+                        .then(async (reslut) => {
+                            return reslut;
+                        })
+                } else if (type == '') {
+                    console.log($sql.queryAllProductInCart + `ORDER BY name ${sort} limit ${start},${pageSize}`)
+                    return await searchSql($sql.queryAllProductInCart + `ORDER BY name ${sort} limit ${start},${pageSize}`)
                         .then(async (reslut) => {
                             return reslut;
                         })
@@ -78,20 +85,20 @@ module.exports = {
             },
             resolve: async function (source, { intvalue, value, type }) {
                 console.log(intvalue, value, type)
-                // if (type === "" || value === "") {
-                    return await searchSql($sql.searchAllCart)
+                if (type === "" || value === "") {
+                return await searchSql($sql.searchAllCart)
+                    .then(async (reslut) => {
+                        console.log(1, reslut);
+                        return await reslut[0];
+                    })
+                } else {
+                    console.log($sql.serachTypeCart + `${type} like %${value}%`)
+                    return await searchSql($sql.serachTypeCart + `${type} like ?`, [`%${value}%`])
                         .then(async (reslut) => {
-                            console.log(1, reslut);
+                            console.log(2, reslut);
                             return await reslut[0];
                         })
-                // } else {
-                //     console.log(`SELECT count(*) as total FROM product WHERE ${type} like %${value}%`)
-                //     return await searchSql(`SELECT count(*) as total FROM product WHERE ${type} like ?`, [`%${value}%`])
-                //         .then(async (reslut) => {
-                //             console.log(2, reslut);
-                //             return await reslut[0];
-                //         })
-                // }
+                }
 
             }
         },

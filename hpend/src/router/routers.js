@@ -7,6 +7,8 @@ import Account from '../components/Account';
 import Product from '../components/Product';
 import Order from '../components/Order';
 import Cart from '../components/Cart';
+
+import CartChart from '../components/CartChart';
 // import CheckoutCart from '../components/Content/Cart';
 // import Delivery from '../components/Content/Delivery';
 // import Customer from '../components/Content/Customer';
@@ -19,6 +21,8 @@ class Routers extends Component {
                 <Route path="/order" component={Order} />
                 <Route path="/cart" component={Cart} />
                 <Route path="/product" component={Product} />
+
+                <Route path="/cartchart" component={CartChart} />
 
                 
                 {/* <Route path="/productInfo/:id" component={Product} />
