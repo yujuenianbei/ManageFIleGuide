@@ -2,28 +2,29 @@
 @import "../../less/font.less";
 @import "../../less/button.less";
 .content{
-    background-color: @white;
     padding: @10;
     display: flex;
     .charts{
-        width: 50%;
+        width: calc(~'100%/4');
+        height: 200px;
         float: left;
         overflow: hidden;
+        background-color: @white;
+        margin-right: 10px;
+        border-radius: 10px;
+        padding: 20px;
     }
-    .productBreImg{
-        width: 100px;
-    }
 }
-.checkTables{
-    padding: @10;
-}
-[class="ant-checkbox-group"]{
-    display: flex;
-    flex-direction: column;
-}
-[class="ant-checkbox-inner::after"]{
-    margin-left: @4;
-}
-[class="ant-pagination ant-table-pagination"]{
-    padding-top: @10;
-}
+// .checkTables{
+//     padding: @10;
+// }
+// [class="ant-checkbox-group"]{
+//     display: flex;
+//     flex-direction: column;
+// }
+// [class="ant-checkbox-inner::after"]{
+//     margin-left: @4;
+// }
+// [class="ant-pagination ant-table-pagination"]{
+//     padding-top: @10;
+// }

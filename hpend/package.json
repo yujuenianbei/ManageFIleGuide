@@ -20,6 +20,7 @@
     "babel-jest": "24.7.1",
     "babel-plugin-import": "^1.11.0",
     "bizcharts": "^3.5.4",
+    "bizcharts-plugin-slider": "^2.1.1-beta.1",
     "customize-cra": "^0.2.12",
     "fetch": "^1.1.0",
     "graphql": "^14.2.1",

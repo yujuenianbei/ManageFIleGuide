@@ -29,63 +29,103 @@ import { ProductNumberOfTypeInCart } from '../../fetch/cartChart'
 
 class CartChart extends PureComponent {
     state = {
-        cartProductData: []
+        cartProductData: null,
+        cartProductDv: {},
+        cartProductCols: {},
     }
     componentDidMount() {
         ProductNumberOfTypeInCart(this.cartProductData)
     }
     cartProductData = (result) => {
-        // console.log(result.data.queryProductNumberOfType)
-        this.setState({ cartProductData: result.data.queryProductNumberOfType })
+        if (result.data.queryProductNumberOfType.length > 0) {
+            console.log(result)
+            this.setState({
+                cartProductData: result.data.queryProductNumberOfType,
+            }, () => {
+                const { DataView } = DataSet;
+                const dv = new DataView();
+                dv.source(this.state.cartProductData).transform({
+                    type: "percent",
+                    field: "count",
+                    dimension: "item",
+                    as: "percent"
+                });
+                const cols = {
+                    percent: {
+                        formatter: val => {
+                            val = parseInt(val * 100) + "%";
+                            return val;
+                        }
+                    }
+                };
+                this.setState({
+                    cartProductDv: dv,
+                    cartProductCols: cols
+                })
+            })
+        }
     }
     refreshCartProductData = () => {
         ProductNumberOfTypeInCart(this.cartProductData)
     }
     render() {
-        const { DataView } = DataSet;
         const { Html } = Guide;
+
         const data = [
             {
-                item: "consumable",
-                count: 40
+                year: "1951 年",
+                sales: 38
             },
             {
-                item: "display",
-                count: 21
+                year: "1952 年",
+                sales: 52
             },
             {
-                item: "gamebook",
-                count: 17
+                year: "1956 年",
+                sales: 61
             },
             {
-                item: "notebook",
-                count: 13
+                year: "1957 年",
+                sales: 145
             },
             {
-                item: "peripheral",
-                count: 9
+                year: "1958 年",
+                sales: 48
             },
             {
-                item: "printer",
-                count: 9
+                year: "1959 年",
+                sales: 38
+            },
+            {
+                year: "1960 年",
+                sales: 38
+            },
+            {
+                year: "1962 年",
+                sales: 38
             }
         ];
-        const dv = new DataView();
-        console.log(dv)
-        dv.source(this.state.cartProductData).transform({
-            type: "percent",
-            field: "count",
-            dimension: "item",
-            as: "percent"
-        });
         const cols = {
-            percent: {
-                formatter: val => {
-                    val = parseInt(val * 100) + "%";
-                    return val;
-                }
+            sales: {
+                tickInterval: 20
             }
         };
+
+        const label = {
+            offset: 5, // 数值，设置坐标轴文本 label 距离坐标轴线的距离
+            rotate: 0, // 旋转角度
+            // 设置文本的显示样式，还可以是个回调函数，回调函数的参数为该坐标轴对应字段的数值
+            rotate: 0, //文本旋转角度
+            textStyle: {
+                textAlign: 'center', // 文本对齐方向，可取值为： start center end
+                fill: '#404040', // 文本的颜色
+                fontSize: '12', // 文本大小
+                fontWeight: 'bold', // 文本粗细
+                textBaseline: 'middle' // 文本基准线，可取 top middle bottom，默认为middle
+            },
+            autoRotate: false, // 文本是否需要自动旋转，默认为 true
+        }
+
         return (
             <Fragment>
                 <Breadcrumb style={{ margin: '16px 0' }}>
@@ -94,70 +134,117 @@ class CartChart extends PureComponent {
                 </Breadcrumb>
                 <div className={styles.content}>
                     <div className={styles.charts}>
-                        <Icon type="reload" onClick={this.refreshCartProductData} />
                         <Chart
-                            height={500}
-                            width={500}
-                            data={dv}
+                            marginLeft={30}
+                            height={155}
+                            data={data}
                             scale={cols}
-                            padding={[80, 100, 80, 80]}
-                            forceFit
-                        >
-                            <Coord type={"theta"} radius={0.75} innerRadius={0.6} />
-                            <Axis name="percent" />
-                            <Legend
-                                position="right"
-                                // offsetY={-window.innerHeight / 2 + 120}
-                                offsetX={-100}
-                            />
+                            padding={[15, 5, 20, 15]}
+                            forceFit>
+                            <Axis name="year" />
+                            <Axis name="sales" label={label} />
                             <Tooltip
-                                showTitle={false}
-                                itemTpl="<li><span style=&quot;background-color:{color};&quot; class=&quot;g2-tooltip-marker&quot;></span>{name}: {value}</li>"
-                            />
-                            <Guide>
-                                <Html
-                                    position={["50%", "50%"]}
-                                    html="<div style=&quot;color:#8c8c8c;font-size:1.16em;text-align: center;width: 10em;&quot;>主机<br><span style=&quot;color:#262626;font-size:2.5em&quot;>200</span>台</div>"
-                                    alignX="middle"
-                                    alignY="middle"
-                                />
-                            </Guide>
-                            <Geom
-                                type="intervalStack"
-                                position="percent"
-                                color="item"
-                                tooltip={[
-                                    "item*percent",
-                                    (item, percent) => {
-                                        percent = parseInt(percent * 100) + "%";
-                                        return {
-                                            name: item,
-                                            value: percent
-                                        };
-                                    }
-                                ]}
-                                style={{
-                                    lineWidth: 1,
-                                    stroke: "#fff"
+                                crosshairs={{
+                                    type: "y"
                                 }}
-                                animate={{
-                                    update: {
-                                        animation: 'fadeIn',
-                                        easing: 'easeElasticOut',
-                                        delay: index => {
-                                            return index * 10;
-                                        }
-                                    }
+                            />
+                            <Geom type="interval" position="year*sales" />
+                        </Chart>
+                    </div>
+                    <div className={styles.charts}>
+                        <span>各分类购物车收藏量</span>
+                        <Icon type="reload" onClick={this.refreshCartProductData} />
+                        {this.state.cartProductDv && this.state.cartProductCols &&
+                            <Chart
+                                height={145}
+                                data={this.state.cartProductDv}
+                                scale={this.state.cartProductCols}
+                                padding={[0, 0, 0, -50]}
+                                forceFit
+                                onGetG2Instance={g2Chart => {
+                                    g2Chart.animate(false);
+                                    console.log(g2Chart);
                                 }}
                             >
-                                <Label
-                                    content="percent"
-                                    formatter={(val, item) => {
-                                        return item.point.item + ": " + val;
-                                    }}
+                                <Coord type={"theta"} radius={0.75} innerRadius={0.6} />
+                                <Axis name="percent" />
+                                {/* <Legend
+                                    itemFormatter(val) {
+                                        return val + "xxx"; // val 为每个图例项的文本值
+                                    }
+                                /> */}
+                                <Legend
+                                    position="right"
+                                    // offsetY={-window.innerHeight / 2 + 120}
+                                    offsetX={-100}
+                                // useHtml={true}
+                                // custom={true}
+                                // containerTpl={'<div class="g2-legend" style="position:absolute;top:20px;right:60px;width:auto;">'
+                                // + '<h4 class="g2-legend-title"></h4>' 
+                                // + '<ul class="g2-legend-list" style="list-style-type:none;margin:0;padding:0;"></ul>'
+                                // + '</div>'}
+                                // itemTpl={'<li class="g2-legend-list-item item-{index} {checked}" data-color="{originColor}" data-value="{originValue}" style="cursor: pointer;font-size: 14px;">'
+                                // + '<i class="g2-legend-marker" style="width:10px;height:10px;border-radius:50%;display:inline-block;margin-right:10px;background-color: {color};"></i>'
+                                // + '<span class="g2-legend-text">{value}:111</span>'
+                                // + '</li>'}
+                                // items={[
+                                //     { value: 'value', marker: {symbol: 'diamond', fill: '#3182bd', radius: 5} }
+                                //   ]}
                                 />
-                            </Geom>
-                        </Chart>
+                                <Tooltip
+                                    showTitle={false}
+                                    itemTpl="<li><span style=&quot;background-color:{color};&quot; class=&quot;g2-tooltip-marker&quot;></span>{name}: {value}</li>"
+                                />
+                                {/* <Guide>
+                                    <Html
+                                        position={["50%", "50%"]}
+                                        html="<div style=&quot;color:#8c8c8c;font-size:1.16em;text-align: center;width: 10em;&quot;>主机<br><span style=&quot;color:#262626;font-size:2.5em&quot;>200</span>台</div>"
+                                        alignX="middle"
+                                        alignY="middle"
+                                    />
+                                </Guide> */}
+                                <Geom
+                                    type="intervalStack"
+                                    position="percent"
+                                    color="item"
+                                    tooltip={[
+                                        "item*percent",
+                                        (item, percent) => {
+                                            percent = parseInt(percent * 100) + "%";
+                                            return {
+                                                name: item,
+                                                value: percent
+                                            };
+                                        }
+                                    ]}
+                                    style={{
+                                        lineWidth: 1,
+                                        stroke: "#fff"
+                                    }}
+                                    animate={{
+                                        appear: {
+                                            animation: 'zoomIn'
+                                        },
+                                        leave: {
+                                            animation: 'fadeOut',
+                                            // easing: 'easeElasticOut',
+                                            // delay: index => {
+                                            //     return index * 10;
+                                            // }
+                                        }
+                                    }}
+                                >
+                                    <Label
+                                        content="percent"
+                                        formatter={(val, item) => {
+                                            return;
+                                        }}
+                                    />
+                                </Geom>
+                            </Chart>
+                        }
+                    </div>
+                    <div className={styles.charts}>
                     </div>
                 </div>
             </Fragment>

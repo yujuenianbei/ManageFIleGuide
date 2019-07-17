@@ -70,8 +70,8 @@ class Cart extends PureComponent {
                 // width: 105,
                 render: (value, record, index) => {
                     const obj = {
-                        children: <span title={record.userEmail}>
-                            {record.userEmail}
+                        children: <span title={record.email}>
+                            {record.email}
                         </span>,
                         props: {},
                     };
