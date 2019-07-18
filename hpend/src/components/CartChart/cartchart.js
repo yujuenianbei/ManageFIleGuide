@@ -69,6 +69,7 @@ class CartChart extends PureComponent {
         ProductNumberOfTypeInCart(this.cartProductData)
     }
     render() {
+        const _this = this;
         const { Html } = Guide;
 
         const data = [
@@ -176,20 +177,17 @@ class CartChart extends PureComponent {
                                 <Legend
                                     position="right"
                                     // offsetY={-window.innerHeight / 2 + 120}
-                                    offsetX={-100}
-                                // useHtml={true}
-                                // custom={true}
-                                // containerTpl={'<div class="g2-legend" style="position:absolute;top:20px;right:60px;width:auto;">'
-                                // + '<h4 class="g2-legend-title"></h4>' 
-                                // + '<ul class="g2-legend-list" style="list-style-type:none;margin:0;padding:0;"></ul>'
-                                // + '</div>'}
-                                // itemTpl={'<li class="g2-legend-list-item item-{index} {checked}" data-color="{originColor}" data-value="{originValue}" style="cursor: pointer;font-size: 14px;">'
-                                // + '<i class="g2-legend-marker" style="width:10px;height:10px;border-radius:50%;display:inline-block;margin-right:10px;background-color: {color};"></i>'
-                                // + '<span class="g2-legend-text">{value}:111</span>'
-                                // + '</li>'}
-                                // items={[
-                                //     { value: 'value', marker: {symbol: 'diamond', fill: '#3182bd', radius: 5} }
-                                //   ]}
+                                    useHtml={true}
+                                    offsetX={-50}
+                                    reactive={true}
+                                    containerTpl={'<div class="g2-legend">' + '<table class="g2-legend-list"></table>' + '</div>'}
+                                    itemTpl={(value, color, checked, index) => {
+                                        var obj = _this.state.cartProductDv.rows[index];
+                                        var percent = (obj.percent * 100).toFixed(2) + '%';
+                                        checked = checked ? 'checked' : 'unChecked';
+                                        return '<tr class="g2-legend-list-item item-' + index + ' ' + checked + '" data-value="' + value + '" data-color=' + color + ' >' + '<td style="width:120px;"><i class="g2-legend-marker" style="width:10px;height:10px;display:inline-block;margin-right:10px;background-color:' + color + ';"></i>' + '<span class="g2-legend-text" style="color: #666">' + value + '</span></td>' + '<td style="text-align: right">' + percent + '</td>' + '</tr>';
+                                    }}
+                                    offset={[15, 0]}
                                 />
                                 <Tooltip
                                     showTitle={false}
