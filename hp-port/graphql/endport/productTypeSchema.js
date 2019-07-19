@@ -48,6 +48,42 @@ const queryAllProductType = new GraphQLObjectType({
     },
 });
 
+
+const DeleteProductType = new GraphQLObjectType({
+    name: 'DeleteProductType',
+    description: "删除产品分类",
+    fields: () => {
+        return ({
+            typeName: {
+                type: GraphQLString, resolve(data) {
+                    return data.typeName;
+                }
+            },
+            state: {
+                type: GraphQLInt, resolve(data) {
+                    return data.state;
+                }
+            }
+        });
+    },
+});
+
+const PorductTypeTotal = new GraphQLObjectType({
+    name: 'PorductTypeTotal',
+    description: "查询产品分类总数",
+    fields: () => {
+        return ({
+            total: {
+                type: GraphQLInt, resolve(data) {
+                    return data.total;
+                }
+            },
+        });
+    },
+});
+
 module.exports = { 
-    queryAllProductType
+    queryAllProductType,
+    PorductTypeTotal,
+    DeleteProductType
 }

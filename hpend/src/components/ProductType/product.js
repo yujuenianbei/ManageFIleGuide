@@ -5,11 +5,10 @@ import { connect } from 'react-redux';
 import classify from '@magento/venia-concept/esm/classify';
 // const SearchBar = React.lazy(() => import('src/components/SearchBar'));
 import styles from './product.module.less';
-import { searchProduct, searchProductTotal } from '../../fetch/product'
-import { getAllproductType } from '../../fetch/productType'
+import { getAllproductType, createProductType, updateProductType, deleteProductType, searchProductType, searchProductTypeTotal } from '../../fetch/productType'
 import { timestampToTime, typeToTypeName } from '../../func/common'
 import { Table, Divider, Dropdown, Checkbox, Menu, Icon, Tag, Breadcrumb, Input, Col, Row, Select, Button, Modal, Spin } from 'antd';
-import ProductModle from './model'
+import ProductTypeModle from './model'
 
 const Search = Input.Search;
 const InputGroup = Input.Group;
@@ -27,9 +26,9 @@ class Product extends PureComponent {
         // 首次加载用户数据
         this.props.changeProductDataLoading(true);
         // 先查询完产品分类再查产品
-        getAllproductType(this.searchProductMount);
+        getAllproductType(this.searchProductTypeMount);
 
-        this.checkBoxOnChange(this.props.state.product.checkListCol)
+        this.checkBoxOnChange(this.props.state.productType.checkListCol)
     }
 
     state = {
@@ -37,81 +36,16 @@ class Product extends PureComponent {
         checkAll: false,
         defaultColumns: [
             {
-                title: '类别',
-                dataIndex: 'type',
-                key: 'type',
-                width: 105,
-                render: (text, record) => (
-                    <span title={record.type}>
-                        {record.type}
-                    </span>
-                ),
-            },
-            {
-                title: '封面',
-                dataIndex: 'img',
-                key: 'img',
-                width: 120,
-                render: (text, record) => {
-                    return <img className={styles.productBreImg} src={record.img.split('http').length > 1 ? record.img : 'http://localhost:3004/static/img/' + record.img} title={record.productName} />
-                },
-            },
-            {
-                title: '配置参数',
-                dataIndex: 'featrues',
-                key: 'featrues',
-                width: '15%',
-                render: (text, record) => {
-                    return JSON.parse(record.featrues).map((item, index) =>
-                        <li key={index + '123123'}>
-                            <span title={record.item}>{index + 1}. {item}</span>
-                        </li>
-                    )
-                },
-            },
-            {
-                title: '促销信息1',
-                dataIndex: 'promotionMessage',
-                key: 'promotionMessage',
-                render: (text, record) => (
-                    <span title={record.promotionMessage}>
-                        {record.promotionMessage}
-                    </span>
-                ),
-            },
-            {
-                title: '促销信息2',
-                dataIndex: 'promotionMessageSecond',
-                key: 'promotionMessageSecond',
-                render: (text, record) => (
-                    <span title={record.promotionMessageSecond}>
-                        {record.promotionMessageSecond}
-                    </span>
-                ),
-            },
-            {
-                title: '原价',
-                dataIndex: 'usedPrice',
-                key: 'usedPrice',
-                width: 105,
-            },
-            {
-                title: '现价',
-                dataIndex: 'nowPrice',
-                key: 'nowPrice',
-                width: 105,
-            },
-            {
                 title: '创建时间',
                 dataIndex: 'createTime',
                 key: 'createTime',
-                width: 105,
+                width: 300,
             },
             {
                 title: '更新时间',
                 dataIndex: 'updateTime',
                 key: 'updateTime',
-                width: 105,
+                width: 300,
             }
         ],
         columns: [],
@@ -141,21 +75,18 @@ class Product extends PureComponent {
     // 选择列
     checkBoxOnChange = checkedList => {
         this.setState({
-            indeterminate: !!checkedList.length && checkedList.length < this.props.state.product.allCheckcols.length,
-            checkAll: checkedList.length === this.props.state.product.allCheckcols.length,
+            indeterminate: !!checkedList.length && checkedList.length < this.props.state.productType.typeAllCheckcols.length,
+            checkAll: checkedList.length === this.props.state.productType.typeAllCheckcols.length,
         });
         this.props.changeCheckListCol(checkedList);
         this.setState({ columns: this.mixColData(checkedList) })
 
         let title = '';
         this.state.defaultColumns.map(item => {
-            if (item.key === this.props.state.product.searchType) {
+            if (item.key === this.props.state.productType.searchType) {
                 title = item.title
             }
         })
-        // if (checkedList.indexOf(title) == -1) {
-        //     this.props.changeSearchType("")
-        // }
     };
     // 全选
     onCheckAllChange = e => {
@@ -163,7 +94,7 @@ class Product extends PureComponent {
             indeterminate: false,
             checkAll: e.target.checked,
         });
-        const checkedList = e.target.checked ? this.props.state.product.allCheckcols : []
+        const checkedList = e.target.checked ? this.props.state.productType.typeAllCheckcols : []
         this.props.changeCheckListCol(checkedList);
         this.setState({ columns: this.mixColData(checkedList) })
     };
@@ -182,10 +113,9 @@ class Product extends PureComponent {
                 </span>
             ),
         }, {
-            title: '产品名称',
-            dataIndex: 'productName',
-            key: 'productName',
-            width: '15%',
+            title: '分类名称',
+            dataIndex: 'typeName',
+            key: 'typeName',
             render: text => <a href="javascript:;">{text}</a>,
         }];
 
@@ -219,42 +149,30 @@ class Product extends PureComponent {
         this.props.changePageSize(size);
         // 跳转第一页
         this.props.changePageNow(1);
-        let searchValue;
-        if (this.props.state.product.searchType === 'type' && !!this.props.state.product.searchValue) {
-            searchValue = JSON.stringify(this.props.state.product.productTypeList.filter(item => item.typeName === this.props.state.product.searchValue)[0].id);
-        } else {
-            searchValue = this.props.state.product.searchValue
-        }
         let data = {
-            search: this.props.state.product.searchValue ? searchValue : "",
-            searchType: this.props.state.product.searchType ? this.props.state.product.searchType : "",
+            search: this.props.state.productType.searchValue ? this.props.state.productType.searchValue : "",
+            searchType: this.props.state.productType.searchType ? this.props.state.productType.searchType : "",
             pageSize: size,
             start: 0,
-            sort: this.props.state.product.pageSort,
+            sort: this.props.state.productType.pageSort,
         };
-        searchProductTotal(data, this.setPageTotal)
-        searchProduct(data, this.searchData);
+        searchProductTypeTotal(data, this.setPageTotal)
+        searchProductType(data, this.searchData);
     }
     // 分页
     ChangePage = (page, pageSize) => {
         this.props.changeProductDataLoading(true);
         // 修改当前页数字
         this.props.changePageNow(page);
-        let searchValue;
-        if (this.props.state.product.searchType === 'type' && !!this.props.state.product.searchValue) {
-            searchValue = JSON.stringify(this.props.state.product.productTypeList.filter(item => item.typeName === this.props.state.product.searchValue)[0].id);
-        } else {
-            searchValue = this.props.state.product.searchValue
-        }
         let data = {
-            search: this.props.state.product.searchValue ? searchValue : "",
-            searchType: this.props.state.product.searchType ? this.props.state.product.searchType : "",
-            pageSize: this.props.state.product.pageSize,
+            search: this.props.state.productType.searchValue ? this.props.state.productType.searchValue : "",
+            searchType: this.props.state.productType.searchType ? this.props.state.productType.searchType : "",
+            pageSize: this.props.state.productType.pageSize,
             start: page,
-            sort: this.props.state.product.pageSort,
+            sort: this.props.state.productType.pageSort,
         };
-        searchProductTotal(data, this.setPageTotal)
-        searchProduct(data, this.searchData);
+        searchProductTypeTotal(data, this.setPageTotal)
+        searchProductType(data, this.searchData);
     }
 
     // 切换搜索类型 
@@ -267,71 +185,50 @@ class Product extends PureComponent {
     }
 
     // 加载上一次的搜索
-    searchProductMount = (result) => {
+    searchProductTypeMount = (result) => {
         this.props.changeProductDataLoading(true)
-        this.props.changeProductTypeList(result.data.AllProductType)
-
-        let searchValue;
-        if (this.props.state.product.searchType === 'type' && !!this.props.state.product.searchValue) {
-            searchValue = JSON.stringify(this.props.state.product.productTypeList.filter(item => item.typeName === this.props.state.product.searchValue)[0].id);
-        } else {
-            searchValue = this.props.state.product.searchValue
-        }
         let data = {
-            search: this.props.state.product.searchValue ? searchValue : "",
-            searchType: this.props.state.product.searchType ? this.props.state.product.searchType : "",
-            pageSize: this.props.state.product.pageSize,
-            start: this.props.state.product.pageNow,
-            sort: this.props.state.product.pageSort,
+            search: this.props.state.productType.searchValue ? this.props.state.productType.searchValue : "",
+            searchType: this.props.state.productType.searchType ? this.props.state.productType.searchType : "",
+            pageSize: this.props.state.productType.pageSize,
+            start: this.props.state.productType.pageNow,
+            sort: this.props.state.productType.pageSort,
         };
-        searchProductTotal(data, this.setPageTotal)
-        searchProduct(data, this.searchData);
+        searchProductTypeTotal(data, this.setPageTotal)
+        searchProductType(data, this.searchData);
     }
 
 
     // 搜索
-    searchProduct = (value) => {
+    searchProductType = (value) => {
         this.props.changeProductDataLoading(true)
         // 写入搜索内容
         this.props.changeSearchValue(value);
         this.props.changePageNow(1);
-        let searchValue;
-        if (this.props.state.product.searchType === 'type' && !!value) {
-            searchValue = JSON.stringify(this.props.state.product.productTypeList.filter(item => item.typeName === value)[0].id);
-        } else {
-            searchValue = value
-        }
         let data = {
-            search: value !== "" ? searchValue : "",
-            searchType: this.props.state.product.searchType ? this.props.state.product.searchType : "",
-            pageSize: this.props.state.product.pageSize,
+            search: value !== "" ? value : "",
+            searchType: this.props.state.productType.searchType ? this.props.state.productType.searchType : "",
+            pageSize: this.props.state.productType.pageSize,
             start: 1,
-            sort: this.props.state.product.pageSort
+            sort: this.props.state.productType.pageSort
         };
-        searchProductTotal(data, this.setPageTotal);
-        searchProduct(data, this.searchData);
+        searchProductTypeTotal(data, this.setPageTotal);
+        searchProductType(data, this.searchData);
     }
 
     // 修改总数
     setPageTotal = (result) => {
-        this.props.changePageTotal(result.data.totalProduct.total);
+        this.props.changePageTotal(result.data.totalProductType.total);
         this.props.changeProductDataLoading(false)
     }
     // 搜索结果写入表中
     searchData = (result) => {
         let data = []
-        result.data.searchProduct.map((item, index) => {
+        result.data.searchProductType.map((item, index) => {
             return data[index] = {
                 key: item.id,
                 id: item.id,
-                productName: item.productName,
-                type: typeToTypeName(this.props.state.product.productTypeList, item.type),
-                img: item.img,
-                featrues: item.featrues,
-                promotionMessage: item.promotionMessage,
-                promotionMessageSecond: item.promotionMessageSecond,
-                usedPrice: item.usedPrice,
-                nowPrice: item.nowPrice,
+                typeName: item.typeName,
                 createTime: timestampToTime(parseInt(item.createTime)),
                 updateTime: timestampToTime(parseInt(item.updateTime)),
             }
@@ -350,32 +247,26 @@ class Product extends PureComponent {
         let data = {
             search: "",
             searchType: "",
-            pageSize: this.props.state.product.pageSize,
+            pageSize: this.props.state.productType.pageSize,
             start: 1,
-            sort: this.props.state.product.pageSort
+            sort: this.props.state.productType.pageSort
         };
-        searchProductTotal(data, this.setPageTotal)
-        searchProduct(data, this.searchData);
+        searchProductTypeTotal(data, this.setPageTotal)
+        searchProductType(data, this.searchData);
     }
 
     // 更新
     refresh = () => {
         this.props.changeProductDataLoading(true)
-        let searchValue;
-        if (this.props.state.product.searchType === 'type' && !!this.props.state.product.searchValue) {
-            searchValue = JSON.stringify(this.props.state.product.productTypeList.filter(item => item.typeName === this.props.state.product.searchValue)[0].id);
-        } else {
-            searchValue = this.props.state.product.searchValue
-        }
         let data = {
-            search: this.props.state.product.searchValue ? searchValue : "",
-            searchType: this.props.state.product.searchType ? this.props.state.product.searchType : "",
-            pageSize: this.props.state.product.pageSize,
-            start: this.props.state.product.pageNow,
-            sort: this.props.state.product.pageSort,
+            search: this.props.state.productType.searchValue ? this.props.state.productType.searchValue : "",
+            searchType: this.props.state.productType.searchType ? this.props.state.productType.searchType : "",
+            pageSize: this.props.state.productType.pageSize,
+            start: this.props.state.productType.pageNow,
+            sort: this.props.state.productType.pageSort,
         };
-        searchProductTotal(data, this.setPageTotal)
-        searchProduct(data, this.searchData);
+        searchProductTypeTotal(data, this.setPageTotal)
+        searchProductType(data, this.searchData);
     }
 
     render() {
@@ -391,8 +282,8 @@ class Product extends PureComponent {
                     </Checkbox>
                     <Divider style={{ margin: "5px 0" }} />
                     <CheckboxGroup
-                        options={this.props.state.product.allCheckcols}
-                        value={this.props.state.product.checkListCol}
+                        options={this.props.state.productType.typeAllCheckcols}
+                        value={this.props.state.productType.checkListCol}
                         onChange={this.checkBoxOnChange}
                     />
                     <Divider style={{ margin: "5px 0" }} />
@@ -405,7 +296,7 @@ class Product extends PureComponent {
                     <Breadcrumb.Item>首页</Breadcrumb.Item>
                     <Breadcrumb.Item>产品管理</Breadcrumb.Item>
                 </Breadcrumb>
-                <ProductModle />
+                <ProductTypeModle />
                 <div className={styles.content}>
                     <div className={styles.search}>
                         <Row>
@@ -417,12 +308,11 @@ class Product extends PureComponent {
                             </Col>
                             <Col span={12} offset={4}>
                                 <Row>
-
                                     <InputGroup compact >
                                         <Col span={8}>
                                             <Button type="primary" onClick={() => this.clearAll()}>清空</Button>
                                             <Select
-                                                value={this.props.state.product.searchType}
+                                                value={this.props.state.productType.searchType}
                                                 style={{ width: '70%', marginLeft: 10 }}
                                                 onChange={(value) => this.changeType(value)}>
                                                 <Option value="">无</Option>
@@ -436,11 +326,11 @@ class Product extends PureComponent {
                                         <Col span={16}>
                                             <Search
                                                 style={{ width: '92%' }}
-                                                defaultValue={this.props.state.product.searchValue}
-                                                value={this.props.state.product.searchValue}
+                                                defaultValue={this.props.state.productType.searchValue}
+                                                value={this.props.state.productType.searchValue}
                                                 onChange={value => this.searchValueChange(value)}
                                                 placeholder="请输入与筛选选项相对应的搜索内容(除类型和配置外都支持模糊搜索)"
-                                                onSearch={value => this.searchProduct(value)}
+                                                onSearch={value => this.searchProductType(value)}
                                                 enterButton />
                                             <Button type="primary" icon="redo" style={{ marginLeft: 10 }} title='更新' onClick={this.refresh} />
                                         </Col>
@@ -451,8 +341,8 @@ class Product extends PureComponent {
                     </div>
                     <Table
                         columns={this.state.columns}
-                        dataSource={this.props.state.product.productData}
-                        loading={this.props.state.product.productLoading}
+                        dataSource={this.props.state.productType.productData}
+                        loading={this.props.state.productType.productLoading}
                         onRow={(record) => {
                             return {
                                 onClick: () => {
@@ -461,12 +351,12 @@ class Product extends PureComponent {
                             }
                         }}
                         pagination={{
-                            current: this.props.state.product.pageNow,
-                            total: this.props.state.product.pageTotal,
+                            current: this.props.state.productType.pageNow,
+                            total: this.props.state.productType.pageTotal,
                             onChange: this.ChangePage,
                             showSizeChanger: true,
                             onShowSizeChange: this.ChangePageSize,
-                            pageSize: this.props.state.product.pageSize,
+                            pageSize: this.props.state.productType.pageSize,
                             pageSizeOptions: ['5', '10', '15', '20']
                         }}
                     />
@@ -482,24 +372,22 @@ const mapStateToProps = (state) => {
 };
 const mapDispatchToProps = (dispatch) => {
     return {
-        changeModleState: (data) => { dispatch(Actions.productModleState(data)); },
-        changeProductDataLoading: (data) => { dispatch(Actions.productDataLoading(data)); },
-        changeProductData: (data) => { dispatch(Actions.productData(data)); },
-        changeModleName: (data) => { dispatch(Actions.productModleName(data)); },
-        changeModleTitle: (data) => { dispatch(Actions.productModleTitle(data)); },
-        changeModelData: (data) => { dispatch(Actions.productModelData(data)); },
-        changeCheckListCol: (data) => { dispatch(Actions.productCheckListCol(data)); },
-        changePageSize: (data) => { dispatch(Actions.productPageSize(data)); },
-        changePageNow: (data) => { dispatch(Actions.productPageNow(data)); },
-        changePageTotal: (data) => { dispatch(Actions.productPageTotal(data)); },
-        changeSearchValue: (data) => { dispatch(Actions.productSearchValue(data)); },
-        changeSearchType: (data) => { dispatch(Actions.productSearchType(data)); },
+        changeModleState: (data) => { dispatch(Actions.productTypeModleState(data)); },
+        changeProductDataLoading: (data) => { dispatch(Actions.productTypeDataLoading(data)); },
+        changeProductData: (data) => { dispatch(Actions.productTypeData(data)); },
+        changeModleName: (data) => { dispatch(Actions.productTypeModleName(data)); },
+        changeModleTitle: (data) => { dispatch(Actions.productTypeModleTitle(data)); },
+        changeModelData: (data) => { dispatch(Actions.productTypeModelData(data)); },
+        changeCheckListCol: (data) => { dispatch(Actions.productTypeCheckListCol(data)); },
+        changePageSize: (data) => { dispatch(Actions.productTypePageSize(data)); },
+        changePageNow: (data) => { dispatch(Actions.productTypePageNow(data)); },
+        changePageTotal: (data) => { dispatch(Actions.productTypePageTotal(data)); },
+        changeSearchValue: (data) => { dispatch(Actions.productTypeSearchValue(data)); },
+        changeSearchType: (data) => { dispatch(Actions.productTypeSearchType(data)); },
 
         // 排序
-        changePageSort: (data) => { dispatch(Actions.productPageSort(data)); },
-        changePageSortCol: (data) => { dispatch(Actions.productPageSortCol(data)); },
-        // 产品分类
-        changeProductTypeList: (data) => { dispatch(Actions.productTypeList(data)); },
+        changePageSort: (data) => { dispatch(Actions.productTypePageSort(data)); },
+        changePageSortCol: (data) => { dispatch(Actions.productTypePageSortCol(data)); },
     }
 };
 export default connect(

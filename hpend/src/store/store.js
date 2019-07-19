@@ -11,7 +11,7 @@ import { createStore, combineReducers, applyMiddleware } from 'redux';
 import { persistStore, persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage'
 import thunk from 'redux-thunk';
-import { mainsReducer, usersReducer, accountsReducer, chatsReducer, productsReducer, cartsReducer } from '../reducers';
+import { mainsReducer, usersReducer, accountsReducer, chatsReducer, productsReducer, productTypesReducer, cartsReducer } from '../reducers';
 
 const reducer = combineReducers({
   main: mainsReducer,
@@ -19,7 +19,8 @@ const reducer = combineReducers({
   account: accountsReducer,
   chat: chatsReducer,
   product: productsReducer,
-  cart: cartsReducer
+  productType: productTypesReducer,
+  cart: cartsReducer,
 })
 
 // 状态未持久化

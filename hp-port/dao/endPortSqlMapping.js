@@ -17,7 +17,7 @@ var endPort = {
     // product
     queryEndProductByName: 'SELECT * FROM `product` WHERE productName=?',
     queryEndProductById: 'SELECT * FROM `product` WHERE id=?',
-    updateEndProduct: 'UPDATE product set productName=?, type=?, img=?, promotionMessage=?, featrues=?, promotionMessageSecond=?, usedPrice=?, nowPrice=?, createTime=NOW(), updateTime=NOW() where id=?',
+    updateEndProduct: 'UPDATE product set productName=?, type=?, img=?, promotionMessage=?, featrues=?, promotionMessageSecond=?, usedPrice=?, nowPrice=?, updateTime=NOW() where id=?',
     insertEndProduct: 'INSERT INTO product(productName, type, img, promotionMessage, featrues, promotionMessageSecond, usedPrice, nowPrice, createTime, updateTime) VALUES(?,?,?,?,?,?,?,?,NOW(), NOW())',
     searchAllProduct: 'SELECT count(*) as total FROM product',
     searchTotalProduct: 'SELECT FOUND_ROWS() as total',
@@ -25,9 +25,12 @@ var endPort = {
 
     // productType
     queryAllEndProductType: 'SELECT * FROM `productType`',
+    queryEndProductTypeByName: 'SELECT * FROM productType WHERE typeName=?',
+    queryEndProductTypeById: 'SELECT * FROM `productType` WHERE id=?',
+    updateEndProductTypeById: 'UPDATE productType SET typeName=?, updateTime=NOW() WHERE id=?',
     insertEndProductType: 'INSERT INTO productType(typeName, createTime, updateTime) VALUES(?,NOW(), NOW())',
     deleteEndProductType: 'DELETE FROM `productType` WHERE id=?',
-    countAllProduct: 'SELECT count(*) as total FROM product',
+    countAllProductType: 'SELECT count(*) as total FROM productType',
 
 
     // cart

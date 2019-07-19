@@ -4,18 +4,19 @@ import { connect } from 'react-redux';
 // import PropTypes from 'prop-types';
 import classify from '@magento/venia-concept/esm/classify';
 // const SearchBar = React.lazy(() => import('src/components/SearchBar'));
-import styles from './cart.module.less';
-import { searchCart, searchCartTotal } from '../../fetch/cart'
+import styles from './productInfo.module.less';
+import { searchProduct, searchProductTotal } from '../../fetch/product'
 import { getAllproductType } from '../../fetch/productType'
 import { timestampToTime, typeToTypeName } from '../../func/common'
 import { Table, Divider, Dropdown, Checkbox, Menu, Icon, Tag, Breadcrumb, Input, Col, Row, Select, Button, Modal, Spin } from 'antd';
+// import ProductModle from './model'
 
 const Search = Input.Search;
 const InputGroup = Input.Group;
 const { Option } = Select;
 const CheckboxGroup = Checkbox.Group;
 
-class Cart extends PureComponent {
+class Product extends PureComponent {
 
     constructor(props) {
         super(props);
@@ -24,100 +25,17 @@ class Cart extends PureComponent {
 
     componentDidMount() {
         // 首次加载用户数据
-        this.props.changeCartDataLoading(true);
+        this.props.changeProductDataLoading(true);
         // 先查询完产品分类再查产品
-        getAllproductType(this.searchCartMount);
+        getAllproductType(this.searchProductMount);
 
-        this.checkBoxOnChange(this.props.state.cart.checkListCol)
-    }
-
-    rowCol = (obj, index) => {
-        let row = [];
-        this.props.state.cart.cartData.map((item, index) => {
-            if (index > 0 && this.props.state.cart.cartData[index].name !== this.props.state.cart.cartData[index - 1].name) {
-                row.push(index - 1);
-            }
-        })
-        row.push(this.props.state.cart.pageSize - 1)
-        row.map((item, i) => {
-            if (i === 0) {
-                if (index === 0) {
-                    obj.props.rowSpan = row[0] + 1;
-                }
-                if (0 < index && index <= row[0]) {
-                    obj.props.rowSpan = 0;
-                }
-            }
-            else {
-                if (index === row[i - 1] + 1) {
-                    obj.props.rowSpan = row[i] - row[i - 1];
-                }
-                if (row[i - 1] + 1 < index && index <= row[i] + 1) {
-                    obj.props.rowSpan = 0;
-                }
-            }
-        })
+        this.checkBoxOnChange(this.props.state.product.checkListCol)
     }
 
     state = {
         indeterminate: true,
         checkAll: false,
         defaultColumns: [
-            {
-                title: '邮箱',
-                dataIndex: 'email',
-                key: 'email',
-                // width: 105,
-                render: (value, record, index) => {
-                    const obj = {
-                        children: <span title={record.email}>
-                            {record.email}
-                        </span>,
-                        props: {},
-                    };
-                    this.rowCol(obj, index)
-                    return obj
-                }
-            },
-            {
-                title: '区号',
-                dataIndex: 'phoneCode',
-                key: 'phoneCode',
-                width: 105,
-                render: (value, record, index) => {
-                    const obj = {
-                        children: <span title={record.phoneCode}>
-                            {record.phoneCode}
-                        </span>,
-                        props: {},
-                    };
-                    this.rowCol(obj, index)
-                    return obj
-                }
-            },
-            {
-                title: '电话',
-                dataIndex: 'phone',
-                key: 'phone',
-                width: 180,
-                render: (value, record, index) => {
-                    const obj = {
-                        children: <span title={record.phone}>
-                            {record.phone}
-                        </span>,
-                        props: {},
-                    };
-                    this.rowCol(obj, index)
-                    return obj
-                }
-            },
-            {
-                title: '产品名称',
-                dataIndex: 'productName',
-                key: 'productName',
-                width: '15%',
-                render: text => <a href="javascript:;">{text}</a>,
-            },
             {
                 title: '类别',
                 dataIndex: 'type',
@@ -133,19 +51,19 @@ class Cart extends PureComponent {
                 title: '封面',
                 dataIndex: 'img',
                 key: 'img',
-                width: 130,
+                width: 120,
                 render: (text, record) => {
-                    return <img className={styles.productBreImg} src={record.img.split('http').length > 1 ? record.img : 'http://localhost:3004/static/img/' + record.img} title={record.productName} />
+                    return <img className={styles.productBreImg} src={ record.img.split('http').length > 1 ? record.img : 'http://localhost:3004/static/img/' + record.img} title={record.productName} />
                 },
             },
             {
                 title: '配置参数',
                 dataIndex: 'featrues',
                 key: 'featrues',
-                // width: '15%',
+                width: '15%',
                 render: (text, record) => {
                     return JSON.parse(record.featrues).map((item, index) =>
-                        <li key={index + '123123'}>
+                        <li key={index+ '123123'}>
                             <span title={record.item}>{index + 1}. {item}</span>
                         </li>
                     )
@@ -223,21 +141,21 @@ class Cart extends PureComponent {
     // 选择列
     checkBoxOnChange = checkedList => {
         this.setState({
-            indeterminate: !!checkedList.length && checkedList.length < this.props.state.cart.allCheckcols.length,
-            checkAll: checkedList.length === this.props.state.cart.allCheckcols.length,
+            indeterminate: !!checkedList.length && checkedList.length < this.props.state.product.allCheckcols.length,
+            checkAll: checkedList.length === this.props.state.product.allCheckcols.length,
         });
         this.props.changeCheckListCol(checkedList);
         this.setState({ columns: this.mixColData(checkedList) })
 
         let title = '';
         this.state.defaultColumns.map(item => {
-            if (item.key === this.props.state.cart.searchType) {
+            if (item.key === this.props.state.product.searchType) {
                 title = item.title
             }
         })
-        // if (title !== '用户名称' && checkedList.indexOf(title) == -1) {
-        //     this.props.changeSearchType("")
-        // }
+        if (checkedList.indexOf(title) == -1) {
+            this.props.changeSearchType("")
+        }
     };
     // 全选
     onCheckAllChange = e => {
@@ -245,7 +163,7 @@ class Cart extends PureComponent {
             indeterminate: false,
             checkAll: e.target.checked,
         });
-        const checkedList = e.target.checked ? this.props.state.cart.allCheckcols : []
+        const checkedList = e.target.checked ? this.props.state.product.allCheckcols : []
         this.props.changeCheckListCol(checkedList);
         this.setState({ columns: this.mixColData(checkedList) })
     };
@@ -254,18 +172,11 @@ class Cart extends PureComponent {
     mixColData = (checkedList) => {
         // 获取
         let data = [{
-            title: '用户名称',
-            dataIndex: 'name',
-            key: 'name',
-            width: 140,
-            render: (value, record, index) => {
-                const obj = {
-                    children: <a href="javascript:;">{value}</a>,
-                    props: {},
-                };
-                this.rowCol(obj, index);
-                return obj
-            }
+            title: '产品名称',
+            dataIndex: 'productName',
+            key: 'productName',
+            width: '15%',
+            render: text => <a href="javascript:;">{text}</a>,
         }];
 
         checkedList.map((i, index) => {
@@ -279,10 +190,12 @@ class Cart extends PureComponent {
         data.push({
             title: '操作',
             key: 'action',
-            width: 100,
+            width: 180,
             render: (text, record) => (
                 <span>
-                    <Button type="primary" onClick={() => console.log('查看')}>查看</Button>
+                    <Button type="primary" onClick={() => this.AddProduct('edit')}>修改</Button>
+                    <Divider type="vertical" />
+                    <Button type="default" onClick={() => this.AddProduct('delete')}>删除</Button>
                 </span>
             ),
         })
@@ -291,47 +204,47 @@ class Cart extends PureComponent {
 
     // 修改每页展示行数
     ChangePageSize = (current, size) => {
-        this.props.changeCartDataLoading(true);
+        this.props.changeProductDataLoading(true);
         // 修改行数
         this.props.changePageSize(size);
         // 跳转第一页
         this.props.changePageNow(1);
         let searchValue;
-        if (this.props.state.cart.searchType === 'type' && !!this.props.state.cart.searchValue) {
-            searchValue = JSON.stringify(this.props.state.cart.cartTypeList.filter(item => item.typeName === this.props.state.cart.searchValue)[0].id);
+        if (this.props.state.product.searchType === 'type' && !!this.props.state.product.searchValue) {
+            searchValue = JSON.stringify(this.props.state.product.productTypeList.filter(item => item.typeName === this.props.state.product.searchValue)[0].id);
         } else {
-            searchValue = this.props.state.cart.searchValue
+            searchValue = this.props.state.product.searchValue
         }
         let data = {
-            search: this.props.state.cart.searchValue ? searchValue : "",
-            searchType: this.props.state.cart.searchType ? this.props.state.cart.searchType : "",
+            search: this.props.state.product.searchValue ? searchValue : "",
+            searchType: this.props.state.product.searchType ? this.props.state.product.searchType : "",
             pageSize: size,
             start: 0,
-            sort: this.props.state.cart.pageSort,
+            sort: this.props.state.product.pageSort,
         };
-        searchCartTotal(data, this.setPageTotal)
-        searchCart(data, this.searchData);
+        searchProductTotal(data, this.setPageTotal)
+        searchProduct(data, this.searchData);
     }
-    // 分页 
+    // 分页
     ChangePage = (page, pageSize) => {
-        this.props.changeCartDataLoading(true);
-        // 修改当前页数字 
+        this.props.changeProductDataLoading(true);
+        // 修改当前页数字
         this.props.changePageNow(page);
         let searchValue;
-        if (this.props.state.cart.searchType === 'type' && !!this.props.state.cart.searchValue) {
-            searchValue = JSON.stringify(this.props.state.cart.cartTypeList.filter(item => item.typeName === this.props.state.cart.searchValue)[0].id);
+        if (this.props.state.product.searchType === 'type' && !!this.props.state.product.searchValue) {
+            searchValue = JSON.stringify(this.props.state.product.productTypeList.filter(item => item.typeName === this.props.state.product.searchValue)[0].id);
         } else {
-            searchValue = this.props.state.cart.searchValue
+            searchValue = this.props.state.product.searchValue
         }
         let data = {
-            search: this.props.state.cart.searchValue ? searchValue : "",
-            searchType: this.props.state.cart.searchType ? this.props.state.cart.searchType : "name",
-            pageSize: this.props.state.cart.pageSize,
+            search: this.props.state.product.searchValue ? searchValue : "",
+            searchType: this.props.state.product.searchType ? this.props.state.product.searchType : "",
+            pageSize: this.props.state.product.pageSize,
             start: page,
-            sort: this.props.state.cart.pageSort,
+            sort: this.props.state.product.pageSort,
         };
-        searchCartTotal(data, this.setPageTotal)
-        searchCart(data, this.searchData);
+        searchProductTotal(data, this.setPageTotal)
+        searchProduct(data, this.searchData);
     }
 
     // 切换搜索类型 
@@ -344,87 +257,81 @@ class Cart extends PureComponent {
     }
 
     // 加载上一次的搜索
-    searchCartMount = (result) => {
-        this.props.changeCartDataLoading(true)
-        this.props.changeCartTypeList(result.data.AllProductType)
+    searchProductMount = (result) => {
+        this.props.changeProductDataLoading(true)
+        this.props.changeProductTypeList(result.data.AllProductType)
 
         let searchValue;
-        if (this.props.state.cart.searchType === 'type' && !!this.props.state.cart.searchValue) {
-            searchValue = JSON.stringify(this.props.state.cart.cartTypeList.filter(item => item.typeName === this.props.state.cart.searchValue)[0].id);
+        if (this.props.state.product.searchType === 'type' && !!this.props.state.product.searchValue) {
+            searchValue = JSON.stringify(this.props.state.product.productTypeList.filter(item => item.typeName === this.props.state.product.searchValue)[0].id);
         } else {
-            searchValue = this.props.state.cart.searchValue
+            searchValue = this.props.state.product.searchValue
         }
         let data = {
-            search: this.props.state.cart.searchValue ? searchValue : "",
-            searchType: this.props.state.cart.searchType ? this.props.state.cart.searchType : "",
-            pageSize: this.props.state.cart.pageSize,
-            start: this.props.state.cart.pageNow,
-            sort: this.props.state.cart.pageSort,
+            search: this.props.state.product.searchValue ? searchValue : "",
+            searchType: this.props.state.product.searchType ? this.props.state.product.searchType : "",
+            pageSize: this.props.state.product.pageSize,
+            start: this.props.state.product.pageNow,
+            sort: this.props.state.product.pageSort,
         };
-        searchCartTotal(data, this.setPageTotal)
-        searchCart(data, this.searchData);
+        searchProductTotal(data, this.setPageTotal)
+        searchProduct(data, this.searchData);
     }
 
 
     // 搜索
-    searchCart = (value) => {
-        this.props.changeCartDataLoading(true)
+    searchProduct = (value) => {
+        this.props.changeProductDataLoading(true)
         // 写入搜索内容
         this.props.changeSearchValue(value);
         this.props.changePageNow(1);
         let searchValue;
-        if (this.props.state.cart.searchType === 'type' && !!value) {
-            searchValue = JSON.stringify(this.props.state.cart.cartTypeList.filter(item => item.typeName === value)[0].id);
+        if (this.props.state.product.searchType === 'type' && !!value) {
+            searchValue = JSON.stringify(this.props.state.product.productTypeList.filter(item => item.typeName === value)[0].id);
         } else {
             searchValue = value
         }
         let data = {
             search: value !== "" ? searchValue : "",
-            searchType: this.props.state.cart.searchType ? this.props.state.cart.searchType : "",
-            pageSize: this.props.state.cart.pageSize,
+            searchType: this.props.state.product.searchType ? this.props.state.product.searchType : "",
+            pageSize: this.props.state.product.pageSize,
             start: 1,
-            sort: this.props.state.cart.pageSort
+            sort: this.props.state.product.pageSort
         };
-        searchCartTotal(data, this.setPageTotal);
-        searchCart(data, this.searchData);
+        searchProductTotal(data, this.setPageTotal);
+        searchProduct(data, this.searchData);
     }
 
     // 修改总数
     setPageTotal = (result) => {
-        this.props.changePageTotal(result.data.totalCartItem.total);
-        this.props.changeCartDataLoading(false)
+        this.props.changePageTotal(result.data.totalProduct.total);
+        this.props.changeProductDataLoading(false)
     }
     // 搜索结果写入表中
     searchData = (result) => {
         let data = []
-        result.data.searchCart.map((item, index) => {
+        result.data.searchProduct.map((item, index) => {
             return data[index] = {
-                key: index,
-                id: item.id,
-                name: item.name,
-                email: item.email,
-                phoneCode: item.phoneCode,
-                phone: item.phone,
+                key: item.id,
                 productName: item.productName,
-                type: item.typeName,
+                type: typeToTypeName(this.props.state.product.productTypeList, item.type),
                 img: item.img,
                 featrues: item.featrues,
                 promotionMessage: item.promotionMessage,
                 promotionMessageSecond: item.promotionMessageSecond,
                 usedPrice: item.usedPrice,
                 nowPrice: item.nowPrice,
-                productNum: item.productNum,
                 createTime: timestampToTime(parseInt(item.createTime)),
                 updateTime: timestampToTime(parseInt(item.updateTime)),
             }
         })
-        this.props.changeCartData(data)
-        this.props.changeCartDataLoading(false)
+        this.props.changeProductData(data)
+        this.props.changeProductDataLoading(false)
     }
 
     // 清空搜索
     clearAll = () => {
-        this.props.changeCartDataLoading(true)
+        this.props.changeProductDataLoading(true)
         // 写入搜索内容
         this.props.changeSearchValue('');
         this.props.changeSearchType('')
@@ -432,32 +339,32 @@ class Cart extends PureComponent {
         let data = {
             search: "",
             searchType: "",
-            pageSize: this.props.state.cart.pageSize,
+            pageSize: this.props.state.product.pageSize,
             start: 1,
-            sort: this.props.state.cart.pageSort
+            sort: this.props.state.product.pageSort
         };
-        searchCartTotal(data, this.setPageTotal)
-        searchCart(data, this.searchData);
+        searchProductTotal(data, this.setPageTotal)
+        searchProduct(data, this.searchData);
     }
 
     // 更新
     refresh = () => {
-        this.props.changeCartDataLoading(true)
+        this.props.changeProductDataLoading(true)
         let searchValue;
-        if (this.props.state.cart.searchType === 'type' && !!this.props.state.cart.searchValue) {
-            searchValue = JSON.stringify(this.props.state.cart.cartTypeList.filter(item => item.typeName === this.props.state.cart.searchValue)[0].id);
+        if (this.props.state.product.searchType === 'type' && !!this.props.state.product.searchValue) {
+            searchValue = JSON.stringify(this.props.state.product.productTypeList.filter(item => item.typeName === this.props.state.product.searchValue)[0].id);
         } else {
-            searchValue = this.props.state.cart.searchValue
+            searchValue = this.props.state.product.searchValue
         }
         let data = {
-            search: this.props.state.cart.searchValue ? searchValue : "",
-            searchType: this.props.state.cart.searchType ? this.props.state.cart.searchType : "",
-            pageSize: this.props.state.cart.pageSize,
-            start: this.props.state.cart.pageNow,
-            sort: this.props.state.cart.pageSort,
+            search: this.props.state.product.searchValue ? searchValue : "",
+            searchType: this.props.state.product.searchType ? this.props.state.product.searchType : "",
+            pageSize: this.props.state.product.pageSize,
+            start: this.props.state.product.pageNow,
+            sort: this.props.state.product.pageSort,
         };
-        searchCartTotal(data, this.setPageTotal)
-        searchCart(data, this.searchData);
+        searchProductTotal(data, this.setPageTotal)
+        searchProduct(data, this.searchData);
     }
 
     render() {
@@ -473,8 +380,8 @@ class Cart extends PureComponent {
                     </Checkbox>
                     <Divider style={{ margin: "5px 0" }} />
                     <CheckboxGroup
-                        options={this.props.state.cart.allCheckcols}
-                        value={this.props.state.cart.checkListCol}
+                        options={this.props.state.product.allCheckcols}
+                        value={this.props.state.product.checkListCol}
                         onChange={this.checkBoxOnChange}
                     />
                     <Divider style={{ margin: "5px 0" }} />
@@ -485,7 +392,7 @@ class Cart extends PureComponent {
             <Fragment>
                 <Breadcrumb style={{ margin: '16px 0' }}>
                     <Breadcrumb.Item>首页</Breadcrumb.Item>
-                    <Breadcrumb.Item>购物车管理</Breadcrumb.Item>
+                    <Breadcrumb.Item>订单管理</Breadcrumb.Item>
                 </Breadcrumb>
                 {/* <ProductModle /> */}
                 <div className={styles.content}>
@@ -504,7 +411,7 @@ class Cart extends PureComponent {
                                         <Col span={8}>
                                             <Button type="primary" onClick={() => this.clearAll()}>清空</Button>
                                             <Select
-                                                value={this.props.state.cart.searchType}
+                                                value={this.props.state.product.searchType}
                                                 style={{ width: '70%', marginLeft: 10 }}
                                                 onChange={(value) => this.changeType(value)}>
                                                 <Option value="">无</Option>
@@ -518,11 +425,11 @@ class Cart extends PureComponent {
                                         <Col span={16}>
                                             <Search
                                                 style={{ width: '92%' }}
-                                                defaultValue={this.props.state.cart.searchValue}
-                                                value={this.props.state.cart.searchValue}
+                                                defaultValue={this.props.state.product.searchValue}
+                                                value={this.props.state.product.searchValue}
                                                 onChange={value => this.searchValueChange(value)}
                                                 placeholder="请输入与筛选选项相对应的搜索内容(除类型和配置外都支持模糊搜索)"
-                                                onSearch={value => this.searchCart(value)}
+                                                onSearch={value => this.searchProduct(value)}
                                                 enterButton />
                                             <Button type="primary" icon="redo" style={{ marginLeft: 10 }} title='更新' onClick={this.refresh} />
                                         </Col>
@@ -532,10 +439,9 @@ class Cart extends PureComponent {
                         </Row>
                     </div>
                     <Table
-                        bordered
                         columns={this.state.columns}
-                        dataSource={this.props.state.cart.cartData}
-                        loading={this.props.state.cart.cartLoading}
+                        dataSource={this.props.state.product.productData}
+                        loading={this.props.state.product.productLoading}
                         onRow={(record) => {
                             return {
                                 onClick: () => {
@@ -544,12 +450,12 @@ class Cart extends PureComponent {
                             }
                         }}
                         pagination={{
-                            current: this.props.state.cart.pageNow,
-                            total: this.props.state.cart.pageTotal,
+                            current: this.props.state.product.pageNow,
+                            total: this.props.state.product.pageTotal,
                             onChange: this.ChangePage,
                             showSizeChanger: true,
                             onShowSizeChange: this.ChangePageSize,
-                            pageSize: this.props.state.cart.pageSize,
+                            pageSize: this.props.state.product.pageSize,
                             pageSizeOptions: ['5', '10', '15', '20']
                         }}
                     />
@@ -565,27 +471,27 @@ const mapStateToProps = (state) => {
 };
 const mapDispatchToProps = (dispatch) => {
     return {
-        changeModleState: (data) => { dispatch(Actions.cartModleState(data)); },
-        changeCartDataLoading: (data) => { dispatch(Actions.cartDataLoading(data)); },
-        changeCartData: (data) => { dispatch(Actions.cartData(data)); },
-        changeModleName: (data) => { dispatch(Actions.cartModleName(data)); },
-        changeModleTitle: (data) => { dispatch(Actions.cartModleTitle(data)); },
-        changeModelData: (data) => { dispatch(Actions.cartModelData(data)); },
-        changeCheckListCol: (data) => { dispatch(Actions.cartCheckListCol(data)); },
-        changePageSize: (data) => { dispatch(Actions.cartPageSize(data)); },
-        changePageNow: (data) => { dispatch(Actions.cartPageNow(data)); },
-        changePageTotal: (data) => { dispatch(Actions.cartPageTotal(data)); },
-        changeSearchValue: (data) => { dispatch(Actions.cartSearchValue(data)); },
-        changeSearchType: (data) => { dispatch(Actions.cartSearchType(data)); },
+        changeModleState: (data) => { dispatch(Actions.productModleState(data)); },
+        changeProductDataLoading: (data) => { dispatch(Actions.productDataLoading(data)); },
+        changeProductData: (data) => { dispatch(Actions.productData(data)); },
+        changeModleName: (data) => { dispatch(Actions.productModleName(data)); },
+        changeModleTitle: (data) => { dispatch(Actions.productModleTitle(data)); },
+        changeModelData: (data) => { dispatch(Actions.productModelData(data)); },
+        changeCheckListCol: (data) => { dispatch(Actions.productCheckListCol(data)); },
+        changePageSize: (data) => { dispatch(Actions.productPageSize(data)); },
+        changePageNow: (data) => { dispatch(Actions.productPageNow(data)); },
+        changePageTotal: (data) => { dispatch(Actions.productPageTotal(data)); },
+        changeSearchValue: (data) => { dispatch(Actions.productSearchValue(data)); },
+        changeSearchType: (data) => { dispatch(Actions.productSearchType(data)); },
 
         // 排序
-        changePageSort: (data) => { dispatch(Actions.cartPageSort(data)); },
-        changePageSortCol: (data) => { dispatch(Actions.cartPageSortCol(data)); },
+        changePageSort: (data) => { dispatch(Actions.productPageSort(data)); },
+        changePageSortCol: (data) => { dispatch(Actions.productPageSortCol(data)); },
         // 产品分类
-        changeCartTypeList: (data) => { dispatch(Actions.cartTypeList(data)); },
+        changeProductTypeList: (data) => { dispatch(Actions.productTypeList(data)); },
     }
 };
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(classify(styles)(Cart));
+)(classify(styles)(Product));

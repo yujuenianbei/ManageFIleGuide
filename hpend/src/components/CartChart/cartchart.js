@@ -8,7 +8,7 @@ import styles from './cartchart.module.less';
 import { searchCart, searchCartTotal } from '../../fetch/cart'
 import { getAllproductType } from '../../fetch/productType'
 import { timestampToTime, typeToTypeName } from '../../func/common'
-import { Table, Divider, Dropdown, Checkbox, Menu, Icon, Tag, Breadcrumb, Input, Col, Row, Select, Button, Modal, Spin } from 'antd';
+import { Tabs, Table, Divider, Dropdown, Checkbox, Menu, Icon, Tag, Breadcrumb, Input, Col, Row, Select, Button, Modal, Spin, Progress } from 'antd';
 import {
     G2,
     Chart,
@@ -26,15 +26,22 @@ import {
 } from "bizcharts";
 import DataSet from "@antv/data-set";
 import { ProductNumberOfTypeInCart } from '../../fetch/cartChart'
+const { TabPane } = Tabs;
+const { Option } = Select;
+const { Search } = Input;
 
 class CartChart extends PureComponent {
     state = {
         cartProductData: null,
         cartProductDv: {},
         cartProductCols: {},
+        tabSelect: 1
     }
     componentDidMount() {
         ProductNumberOfTypeInCart(this.cartProductData)
+    }
+    tabCallback = (key) => {
+        this.setState({ tabSelect: key })
     }
     cartProductData = (result) => {
         if (result.data.queryProductNumberOfType.length > 0) {
@@ -111,7 +118,6 @@ class CartChart extends PureComponent {
                 tickInterval: 20
             }
         };
-
         const label = {
             offset: 5, // 数值，设置坐标轴文本 label 距离坐标轴线的距离
             rotate: 0, // 旋转角度
@@ -126,6 +132,197 @@ class CartChart extends PureComponent {
             },
             autoRotate: false, // 文本是否需要自动旋转，默认为 true
         }
+        const areadata = [
+            {
+                country: 'Asia',
+                year: '0',
+                value: 502,
+            },
+            {
+                country: 'Asia',
+                year: '2',
+                value: 635,
+            },
+            {
+                country: 'Asia',
+                year: '4',
+                value: 809,
+            },
+            {
+                country: 'Asia',
+                year: '6',
+                value: 5268,
+            },
+            {
+                country: 'Asia',
+                year: '8',
+                value: 4400,
+            },
+            {
+                country: 'Asia',
+                year: '10',
+                value: 3634,
+            },
+            {
+                country: 'Asia',
+                year: '12',
+                value: 947,
+            },
+            {
+                country: 'Asia',
+                year: '14',
+                value: 502,
+            },
+            {
+                country: 'Asia',
+                year: '16',
+                value: 635,
+            },
+            {
+                country: 'Asia',
+                year: '18',
+                value: 809,
+            },
+            {
+                country: 'Asia',
+                year: '20',
+                value: 5268,
+            },
+            {
+                country: 'Asia',
+                year: '22',
+                value: 4400,
+            },
+            {
+                country: 'Asia',
+                year: '24',
+                value: 3634,
+            },
+
+
+            {
+                country: 'Africa',
+                year: '0',
+                value: 106,
+            },
+            {
+                country: 'Africa',
+                year: '2',
+                value: 107,
+            },
+            {
+                country: 'Africa',
+                year: '4',
+                value: 111,
+            },
+            {
+                country: 'Africa',
+                year: '6',
+                value: 1766,
+            },
+            {
+                country: 'Africa',
+                year: '8',
+                value: 221,
+            },
+            {
+                country: 'Africa',
+                year: '10',
+                value: 767,
+            },
+            {
+                country: 'Africa',
+                year: '12',
+                value: 133,
+            }, {
+                country: 'Africa',
+                year: '14',
+                value: 106,
+            },
+            {
+                country: 'Africa',
+                year: '16',
+                value: 107,
+            },
+            {
+                country: 'Africa',
+                year: '18',
+                value: 111,
+            },
+            {
+                country: 'Africa',
+                year: '20',
+                value: 1766,
+            },
+            {
+                country: 'Africa',
+                year: '22',
+                value: 221,
+            },
+            {
+                country: 'Africa',
+                year: '24',
+                value: 767,
+            },
+        ];
+        const areacols = {
+            year: {
+                type: 'linear',
+                tickInterval: 2,
+            },
+        };
+        const operations = this.state.tabSelect === "2" ? <Fragment>
+            <Select defaultValue="lucy" style={{ width: 120 }}>
+                <Option value="jack">Jack</Option>
+                <Option value="lucy">Lucy</Option>
+                <Option value="disabled" disabled>
+                    Disabled
+                    </Option>
+                <Option value="Yiminghe">yiminghe</Option>
+            </Select>
+            <Button>Extra Action</Button>
+        </Fragment> : this.state.tabSelect === "3" ? <Fragment>
+            <Search
+                placeholder="请输入产品ID"
+                enterButton
+                size="default"
+                onSearch={value => console.log(value)}
+            />
+        </Fragment> : '';
+
+
+
+        const cartRatedata = [
+            {
+                country: "中国",
+                population: 131744
+            },
+            {
+                country: "印度",
+                population: 104970
+            },
+            {
+                country: "美国",
+                population: 29034
+            },
+            {
+                country: "印尼",
+                population: 23489
+            },
+            {
+                country: "巴西",
+                population: 18203
+            }
+        ];
+        const dscr = new DataSet();
+        const dvcr = dscr.createView().source(cartRatedata);
+        dvcr.source(cartRatedata).transform({
+            type: "reverse",
+            callback(a, b) {
+                // 排序依据，和原生js的排序callback一致
+                return a.population - b.population > 0;
+            }
+        });
 
         return (
             <Fragment>
@@ -137,7 +334,7 @@ class CartChart extends PureComponent {
                     <div className={styles.charts}>
                         <Chart
                             marginLeft={30}
-                            height={155}
+                            height={165}
                             data={data}
                             scale={cols}
                             padding={[15, 5, 20, 15]}
@@ -155,12 +352,13 @@ class CartChart extends PureComponent {
                     <div className={styles.charts}>
                         <span>各分类购物车收藏量</span>
                         <Icon type="reload" onClick={this.refreshCartProductData} />
+                        {/* 环形图 */}
                         {this.state.cartProductDv && this.state.cartProductCols &&
                             <Chart
-                                height={145}
+                                height={155}
                                 data={this.state.cartProductDv}
                                 scale={this.state.cartProductCols}
-                                padding={[0, 0, 0, -50]}
+                                padding={[0, 0, 0, -180]}
                                 forceFit
                                 onGetG2Instance={g2Chart => {
                                     g2Chart.animate(false);
@@ -176,9 +374,8 @@ class CartChart extends PureComponent {
                                 /> */}
                                 <Legend
                                     position="right"
-                                    // offsetY={-window.innerHeight / 2 + 120}
                                     useHtml={true}
-                                    offsetX={-50}
+                                    offsetX={-80}
                                     reactive={true}
                                     containerTpl={'<div class="g2-legend">' + '<table class="g2-legend-list"></table>' + '</div>'}
                                     itemTpl={(value, color, checked, index) => {
@@ -187,7 +384,19 @@ class CartChart extends PureComponent {
                                         checked = checked ? 'checked' : 'unChecked';
                                         return '<tr class="g2-legend-list-item item-' + index + ' ' + checked + '" data-value="' + value + '" data-color=' + color + ' >' + '<td style="width:120px;"><i class="g2-legend-marker" style="width:10px;height:10px;display:inline-block;margin-right:10px;background-color:' + color + ';"></i>' + '<span class="g2-legend-text" style="color: #666">' + value + '</span></td>' + '<td style="text-align: right">' + percent + '</td>' + '</tr>';
                                     }}
-                                    offset={[15, 0]}
+                                    g2-legend={{
+                                        position: 'absolute'
+                                    }}
+                                    g2-legend-list={{
+                                        listStyleType: 'none',
+                                        margin: 0,
+                                        padding: 0
+                                    }}
+                                    g2-legend-list-item={{
+                                        marginRight: 5,
+                                        cursor: 'pointer',
+                                        fontSize: '14px'
+                                    }}
                                 />
                                 <Tooltip
                                     showTitle={false}
@@ -216,6 +425,7 @@ class CartChart extends PureComponent {
                                         }
                                     ]}
                                     style={{
+                                        marginLeft: -100,
                                         lineWidth: 1,
                                         stroke: "#fff"
                                     }}
@@ -225,10 +435,10 @@ class CartChart extends PureComponent {
                                         },
                                         leave: {
                                             animation: 'fadeOut',
-                                            // easing: 'easeElasticOut',
-                                            // delay: index => {
-                                            //     return index * 10;
-                                            // }
+                                            easing: 'easeElasticOut',
+                                            delay: index => {
+                                                return index * 10;
+                                            }
                                         }
                                     }}
                                 >
@@ -243,6 +453,117 @@ class CartChart extends PureComponent {
                         }
                     </div>
                     <div className={styles.charts}>
+                        <span>购物车活跃时间</span>
+                        <Chart height={150}
+                            data={areadata}
+                            scale={areacols}
+                            padding={[15, 5, 20, 35]}
+                            forceFit>
+                            <Axis name="year" />
+                            <Axis name="value" />
+                            <Legend />
+                            <Tooltip />
+                            <Geom type="areaStack" position="year*value" color={['country', ['l (90) 0:rgba(0, 146, 255, 1) 1:rgba(0, 146, 255, 0.1)', 'l (90) 0:rgba(0, 268, 0, 1) 1:rgba(0, 268, 0, 0.1)']]} />
+                            <Geom type="lineStack" position="year*value" size={2} color={['country', ['rgba(0, 146, 255, 1)', '#00ff00']]} />
+                        </Chart>
+                    </div>
+                    <div className={styles.charts}>
+                        <span>购物车活跃时间</span>
+                        <Chart height={150}
+                            data={areadata}
+                            scale={areacols}
+                            padding={[15, 5, 20, 35]}
+                            forceFit>
+                            <Axis name="year" />
+                            <Axis name="value" />
+                            <Legend />
+                            <Tooltip />
+                            <Geom type="areaStack" position="year*value" color={['country', ['l (90) 0:rgba(0, 146, 255, 1) 1:rgba(0, 146, 255, 0.1)', 'l (90) 0:rgba(0, 268, 0, 1) 1:rgba(0, 268, 0, 0.1)']]} />
+                            <Geom type="lineStack" position="year*value" size={2} color={['country', ['rgba(0, 146, 255, 1)', '#00ff00']]} />
+                        </Chart>
+                    </div>
+                </div>
+                <div className={styles.content}>
+                    <div className={styles.tabcharts}>
+                        <Tabs defaultActiveKey="1" onChange={this.tabCallback} tabBarExtraContent={operations}>
+                            <TabPane tab="总库存" key="1">
+                                <Chart height={300}
+                                    data={areadata}
+                                    scale={areacols}
+                                    padding={[15, 5, 20, 35]}
+                                    forceFit>
+                                    <Axis name="year" />
+                                    <Axis name="value" />
+                                    <Legend />
+                                    <Tooltip />
+                                    <Geom type="areaStack" position="year*value" color={['country', ['l (90) 0:rgba(0, 146, 255, 1) 1:rgba(0, 146, 255, 0.1)', 'l (90) 0:rgba(0, 268, 0, 1) 1:rgba(0, 268, 0, 0.1)']]} />
+                                    <Geom type="lineStack" position="year*value" size={2} color={['country', ['rgba(0, 146, 255, 1)', '#00ff00']]} />
+                                </Chart>
+                            </TabPane>
+                            <TabPane tab="类库存" key="2">
+                                <Chart height={300}
+                                    data={areadata}
+                                    scale={areacols}
+                                    padding={[15, 5, 20, 35]}
+                                    forceFit>
+                                    <Axis name="year" />
+                                    <Axis name="value" />
+                                    <Legend />
+                                    <Tooltip />
+                                    <Geom type="areaStack" position="year*value" color={['country', ['l (90) 0:rgba(0, 146, 255, 1) 1:rgba(0, 146, 255, 0.1)', 'l (90) 0:rgba(0, 268, 0, 1) 1:rgba(0, 268, 0, 0.1)']]} />
+                                    <Geom type="lineStack" position="year*value" size={2} color={['country', ['rgba(0, 146, 255, 1)', '#00ff00']]} />
+                                </Chart>
+                            </TabPane>
+                            <TabPane tab="产品库存和购物车" key="3">
+                                <Chart height={300}
+                                    data={areadata}
+                                    scale={areacols}
+                                    padding={[15, 5, 20, 35]}
+                                    forceFit>
+                                    <Axis name="year" />
+                                    <Axis name="value" />
+                                    <Legend />
+                                    <Tooltip />
+                                    <Geom type="areaStack" position="year*value" color={['country', ['l (90) 0:rgba(0, 146, 255, 1) 1:rgba(0, 146, 255, 0.1)', 'l (90) 0:rgba(0, 268, 0, 1) 1:rgba(0, 268, 0, 0.1)']]} />
+                                    <Geom type="lineStack" position="year*value" size={2} color={['country', ['rgba(0, 146, 255, 1)', '#00ff00']]} />
+                                </Chart>
+                            </TabPane>
+                        </Tabs>
+                    </div>
+                    <div className={styles.chart}>
+                        <span>当前各地库存总数</span>
+                        <Chart
+                            height={350}
+                            data={dvcr}
+                            padding={[5, 20, 20, 30]}
+                            forceFit>
+                            <Coord transpose />
+                            <Axis
+                                name="country"
+                                label={{
+                                    offset: 6
+                                }}
+                            />
+                            <Axis name="population" />
+                            <Tooltip />
+                            <Geom type="interval" position="country*population" />
+                        </Chart>
+                    </div>
+                </div>
+                <div className={styles.content}>
+                    <div className={styles.cartRate}>
+                        <div className={styles.cartRateTitle}>
+                            <span>1</span>
+                        </div>
+                        <Progress
+                            type="circle"
+                            width={140}
+                            strokeColor={{
+                                '0%': '#108ee9',
+                                '100%': '#87d068',
+                            }}
+                            percent={90}
+                        />
                     </div>
                 </div>
             </Fragment>

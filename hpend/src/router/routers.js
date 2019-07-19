@@ -5,6 +5,8 @@ import styles from './index.moudle.less';
 import Main from '../components/Content/Main';
 import Account from '../components/Account';
 import Product from '../components/Product';
+import ProductType from '../components/ProductType';
+
 import Order from '../components/Order';
 import Cart from '../components/Cart';
 
@@ -21,7 +23,7 @@ class Routers extends Component {
                 <Route path="/order" component={Order} />
                 <Route path="/cart" component={Cart} />
                 <Route path="/product" component={Product} />
-
+                <Route path="/productType" component={ProductType} />
                 <Route path="/cartchart" component={CartChart} />
 
                 

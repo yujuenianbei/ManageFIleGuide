@@ -85,6 +85,12 @@ class Left extends PureComponent {
                         </Link>
                     </Menu.Item>
                     <Menu.Item key="11">
+                        <Link to="/productType">
+                            <Icon type="team" />
+                            <span>产品分类管理</span>
+                        </Link>
+                    </Menu.Item>
+                    <Menu.Item key="12">
                         <Link to="/account">
                             <Icon type="team" />
                             <span>用户管理</span>
