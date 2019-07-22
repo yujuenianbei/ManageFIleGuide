@@ -12,3 +12,16 @@
 8. 邮政编码 postCode
 9. 创建时间 createTime
 10. 更新时间 updateTime
+
+
+    `id` bigint(20) NOT NULL AUTO_INCREMENT,
+    `email` varchar(255) DEFAULT NULL,
+    `firstName` varchar(255) DEFAULT NULL,
+    `lastName` varchar(255) DEFAULT NULL,
+    `phoneCode` int(6) DEFAULT NULL,
+    `phone` varchar(20) DEFAULT NULL,
+    `province` varchar(255) DEFAULT NULL,
+    `address` varchar(255) DEFAULT NULL,
+    `postCode` bigint(20) DEFAULT NULL,
+    `createTime` datetime NOT NULL,
+    `updateTime` datetime NOT NULL,

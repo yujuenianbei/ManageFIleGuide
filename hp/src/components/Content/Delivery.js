@@ -6,16 +6,19 @@ import styles from './Delivery.module.less';
 import Crumbs from '../Crumbs';
 import Message from '../Message';
 import DeliveryAddress from '../DeliveryAddress';
+import DeliveryAddressItem from '../DeliveryAddressItem';
 import DeliveryProduct from '../DeliveryProduct';
 import { Link } from 'react-router-dom';
 import { Icon, Collapse, Checkbox, Radio, Input } from 'antd';
 import { createForm } from 'rc-form';
 
+import { getGoodsResInfo, addGoodsResInfo } from '../../fetch/goodsResInfo';
+
 const RadioGroup = Radio.Group;
 
 class Delivery extends Component {
     state = {
-        createAccount: true,
+        createAccount: false,
         paymentMethod: 0,
         paymentMessage: false,
         billMethod: 1,
@@ -23,19 +26,39 @@ class Delivery extends Component {
         rulesChecked: false,
         smsChecked: true,
         totalCost: 0,
-        rightTop: 0
+        rightTop: 0,
+        // 登录用户的收货地址是否有
+        loginGoodsResInfo: false,
+        // 用户具体收货地址
+        GoodsResInfoItems: []
     }
     componentDidMount() {
         window.addEventListener('scroll', this.rightScrollListener);
+        getGoodsResInfo(this.props.state.user.useremail, this.getGoodsResInfoData)
+    }
+    getGoodsResInfoData = (result) => {
+        if (result.data.queryGoodsResInfoByEmail.length === 0) {
+            this.props.getOrderAddress(result.data.queryGoodsResInfoByEmail)
+            // 用户已注册但是没有添加收货地址
+            this.props.form.setFieldsValue({
+                email: this.props.state.user.useremail,
+            })
+        } else {
+            this.props.getOrderAddress(result.data.queryGoodsResInfoByEmail)
+            this.setState({
+                loginGoodsResInfo: true
+            })
+        }
+        console.log(result)
     }
     componentWillUnmount() {
         window.removeEventListener('scroll', this.rightScrollListener);
     }
     rightScrollListener = (e) => {
         const data = this.product.clientHeight + this.state.rightTop
-        console.log(document.documentElement.scrollTop - 94 + this.product.clientHeight)
+        // console.log(document.documentElement.scrollTop - 94 + this.product.clientHeight)
         if (document.documentElement.scrollTop >= 94) {
-            console.log(document.documentElement.scrollTop - 94 + this.product.clientHeight, this.form.clientHeight)
+            // console.log(document.documentElement.scrollTop - 94 + this.product.clientHeight, this.form.clientHeight)
             if (document.documentElement.scrollTop - 94 + 145 + this.product.clientHeight >= this.form.clientHeight) {
 
             } else {
@@ -70,12 +93,21 @@ class Delivery extends Component {
         } else {
             this.props.form.validateFields(
                 ['email', 'lastname', 'firstname', 'address', 'phone',
-                    'pin', 'province', 'city', 'district', 'pincode'], (error, value) => {
+                    'phoneCode', 'province', 'city', 'district', 'postCode'], (error, value) => {
                         if (!error) {
                             console.log(value);
+                            addGoodsResInfo(value, this.finishCheckOrder);
                         }
                         console.log(error, value);
                     });
+        }
+    }
+    finishCheckOrder = (result) => {
+        console.log(result)
+        if (result.data.regGoodsResInfo.length === 0) {
+            console.log(result)
+        } else {
+            this.setState({ loginGoodsResInfo: true })
         }
     }
     // 是否进行注册
@@ -90,6 +122,12 @@ class Delivery extends Component {
             callback('false')
         }
     }
+
+    // 确认收货地址
+    selectAddress = (index) => {
+        this.props.setOrderAddressItem(index)
+    }
+
     // 修改支付方式
     changePaymentMethod = e => {
         this.setState({
@@ -136,48 +174,69 @@ class Delivery extends Component {
                     <div className={styles.userInfo} ref={ref => { this.form = ref }}>
                         <div className={styles.leftContent + " " + styles.deliveryAddress}>
                             <h2>收货地址</h2>
-                            <DeliveryAddress form={this.props.form} />
-                            <div className={styles.deliveryPwd}>
-                                <div className={styles.deliveryAddressList}>
-                                    <Checkbox className={styles.createAccountCheck} onChange={this.regCheck} checked={this.state.createAccount}>创建账号</Checkbox>
+                            {!this.state.loginGoodsResInfo && this.props.state.user.loginState &&
+                                <DeliveryAddress form={this.props.form} loginGoodsResInfo={this.state.loginGoodsResInfo} />
+                            }
+                            {!this.props.state.user.loginState &&
+                                <div className={styles.deliveryPwd}>
+                                    <div className={styles.deliveryAddressList}>
+                                        <Checkbox className={styles.createAccountCheck} onChange={this.regCheck} checked={this.state.createAccount}>创建账号</Checkbox>
+                                    </div>
+                                    {this.state.createAccount && <Fragment>
+                                        <div className={styles.deliveryAddressList}>
+                                            <label className={styles.labels} required>电子邮件地址</label>
+                                            {getFieldDecorator('password', {
+                                                initialValue: '',
+                                                validate: [{
+                                                    trigger: ['onBlur', 'onChange'],
+                                                    rules: [{
+                                                        required: true,
+                                                        type: 'string',
+                                                        message: '密码不能为空',
+                                                    }],
+                                                }],
+                                            })(
+                                                <input type="password" placeholder="请输入密码" className={(errors = getFieldError('password')) ? styles.userInput_error : styles.userInput} />
+                                            )}
+                                            {(errors = getFieldError('password')) ? <div className={styles.errorMessage}>{errors.join(',')}</div> : null}
+                                        </div>
+                                        <div className={styles.deliveryAddressList}>
+                                            <label className={styles.labels} required>电子邮件地址</label>
+                                            {getFieldDecorator('confirmPassword', {
+                                                initialValue: '',
+                                                validate: [{
+                                                    trigger: ['onBlur', 'onChange'],
+                                                    rules: [{
+                                                        required: true,
+                                                        validator: (rule, value, cb) => this.confirmPassword(rule, value, cb),
+                                                        message: '密码不一致',
+                                                    }],
+                                                }],
+                                            })(
+                                                <input type="PASSWORD" placeholder="请再次输入密码" className={(errors = getFieldError('confirmPassword')) ? styles.userInput_error : styles.userInput} />
+                                            )}
+                                            {(errors = getFieldError('confirmPassword')) ? <div className={styles.errorMessage}>{errors.join(',')}</div> : null}
+                                        </div>
+                                    </Fragment>}
                                 </div>
-                                {this.state.createAccount && <Fragment>
-                                    <div className={styles.deliveryAddressList}>
-                                        <label className={styles.labels} required>电子邮件地址</label>
-                                        {getFieldDecorator('password', {
-                                            initialValue: '',
-                                            validate: [{
-                                                trigger: ['onBlur', 'onChange'],
-                                                rules: [{
-                                                    required: true,
-                                                    type: 'string',
-                                                    message: '密码不能为空',
-                                                }],
-                                            }],
-                                        })(
-                                            <input type="password" placeholder="请输入密码" className={(errors = getFieldError('password')) ? styles.userInput_error : styles.userInput} />
-                                        )}
-                                        {(errors = getFieldError('password')) ? <div className={styles.errorMessage}>{errors.join(',')}</div> : null}
-                                    </div>
-                                    <div className={styles.deliveryAddressList}>
-                                        <label className={styles.labels} required>电子邮件地址</label>
-                                        {getFieldDecorator('confirmPassword', {
-                                            initialValue: '',
-                                            validate: [{
-                                                trigger: ['onBlur', 'onChange'],
-                                                rules: [{
-                                                    required: true,
-                                                    validator: (rule, value, cb) => this.confirmPassword(rule, value, cb),
-                                                    message: '密码不一致',
-                                                }],
-                                            }],
-                                        })(
-                                            <input type="PASSWORD" placeholder="请再次输入密码" className={(errors = getFieldError('confirmPassword')) ? styles.userInput_error : styles.userInput} />
-                                        )}
-                                        {(errors = getFieldError('confirmPassword')) ? <div className={styles.errorMessage}>{errors.join(',')}</div> : null}
-                                    </div>
-                                </Fragment>}
-                            </div>
+                            }
+                            {this.state.loginGoodsResInfo && this.props.state.user.loginState &&
+                                this.props.state.order.orderAddress.map((item, index) => (
+                                    <DeliveryAddressItem
+                                        index={index}
+                                        key={'sdasdqwe' + index}
+                                        email={item.email}
+                                        firstaName={item.firstaName}
+                                        lastName={item.lastName}
+                                        phoneCode={item.phoneCode}
+                                        phone={item.phone}
+                                        province={item.province}
+                                        address={item.address}
+                                        postCode={item.postCode}
+                                        onClick={e => this.selectAddress(index)}
+                                    />
+                                ))
+                            }
                         </div>
                         <div className={styles.leftContent + " " + styles.deliveryAddress}>
                             <h2>安全付款方式</h2>
@@ -212,7 +271,7 @@ class Delivery extends Component {
                                             }
                                             {this.state.billType === 2 &&
                                                 <Fragment>
-                                                    <input placeholder="公司发票抬头"></input><br/>
+                                                    <input placeholder="公司发票抬头"></input><br />
                                                     <input placeholder="纳税人识别号"></input>
                                                 </Fragment>
                                             }
@@ -239,7 +298,7 @@ class Delivery extends Component {
                     <div className={styles.productInfo} ref={ref => { this.product = ref }} style={{ top: this.state.rightTop }}>
                         <h3>商品清单</h3>
                         {this.props.state.cart.productInfo.map((item, index) => {
-                            return <DeliveryProduct items={item} />
+                            return <DeliveryProduct key={'sdacdsfa' + index} items={item} />
                         })}
                         <div className={styles.productPrice}>
                             <table>
@@ -280,6 +339,8 @@ const mapDispatchToProps = (dispatch) => {
     return {
         addProductNumInCart: (data) => { dispatch(Actions.productNumInCart(data)); },
         addProductInCart: (data) => { dispatch(Actions.productInCart(data)); },
+        setOrderAddressItem: (data) => { dispatch(Actions.orderAddressItem(data)); },
+        getOrderAddress: (data) => { dispatch(Actions.orderAddress(data)); },
     }
 };
 export default connect(

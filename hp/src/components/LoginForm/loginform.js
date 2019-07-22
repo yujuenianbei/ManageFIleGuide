@@ -40,7 +40,8 @@ class Form extends PureComponent {
                 // addTodo({ variables: { name: value.username, password: value.password } });
                 var query = `mutation login($email: String,$name: String, $password: String){
                     login(email: $email,name: $name, password: $password){
-                      id
+                      id,
+                      email,
                       name,
                       state,
                       token
@@ -69,6 +70,7 @@ class Form extends PureComponent {
                             localStorage.setItem("token", result.data.login[0].token);
                             localStorage.setItem("id", result.data.login[0].id);
                             this.props.changeLoginstate(1);
+                            this.props.changeUserEmail(result.data.login[0].email)
                             this.props.changeUsername(result.data.login[0].name)
                             this.props.props.history.push('/');
                         } else {
@@ -114,9 +116,6 @@ class Form extends PureComponent {
                     validate: [{
                         trigger: ['onBlur', 'onChange'],
                         rules: [{
-                            // required: true,
-                            // type: 'string',
-
                             // 可以通过这种方式实时校验（自定义校验规则）
                             message: '请输入正确的用户名',
                             validator: (rule, value, cb) => this.validateUserNameTimely(rule, value, cb),
@@ -169,6 +168,7 @@ const mapDispatchToProps = (dispatch) => {
     return {
         changeLoginstate: (data) => { dispatch(Actions.loginstate(data)); },
         changeUsername: (data) => { dispatch(Actions.usernanme(data)); },
+        changeUserEmail: (data) => { dispatch(Actions.useremail(data)) }
     }
 };
 export default connect(

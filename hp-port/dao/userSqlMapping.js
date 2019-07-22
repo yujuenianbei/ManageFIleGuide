@@ -74,7 +74,18 @@ var user = {
     // 分页
     queryProductByPage: "SELECT * FROM product ORDER BY id ASC limit ?,?",
     // 获取产品数量
-    queryProductNum: "SELECT count(id) count FROM product ORDER BY id ASC"
+    queryProductNum: "SELECT count(id) count FROM product ORDER BY id ASC",
+
+
+
+    // 收货地址
+    queryGoodsResInfo: "SELECT * FROM goodsResInfo where id= ?",
+    insertGoodsResInfo: "INSERT INTO goodsResInfo(email, firstName, lastName, phoneCode, phone, province, address, postCode, createTime, updateTime) VALUES(?,?,?,?,?,?,?,?,NOW(), NOW())",
+    updateGoodsResInfo: "UPDATE goodsResInfo SET email=?, firstName=?, lastName=?, phoneCode=?, phone=?, province=?, address=?, postCode=?, updateTime=NOW()",
+    deleteGoodsResInfo: "DELETE FROM goodsResInfo WHERE id=?",
+
+    // 根据用户登录状态查询收货地址
+    quertGoodsResInfoByEmail: "SELECT * FROM goodsResInfo where email= ?"
 };
 
 module.exports = user;

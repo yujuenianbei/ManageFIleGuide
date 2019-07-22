@@ -11,14 +11,15 @@ import { createStore, combineReducers, applyMiddleware } from 'redux';
 import { persistStore, persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage'
 import thunk from 'redux-thunk';
-import { mainsReducer, cartsReducer, usersReducer, filtersReducer, productsReducer } from '../reducers';
+import { mainsReducer, cartsReducer, usersReducer, filtersReducer, productsReducer, ordersReducer } from '../reducers';
 
 const reducer = combineReducers({
   main: mainsReducer,
   cart: cartsReducer,
   user: usersReducer,
   filter: filtersReducer,
-  product: productsReducer
+  product: productsReducer,
+  order: ordersReducer
 })
 
 // 状态未持久化

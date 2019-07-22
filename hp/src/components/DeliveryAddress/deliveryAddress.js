@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import classify from '@magento/venia-concept/esm/classify';
 import styles from './deliveryAddress.module.less';
-import { Link } from 'react-router-dom';
+import * as Actions from '../../actions/index';
+import { connect } from 'react-redux';
 class DeliveryAddress extends Component {
     render() {
         let errors;
         const { getFieldError, getFieldDecorator } = this.props.form;
+        const { loginGoodsResInfo } = this.props;
         return (
             <div className={styles.deliveryAddress}>
                 <div className={styles.deliveryAddressList}>
@@ -21,7 +23,7 @@ class DeliveryAddress extends Component {
                             }],
                         }],
                     })(
-                        <input type="email" placeholder="请收入邮箱" className={(errors = getFieldError('email')) ? styles.userInput_error : styles.userInput} />
+                        <input type="email" placeholder="请收入邮箱" className={(errors = getFieldError('email')) ? styles.userInput_error : styles.userInput} disabled={!loginGoodsResInfo ? 'disabled' : ''} />
                     )}
                     {(errors = getFieldError('email')) ? <div className={styles.errorMessage}>{errors.join(',')}</div> : null}
                 </div>
@@ -91,8 +93,8 @@ class DeliveryAddress extends Component {
                     })(
                         <input type="text" placeholder="请输入您的地址" className={(errors = getFieldError('phone') || getFieldError('pin')) ? styles.phone_error : styles.phone} />
                     )}
-                    {getFieldDecorator('pin', {
-                        initialValue: '',
+                    {getFieldDecorator('phoneCode', {
+                        initialValue: '86',
                         validate: [{
                             trigger: ['onBlur', 'onChange'],
                             rules: [{
@@ -103,7 +105,7 @@ class DeliveryAddress extends Component {
                         }],
                     })(
                         <select className={(errors = getFieldError('phone') || getFieldError('pin')) ? styles.userInputPhonePin_error : styles.phonePin}>
-                            <option value="086">086</option>
+                            <option value="86">86</option>
                         </select>
                     )}
                     {(errors = getFieldError('phone') || getFieldError('pin')) ? <div className={styles.errorMessage}>{errors.join(',')}</div> : null}
@@ -123,7 +125,7 @@ class DeliveryAddress extends Component {
                     })(
                         <select className={(errors = getFieldError('province')) ? styles.citySelectError : styles.citySelect} >
                             <option value="">请选择一个地区或省</option>
-                            <option value="570">上海</option>
+                            <option value="上海">上海</option>
                         </select>
                     )}
                     {(errors = getFieldError('province')) ? <div className={styles.errorMessage}>{errors.join(',')}</div> : null}
@@ -189,7 +191,7 @@ class DeliveryAddress extends Component {
                 </div>
                 <div className={styles.deliveryAddressList}>
                     <label className={styles.labels} required>邮政编码</label>
-                    {getFieldDecorator('pincode', {
+                    {getFieldDecorator('postCode', {
                         initialValue: '',
                         validate: [{
                             trigger: ['onBlur', 'onChange'],
@@ -200,12 +202,28 @@ class DeliveryAddress extends Component {
                             }],
                         }],
                     })(
-                        <input type="text" placeholder="请输入您的邮编" className={(errors = getFieldError('pincode')) ? styles.userInput_error : styles.userInput} />
+                        <input type="text" placeholder="请输入您的邮编" className={(errors = getFieldError('postCode')) ? styles.userInput_error : styles.userInput} />
                     )}
-                    {(errors = getFieldError('pincode')) ? <div className={styles.errorMessage}>{errors.join(',')}</div> : null}
+                    {(errors = getFieldError('postCode')) ? <div className={styles.errorMessage}>{errors.join(',')}</div> : null}
                 </div>
             </div>
         );
     }
 }
-export default classify(styles)(DeliveryAddress);
+
+const mapStateToProps = (state) => {
+    return {
+        state
+    };
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        addProductNumInCart: (data) => { dispatch(Actions.productNumInCart(data)); },
+        addProductInCart: (data) => { dispatch(Actions.productInCart(data)); },
+    }
+};
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(classify(styles)(DeliveryAddress));

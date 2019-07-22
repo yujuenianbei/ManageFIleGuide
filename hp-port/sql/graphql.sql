@@ -123,6 +123,24 @@ CREATE TABLE IF NOT EXISTS cartItem
   PRIMARY KEY (`id`)
 ) ENGINE = INNODB CHARACTER SET utf8;
 
+-- 收货地址信息
+CREATE TABLE IF NOT EXISTS goodsResInfo
+(
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `email` varchar(255) DEFAULT NULL,
+  `firstName` varchar(255) DEFAULT NULL,
+  `lastName` varchar(255) DEFAULT NULL,
+  `phoneCode` int(6) DEFAULT NULL,
+  `phone` varchar(20) DEFAULT NULL,
+  `province` varchar(255) DEFAULT NULL,
+  `address` varchar(255) DEFAULT NULL,
+  `postCode` bigint(20) DEFAULT NULL,
+  `createTime` datetime NOT NULL,
+  `updateTime` datetime NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE = INNODB CHARACTER SET utf8;
+
+
 -- 二维码登录
 CREATE TABLE IF NOT EXISTS qrcode
 (
