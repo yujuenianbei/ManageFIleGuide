@@ -1,8 +1,6 @@
 export const PRODUCTINFO = 'PRODUCTINFO';
 export const PRODUCTNUM = 'PRODUCTNUM';
 export const USERINFO = 'USERINFO';
-export const EXPRESSINCART = 'EXPRESSINCART';
-
 export const CARTERROR = 'CARTERROR';
 export const MESSAGEPRODUCT = 'MESSAGEPRODUCT';
 export const MESSAGEEXPRESS = 'MESSAGEEXPRESS';
@@ -25,14 +23,6 @@ export function productInCart(data) {
 export function userinfoInCart(data) {
   return {
     type: USERINFO,
-    data
-  }
-}
-
-// 购物车中的配送方式
-export function expressInCart(data) {
-  return {
-    type: EXPRESSINCART,
     data
   }
 }

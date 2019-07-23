@@ -5,10 +5,10 @@ import * as Actions from '../../actions/index';
 import { connect } from 'react-redux';
 class DeliveryAddressItem extends Component {
     render() {
-        const { index, email, firstaName, lastName, phoneCode, phone,
+        const { id, index, email, firstaName, lastName, phoneCode, phone,
             province, address, postCode } = this.props;
         return (
-            <div className={this.props.state.order.orderAddressItem === index ? styles.deliveryAddressItem + ' ' + styles.selected : styles.deliveryAddressItem} onClick={this.props.onClick}>
+            <div className={this.props.state.order.orderAddressItem === id ? styles.deliveryAddressItem + ' ' + styles.selected : styles.deliveryAddressItem} onClick={this.props.onClick}>
                 <div className={styles.item}>
                     <label>姓: </label><span>{lastName}</span>
                 </div>

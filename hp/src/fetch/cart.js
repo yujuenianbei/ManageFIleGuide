@@ -139,5 +139,32 @@ const deleteCartProduct = (id, func) => {
 }
 
 
+// 获取配送方式
+const getDeliveryMethod = (func) => {
+    var query = `query queryDeliveryMethod{
+        queryDeliveryMethod{
+          id
+          name
+        }
+      }`;
+    fetch('http://localhost:3004/graphql', {
+        method: 'POST',
+        mode: "cors",
+        headers: { 
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'login': localStorage.getItem('loginState'),
+            'token': localStorage.getItem('token')
+        },
+        body: JSON.stringify({
+            query,
+            variables: {}
+        })
+    })
+        .then(r => r.json())
+        .then(result => { func(result) });
+}
 
-export { deleteCartProduct, postCart, getUserCart, getQRcode, verifyQRcode, deleteQRcode }
+
+
+export { deleteCartProduct, postCart, getUserCart, getQRcode, verifyQRcode, deleteQRcode, getDeliveryMethod }

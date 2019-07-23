@@ -2,7 +2,6 @@ import {
   PRODUCTINFO,
   PRODUCTNUM,
   USERINFO,
-  EXPRESSINCART,
   CARTERROR,
   MESSAGEPRODUCT,
   MESSAGEEXPRESS
@@ -12,7 +11,6 @@ const initValue = {
   productInfo: [],
   productNum: 0,
   userInfo: null,
-  express: null,
   cartError: false,
   messageProduct: '',
   messageExpress: ''
@@ -29,9 +27,9 @@ export default (state = initValue, action) => {
     case USERINFO: {
       return Object.assign({}, state, { userInfo: data })
     }
-    case EXPRESSINCART: {
-      return Object.assign({}, state, { express: data })
-    }
+    // case EXPRESSINCART: {
+    //   return Object.assign({}, state, { express: data })
+    // }
     case CARTERROR: {
       return Object.assign({}, state, { cartError: data })
     }

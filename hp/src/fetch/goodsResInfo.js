@@ -2,7 +2,7 @@
 const getGoodsResInfo = (data, func) => {
     const query = `mutation queryGoodsResInfoByEmail($email: String){
         queryGoodsResInfoByEmail(email:$email){
-        email, firstName, lastName, phoneCode, phone, province, address, postCode
+        id, email, firstName, lastName, phoneCode, phone, province, address, postCode
         }
       }`;
 

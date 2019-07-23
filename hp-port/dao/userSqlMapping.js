@@ -75,6 +75,8 @@ var user = {
     queryProductByPage: "SELECT * FROM product ORDER BY id ASC limit ?,?",
     // 获取产品数量
     queryProductNum: "SELECT count(id) count FROM product ORDER BY id ASC",
+    // 查询多个产品
+    queryProductIn: "SELECT * FROM product WHERE id in ?",
 
 
 
@@ -85,7 +87,16 @@ var user = {
     deleteGoodsResInfo: "DELETE FROM goodsResInfo WHERE id=?",
 
     // 根据用户登录状态查询收货地址
-    quertGoodsResInfoByEmail: "SELECT * FROM goodsResInfo where email= ?"
+    quertGoodsResInfoByEmail: "SELECT * FROM goodsResInfo where email= ?",
+
+    // 获取配送方式
+    queryAllDeliveryMethod: "SELECT * FROM deliveryMethod",
+    // 获取支付方式
+    queryAllPayMethod: "SELECT * FROM payMethod",
+
+    // 用户创建订单
+    addOrder: "INSERT INTO orders(orderOdd, email, payMethod, payState, payTime, deliveryMethod, deliveryHopeTime, expressOdd, goodsResAddress, productList, fullPrice, orderState, createTime, updateTime) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,NOW(), NOW())",
+    queryOrder: "SELECT * FROM orders WHERE id=?"
 };
 
 module.exports = user;

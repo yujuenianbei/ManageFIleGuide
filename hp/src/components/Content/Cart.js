@@ -10,7 +10,7 @@ import { Link } from 'react-router-dom';
 import { Icon, Collapse, Radio } from 'antd';
 import { createForm } from 'rc-form';
 // 请求函数
-import { deleteCartProduct, postCart } from '../../fetch/cart';
+import { deleteCartProduct, postCart, getDeliveryMethod } from '../../fetch/cart';
 import Product from '../../data/product';
 const Panel = Collapse.Panel;
 class CheckoutCart extends Component {
@@ -20,6 +20,7 @@ class CheckoutCart extends Component {
         totalCost: 0,
         productMayLike: Product.productMayLike,
         productWatched: Product.productWatched,
+        deliveryMethod: []
     }
     countCost = (data) => {
         let cost = 0;
@@ -35,7 +36,13 @@ class CheckoutCart extends Component {
         this.props.changeMessageInProduct('');
         this.props.changeMessageInExpress('');
         this.countCost(this.props.state.cart.productInfo);
+        getDeliveryMethod(this.setDeliveryMethod)
     }
+    // 设置配送方式
+    setDeliveryMethod = (result) => {
+        this.setState({ deliveryMethod: result.data.queryDeliveryMethod })
+    }
+
     componentDidMount() {
         window.addEventListener('scroll', this.rightScrollListener);
     }
@@ -212,16 +219,16 @@ class CheckoutCart extends Component {
     // 跳转checkout
     toCheckout = () => {
         const productLength = this.props.state.cart.productInfo.length;
-        const express = this.props.state.cart.express;
+        const delivery = this.props.state.order.delivery;
         this.changeError();
-        if (productLength && express) {
+        if (productLength && delivery) {
             this.props.history.push('/onestepcheckout');
             this.props.changeMessageInProduct('');
             this.props.changeMessageInExpress('');
-        } else if (!productLength && express) {
+        } else if (!productLength && delivery) {
             this.props.changeMessageInProduct('请添加产品');
             this.props.changeMessageInExpress('');
-        } else if (productLength && !express) {
+        } else if (productLength && !delivery) {
             this.props.changeMessageInProduct('');
             this.props.changeMessageInExpress('请选择配送方式');
         } else {
@@ -233,8 +240,8 @@ class CheckoutCart extends Component {
     // change cartError
     changeError = () => {
         const productLength = this.props.state.cart.productInfo.length;
-        const express = this.props.state.cart.express;
-        if (productLength && express) {
+        const delivery = this.props.state.order.delivery;
+        if (productLength && delivery) {
             this.props.changeCartError(false)
         } else {
             this.props.changeCartError(true)
@@ -306,16 +313,14 @@ class CheckoutCart extends Component {
                                                     this.props.state.cart.cartError && this.props.state.cart.messageExpress &&
                                                     <Message type="warn">{this.props.state.cart.messageExpress}</Message>
                                                 }
-                                                <Radio.Group onChange={this.onChangeExpress} value={this.props.state.cart.express}>
-                                                    <Radio style={radioStyle} value={1}>
-                                                        菜鸟配送
-                                                    </Radio>
-                                                    <Radio style={radioStyle} value={2}>
-                                                        京东配送
-                                                    </Radio>
-                                                    <Radio style={radioStyle} value={3}>
-                                                        顺丰快递
-                                                    </Radio>
+                                                <Radio.Group onChange={this.onChangeExpress} value={this.props.state.order.delivery}>
+                                                    {this.state.deliveryMethod.length !== 0 &&
+                                                        this.state.deliveryMethod.map(item => (
+                                                            <Radio style={radioStyle} value={parseInt(item.id)}>
+                                                                {item.name}
+                                                            </Radio>
+                                                        ))
+                                                    }
                                                 </Radio.Group>
                                             </Panel>
                                         </Collapse>
@@ -422,7 +427,7 @@ const mapDispatchToProps = (dispatch) => {
         addProductNumInCart: (data) => { dispatch(Actions.productNumInCart(data)); },
         addProductInCart: (data) => { dispatch(Actions.productInCart(data)); },
         loadingOnHeader: (data) => { dispatch(Actions.loadingHeader(data)); },
-        changeExpress: (data) => { dispatch(Actions.expressInCart(data)); },
+        changeExpress: (data) => { dispatch(Actions.orderDelivery(data)); },
         changeCartError: (data) => { dispatch(Actions.cartError(data)); },
         changeMessageInProduct: (data) => { dispatch(Actions.messageInProduct(data)); },
         changeMessageInExpress: (data) => { dispatch(Actions.messageInExpress(data)); },

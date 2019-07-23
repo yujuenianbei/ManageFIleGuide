@@ -140,6 +140,56 @@ CREATE TABLE IF NOT EXISTS goodsResInfo
   PRIMARY KEY (`id`)
 ) ENGINE = INNODB CHARACTER SET utf8;
 
+-- 订单
+CREATE TABLE IF NOT EXISTS orders
+(
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `orderOdd` varchar(255) DEFAULT NULL,
+  `email` varchar(255) DEFAULT NULL,
+  `payMethod` int(2) DEFAULT NULL,
+  `payTime` datetime DEFAULT NULL,
+  `payState` int(1) DEFAULT NULL,
+  `deliveryMethod` int(2) DEFAULT NULL,
+  `deliveryHopeTime` varchar(20) DEFAULT NULL,
+  `expressOdd` varchar(255) DEFAULT NULL,
+  `goodsResAddress` bigint(20) DEFAULT NULL,
+  `productList` varchar(2000) DEFAULT NULL,
+  `fullPrice` bigint(20) DEFAULT NULL,
+  `orderState` int(2) DEFAULT NULL,
+  `createTime` datetime NOT NULL,
+  `updateTime` datetime NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE = INNODB CHARACTER SET utf8;
+
+-- 支付方式
+CREATE TABLE IF NOT EXISTS payMethod
+(
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `createTime` datetime NOT NULL,
+  `updateTime` datetime NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE = INNODB CHARACTER SET utf8;
+
+-- 支付方式
+CREATE TABLE IF NOT EXISTS deliveryMethod
+(
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `createTime` datetime NOT NULL,
+  `updateTime` datetime NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE = INNODB CHARACTER SET utf8;
+
+-- 订单状态
+CREATE TABLE IF NOT EXISTS orderState
+(
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `createTime` datetime NOT NULL,
+  `updateTime` datetime NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE = INNODB CHARACTER SET utf8;
 
 -- 二维码登录
 CREATE TABLE IF NOT EXISTS qrcode
@@ -163,6 +213,40 @@ CREATE TABLE IF NOT EXISTS qrcode
 --       FROM qrcode  
 --       WHERE uid = 'b8466408-20b7-460c-8907-9fbca82eaba1'
 -- );
+
+-- -- ----------------------------
+-- --  Records of `paymethod`
+-- -- ----------------------------
+-- INSERT INTO `payMethod` VALUES (1, '微信', NOW(), NOW());
+-- INSERT INTO `payMethod` VALUES (2, '支付宝', NOW(), NOW());
+-- INSERT INTO `payMethod` VALUES (3, '银联', NOW(), NOW());
+-- INSERT INTO `payMethod` VALUES (4, '货到付款', NOW(), NOW());
+
+-- -- ----------------------------
+-- --  Records of `deliveryMethod`
+-- -- ----------------------------
+-- INSERT INTO `deliveryMethod` VALUES (1, '申通', NOW(), NOW());
+-- INSERT INTO `deliveryMethod` VALUES (2, '圆通', NOW(), NOW());
+-- INSERT INTO `deliveryMethod` VALUES (3, '京东', NOW(), NOW());
+-- INSERT INTO `deliveryMethod` VALUES (4, '韵达', NOW(), NOW());
+-- INSERT INTO `deliveryMethod` VALUES (5, '顺丰', NOW(), NOW());
+-- INSERT INTO `deliveryMethod` VALUES (6, '宅急送', NOW(), NOW());
+-- INSERT INTO `deliveryMethod` VALUES (7, '德邦', NOW(), NOW());
+-- INSERT INTO `deliveryMethod` VALUES (8, '中通', NOW(), NOW());
+-- INSERT INTO `deliveryMethod` VALUES (9, 'EMS', NOW(), NOW());
+
+-- -- ----------------------------
+-- --  Records of `orderState`
+-- -- ----------------------------
+-- INSERT INTO `orderState` VALUES (1, '订单已取消', NOW(), NOW());
+-- INSERT INTO `orderState` VALUES (2, '订单待支付', NOW(), NOW());
+-- INSERT INTO `orderState` VALUES (3, '订单备货中', NOW(), NOW());
+-- INSERT INTO `orderState` VALUES (4, '订单已发货', NOW(), NOW());
+-- INSERT INTO `orderState` VALUES (5, '订单在途', NOW(), NOW());
+-- INSERT INTO `orderState` VALUES (6, '订单已完成', NOW(), NOW());
+-- INSERT INTO `orderState` VALUES (7, '订单拒收', NOW(), NOW());
+-- INSERT INTO `orderState` VALUES (8, '订单退货', NOW(), NOW());
+-- INSERT INTO `orderState` VALUES (9, '订单换货', NOW(), NOW());
 
 -- ----------------------------
 --  Records of `user`
