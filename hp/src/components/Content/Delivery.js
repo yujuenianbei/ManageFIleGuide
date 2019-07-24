@@ -13,7 +13,7 @@ import { Icon, Collapse, Checkbox, Radio, Input } from 'antd';
 import { createForm } from 'rc-form';
 
 import { getGoodsResInfo, addGoodsResInfo } from '../../fetch/goodsResInfo';
-import { addUserOrder } from '../../fetch/order';
+import { getProductsInOrder, addUserOrder } from '../../fetch/order';
 
 const RadioGroup = Radio.Group;
 
@@ -35,13 +35,38 @@ class Delivery extends Component {
     componentDidMount() {
         window.addEventListener('scroll', this.rightScrollListener);
         getGoodsResInfo(this.props.state.user.useremail, this.getGoodsResInfoData)
-        // 根据购物车里面的内容生成订单产品列表
-        let productList = []
-        this.props.state.cart.productInfo.map(item => {
-            productList.push({ id: item.id, number: item.num })
+
+        // 请求订单中的产品信息
+        var dd = this.props.state.order.orderProductList.map(item => {
+            return item.id
         })
-        this.props.changeOrderProductList(productList)
+        getProductsInOrder(JSON.stringify(dd), this.changeProductListOfOrder)
+
+        // // 根据购物车里面的内容生成订单产品列表
+        // let productList = []
+        // this.props.state.cart.productInfo.map(item => {
+        //     productList.push({ id: item.id, number: item.num })
+        // })
+        // this.props.changeOrderProductList(productList)
     }
+
+    // 将产品信息加入订单产品中
+    changeProductListOfOrder = (result) => {
+        // 将产品数量进行修改
+        var products = result.data.queryProductInOrder.map(items => {
+            for (let [index, item] of this.props.state.order.orderProductList.entries()) {
+                if (item.id === items.id) {
+                    items.num = item.num;
+                    console.log(items)
+                    return items
+                }
+            }
+        })
+        this.props.changeOrderProducts(products)
+        this.countCost(products)
+    }
+
+    // 获取收货地址后
     getGoodsResInfoData = (result) => {
         if (result.data.queryGoodsResInfoByEmail.length === 0) {
             this.props.getOrderAddress(result.data.queryGoodsResInfoByEmail)
@@ -57,9 +82,13 @@ class Delivery extends Component {
         }
         console.log(result)
     }
+
+    // 取消绑定
     componentWillUnmount() {
         window.removeEventListener('scroll', this.rightScrollListener);
     }
+
+    // 右侧滚动
     rightScrollListener = (e) => {
         const data = this.product.clientHeight + this.state.rightTop
         // console.log(document.documentElement.scrollTop - 94 + this.product.clientHeight)
@@ -74,20 +103,23 @@ class Delivery extends Component {
             this.setState({ rightTop: 0 })
         }
     }
+
     // 计算总价
     countCost = (data) => {
         let cost = 0;
         data.map((item, index) => {
-            cost = cost + item.num * item.price;
+            cost = cost + item.num * item.nowPrice;
             return cost;
         })
-        this.setState({ totalCost: cost });
-        return false;
+        this.props.changeOrderTotalCost(cost)
     }
+
     // 
     componentWillMount() {
-        this.countCost(this.props.state.cart.productInfo);
+
+        // this.countCost(this.props.state.cart.productInfo);
     }
+
     // 下单
     check = () => {
         if (this.props.state.order.orderPayment > 4 || this.props.state.order.orderPayment === 0) {
@@ -120,6 +152,7 @@ class Delivery extends Component {
             addUserOrder(data, this.finishAddOrder);
         }
     }
+
     // 添加收货地址结束
     addGoodsResInfo = (result) => {
         if (result.data.regGoodsResInfo.length === 0) {
@@ -128,10 +161,11 @@ class Delivery extends Component {
             this.setState({ loginGoodsResInfo: true })
         }
     }
+
     // 提交订单后
     finishAddOrder = (result) => {
         console.log(result)
-        if(result.data.addUserOrder.state){
+        if (result.data.addUserOrder.state) {
             console.log(1)
             this.props.addProductNumInCart('');
             this.props.addProductInCart('');
@@ -139,10 +173,12 @@ class Delivery extends Component {
             this.props.history.push('/');
         }
     }
+
     // 是否进行注册
     regCheck = (e) => {
         this.setState({ createAccount: e.target.checked })
     }
+
     // 密码重复验证
     confirmPassword = (rule, value, callback) => {
         if (this.props.form.getFieldValue('password') === value && value !== '') {
@@ -338,7 +374,7 @@ class Delivery extends Component {
                     </div>
                     <div className={styles.productInfo} ref={ref => { this.product = ref }} style={{ top: this.state.rightTop }}>
                         <h3>商品清单</h3>
-                        {this.props.state.cart.productInfo && this.props.state.cart.productInfo.map((item, index) => {
+                        {this.props.state.order.orderProducts.length > 0 && this.props.state.order.orderProducts.map((item, index) => {
                             return <DeliveryProduct key={'sdacdsfa' + index} items={item} />
                         })}
                         <div className={styles.productPrice}>
@@ -354,7 +390,7 @@ class Delivery extends Component {
                                     </tr>
                                     <tr>
                                         <th><span className={styles.pricename}>总金额</span></th>
-                                        <th><span className={styles.pricename}>￥{this.state.totalCost}</span></th>
+                                        <th><span className={styles.pricename}>￥{this.props.state.order.orderTotalCost}</span></th>
                                     </tr>
                                 </tbody>
                             </table>
@@ -382,9 +418,13 @@ const mapDispatchToProps = (dispatch) => {
         getOrderAddress: (data) => { dispatch(Actions.orderAddress(data)); },
         changePaymentMethod: (data) => { dispatch(Actions.orderPaymentMethod(data)); },
         changeOrderProductList: (data) => { dispatch(Actions.orderProductList(data)); },
+        changeOrderProducts: (data) => { dispatch(Actions.orderProducts(data)); },
+        changeOrderTotalCost: (data) => { dispatch(Actions.orderTotalCost(data)); },
         // 产品相关
         addProductNumInCart: (data) => { dispatch(Actions.productNumInCart(data)); },
         addProductInCart: (data) => { dispatch(Actions.productInCart(data)); },
+
+
     }
 };
 export default connect(

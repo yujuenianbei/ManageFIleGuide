@@ -3,13 +3,17 @@ import {
   ORDERADDRESSITEM,
   ORDERPAYMENTMETHOD,
   ORDERPRODUCTLIST,
-  ORDERDELIVERY
+  ORDERDELIVERY,
+  ORDERPRODUCT,
+  ORDERTOTALCOST
 } from '../actions/index'
 
 const initValue = {
   orderAddress: [],
   orderAddressItem: '',
   orderPayment: 0,
+  orderTotalCost: 0,
+  orderProducts: [],
   orderProductList: [],
   delivery: null,
 }
@@ -30,6 +34,12 @@ export default (state = initValue, action) => {
     }
     case ORDERDELIVERY: {
       return Object.assign({}, state, { delivery: data })
+    }
+    case ORDERPRODUCT: {
+      return Object.assign({}, state, { orderProducts: data })
+    }
+    case ORDERTOTALCOST: {
+      return Object.assign({}, state, { orderTotalCost: data })
     }
     default: {
       return state;

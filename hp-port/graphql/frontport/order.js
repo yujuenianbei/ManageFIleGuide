@@ -200,6 +200,67 @@ const addOrders = new GraphQLObjectType({
     },
 });
 
+// 查询用户购物车内容
+const QueryPorductsInOrder = new GraphQLObjectType({
+    name: 'QueryPorductsInOrder',
+    description: "查询订单中产品",
+    fields: () => {
+        return ({
+            id: {
+                type: GraphQLInt, resolve(data) {
+                    return data.id;
+                }
+            },
+            productName: {
+                type: GraphQLString, resolve(data) {
+                    return data.productName;
+                }
+            },
+            type: {
+                type: GraphQLInt, resolve(data) {
+                    return data.type;
+                }
+            },
+            img: {
+                type: GraphQLString, resolve(data) {
+                    return data.img;
+                }
+            },
+            promotionMessage: {
+                type: GraphQLString, resolve(data) {
+                    return data.promotionMessage;
+                }
+            },
+            featrues: {
+                type: GraphQLString, resolve(data) {
+                    return data.featrues;
+                }
+            },
+            promotionMessageSecond: {
+                type: GraphQLString, resolve(data) {
+                    return data.promotionMessageSecond;
+                }
+            },
+            usedPrice: {
+                type: GraphQLInt, resolve(data) {
+                    return data.usedPrice;
+                }
+            },
+            nowPrice: {
+                type: GraphQLInt, resolve(data) {
+                    return data.nowPrice;
+                }
+            },
+            updateTime: {
+                type: GraphQLInt, resolve(data) {
+                    return data.updateTime;
+                }
+            }
+        });
+    },
+});
+
+// 写入总价
 async function data(fullPrice, listId, listNum) {
     var inlist = '';
     for (var i = 0; i < listId.length; i++) {
@@ -246,13 +307,36 @@ module.exports = {
             resolve: async function (source, { email }) {
                 return await searchSql($sql.quertGoodsResInfoByEmail, [email])
                     .then((result) => {
-                        console.log(result)
+                        // console.log(result)
                         if (result.length > 0) {
                             return result
                         } else {
                             return []
                         }
                     })
+            }
+        },
+        queryProductInOrder: {
+            type: new GraphQLList(QueryPorductsInOrder),
+            description: '获取用户订单中的产品',
+            args: {
+                id: { type: GraphQLString },
+            },
+            resolve: async function (source, { id }) {
+                const ids = JSON.parse(id);
+                console.log(ids)
+                var inlist = '';
+                for (var i = 0; i < ids.length; i++) {
+                    if (i === ids.length - 1) {
+                        inlist += ids[i];
+                    } else {
+                        inlist += ids[i] + ',';
+                    }
+                }
+                return await searchSql(`SELECT * FROM product WHERE id in (${inlist})`).then(result => {
+                    console.log(result);
+                    return result
+                })
             }
         },
         addUserOrder: {

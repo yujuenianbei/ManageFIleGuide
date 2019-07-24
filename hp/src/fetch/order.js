@@ -1,3 +1,39 @@
+// 获取订单中的产品
+const getProductsInOrder = (data, func) => {
+    const query = `mutation queryProductInOrder($id: String){
+        queryProductInOrder(id: $id){
+                id,
+                productName, 
+                type, 
+                img, 
+                promotionMessage, 
+                featrues, 
+                promotionMessageSecond, 
+                usedPrice, 
+                nowPrice
+        }
+      }`;
+
+    fetch('http://localhost:3004/graphql', {
+        method: 'POST',
+        mode: "cors",
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'login': localStorage.getItem('loginState'),
+            'token': localStorage.getItem('token')
+        },
+        body: JSON.stringify({
+            query,
+            variables: {
+                id: data,
+              }
+        })
+    })
+        .then(r => r.json())
+        .then((result) => { func(result) });
+}
+
 // 创建订单
 const addUserOrder = (data, func) => {
     const query = `mutation addUserOrder($payMethod: Int, $deliveryMethod: Int, $deliveryHopeTime: String, $goodsResAddress: Int, $productList: String, $email: String){
@@ -43,4 +79,4 @@ const addUserOrder = (data, func) => {
         .then((result) => { func(result) });
 }
 
-export { addUserOrder }
+export { getProductsInOrder, addUserOrder }

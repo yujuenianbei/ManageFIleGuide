@@ -3,21 +3,30 @@ export const ORDERADDRESSITEM = 'ORDERADDRESSITEM';
 export const ORDERPAYMENTMETHOD = 'ORDERPAYMENTMETHOD';
 export const ORDERPRODUCTLIST = 'ORDERPRODUCTLIST';
 export const ORDERDELIVERY = 'ORDERDELIVERY';
+export const ORDERPRODUCT = 'ORDERPRODUCT';
+export const ORDERTOTALCOST = 'ORDERTOTALCOST';
+// 用户所有的收货地址
+export function orderProducts(data) {
+  return {
+    type: ORDERPRODUCT,
+    data
+  }
+}
 // 用户所有的收货地址
 export function orderAddress(data) {
-    return {
-      type: ORDERADDRESS,
-      data
-    }
+  return {
+    type: ORDERADDRESS,
+    data
   }
+}
 
 // 用户选择的收货地址
 export function orderAddressItem(data) {
-    return {
-      type: ORDERADDRESSITEM,
-      data
-    }
+  return {
+    type: ORDERADDRESSITEM,
+    data
   }
+}
 
 // 用户选择的支付方式
 export function orderPaymentMethod(data) {
@@ -35,10 +44,19 @@ export function orderProductList(data) {
   }
 }
 
+
 // 用户选择的配送方式
 export function orderDelivery(data) {
   return {
     type: ORDERDELIVERY,
+    data
+  }
+}
+
+// 总价
+export function orderTotalCost(data) {
+  return {
+    type: ORDERTOTALCOST,
     data
   }
 }

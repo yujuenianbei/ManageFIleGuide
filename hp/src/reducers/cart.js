@@ -1,16 +1,22 @@
 import {
   PRODUCTINFO,
   PRODUCTNUM,
-  USERINFO,
+  CARTTOORDER,
+  CARTTOORDERITEM,
   CARTERROR,
   MESSAGEPRODUCT,
-  MESSAGEEXPRESS
+  MESSAGEEXPRESS,
+  CARTDELIVERYLIST,
+  CARTCOUNTPRICE
 } from '../actions/index'
 
 const initValue = {
   productInfo: [],
   productNum: 0,
-  userInfo: null,
+  productOrderPrice: 0,
+  deliveryList: [],
+  cartToOrder: [],
+  cartToOrderItem: [],
   cartError: false,
   messageProduct: '',
   messageExpress: ''
@@ -24,12 +30,18 @@ export default (state = initValue, action) => {
     case PRODUCTNUM: {
       return Object.assign({}, state, { productNum: data })
     }
-    case USERINFO: {
-      return Object.assign({}, state, { userInfo: data })
+    case CARTCOUNTPRICE: {
+      return Object.assign({}, state, { productOrderPrice: data })
     }
-    // case EXPRESSINCART: {
-    //   return Object.assign({}, state, { express: data })
-    // }
+    case CARTTOORDER: {
+      return Object.assign({}, state, { cartToOrder: data })
+    }
+    case CARTTOORDERITEM: {
+      return Object.assign({}, state, { cartToOrderItem: data })
+    }
+    case CARTDELIVERYLIST: {
+      return Object.assign({}, state, { deliveryList: data })
+    }
     case CARTERROR: {
       return Object.assign({}, state, { cartError: data })
     }
