@@ -2,9 +2,12 @@ import React, { Component, Fragment } from 'react';
 import classify from '@magento/venia-concept/esm/classify';
 import styles from './regForm.module.less';
 import { createForm } from 'rc-form';
-import { Checkbox } from 'antd';
+import { Checkbox, notification } from 'antd';
 
 class Form extends React.Component {
+    constructor(props) {
+        super(props)
+    }
     state = {
         rulesChecked: false,
         smsChecked: true
@@ -12,10 +15,11 @@ class Form extends React.Component {
 
     submit = () => {
         this.props.form.validateFields((error, value) => {
+            console.log(this.props)
             console.log(error, value);
-            if(!error){
-                var query = `mutation reg($email: String,$name: String, $phonecode: Int! $password: String){
-                    reg(email: $email,name: $name, password: $password){
+            if (!error) {
+                var query = `mutation reg($email: String,$name: String, $phoneCode: Int, $phone: String, $password: String){
+                    reg(email: $email,name: $name, password: $password, phoneCode: $phoneCode, phone: $phone ){
                       state
                     } 
                   }`;
@@ -29,17 +33,18 @@ class Form extends React.Component {
                     body: JSON.stringify({
                         query,
                         variables: {
+                            name: value.name,
                             email: value.email,
-                            phonecode: value.phonecode,
-                            phone:  value.phone,
+                            phoneCode: parseInt(value.phoneCode),
+                            phone: value.phone,
                             password: value.password,
                         }
                     })
                 })
                     .then(r => r.json())
                     .then(result => {
-                        if(result.data.login && result.data.login[0].state === "1"){
-                            this.props.props.history.push('/');
+                        if (result.data.reg && result.data.reg.state === 1) {
+                            this.props.props.history.push('/account/login');
                         } else {
                             this.openNotification()
                         }
@@ -50,6 +55,17 @@ class Form extends React.Component {
         // console.log(this.props.form.getFieldValue('password'))
     }
 
+    openNotification = () => {
+        notification.open({
+            message: '用户信息有误',
+            description:
+                '您输入的用户信息有误有误',
+            onClick: () => {
+                console.log('Notification Clicked!');
+            },
+        });
+    };
+
     userNameChange = (e) => {
         // console.log(e.target.value)
     }
@@ -58,7 +74,7 @@ class Form extends React.Component {
         // var regu = /^[1][3][0-9]{9}$/;
         // var re = new RegExp(regu);
         // if (re.test(value)) {
-            callback()
+        callback()
         // } else {
         //     callback('false')
         // }
@@ -98,6 +114,24 @@ class Form extends React.Component {
             <Fragment>
                 <div className={styles.userInfo}>
                     <div className={styles.regform}>
+                        <label required>用户名</label>
+                        <div className={styles.inputs}>
+                            {getFieldDecorator('name', {
+                                initialValue: '',
+                                validateFirst: true,
+                                validate: [{
+                                    trigger: ['onBlur', 'onChange'],
+                                    rules: [{
+                                        message: '请输入正确的用户名',
+                                        validator: (rule, value, cb) => this.validateUserNameTimely(rule, value, cb),
+                                    }],
+                                }],
+                                // rules: [{ required: true, message: '请输入用户名' }],
+                            })(<input type="text" onChange={this.userNameChange} placeholder="请输入用户名" className={(errors = getFieldError('name')) ? styles.input_error : styles.input_normal} />)}
+                            {(errors = getFieldError('name')) ? <div className={styles.error}>{errors.join(',')}</div> : null}
+                        </div>
+                    </div>
+                    <div className={styles.regform}>
                         <label required>电子邮件</label>
                         <div className={styles.inputs}>
                             {getFieldDecorator('email', {
@@ -131,7 +165,7 @@ class Form extends React.Component {
                             })(
                                 <select className={(errors = getFieldError('phone') || getFieldError('phoneCode')) ? styles.phoneCode_error : styles.phoneCode_normal}>
                                     <option value=""></option>
-                                    <option value="+86">+86</option>
+                                    <option value="86">086</option>
                                 </select>
                             )}
                             {getFieldDecorator('phone', {

@@ -5,6 +5,12 @@ export const ORDERPRODUCTLIST = 'ORDERPRODUCTLIST';
 export const ORDERDELIVERY = 'ORDERDELIVERY';
 export const ORDERPRODUCT = 'ORDERPRODUCT';
 export const ORDERTOTALCOST = 'ORDERTOTALCOST';
+export const ORDERERROR = 'ORDERERROR';
+export const MESSAGEADDRESS = 'MESSAGEADDRESS';
+export const MESSAGEPAYMENT = 'MESSAGEPAYMENT';
+
+
+
 // 用户所有的收货地址
 export function orderProducts(data) {
   return {
@@ -57,6 +63,30 @@ export function orderDelivery(data) {
 export function orderTotalCost(data) {
   return {
     type: ORDERTOTALCOST,
+    data
+  }
+}
+
+// 修改错误提示状态
+export function orderError(data) {
+  return {
+    type: ORDERERROR,
+    data
+  }
+}
+
+// 详细地址错误信息
+export function messageInAddress(data) {
+  return {
+    type: MESSAGEADDRESS,
+    data
+  }
+}
+
+// 支付方式错误提示
+export function messageInPayment(data) {
+  return {
+    type: MESSAGEPAYMENT,
     data
   }
 }

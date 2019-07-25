@@ -1,8 +1,9 @@
-import mainsReducer from './main.js';
-import usersReducer from './user.js';
-import accountsReducer from './account.js';
-import chatsReducer from './chat.js';
+import mainsReducer from './main';
+import usersReducer from './user';
+import accountsReducer from './account';
+import frontUsersReducer from './frontUser';
+import chatsReducer from './chat';
 import productsReducer from './product';
 import productTypesReducer from './productType';
 import cartsReducer from './cart';
-export { mainsReducer, usersReducer, accountsReducer, chatsReducer, productsReducer, cartsReducer, productTypesReducer }
+export { mainsReducer, usersReducer, accountsReducer, frontUsersReducer, chatsReducer, productsReducer, cartsReducer, productTypesReducer }

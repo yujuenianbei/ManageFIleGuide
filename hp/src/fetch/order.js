@@ -38,18 +38,6 @@ const getProductsInOrder = (data, func) => {
 const addUserOrder = (data, func) => {
     const query = `mutation addUserOrder($payMethod: Int, $deliveryMethod: Int, $deliveryHopeTime: String, $goodsResAddress: Int, $productList: String, $email: String){
         addUserOrder(payMethod: $payMethod, deliveryMethod: $deliveryMethod, deliveryHopeTime: $deliveryHopeTime, goodsResAddress: $goodsResAddress, productList: $productList, email: $email){
-            email,
-            orderOdd, 
-            payMethod, 
-            payState, 
-            payTime, 
-            deliveryMethod, 
-            deliveryHopeTime, 
-            expressOdd, 
-            goodsResAddress, 
-            productList, 
-            fullPrice, 
-            orderState,
             state
         }
       }`;

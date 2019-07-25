@@ -270,8 +270,8 @@ async function data(fullPrice, listId, listNum) {
             inlist += listId[i] + ',';
         }
     }
-    await searchSql(`SELECT nowPrice FROM product WHERE id in (${inlist})`).then(result => {
-        console.log(result)
+    await searchSql(`SELECT * FROM product WHERE id in (${inlist})`).then(result => {
+        // console.log(result)
         result.map((item, index) => {
             fullPrice += item.nowPrice * listNum[index]
         })
@@ -362,24 +362,47 @@ module.exports = {
                 let listNum = [];
                 pros.map(item => {
                     listId.push(item.id);
-                    listNum.push(item.number);
+                    listNum.push(item.num);
                     return listId, listNum
                 })
                 let fullPrice = 0;
                 const orderState = 2;
 
                 return await data(fullPrice, listId, listNum).then(async (fullPrice) => {
-                    // console.log(orderOdd.hex, payMethod, payState, payTime, deliveryMethod, deliveryHopeTime, expressOdd, goodsResAddress, productList, fullPrice, orderState)
+                    // 生成订单
                     return await searchSql($sql.addOrder, [orderOdd.hex, email, payMethod, payState, payTime, deliveryMethod, deliveryHopeTime, expressOdd, goodsResAddress, productList, fullPrice, orderState])
                         .then(async (result) => {
+                            // 查询订单是否生成
                             return await searchSql($sql.queryOrder, [result.id])
-                                .then((results) => {
-                                    console.log(results, result.id)
+                                .then(async (results) => {
                                     if (results.length > 0) {
-                                        results[0].state = 1;
-                                        return results[0]
+                                        // 在购物车中删除对应的产品
+                                        return await searchSql($sql.queryUserCartIdByEmail, [email]).then(async (resq) => {
+                                            var inlist = '';
+                                            for (var i = 0; i < listId.length; i++) {
+                                                if (i === listId.length - 1) {
+                                                    inlist += listId[i];
+                                                } else {
+                                                    inlist += listId[i] + ',';
+                                                }
+                                            }
+                                            console.log(`DELETE FROM cartItem WHERE productId in (${inlist}) and cartId=${resq[0].cartId}`)
+                                            // 删除购物车中对应的产品
+                                            return await searchSql(`DELETE FROM cartItem WHERE productId in (${inlist}) and cartId=${resq[0].cartId}`).then(async (resd) => {
+                                                // 查询是否删除成功
+                                                return await searchSql($sql.queryProductInCartItems, [resq[0].cartId,inlist]).then(async (resds) => {
+                                                    if(resds.length === 0){
+                                                        results[0].state = 1;
+                                                        console.log(results[0])
+                                                        return results[0]
+                                                    }else {
+                                                        return { state: 0 }
+                                                    }
+                                                })
+                                            })
+                                        })
                                     } else {
-                                        return [{ state: 0 }]
+                                        return { state: 0 }
                                     }
                                 })
                         })

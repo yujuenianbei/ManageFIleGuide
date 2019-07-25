@@ -11,7 +11,8 @@ import DeliveryProduct from '../DeliveryProduct';
 import { Link } from 'react-router-dom';
 import { Icon, Collapse, Checkbox, Radio, Input } from 'antd';
 import { createForm } from 'rc-form';
-
+// 请求
+import { getUserCart } from '../../fetch/cart';
 import { getGoodsResInfo, addGoodsResInfo } from '../../fetch/goodsResInfo';
 import { getProductsInOrder, addUserOrder } from '../../fetch/order';
 
@@ -20,7 +21,6 @@ const RadioGroup = Radio.Group;
 class Delivery extends Component {
     state = {
         createAccount: false,
-        paymentMessage: false,
         billMethod: 1,
         billType: 1,
         rulesChecked: false,
@@ -30,25 +30,41 @@ class Delivery extends Component {
         // 登录用户的收货地址是否有
         loginGoodsResInfo: false,
         // 用户具体收货地址
-        GoodsResInfoItems: []
+        GoodsResInfoItems: [],
+        // 快递中文
+        deliveryName: '',
     }
     componentDidMount() {
         window.addEventListener('scroll', this.rightScrollListener);
-        getGoodsResInfo(this.props.state.user.useremail, this.getGoodsResInfoData)
+        // 订单中没有产品
+        if (this.props.state.order.orderProductList.length === 0) {
+            this.props.history.push('/');
+        } else {
+            // 只有登录的才查询地址
+            if(this.props.state.user.loginState){
+                getGoodsResInfo(this.props.state.user.useremail, this.getGoodsResInfoData)
+            }
+            
+            // 请求订单中的产品信息
+            var dd = this.props.state.order.orderProductList.map(item => {
+                return item.id
+            })
+            getProductsInOrder(JSON.stringify(dd), this.changeProductListOfOrder);
+            // 获取快递中文
+            this.deliveryName();
+        }
 
-        // 请求订单中的产品信息
-        var dd = this.props.state.order.orderProductList.map(item => {
-            return item.id
-        })
-        getProductsInOrder(JSON.stringify(dd), this.changeProductListOfOrder)
-
-        // // 根据购物车里面的内容生成订单产品列表
-        // let productList = []
-        // this.props.state.cart.productInfo.map(item => {
-        //     productList.push({ id: item.id, number: item.num })
-        // })
-        // this.props.changeOrderProductList(productList)
     }
+
+    // 获取快递中文
+    deliveryName = () =>{
+        for( var delivery  of this.props.state.cart.deliveryList){
+            if(parseInt(delivery.id) === this.props.state.order.delivery){
+                console.log(delivery.name);
+                this.setState({deliveryName: delivery.name})
+            }
+        }
+    } 
 
     // 将产品信息加入订单产品中
     changeProductListOfOrder = (result) => {
@@ -114,12 +130,6 @@ class Delivery extends Component {
         this.props.changeOrderTotalCost(cost)
     }
 
-    // 
-    componentWillMount() {
-
-        // this.countCost(this.props.state.cart.productInfo);
-    }
-
     // 下单
     check = () => {
         if (this.props.state.order.orderPayment > 4 || this.props.state.order.orderPayment === 0) {
@@ -149,6 +159,28 @@ class Delivery extends Component {
                 goodsResAddress: parseInt(this.props.state.order.orderAddressItem),
                 productList: JSON.stringify(this.props.state.order.orderProductList)
             }
+            this.validate(data)
+        }
+    }
+
+    // 参数校验 通过参数校验才能增加订单
+    validate = (data) => {
+        if (!data.payMethod && !data.goodsResAddress) {
+            this.props.changeOrderError(true);
+            this.props.changeMessageInPayment('请选择收货地址');
+            this.props.changeMessageInAddress('请选择支付方式');
+        } else if (data.payMethod && !data.goodsResAddress) {
+            this.props.changeOrderError(true);
+            this.props.changeMessageInPayment('');
+            this.props.changeMessageInAddress('请选择收货地址');
+        } else if (!data.payMethod && data.goodsResAddress) {
+            this.props.changeOrderError(true);
+            this.props.changeMessageInPayment('请选择支付方式');
+            this.props.changeMessageInAddress('');
+        } else {
+            this.props.changeOrderError(false);
+            this.props.changeMessageInPayment('');
+            this.props.changeMessageInAddress('');
             addUserOrder(data, this.finishAddOrder);
         }
     }
@@ -158,7 +190,9 @@ class Delivery extends Component {
         if (result.data.regGoodsResInfo.length === 0) {
             console.log(result)
         } else {
-            this.setState({ loginGoodsResInfo: true })
+            this.setState({ loginGoodsResInfo: true });
+            // 查询地址
+            // getGoodsResInfo(this.props.state.user.useremail, this.getGoodsResInfoData)
         }
     }
 
@@ -166,12 +200,40 @@ class Delivery extends Component {
     finishAddOrder = (result) => {
         console.log(result)
         if (result.data.addUserOrder.state) {
-            console.log(1)
-            this.props.addProductNumInCart('');
-            this.props.addProductInCart('');
-            this.props.changeOrderProductList('');
+            getUserCart(this.afterFetchProduct);
+        }
+    }
+
+    // 请求购物车内容
+    afterFetchProduct = (result) => {
+        if (result.data.queryUserCartProducts[0].state) {
+            // 购物车内还有产品
+            let productInfos = [];
+            let productNum = 0;
+            const infos = Object.assign([], result.data.queryUserCartProducts);
+            infos.map((item, index) => {
+                productInfos.push({
+                    id: item.id,
+                    img: item.img,
+                    num: item.productNum,
+                    price: item.nowPrice,
+                    promotionMessage: item.promotionMessage,
+                    productName: item.productName
+                })
+                productNum += item.productNum
+            })
+            this.props.addProductInCart(productInfos);
+            this.props.addProductNumInCart(productNum);
+            this.props.history.push('/');
+        } else if (!result.data.queryUserCartProducts[0].state) {
+            // 购物车内没有产品
+            this.props.addProductInCart([]);
+            this.props.addProductNumInCart(0);
             this.props.history.push('/');
         }
+        this.props.changeCartToOrder([]);
+        this.props.changeOrderProductList([]);
+        this.props.changeCartToOrderItem([]);
     }
 
     // 是否进行注册
@@ -247,10 +309,10 @@ class Delivery extends Component {
                     <div className={styles.userInfo} ref={ref => { this.form = ref }}>
                         <div className={styles.leftContent + " " + styles.deliveryAddress}>
                             <h2>收货地址</h2>
-                            {!this.state.loginGoodsResInfo && this.props.state.user.loginState &&
+                            {!this.state.loginGoodsResInfo && this.props.state.user.loginState === 0 &&
                                 <DeliveryAddress form={this.props.form} loginGoodsResInfo={this.state.loginGoodsResInfo} />
                             }
-                            {!this.props.state.user.loginState &&
+                            {!this.state.loginGoodsResInfo && this.props.state.user.loginState === 0 && 
                                 <div className={styles.deliveryPwd}>
                                     <div className={styles.deliveryAddressList}>
                                         <Checkbox className={styles.createAccountCheck} onChange={this.regCheck} checked={this.state.createAccount}>创建账号</Checkbox>
@@ -293,7 +355,12 @@ class Delivery extends Component {
                                     </Fragment>}
                                 </div>
                             }
-                            {this.state.loginGoodsResInfo && this.props.state.user.loginState &&
+
+                            {
+                                this.props.state.order.orderError && this.props.state.order.orderAddressMessage &&
+                                <Message type="warn">{this.props.state.order.orderAddressMessage}</Message>
+                            }
+                            {this.state.loginGoodsResInfo &&
                                 this.props.state.order.orderAddress.map((item, index) => (
                                     <DeliveryAddressItem
                                         id={item.id}
@@ -314,7 +381,10 @@ class Delivery extends Component {
                         </div>
                         <div className={styles.leftContent + " " + styles.deliveryAddress}>
                             <h2>安全付款方式</h2>
-                            {this.state.paymentMessage && <Message type="warn">请指定付款方式。</Message>}
+                            {
+                                this.props.state.order.orderError && this.props.state.order.orderPaymentMessage &&
+                                <Message type="warn">{this.props.state.order.orderPaymentMessage}</Message>
+                            }
                             <RadioGroup onChange={this.changePaymentMethod} value={this.props.state.order.orderPayment}>
                                 <Radio style={radioStyle} value={1}>
                                     微信支付
@@ -386,7 +456,7 @@ class Delivery extends Component {
                                     </tr>
                                     <tr>
                                         <th></th>
-                                        <th>京东配送</th>
+                                        <th>{this.state.deliveryName}</th>
                                     </tr>
                                     <tr>
                                         <th><span className={styles.pricename}>总金额</span></th>
@@ -417,14 +487,19 @@ const mapDispatchToProps = (dispatch) => {
         setOrderAddressItem: (data) => { dispatch(Actions.orderAddressItem(data)); },
         getOrderAddress: (data) => { dispatch(Actions.orderAddress(data)); },
         changePaymentMethod: (data) => { dispatch(Actions.orderPaymentMethod(data)); },
-        changeOrderProductList: (data) => { dispatch(Actions.orderProductList(data)); },
         changeOrderProducts: (data) => { dispatch(Actions.orderProducts(data)); },
         changeOrderTotalCost: (data) => { dispatch(Actions.orderTotalCost(data)); },
-        // 产品相关
+        // 购物车相关
         addProductNumInCart: (data) => { dispatch(Actions.productNumInCart(data)); },
         addProductInCart: (data) => { dispatch(Actions.productInCart(data)); },
-
-
+        // 购物车
+        changeCartToOrder: (data) => { dispatch(Actions.cartToOrder(data)); },
+        changeOrderProductList: (data) => { dispatch(Actions.orderProductList(data)); },
+        changeCartToOrderItem: (data) => { dispatch(Actions.cartToOrderItem(data)); },
+        // 提示信息
+        changeOrderError: (data) => { dispatch(Actions.orderError(data)); },
+        changeMessageInAddress: (data) => { dispatch(Actions.messageInAddress(data)); },
+        changeMessageInPayment: (data) => { dispatch(Actions.messageInPayment(data)); },
     }
 };
 export default connect(

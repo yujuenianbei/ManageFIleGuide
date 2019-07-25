@@ -13,6 +13,7 @@ var {
 
 
 const account = require('./account');
+const frontUser = require('./frontUser');
 const product = require('./product');
 const productType = require('./productType');
 const cart = require('./cart');
@@ -23,6 +24,7 @@ const Query=new GraphQLObjectType({
     description:'用户信息查询',
     fields:()=>(Object.assign({},
         account.query,
+        frontUser.query,
         product.query,
         productType.query,
         cart.query,
@@ -34,6 +36,7 @@ const Mutation=new GraphQLObjectType({
     description:'用户信息维护',
     fields:()=>(Object.assign({},
         account.mutation,
+        frontUser.mutation,
         product.mutation,
         productType.mutation,
         cart.mutation,

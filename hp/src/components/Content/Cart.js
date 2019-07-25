@@ -117,7 +117,7 @@ class CheckoutCart extends Component {
 
                 orderProduct[indexs()].num = result.data.addToCart[0].productNum
                 orderProducts[indexs()].num = result.data.addToCart[0].productNum
-            }   
+            }
             num += item.num;
         })
         this.props.addProductNumInCart(num);
@@ -206,30 +206,31 @@ class CheckoutCart extends Component {
 
     // 跳转checkout
     toCheckout = () => {
-        const productLength = this.props.state.cart.productInfo.length;
         const delivery = this.props.state.order.delivery;
-        this.changeError();
-        if (productLength && delivery) {
+        const order = this.props.state.order.orderProductList.length;
+        this.changeError(order, delivery);
+        if (order && delivery) {
             this.props.history.push('/onestepcheckout');
             this.props.changeMessageInProduct('');
             this.props.changeMessageInExpress('');
-        } else if (!productLength && delivery) {
-            this.props.changeMessageInProduct('请添加产品');
+        } else if (!order && delivery) {
+            console.log(1)
+            this.props.changeMessageInProduct('请添加产品到订单');
             this.props.changeMessageInExpress('');
-        } else if (productLength && !delivery) {
+        } else if (order && !delivery) {
+            console.log(2)
             this.props.changeMessageInProduct('');
             this.props.changeMessageInExpress('请选择配送方式');
-        } else {
+        } else if (!order && !delivery) {
+            console.log(3)
             this.props.changeMessageInProduct('请添加产品');
             this.props.changeMessageInExpress('请选择配送方式');
         }
     }
 
-    // change cartError
-    changeError = () => {
-        const productLength = this.props.state.cart.productInfo.length;
-        const delivery = this.props.state.order.delivery;
-        if (productLength && delivery) {
+    // 错误信息提示
+    changeError = (order, delivery) => {
+        if (order && delivery) {
             this.props.changeCartError(false)
         } else {
             this.props.changeCartError(true)
@@ -269,13 +270,13 @@ class CheckoutCart extends Component {
         this.props.changeCartToOrder(orderProduct)
         // 添加到订单中
         this.props.changeOrderProductList(orderProducts)
-        // 
+        // 添加在本页 无index
         this.props.changeCartToOrderItem(cartToOrderItem)
-
+        // 计算总价
         this.countCost(orderProduct);
-        console.log(orderProduct);
-        console.log(orderProducts);
-        console.log(cartToOrderItem);
+        // console.log(orderProduct);
+        // console.log(orderProducts);
+        // console.log(cartToOrderItem);
     }
     // 显示添加到订单中的产品
     productInOrder = (index) => {
@@ -313,6 +314,10 @@ class CheckoutCart extends Component {
                                 <div className={styles.form} ref={ref => { this.form = ref }}>
                                     <Message type="warn">立即结账并获得该订单的4649积分。 这仅适用于注册用户，并且在用户登录时可能会有所不同。</Message>
                                     <div className={styles.productList}>
+                                        {
+                                            this.props.state.cart.cartError && this.props.state.cart.messageProduct &&
+                                            <Message type="warn">{this.props.state.cart.messageProduct}</Message>
+                                        }
                                         {this.props.state.cart.productInfo.map((item, index) => {
                                             return <div className={this.productInOrder(index) === index ? styles.product + ' ' + styles.productSelected : styles.product} key={index + "cart_produc_123asdas"}>
                                                 <Icon className={styles.delete} type="close" onClick={() => this.onDelete(item.id)} />
@@ -359,8 +364,8 @@ class CheckoutCart extends Component {
                                                 }
                                                 <Radio.Group onChange={this.onChangeExpress} value={this.props.state.order.delivery}>
                                                     {this.props.state.cart.deliveryList.length !== 0 &&
-                                                        this.props.state.cart.deliveryList.map(item => (
-                                                            <Radio style={radioStyle} value={parseInt(item.id)}>
+                                                        this.props.state.cart.deliveryList.map((item, index) => (
+                                                            <Radio style={radioStyle} key={'asdq312313' + index} value={parseInt(item.id)}>
                                                                 {item.name}
                                                             </Radio>
                                                         ))

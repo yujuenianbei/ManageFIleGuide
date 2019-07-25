@@ -4,6 +4,8 @@ import classify from '@magento/venia-concept/esm/classify';
 import styles from './index.moudle.less';
 import Main from '../components/Content/Main';
 import Account from '../components/Account';
+import FrontUser from '../components/FrontUser';
+
 import Product from '../components/Product';
 import ProductType from '../components/ProductType';
 
@@ -20,6 +22,8 @@ class Routers extends Component {
             <Fragment>
                 <Route exact path="/" component={Main} />
                 <Route path="/account" component={Account} />
+                <Route path="/frontUser" component={FrontUser} />
+                
                 <Route path="/order" component={Order} />
                 <Route path="/cart" component={Cart} />
                 <Route path="/product" component={Product} />

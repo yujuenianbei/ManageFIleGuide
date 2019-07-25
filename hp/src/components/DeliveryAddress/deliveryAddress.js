@@ -23,7 +23,7 @@ class DeliveryAddress extends Component {
                             }],
                         }],
                     })(
-                        <input type="email" placeholder="请收入邮箱" className={(errors = getFieldError('email')) ? styles.userInput_error : styles.userInput} disabled={!loginGoodsResInfo ? 'disabled' : ''} />
+                        <input type="email" placeholder="请收入邮箱" className={(errors = getFieldError('email')) ? styles.userInput_error : styles.userInput} disabled={loginGoodsResInfo ? 'disabled' : ''} />
                     )}
                     {(errors = getFieldError('email')) ? <div className={styles.errorMessage}>{errors.join(',')}</div> : null}
                 </div>

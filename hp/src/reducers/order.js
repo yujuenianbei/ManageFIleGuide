@@ -5,10 +5,15 @@ import {
   ORDERPRODUCTLIST,
   ORDERDELIVERY,
   ORDERPRODUCT,
-  ORDERTOTALCOST
+  ORDERTOTALCOST,
+  ORDERERROR ,
+  MESSAGEADDRESS,
+  MESSAGEPAYMENT
 } from '../actions/index'
-
 const initValue = {
+  orderAddressMessage: '',
+  orderPaymentMessage: '',
+  orderError: false,
   orderAddress: [],
   orderAddressItem: '',
   orderPayment: 0,
@@ -40,6 +45,15 @@ export default (state = initValue, action) => {
     }
     case ORDERTOTALCOST: {
       return Object.assign({}, state, { orderTotalCost: data })
+    }
+    case ORDERERROR: {
+      return Object.assign({}, state, { orderError: data })
+    }
+    case MESSAGEADDRESS: {
+      return Object.assign({}, state, { orderAddressMessage: data })
+    }
+    case MESSAGEPAYMENT: {
+      return Object.assign({}, state, { orderPaymentMessage: data })
     }
     default: {
       return state;

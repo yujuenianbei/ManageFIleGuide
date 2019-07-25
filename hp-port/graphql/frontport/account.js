@@ -101,7 +101,7 @@ const Reg = new GraphQLObjectType({
                 }
             },
             state: {
-                type: GraphQLString, resolve(data) {
+                type: GraphQLInt, resolve(data) {
                     return data.state;
                 }
             }
@@ -188,7 +188,7 @@ const QueryAllUser = new GraphQLObjectType({
 
 module.exports = {
     query: {
-        queryAllUsers:{
+        queryAllUsers: {
             type: new GraphQLList(QueryAllUser),
             description: '获取全部用户信息',
             resolve: async function () {
@@ -197,7 +197,7 @@ module.exports = {
         }
     },
     mutation: {
-        loginUuid:{
+        loginUuid: {
             type: new GraphQLList(LoginUuid),
             description: '用户登录',
             args: {
@@ -268,22 +268,28 @@ module.exports = {
             }
         },
         reg: {
-            type: new GraphQLList(Reg),
+            type: Reg,
             description: '用户登录',
             args: {
                 uuid: { type: GraphQLString },
                 name: { type: GraphQLString },
                 email: { type: GraphQLString },
-                phonecode: { type: GraphQLInt },
+                phoneCode: { type: GraphQLInt },
                 phone: { type: GraphQLString },
                 password: { type: GraphQLString },
                 state: { type: GraphQLString }
             },
-            resolve: async function (source, { name, email, phonecode, phone, password, state }) {
-                return await searchSql($sql.insertUser, [name, email, phonecode, phone, password])
-                    .then((reslut) => {
+            resolve: async function (source, { name, email, phoneCode, phone, password, state }) {
+                return await searchSql($sql.insertUser, [name, email, phoneCode, phone, password])
+                    .then(async (reslut) => {
                         console.log(reslut.id)
-                        return searchSql($sql.searchUser, [reslut.id]);
+                        return await searchSql($sql.searchUser, [reslut.id]).then(async (results) => {
+                            if (results.length > 0) {
+                                return { state: 1 }
+                            } else {
+                                return { state: 0 }
+                            }
+                        })
                     })
                 // return (await searchSql($sql.queryByUsername, [name]));
             }
