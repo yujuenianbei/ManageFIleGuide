@@ -9,7 +9,7 @@ import { loginAccount } from '../../fetch/login'
 import { Form, Icon, Input, Button, Checkbox } from 'antd';
 // socket
 import io from 'socket.io-client'
-const socket = io("http://192.168.1.128:3004", {
+const socket = io("http://192.168.31.50:3004", {
     // query: params,
     //此处大坑，设置为true才会开启新的连接
     forceNew: true

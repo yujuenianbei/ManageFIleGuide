@@ -146,24 +146,25 @@ CREATE TABLE IF NOT EXISTS qrcode
 --       WHERE uid = 'b8466408-20b7-460c-8907-9fbca82eaba1'
 -- );
 
--- ----------------------------
---  Records of `user`
--- ----------------------------
--- BEGIN;
+-- -- ----------------------------
+-- --  Records of `user`
+-- -- ----------------------------
+
 -- INSERT INTO `user` VALUES (1, REPLACE(UUID(), "-", ""), 'admin', '1', 086, '18966823501', 'wangad@shinetechchina.com', '123456', 'shinetech',NOW(), NOW());
--- COMMIT;
+-- INSERT INTO account(uuid, uid, userName, sex, email, firstName, lastName, phoneCode, phone, password, company, createTime, updateTime) VALUES(REPLACE(UUID(),"-",""),REPLACE(UUID(),"-",""),'admin',1,'365913672@qq.com','andong','wang',86,18966823501,'123','NERV',NOW(), NOW());
+
 -- INSERT INTO `banner` VALUES (1, 'PAVILION星系列','https://media.hpstore.cn/wysiwyg/CN_OLS/banner/public/pavilon_0219_pc_nx.jpg', '/productList/', NOW(), NOW());
 -- INSERT INTO `banner` VALUES (2, '星14微边框轻薄本','https://media.hpstore.cn/wysiwyg/CN_OLS/banner/public/XINGPC-20190508.jpg', '/productList/', NOW(), NOW());
 -- INSERT INTO `banner` VALUES (3, '战66二代','https://media.hpstore.cn/wysiwyg/CN_OLS/banner/public/BannerZHAN66-20190426PC.jpg', '/productList/', NOW(), NOW());
 -- INSERT INTO `banner` VALUES (4, '暗影精灵4代游戏本','https://media.hpstore.cn/wysiwyg/CN_OLS/banner/public/20190403_nx.jpg', '/productList/', NOW(), NOW());
 
--- brefIntro
+-- -- brefIntro
 -- INSERT INTO `brefIntro` VALUES (1, '战神系列','https://adbutler-fermion.com/getad.img/;libID=653547', '/productList/123123', NOW(), NOW());
 -- INSERT INTO `brefIntro` VALUES (2, '热门爆款','https://adbutler-fermion.com/getad.img/;libID=653548', '/productList/123123', NOW(), NOW());
 -- INSERT INTO `brefIntro` VALUES (3, '满额立减','https://adbutler-fermion.com/getad.img/;libID=653549', '/productList/123123', NOW(), NOW());
 -- INSERT INTO `brefIntro` VALUES (4, '新人礼包','https://adbutler-fermion.com/getad.img/;libID=653550', '/productList/123123', NOW(), NOW());
 
--- productListBanner
+-- -- productListBanner
 -- INSERT INTO `productListBanner` VALUES (1, 1, '暗影精灵4代','https://media.hpstore.cn/wysiwyg/CN_OLS/bset-sellers/laptop001-20190319mmq.jpg', '/productList/123123', NOW(), NOW());
 -- INSERT INTO `productListBanner` VALUES (2, 2, '暗影精灵','https://media.hpstore.cn/wysiwyg/CN_OLS/bset-sellers/desktop001-20190319mmq.jpg', '/productList/123123', NOW(), NOW());
 -- INSERT INTO `productListBanner` VALUES (3, 3, '商用打印机','https://media.hpstore.cn/wysiwyg/CN_OLS/bset-sellers/0222-3OfficeIPG423x689.jpg', '/productList/123123', NOW(), NOW());
@@ -179,9 +180,9 @@ CREATE TABLE IF NOT EXISTS qrcode
 -- INSERT INTO `productType` VALUES (6, 'peripheral', NOW(), NOW());
 
 
--- ----------------------------
---  Records of `product`
--- ----------------------------
+-- -- ----------------------------
+-- --  Records of `product`
+-- -- ----------------------------
 -- INSERT INTO `product` VALUES (
 --   1, 
 --   '惠普（HP）暗影精灵4代 OMEN Laptop 15-dc0153TX 15.6英寸游戏笔记本电脑  (i5-8300H 8G 512G GTX1050Ti 4G独显 IPS FHD）',

@@ -8,7 +8,7 @@ import styles from './chat.module.less';
 import { Drawer, Tabs, List, Avatar, Icon, Input } from 'antd';
 import io from 'socket.io-client'
 import { object } from 'prop-types';
-const socket = io("http://192.168.1.128:3004", {
+const socket = io("http://192.168.31.50:3004", {
     // query: params,
     //此处大坑，设置为true才会开启新的连接
     forceNew: true

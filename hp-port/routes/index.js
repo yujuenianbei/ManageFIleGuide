@@ -30,7 +30,7 @@ router.get('/loginByPhone', function (req, res) {
   try {
     if (typeof(uid) !== "undefined"){
       // 写入二维码内的网址，微信扫描后自动跳转
-      let jumpURL = "http://192.168.1.128:3004/scanned?uid=" + uid;
+      let jumpURL = "http://192.168.31.50:3004/scanned?uid=" + uid;
       // 生成二维码(size：图片大小， margin: 边框留白)
       var img = qrImg.image(jumpURL, {size :6, margin: 2});
       res.writeHead(200, {'Content-Type': 'image/png'});
