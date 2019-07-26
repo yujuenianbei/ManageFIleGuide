@@ -11,7 +11,7 @@ import { createStore, combineReducers, applyMiddleware } from 'redux';
 import { persistStore, persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage'
 import thunk from 'redux-thunk';
-import { mainsReducer, usersReducer, accountsReducer, frontUsersReducer, chatsReducer, productsReducer, productTypesReducer, cartsReducer } from '../reducers';
+import { mainsReducer, usersReducer, accountsReducer, frontUsersReducer, chatsReducer, productsReducer, productTypesReducer, cartsReducer, ordersReducer } from '../reducers';
 
 const reducer = combineReducers({
   main: mainsReducer,
@@ -21,6 +21,7 @@ const reducer = combineReducers({
   product: productsReducer,
   productType: productTypesReducer,
   cart: cartsReducer,
+  order: ordersReducer,
   frontUser: frontUsersReducer
 })
 

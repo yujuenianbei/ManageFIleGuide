@@ -36,15 +36,15 @@ const getUserInfo = (func) => {
 // 新增后台用户
 const createProduct = (data, func) => {
     const query = `mutation addProduct($productName: String, $type: Int, $img: String, $promotionMessage: String, 
-    $featrues: String, $promotionMessageSecond: String, $usedPrice: Int, $nowPrice: Int){
+    $features: String, $promotionMessageSecond: String, $usedPrice: Int, $nowPrice: Int){
     addProduct(productName: $productName, type: $type, img: $img, promotionMessage: $promotionMessage,
-      featrues: $featrues, promotionMessageSecond: $promotionMessageSecond, 
+      features: $features, promotionMessageSecond: $promotionMessageSecond, 
       usedPrice: $usedPrice, nowPrice: $nowPrice){
         productName, 
         type, 
         img, 
         promotionMessage, 
-        featrues, 
+        features, 
         promotionMessageSecond, 
         usedPrice, 
         nowPrice,
@@ -68,7 +68,7 @@ const createProduct = (data, func) => {
                 type: parseInt(data.type),
                 img: data.img,
                 promotionMessage: data.promotionMessage,
-                featrues: data.featrues,
+                features: data.features,
                 promotionMessageSecond: data.promotionMessageSecond,
                 usedPrice: parseInt(data.usedPrice),
                 nowPrice: parseInt(data.nowPrice),
@@ -82,9 +82,9 @@ const createProduct = (data, func) => {
 // 修改后台用户
 const updateProduct = (data, func) => {
     const query = `mutation updateProduct($id: Int,$productName: String, $type: Int, $img: String, $promotionMessage: String, 
-        $featrues: String, $promotionMessageSecond: String, $usedPrice: Int, $nowPrice: Int){
+        $features: String, $promotionMessageSecond: String, $usedPrice: Int, $nowPrice: Int){
         updateProduct(id: $id, productName: $productName, type: $type, img: $img, promotionMessage: $promotionMessage,
-          featrues: $featrues, promotionMessageSecond: $promotionMessageSecond, usedPrice: $usedPrice, nowPrice: $nowPrice){
+          features: $features, promotionMessageSecond: $promotionMessageSecond, usedPrice: $usedPrice, nowPrice: $nowPrice){
               state
         }
       }`;
@@ -106,7 +106,7 @@ const updateProduct = (data, func) => {
                 type: parseInt(data.type),
                 img: data.img,
                 promotionMessage: data.promotionMessage,
-                featrues: data.featrues,
+                features: data.features,
                 promotionMessageSecond: data.promotionMessageSecond,
                 usedPrice: parseInt(data.usedPrice),
                 nowPrice: parseInt(data.nowPrice),
@@ -193,7 +193,7 @@ const searchProduct = (data, func) => {
           type, 
           img, 
           promotionMessage, 
-          featrues, 
+          features, 
           promotionMessageSecond, 
           usedPrice, 
           nowPrice,

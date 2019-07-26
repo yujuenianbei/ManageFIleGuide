@@ -38,7 +38,7 @@ class Main extends Component {
         const data = result.data.queryProduct[0];
         this.props.changeProductImg(data.img);
         this.props.changeProductName(data.productName);
-        this.props.changeProductFeatrues(data.featrues);
+        this.props.changeProductfeatures(data.features);
         this.props.changeProductPromotionMessage(data.promotionMessage);
         this.props.changeProductPromotionMessageSecond(data.promotionMessageSecond);
         this.props.changeProductUsedPrice(data.usedPrice);
@@ -171,8 +171,8 @@ class Main extends Component {
                                 })}
                             </div>
                             <div className={styles.moreContent}>
-                                {this.props.state.product.productFeatrues && <ul>
-                                    {JSON.parse(this.props.state.product.productFeatrues).map((item, index) => {
+                                {this.props.state.product.productfeatures && <ul>
+                                    {JSON.parse(this.props.state.product.productfeatures).map((item, index) => {
                                         return <li key={index + "productFirst_moreContent"}>{item}</li>
                                     })}
                                 </ul>}
@@ -453,7 +453,7 @@ const mapDispatchToProps = (dispatch) => {
         loadingOnHeader: (data) => { dispatch(Actions.loadingHeader(data)); },
         changeProductImg: (data) => { dispatch(Actions.productImg(data)); },
         changeProductName: (data) => { dispatch(Actions.productName(data)); },
-        changeProductFeatrues: (data) => { dispatch(Actions.productFeatrues(data)); },
+        changeProductfeatures: (data) => { dispatch(Actions.productfeatures(data)); },
         changeProductPromotionMessage: (data) => { dispatch(Actions.productPromotionMessage(data)); },
         changeProductPromotionMessageSecond: (data) => { dispatch(Actions.productPromotionMessageSecond(data)); },
         changeProductUsedPrice: (data) => { dispatch(Actions.productUsedPrice(data)); },

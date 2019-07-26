@@ -5,17 +5,16 @@ import { connect } from 'react-redux';
 import classify from '@magento/venia-concept/esm/classify';
 // const SearchBar = React.lazy(() => import('src/components/SearchBar'));
 import styles from './account.module.less';
-import { getUserInfo } from '../../fetch/account'
 import { Modal, Spin, Form, Icon } from 'antd';
 
-import CreateAccount from './createAccount';
-import DeleteAccount from './delete';
+import CreateFrontUser from './createFrontUser';
+import DeleteFrontUser from './delete';
 
-class AccountModle extends PureComponent {
+class FrontUserModle extends PureComponent {
 
     handleOk = (e) => {
         // 父组件调用子组件方法
-        if(this.props.state.account.modelName !== 'delete'){
+        if(this.props.state.frontUser.modelName !== 'delete'){
             this.child.handleSubmit(e);
         } else {
             this.del.handleSubmit(e);  
@@ -23,7 +22,7 @@ class AccountModle extends PureComponent {
     };
 
     handleCancel = () => {
-        if(this.props.state.account.modelName !== 'delete'){
+        if(this.props.state.frontUser.modelName !== 'delete'){
             this.child.cancelSubmit();
         } else {
             this.del.cancelSubmit();  
@@ -35,15 +34,15 @@ class AccountModle extends PureComponent {
             <Fragment>
                 <Modal
                     centered
-                    title={this.props.state.account.modelTitle}
-                    visible={this.props.state.account.modelState}
+                    title={this.props.state.frontUser.modelTitle}
+                    visible={this.props.state.frontUser.modelState}
                     onOk={this.handleOk}
-                    confirmLoading={this.props.state.account.confirmLoading}
+                    confirmLoading={this.props.state.frontUser.confirmLoading}
                     onCancel={this.handleCancel}
                     maskClosable={false}
                 >
-                {this.props.state.account.modelName !== 'delete' && <CreateAccount onRef={(ref) => { this.child = ref }} />}
-                {this.props.state.account.modelName === 'delete' && <DeleteAccount onDel={(ref) => { this.del = ref }}/>} 
+                {this.props.state.frontUser.modelName !== 'delete' && <CreateFrontUser onRef={(ref) => { this.child = ref }} />}
+                {this.props.state.frontUser.modelName === 'delete' && <DeleteFrontUser onDel={(ref) => { this.del = ref }}/>} 
                     
                 </Modal>
             </Fragment>
@@ -69,4 +68,4 @@ const mapDispatchToProps = (dispatch) => {
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(classify(styles)(AccountModle));
+)(classify(styles)(FrontUserModle));

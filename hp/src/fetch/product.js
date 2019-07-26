@@ -32,7 +32,7 @@ const getProductsByPage = (start, size, func) => {
           productName
           img
           promotionMessage
-          featrues
+          features
           promotionMessageSecond
           usedPrice
           nowPrice
@@ -68,7 +68,7 @@ const getProductInfo = (id, func) => {
         img
         productName
         promotionMessage
-        featrues
+        features
         promotionMessageSecond
         usedPrice
         nowPrice

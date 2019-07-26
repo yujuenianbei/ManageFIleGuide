@@ -140,11 +140,11 @@ class Cart extends PureComponent {
             },
             {
                 title: '配置参数',
-                dataIndex: 'featrues',
-                key: 'featrues',
+                dataIndex: 'features',
+                key: 'features',
                 // width: '15%',
                 render: (text, record) => {
-                    return JSON.parse(record.featrues).map((item, index) =>
+                    return JSON.parse(record.features).map((item, index) =>
                         <li key={index + '123123'}>
                             <span title={record.item}>{index + 1}. {item}</span>
                         </li>
@@ -408,7 +408,7 @@ class Cart extends PureComponent {
                 productName: item.productName,
                 type: item.typeName,
                 img: item.img,
-                featrues: item.featrues,
+                features: item.features,
                 promotionMessage: item.promotionMessage,
                 promotionMessageSecond: item.promotionMessageSecond,
                 usedPrice: item.usedPrice,

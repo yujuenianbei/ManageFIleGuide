@@ -42,18 +42,18 @@ module.exports = {
                 type: { type: GraphQLInt },
                 img: { type: GraphQLString },
                 promotionMessage: { type: GraphQLString },
-                featrues: { type: GraphQLString },
+                features: { type: GraphQLString },
                 promotionMessageSecond: { type: GraphQLString },
                 usedPrice: { type: GraphQLInt },
                 nowPrice: { type: GraphQLInt }
             },
-            resolve: async function (source, { productName, type, img, promotionMessage, featrues, promotionMessageSecond, usedPrice, nowPrice }) {
+            resolve: async function (source, { productName, type, img, promotionMessage, features, promotionMessageSecond, usedPrice, nowPrice }) {
                 // 查询用户名注册没
                 return await searchSql($sql.queryEndProductByName, [productName])
                     .then(async (reslut) => {
                         if (reslut.length === 0) {
                             // 新增产品
-                            return await searchSql($sql.insertEndProduct, [productName, type, img, promotionMessage, featrues, promotionMessageSecond, usedPrice, nowPrice])
+                            return await searchSql($sql.insertEndProduct, [productName, type, img, promotionMessage, features, promotionMessageSecond, usedPrice, nowPrice])
                                 .then(async (resluts) => {
                                     // 查询产品是否添加成功
                                     return await searchSql($sql.queryEndProductById, [resluts.id]).then(async (reslutData) => {
@@ -80,20 +80,20 @@ module.exports = {
                 type: { type: GraphQLInt },
                 img: { type: GraphQLString },
                 promotionMessage: { type: GraphQLString },
-                featrues: { type: GraphQLString },
+                features: { type: GraphQLString },
                 promotionMessageSecond: { type: GraphQLString },
                 usedPrice: { type: GraphQLInt },
                 nowPrice: { type: GraphQLInt }
             },
-            resolve: async function (source, { id, productName, type, img, promotionMessage, featrues, promotionMessageSecond, usedPrice, nowPrice }) {
-               console.log(id, productName, type, img, promotionMessage, featrues, promotionMessageSecond, usedPrice, nowPrice)
+            resolve: async function (source, { id, productName, type, img, promotionMessage, features, promotionMessageSecond, usedPrice, nowPrice }) {
+               console.log(id, productName, type, img, promotionMessage, features, promotionMessageSecond, usedPrice, nowPrice)
                 // 查询产品是否存在
                 return await searchSql($sql.queryEndProductById, [id])
                     .then(async (reslut) => {
                         console.log(reslut)
                         if (reslut.length === 1) {
                             // 修改产品信息
-                            return await searchSql($sql.updateEndProduct, [productName, type, img, promotionMessage, featrues, promotionMessageSecond, usedPrice, nowPrice, id])
+                            return await searchSql($sql.updateEndProduct, [productName, type, img, promotionMessage, features, promotionMessageSecond, usedPrice, nowPrice, id])
                                 .then(async (resluts) => {
                                     // 查询修改后的产品
                                     return await searchSql($sql.queryEndProductById, [id]).then(async (reslutData) => {

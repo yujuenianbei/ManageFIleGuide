@@ -16,7 +16,7 @@ let myClear, clearData, modelData = {
     productName: '',
     type: '',
     img: '',
-    featrues: [],
+    features: [],
     promotionMessage: '',
     promotionMessageSecond: '',
     usedPrice: null,
@@ -54,7 +54,7 @@ class ProductForm extends PureComponent {
                 productName: '',
                 type: '',
                 img: '',
-                featrues: [],
+                features: [],
                 promotionMessage: '',
                 promotionMessageSecond: '',
                 usedPrice: null,
@@ -62,7 +62,7 @@ class ProductForm extends PureComponent {
             })
         } else if (this.props.state.product.modelName === 'edit') {
             const data = this.props.state.product.modelData;
-            id = JSON.parse(data.featrues).length;
+            id = JSON.parse(data.features).length;
             this.props.form.getFieldDecorator('keys', { initialValue: Array.from(new Array(id).keys()) });
             this.setState({
                 fileList: [{
@@ -76,7 +76,7 @@ class ProductForm extends PureComponent {
                     keys: Array.from(new Array(id).keys()),
                     id: data.key,
                     img: this.state.fileList[0].url,
-                    featrues: JSON.parse(data.featrues),
+                    features: JSON.parse(data.features),
                     productName: data.productName,
                     type: typeNameToType(this.props.state.product.productTypeList, data.type),
                     promotionMessage: data.promotionMessage,
@@ -86,7 +86,7 @@ class ProductForm extends PureComponent {
                 })
             })
             change = {
-                featrues: JSON.parse(data.featrues)
+                features: JSON.parse(data.features)
             }
         }
     }
@@ -139,7 +139,7 @@ class ProductForm extends PureComponent {
                     productName: '',
                     type: '',
                     img: '',
-                    featrues: [],
+                    features: [],
                     promotionMessage: '',
                     promotionMessageSecond: '',
                     usedPrice: null,
@@ -147,14 +147,14 @@ class ProductForm extends PureComponent {
                 })
             } else if (nextProps.state.product.modelName == 'edit') {
                 const data = nextProps.state.product.modelData;
-                id = JSON.parse(data.featrues).length;
+                id = JSON.parse(data.features).length;
                 this.props.form.getFieldDecorator('keys', { initialValue: Array.from(new Array(id).keys()) });
                 // console.log(this.state.fileList)
                 this.props.form.setFieldsValue({
                     keys: Array.from(new Array(id).keys()),
                     id: data.key,
                     productName: data.productName,
-                    featrues: JSON.parse(data.featrues),
+                    features: JSON.parse(data.features),
                     type: typeNameToType(this.props.state.product.productTypeList, data.type),
                     promotionMessage: data.promotionMessage,
                     promotionMessageSecond: data.promotionMessageSecond,
@@ -162,7 +162,7 @@ class ProductForm extends PureComponent {
                     nowPrice: data.nowPrice,
                 })
                 change = {
-                    featrues: JSON.parse(data.featrues)
+                    features: JSON.parse(data.features)
                 }
             }
         }
@@ -180,7 +180,7 @@ class ProductForm extends PureComponent {
                         type: values.type,
                         img: values.img,
                         promotionMessage: values.promotionMessage,
-                        featrues: JSON.stringify(values.featrues.filter(item => item)),
+                        features: JSON.stringify(values.features.filter(item => item)),
                         promotionMessageSecond: values.promotionMessageSecond,
                         usedPrice: values.usedPrice,
                         nowPrice: values.nowPrice
@@ -192,7 +192,7 @@ class ProductForm extends PureComponent {
                         type: values.type,
                         img: this.state.fileList[0].url,
                         promotionMessage: values.promotionMessage,
-                        featrues: JSON.stringify(values.featrues.filter(item => item)),
+                        features: JSON.stringify(values.features.filter(item => item)),
                         promotionMessageSecond: values.promotionMessageSecond,
                         usedPrice: values.usedPrice,
                         nowPrice: values.nowPrice
@@ -306,7 +306,7 @@ class ProductForm extends PureComponent {
                 productName: item.productName,
                 type: typeToTypeName(this.props.state.product.productTypeList, item.type),
                 img: item.img,
-                featrues: item.featrues,
+                features: item.features,
                 promotionMessage: item.promotionMessage,
                 promotionMessageSecond: item.promotionMessageSecond,
                 usedPrice: item.usedPrice,
@@ -422,7 +422,7 @@ class ProductForm extends PureComponent {
                     required={false}
                     key={k}>
 
-                    {getFieldDecorator(`featrues[${k}]`, {
+                    {getFieldDecorator(`features[${k}]`, {
                         initialValue: '',
                         validateTrigger: 'onBlur',
                         rules: [
@@ -438,10 +438,10 @@ class ProductForm extends PureComponent {
                     ) : null}
                 </Form.Item>
             ));
-        } else if (this.props.state.product.modelName == 'edit' && getFieldValue('keys') && change.featrues) {
+        } else if (this.props.state.product.modelName == 'edit' && getFieldValue('keys') && change.features) {
 
-            console.log(getFieldsValue(), change.featrues)
-            getFieldDecorator('keys', { initialValue: Array.from(new Array(change.featrues.length).keys()) });
+            console.log(getFieldsValue(), change.features)
+            getFieldDecorator('keys', { initialValue: Array.from(new Array(change.features.length).keys()) });
             const keys = getFieldValue('keys');
             // console.log(keys)
             formItems = keys.map((k, index) => (
@@ -452,8 +452,8 @@ class ProductForm extends PureComponent {
                     required={false}
                     key={k}>
 
-                    {getFieldDecorator(`featrues[${k}]`, {
-                        initialValue: change.featrues[k],
+                    {getFieldDecorator(`features[${k}]`, {
+                        initialValue: change.features[k],
                         validateTrigger: 'onBlur',
                         rules: [
                             {

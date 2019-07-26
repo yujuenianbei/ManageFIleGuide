@@ -14,9 +14,9 @@ const {
     GraphQLInputObjectType
 } = require('graphql');
 
-const QueryAllCart = new GraphQLObjectType({
-    name: 'QueryAllCart',
-    description: "查询所有用户的购物车",
+const QueryAllOrder = new GraphQLObjectType({
+    name: 'QueryAllOrder',
+    description: "查询所有用户的订单",
     fields: () => {
         return ({
             id: {
@@ -24,19 +24,9 @@ const QueryAllCart = new GraphQLObjectType({
                     return data.id;
                 }
             },
-            cartId: {
-                type: GraphQLInt, resolve(data) {
-                    return data.cartId;
-                }
-            },
-            createTime: {
+            name: {
                 type: GraphQLString, resolve(data) {
-                    return data.createTime;
-                }
-            },
-            updateTime: {
-                type: GraphQLString, resolve(data) {
-                    return data.updateTime;
+                    return data.name;
                 }
             },
             email: {
@@ -44,9 +34,9 @@ const QueryAllCart = new GraphQLObjectType({
                     return data.email;
                 }
             },
-            name: {
-                type: GraphQLString, resolve(data) {
-                    return data.name;
+            phoneCode: {
+                type: GraphQLInt, resolve(data) {
+                    return data.phoneCode;
                 }
             },
             phone: {
@@ -54,9 +44,9 @@ const QueryAllCart = new GraphQLObjectType({
                     return data.phone;
                 }
             },
-            phoneCode: {
+            productId: {
                 type: GraphQLInt, resolve(data) {
-                    return data.phoneCode;
+                    return data.productId;
                 }
             },
             productName: {
@@ -64,24 +54,19 @@ const QueryAllCart = new GraphQLObjectType({
                     return data.productName;
                 }
             },
-            typeName: {
+            productType: {
                 type: GraphQLString, resolve(data) {
-                    return data.typeName;
+                    return data.productType;
                 }
             },
-            img: {
+            productImg: {
                 type: GraphQLString, resolve(data) {
-                    return data.img;
+                    return data.productImg;
                 }
             },
             promotionMessage: {
                 type: GraphQLString, resolve(data) {
                     return data.promotionMessage;
-                }
-            },
-            features: {
-                type: GraphQLString, resolve(data) {
-                    return data.features;
                 }
             },
             promotionMessageSecond: {
@@ -109,6 +94,66 @@ const QueryAllCart = new GraphQLObjectType({
                     return data.productNum;
                 }
             },
+            orderOdd: {
+                type: GraphQLString, resolve(data) {
+                    return data.orderOdd;
+                }
+            },
+            payMethod: {
+                type: GraphQLString, resolve(data) {
+                    return data.payMethod;
+                }
+            },
+            payTime: {
+                type: GraphQLString, resolve(data) {
+                    return data.payTime;
+                }
+            },
+            payState: {
+                type: GraphQLInt, resolve(data) {
+                    return data.payState;
+                }
+            },
+            deliveryMethod: {
+                type: GraphQLString, resolve(data) {
+                    return data.deliveryMethod;
+                }
+            },
+            deliveryHopeTime: {
+                type: GraphQLString, resolve(data) {
+                    return data.deliveryHopeTime;
+                }
+            },
+            expressOdd: {
+                type: GraphQLString, resolve(data) {
+                    return data.expressOdd;
+                }
+            },
+            goodsResAddress: {
+                type: GraphQLInt, resolve(data) {
+                    return data.goodsResAddress;
+                }
+            },
+            fullPrice: {
+                type: GraphQLInt, resolve(data) {
+                    return data.fullPrice;
+                }
+            },
+            orderState: {
+                type: GraphQLString, resolve(data) {
+                    return data.orderState;
+                }
+            },
+            createTime: {
+                type: GraphQLString, resolve(data) {
+                    return data.createTime;
+                }
+            },
+            updateTime: {
+                type: GraphQLString, resolve(data) {
+                    return data.updateTime;
+                }
+            },
             state: {
                 type: GraphQLInt, resolve(data) {
                     return data.state;
@@ -117,26 +162,16 @@ const QueryAllCart = new GraphQLObjectType({
         });
     },
 });
-const QueryProductNumberOfType = new GraphQLObjectType({
-    name: 'QueryProductNumberOfType',
+const OrderItemTotal = new GraphQLObjectType({
+    name: 'OrderItemTotal',
     description: "查询符合条件的购物车总数",
     fields: () => {
         return ({
-            id: {
+            total: {
                 type: GraphQLInt, resolve(data) {
-                    return data.id;
+                    return data.total;
                 }
             },
-            count: {
-                type: GraphQLInt, resolve(data) {
-                    return data.count;
-                }
-            },
-            item: {
-                type: GraphQLString, resolve(data) {
-                    return data.item;
-                }
-            }
         });
     },
 });
@@ -144,5 +179,6 @@ const QueryProductNumberOfType = new GraphQLObjectType({
 
 
 module.exports = { 
-    QueryProductNumberOfType
+    QueryAllOrder,
+    OrderItemTotal
 }

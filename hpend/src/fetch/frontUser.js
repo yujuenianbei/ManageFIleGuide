@@ -180,7 +180,7 @@ const validateFrontUser = (data, func) => {
 // 根据指定条件进行查询用户
 const searchFrontUser = (data, func) => {
     let intvalue, value;
-    if (data.searchType === "sex" || data.searchType === "phoneCode") {
+    if (data.searchType === "sex") {
         console.log(data)
         if(!data.search && data.search !== 0){
             intvalue = 9;
@@ -242,7 +242,7 @@ const searchFrontUser = (data, func) => {
 // 根据指定条件进行查询用户总数
 const searchFrontUserTotal = (data, func) => {
     let intvalue, value;
-    if (data.searchType === "sex" || data.searchType === "phoneCode") {
+    if (data.searchType === "sex") {
         intvalue = data.search;
         value = data.searchType;
     } else {

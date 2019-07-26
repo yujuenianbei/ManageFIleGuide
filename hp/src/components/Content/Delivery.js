@@ -41,10 +41,10 @@ class Delivery extends Component {
             this.props.history.push('/');
         } else {
             // 只有登录的才查询地址
-            if(this.props.state.user.loginState){
-                getGoodsResInfo(this.props.state.user.useremail, this.getGoodsResInfoData)
+            if (this.props.state.user.loginState) {
+                getGoodsResInfo(this.props.state.user.userName, this.getGoodsResInfoData)
             }
-            
+
             // 请求订单中的产品信息
             var dd = this.props.state.order.orderProductList.map(item => {
                 return item.id
@@ -57,14 +57,14 @@ class Delivery extends Component {
     }
 
     // 获取快递中文
-    deliveryName = () =>{
-        for( var delivery  of this.props.state.cart.deliveryList){
-            if(parseInt(delivery.id) === this.props.state.order.delivery){
+    deliveryName = () => {
+        for (var delivery of this.props.state.cart.deliveryList) {
+            if (parseInt(delivery.id) === this.props.state.order.delivery) {
                 console.log(delivery.name);
-                this.setState({deliveryName: delivery.name})
+                this.setState({ deliveryName: delivery.name })
             }
         }
-    } 
+    }
 
     // 将产品信息加入订单产品中
     changeProductListOfOrder = (result) => {
@@ -84,14 +84,14 @@ class Delivery extends Component {
 
     // 获取收货地址后
     getGoodsResInfoData = (result) => {
-        if (result.data.queryGoodsResInfoByEmail.length === 0) {
-            this.props.getOrderAddress(result.data.queryGoodsResInfoByEmail)
+        if (result.data.queryGoodsResInfoByUserName.length === 0) {
+            this.props.getOrderAddress(result.data.queryGoodsResInfoByUserName)
             // 用户已注册但是没有添加收货地址
             this.props.form.setFieldsValue({
                 email: this.props.state.user.useremail,
             })
         } else {
-            this.props.getOrderAddress(result.data.queryGoodsResInfoByEmail)
+            this.props.getOrderAddress(result.data.queryGoodsResInfoByUserName)
             this.setState({
                 loginGoodsResInfo: true
             })
@@ -145,7 +145,8 @@ class Delivery extends Component {
                 ['email', 'lastname', 'firstname', 'address', 'phone',
                     'phoneCode', 'province', 'city', 'district', 'postCode'], (error, value) => {
                         if (!error) {
-                            console.log(value);
+                            value.userName = this.props.state.user.userName;
+                            console.log(value)
                             addGoodsResInfo(value, this.addGoodsResInfo);
                         }
                         console.log(error, value);
@@ -312,7 +313,7 @@ class Delivery extends Component {
                             {!this.state.loginGoodsResInfo && this.props.state.user.loginState === 0 &&
                                 <DeliveryAddress form={this.props.form} loginGoodsResInfo={this.state.loginGoodsResInfo} />
                             }
-                            {!this.state.loginGoodsResInfo && this.props.state.user.loginState === 0 && 
+                            {!this.state.loginGoodsResInfo && this.props.state.user.loginState === 0 &&
                                 <div className={styles.deliveryPwd}>
                                     <div className={styles.deliveryAddressList}>
                                         <Checkbox className={styles.createAccountCheck} onChange={this.regCheck} checked={this.state.createAccount}>创建账号</Checkbox>

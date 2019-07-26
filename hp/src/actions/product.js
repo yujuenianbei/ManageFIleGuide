@@ -1,6 +1,6 @@
 export const PRODUCTIMG = 'PRODUCTIMG';
 export const PRODUCTNAME = 'PRODUCTNAME';
-export const PRODUCTFEATRUES = 'PRODUCTFEATRUES';
+export const PRODUCTfeatureS = 'PRODUCTfeatureS';
 export const PRODUCTPROMOTIONMESSAGE = 'PRODUCTPROMOTIONMESSAGE';
 export const PRODUCTPROMOTIONMESSAGESECOND = 'PRODUCTPROMOTIONMESSAGESECOND';
 export const PRODUCTNOWPRICE = 'PRODUCTNOWPRICE';
@@ -20,9 +20,9 @@ export function productName(data) {
     }
   }
   // 购物车的产品数量
-export function productFeatrues(data) {
+export function productfeatures(data) {
     return {
-      type: PRODUCTFEATRUES,
+      type: PRODUCTfeatureS,
       data
     }
   }

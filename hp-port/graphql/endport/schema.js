@@ -17,6 +17,7 @@ const frontUser = require('./frontUser');
 const product = require('./product');
 const productType = require('./productType');
 const cart = require('./cart');
+const order = require('./order');
 const cartChart = require('./cartChart');
 
 const Query=new GraphQLObjectType({
@@ -28,6 +29,7 @@ const Query=new GraphQLObjectType({
         product.query,
         productType.query,
         cart.query,
+        order.query,
         cartChart.query
     )),
 });
@@ -40,6 +42,7 @@ const Mutation=new GraphQLObjectType({
         product.mutation,
         productType.mutation,
         cart.mutation,
+        order.mutation,
         cartChart.mutation
     )),
 });

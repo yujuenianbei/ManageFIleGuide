@@ -29,6 +29,11 @@ const GoodsResInfo = new GraphQLObjectType({
                     return data.id;
                 }
             },
+            userName: {
+                type: GraphQLString, resolve(data) {
+                    return data.userName;
+                }
+            },
             email: {
                 type: GraphQLString, resolve(data) {
                     return data.email;
@@ -164,6 +169,7 @@ module.exports = {
             type: new GraphQLList(GoodsResInfo),
             description: '添加收货地址',
             args: {
+                userName: { type: GraphQLString },
                 email: { type: GraphQLString },
                 firstName: { type: GraphQLString },
                 lastName: { type: GraphQLString },
@@ -173,14 +179,14 @@ module.exports = {
                 address: { type: GraphQLString },
                 postCode: { type: GraphQLInt },
             },
-            resolve: async function (source, { email, firstName, lastName, phoneCode, phone, province, address, postCode}) {
-                console.log( email, firstName, lastName, phoneCode, phone, province, address, postCode)
-                return await searchSql($sql.insertGoodsResInfo, [email, firstName, lastName, phoneCode, phone, province, address, postCode ])
+            resolve: async function (source, { email, userName, firstName, lastName, phoneCode, phone, province, address, postCode }) {
+                console.log(email, userName, firstName, lastName, phoneCode, phone, province, address, postCode)
+                return await searchSql($sql.insertGoodsResInfo, [email, userName, firstName, lastName, phoneCode, phone, province, address, postCode])
                     .then(async (reslut) => {
                         return await searchSql($sql.queryGoodsResInfo, [reslut.id])
-                        .then(async (resluts) => {
-                            return await resluts;
-                        })
+                            .then(async (resluts) => {
+                                return await resluts;
+                            })
                     })
             }
         },

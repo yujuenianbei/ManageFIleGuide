@@ -6,4 +6,5 @@ import chatsReducer from './chat';
 import productsReducer from './product';
 import productTypesReducer from './productType';
 import cartsReducer from './cart';
-export { mainsReducer, usersReducer, accountsReducer, frontUsersReducer, chatsReducer, productsReducer, cartsReducer, productTypesReducer }
+import ordersReducer from './order';
+export { mainsReducer, usersReducer, accountsReducer, frontUsersReducer, chatsReducer, productsReducer, cartsReducer, ordersReducer, productTypesReducer }

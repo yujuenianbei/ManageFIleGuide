@@ -28,7 +28,7 @@ var user = {
     //购物车
 
     // 获取指定用户的购物车产品信息
-    queryUserCartProductInfo: "SELECT c.id, c.productName, c.type, c.img, c.promotionMessage, c.featrues, c.promotionMessageSecond, c.usedPrice, c.nowPrice,i.productNum FROM product AS c,cartItem AS i WHERE (SELECT i.productId FROM cart,user WHERE cart.cartId=i.cartId and user.id=cart.userId and i.productId=c.id and user.id = ? )",
+    queryUserCartProductInfo: "SELECT c.id, c.productName, c.type, c.img, c.promotionMessage, c.features, c.promotionMessageSecond, c.usedPrice, c.nowPrice,i.productNum FROM product AS c,cartItem AS i WHERE (SELECT i.productId FROM cart,user WHERE cart.cartId=i.cartId and user.id=cart.userId and i.productId=c.id and user.id = ? )",
     // 查询用户在购物车内有没有购物车内容
     queryCartUser: 'SELECT * FROM `cart` where userId= ?',
     // 查询购物车中某个产品个数
@@ -92,13 +92,13 @@ var user = {
 
     // 收货地址
     queryGoodsResInfo: "SELECT * FROM goodsResInfo where id= ?",
-    insertGoodsResInfo: "INSERT INTO goodsResInfo(email, firstName, lastName, phoneCode, phone, province, address, postCode, createTime, updateTime) VALUES(?,?,?,?,?,?,?,?,NOW(), NOW())",
+    insertGoodsResInfo: "INSERT INTO goodsResInfo(email, userName, firstName, lastName, phoneCode, phone, province, address, postCode, createTime, updateTime) VALUES(?,?,?,?,?,?,?,?,?,NOW(), NOW())",
     updateGoodsResInfo: "UPDATE goodsResInfo SET email=?, firstName=?, lastName=?, phoneCode=?, phone=?, province=?, address=?, postCode=?, updateTime=NOW()",
     deleteGoodsResInfo: "DELETE FROM goodsResInfo WHERE id=?",
 
     // 根据用户登录状态查询收货地址
     quertGoodsResInfoByEmail: "SELECT * FROM goodsResInfo where email= ?",
-
+    quertGoodsResInfoByUserName: "SELECT * FROM goodsResInfo where userName= ?",
     // 获取配送方式
     queryAllDeliveryMethod: "SELECT * FROM deliveryMethod",
     // 获取支付方式
@@ -106,7 +106,9 @@ var user = {
 
     // 用户创建订单
     addOrder: "INSERT INTO orders(orderOdd, email, payMethod, payState, payTime, deliveryMethod, deliveryHopeTime, expressOdd, goodsResAddress, productList, fullPrice, orderState, createTime, updateTime) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,NOW(), NOW())",
-    queryOrder: "SELECT * FROM orders WHERE id=?"
+    queryOrder: "SELECT * FROM orders WHERE id=?",
+    addOrderProducts: "INSERT INTO orderProducts(orderOdd, productId, productNum, createTime, updateTime) VALUES(?,?,?,NOW(), NOW())"
+    
 };
 
 module.exports = user;

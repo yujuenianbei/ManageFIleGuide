@@ -7,7 +7,7 @@ const getProductsInOrder = (data, func) => {
                 type, 
                 img, 
                 promotionMessage, 
-                featrues, 
+                features, 
                 promotionMessageSecond, 
                 usedPrice, 
                 nowPrice

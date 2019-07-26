@@ -419,19 +419,19 @@ const mapStateToProps = (state) => {
 };
 const mapDispatchToProps = (dispatch) => {
     return {
-        changeModleState: (data) => { dispatch(Actions.modleState(data)); },
+        changeModleState: (data) => { dispatch(Actions.accountModleState(data)); },
         changeAccountDataLoading: (data) => { dispatch(Actions.accountDataLoading(data)); },
         changeAccountData: (data) => { dispatch(Actions.accountData(data)); },
-        changeModleTitle: (data) => { dispatch(Actions.modleTitle(data)); },
-        changeModleName: (data) => { dispatch(Actions.modleName(data)); },
-        changeModelData: (data) => { dispatch(Actions.modelData(data)); },
-        changeConfirmLoading: (data) => { dispatch(Actions.confirmLoading(data)); },
+        changeModleTitle: (data) => { dispatch(Actions.accountModleTitle(data)); },
+        changeModleName: (data) => { dispatch(Actions.accountModleName(data)); },
+        changeModelData: (data) => { dispatch(Actions.accountModelData(data)); },
+        changeConfirmLoading: (data) => { dispatch(Actions.accountConfirmLoading(data)); },
 
-        changePageSize: (data) => { dispatch(Actions.pageSize(data)); },
-        changePageNow: (data) => { dispatch(Actions.pageNow(data)); },
-        changePageTotal: (data) => { dispatch(Actions.pageTotal(data)); },
-        changeSearchValue: (data) => { dispatch(Actions.searchUserValue(data)); },
-        changeSearchType: (data) => { dispatch(Actions.searchUserType(data)); },
+        changePageSize: (data) => { dispatch(Actions.accountPageSize(data)); },
+        changePageNow: (data) => { dispatch(Actions.accountPageNow(data)); },
+        changePageTotal: (data) => { dispatch(Actions.accountPageTotal(data)); },
+        changeSearchValue: (data) => { dispatch(Actions.accountSearchUserValue(data)); },
+        changeSearchType: (data) => { dispatch(Actions.accountSearchUserType(data)); },
     }
 };
 export default connect(

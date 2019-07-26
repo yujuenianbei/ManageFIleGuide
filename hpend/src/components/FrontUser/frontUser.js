@@ -7,7 +7,7 @@ import classify from '@magento/venia-concept/esm/classify';
 import styles from './account.module.less';
 import { searchFrontUser, searchFrontUserTotal } from '../../fetch/frontUser'
 import { Table, Divider, Dropdown, Checkbox, Menu, Icon, Tag, Breadcrumb, Input, Col, Row, Select, Button, Modal, Spin } from 'antd';
-import AccountModle from './model'
+import FrontUserModle from './model'
 import { transToSex } from '../../func/account'
 
 const Search = Input.Search;
@@ -15,7 +15,7 @@ const InputGroup = Input.Group;
 const { Option } = Select;
 const CheckboxGroup = Checkbox.Group;
 
-class Account extends PureComponent {
+class FrontUser extends PureComponent {
 
     constructor(props) {
         super(props);
@@ -33,12 +33,6 @@ class Account extends PureComponent {
         indeterminate: true,
         checkAll: false,
         defaultColumns: [
-            // {
-            //     title: '用户名',
-            //     dataIndex: 'name',
-            //     key: 'name',
-            //     render: text => <a href="javascript:;">{text}</a>,
-            // },
             {
                 title: '性别',
                 dataIndex: 'sex',
@@ -99,6 +93,7 @@ class Account extends PureComponent {
     handleButtonClick = (e) => {
         console.log(e);
     }
+
     // 选择列
     checkBoxOnChange = checkedList => {
         this.setState({
@@ -118,6 +113,7 @@ class Account extends PureComponent {
         //     this.props.changeSearchType("")
         // }
     };
+
     // 全选
     onCheckAllChange = e => {
         this.setState({
@@ -182,6 +178,7 @@ class Account extends PureComponent {
         searchFrontUserTotal(data, this.setPageTotal)
         searchFrontUser(data, this.searchData);
     }
+
     // 分页
     ChangePage = (page, pageSize) => {
         this.props.changeAccountDataLoading(true);
@@ -206,6 +203,7 @@ class Account extends PureComponent {
     changeType = (value) => {
         this.props.changeSearchType(value);
     }
+
     // 搜索input
     searchValueChange = (value) => {
         this.props.changeSearchValue(value);
@@ -214,7 +212,6 @@ class Account extends PureComponent {
     // 加载上一次的搜索
     searchFrontUserMount = () => {
         this.props.changeAccountDataLoading(true)
-
         let data = {};
         data.search = this.props.state.frontUser.searchValue ? this.props.state.frontUser.searchValue : ""
         data.searchType = this.props.state.frontUser.searchType ? this.props.state.frontUser.searchType : "";
@@ -228,7 +225,6 @@ class Account extends PureComponent {
         searchFrontUserTotal(data, this.setPageTotal)
         searchFrontUser(data, this.searchData);
     }
-
 
     // 搜索
     searchFrontUser = (value) => {
@@ -252,13 +248,12 @@ class Account extends PureComponent {
         searchFrontUser(data, this.searchData);
     }
 
-
-
     // 修改总数
     setPageTotal = (result) => {
         this.props.changePageTotal(result.data.frontUserTotal.total);
         this.props.changeAccountDataLoading(false)
     }
+
     // 搜索结果写入表中
     searchData = (result) => {
         let data = []
@@ -303,9 +298,9 @@ class Account extends PureComponent {
             <Fragment>
                 <Breadcrumb style={{ margin: '16px 0' }}>
                     <Breadcrumb.Item>首页</Breadcrumb.Item>
-                    <Breadcrumb.Item>用户管理</Breadcrumb.Item>
+                    <Breadcrumb.Item>前台用户管理</Breadcrumb.Item>
                 </Breadcrumb>
-                <AccountModle/>
+                <FrontUserModle/>
                 <div className={styles.content}>
                     <div className={styles.search}>
                         <Row>
@@ -347,8 +342,8 @@ class Account extends PureComponent {
                     </div>
                     <Table
                         columns={this.state.columns}
-                        dataSource={this.props.state.frontUser.accountData}
-                        loading={this.props.state.frontUser.accountLoading}
+                        dataSource={this.props.state.frontUser.frontUserData}
+                        loading={this.props.state.frontUser.frontUserLoading}
                         onRow={(record) => {
                             return {
                                 onClick: () => {
@@ -399,4 +394,4 @@ const mapDispatchToProps = (dispatch) => {
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(classify(styles)(Account));
+)(classify(styles)(FrontUser));

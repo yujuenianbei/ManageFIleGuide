@@ -6,3 +6,4 @@ export * from './chat';
 export * from './product';
 export * from './productType';
 export * from './cart';
+export * from './order';

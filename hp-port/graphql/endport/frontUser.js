@@ -91,6 +91,7 @@ module.exports = {
                 company: { type: GraphQLString }
             },
             resolve: async function (source, { name, sex, email, phoneCode, phone, password, company, id }) {
+                console.log(name, sex, email, phoneCode, phone, password, company, id)
                 // 查询用户名注册没
                 return await searchSql($sql.queryFrontUserById, [id])
                     .then(async (reslut) => {
@@ -184,19 +185,21 @@ module.exports = {
             },
             resolve: async function (source, { intvalue, value, type, start, pageSize, sort }) {
                 // type 没选 全局搜
-                if (type !== '' && value !== '' && type !== 'sex' && type !== 'phoneCode') {
+                if (type !== '' && value !== '' && type !== 'sex') {
                     value = '%' + value + '%'
+                    console.log(`SELECT * FROM user WHERE ${type} like ${JSON.stringify(value)} ORDER BY ${type} ${sort} limit ${start},${pageSize}`)
                     return await searchSql(`SELECT * FROM user WHERE ${type} like ${JSON.stringify(value)} ORDER BY ${type} ${sort} limit ${start},${pageSize}`)
                         .then(async (reslut) => {
                             return reslut;
                         })
-                } else if ((type === 'sex' || type === 'phoneCode') && intvalue !== 9) {
-                    console.log(`SELECT * FROM user WHERE ${type} like %${intvalue}% ORDER BY ${type} ${sort} limit ${start},${pageSize}`)
-                    return await searchSql(`SELECT * FROM account WHERE ${type} like ? ORDER BY ${type} ${sort} limit ${start},${pageSize}`, [`%${intvalue}%`])
+                } else if ((type === 'sex') && intvalue !== 9) {
+                    console.log(`SELECT * FROM user WHERE ${type} like '%${intvalue}%' ORDER BY ${type} ${sort} limit ${start},${pageSize}`)
+                    return await searchSql(`SELECT * FROM user WHERE ${type} like ? ORDER BY ${type} ${sort} limit ${start},${pageSize}`, [`%${intvalue}%`])
                         .then(async (reslut) => {
                             return reslut;
                         })
                 } else {
+                    console.log(`SELECT * FROM user limit ${start},${pageSize}`)
                     return await searchSql(`SELECT * FROM user limit ${start},${pageSize}`)
                         .then(async (reslut) => {
                             return reslut;
@@ -215,24 +218,24 @@ module.exports = {
                 type: { type: GraphQLString }
             },
             resolve: async function (source, { intvalue, value, type }) {
-                console.log(intvalue, value, type)
+                // console.log(intvalue, value, type)
                 if (type === "" || value === "") {
                     return await searchSql($sql.searchAllFrontUser)
                         .then(async (reslut) => {
-                            console.log(1, reslut);
+                            // console.log(1, reslut);
                             return await reslut[0];
                         })
                 } else {
                     if (type !== "sex" && type !== "phoneCode") {
                         return await searchSql(`SELECT count(*) as total FROM user WHERE ${type} like ?`, [`%${value}%`])
                             .then(async (reslut) => {
-                                console.log(2, reslut);
+                                // console.log(2, reslut);
                                 return await reslut[0];
                             })
                     } else {
                         return await searchSql(`SELECT count(*) as total FROM user WHERE ${type} like ? `, [`%${intvalue}%`])
                             .then(async (reslut) => {
-                                console.log(3, reslut);
+                                // console.log(3, reslut);
                                 return await reslut[0];
                             })
                     }

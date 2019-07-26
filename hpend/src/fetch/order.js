@@ -1,6 +1,6 @@
 
 // 修改购物车信息
-const searchCart = (data, func) => {
+const searchOrder = (data, func) => {
 
     console.log(data)
     let intvalue, value;
@@ -13,23 +13,33 @@ const searchCart = (data, func) => {
         data.start = data.start - 1
     }
 
-    var query = `mutation searchCart($type: String, $value: String, $intvalue: Int, $pageSize: Int, $start: Int, $sort: String){
-        searchCart(type: $type, value: $value, intvalue: $intvalue, pageSize: $pageSize, start: $start, sort: $sort){
+    var query = `mutation searchOrder($type: String, $value: String, $intvalue: Int, $pageSize: Int, $start: Int, $sort: String){
+        searchOrder(type: $type, value: $value, intvalue: $intvalue, pageSize: $pageSize, start: $start, sort: $sort){
             id,
-            cartId,
-            email,
             name,
             phoneCode,
             phone,
+            email,
+            productId,
             productName,
             productNum,
-            typeName,
-            features,
-            img,
+            productType,
+            productImg,
             promotionMessage,
             promotionMessageSecond,
+            features,
             usedPrice,
             nowPrice,
+            orderOdd,
+            payMethod,
+            payTime,
+            payState,
+            deliveryMethod,
+            deliveryHopeTime,
+            expressOdd,
+            goodsResAddress,
+            fullPrice,
+            orderState,
             createTime,
             updateTime
           }
@@ -60,12 +70,12 @@ const searchCart = (data, func) => {
 }
 
 // 根据指定条件进行查询用户总数
-const searchCartTotal = (data, func) => {
+const searchOrderTotal = (data, func) => {
     let intvalue, value;
     intvalue = 1;
     value = data.search;
-    const query = `mutation totalCartItem($intvalue: Int, $type: String, $value: String){
-    totalCartItem(intvalue: $intvalue, type: $type, value: $value) {
+    const query = `mutation totalOrderItem($intvalue: Int, $type: String, $value: String){
+        totalOrderItem(intvalue: $intvalue, type: $type, value: $value) {
         total
       }
     }`;
@@ -94,4 +104,4 @@ const searchCartTotal = (data, func) => {
 
 
 
-export { searchCart, searchCartTotal }
+export { searchOrder, searchOrderTotal }

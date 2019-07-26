@@ -56,9 +56,9 @@ const QueryPorducts = new GraphQLObjectType({
                     return data.promotionMessage;
                 }
             },
-            featrues: {
+            features: {
                 type: GraphQLString, resolve(data) {
-                    return data.featrues;
+                    return data.features;
                 }
             },
             promotionMessageSecond: {
@@ -116,9 +116,9 @@ const QueryPorduct = new GraphQLObjectType({
                     return data.promotionMessage;
                 }
             },
-            featrues: {
+            features: {
                 type: GraphQLString, resolve(data) {
-                    return data.featrues;
+                    return data.features;
                 }
             },
             promotionMessageSecond: {

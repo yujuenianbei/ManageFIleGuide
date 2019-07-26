@@ -1,7 +1,7 @@
 import {
   PRODUCTIMG,
   PRODUCTNAME,
-  PRODUCTFEATRUES,
+  PRODUCTfeatureS,
   PRODUCTPROMOTIONMESSAGE,
   PRODUCTPROMOTIONMESSAGESECOND,
   PRODUCTNOWPRICE,
@@ -10,7 +10,7 @@ import {
 const initValue = {
   productImg: '',
   productName: '',
-  productFeatrues: '',
+  productfeatures: '',
   productPromotionMessage: '',
   productPromotionMessageSecond: '',
   productUsedPrice: '',
@@ -25,8 +25,8 @@ export default (state = initValue, action) => {
     case PRODUCTNAME: {
       return Object.assign({}, state, { productName: data })
     }
-    case PRODUCTFEATRUES: {
-      return Object.assign({}, state, { productFeatrues: data })
+    case PRODUCTfeatureS: {
+      return Object.assign({}, state, { productfeatures: data })
     }
     case PRODUCTPROMOTIONMESSAGE: {
       return Object.assign({}, state, { productPromotionMessage: data })

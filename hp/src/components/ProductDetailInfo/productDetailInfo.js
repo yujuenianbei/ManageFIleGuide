@@ -100,7 +100,7 @@ const mapDispatchToProps = (dispatch) => {
     return {
         // changeProductImg: (data) => { dispatch(Actions.productImg(data)); },
         // changeProductName: (data) => { dispatch(Actions.productName(data)); },
-        // changeProductFeatrues: (data) => { dispatch(Actions.productFeatrues(data)); },
+        // changeProductfeatures: (data) => { dispatch(Actions.productfeatures(data)); },
         // changeProductPromotionMessage: (data) => { dispatch(Actions.productPromotionMessage(data)); },
         // changeProductPromotionMessageSecond: (data) => { dispatch(Actions.productPromotionMessageSecond(data)); },
         // changeProductUsedPrice: (data) => { dispatch(Actions.productUsedPrice(data)); },

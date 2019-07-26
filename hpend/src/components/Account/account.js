@@ -218,6 +218,7 @@ class Account extends PureComponent {
     }
     // 搜索input
     searchValueChange = (value) => {
+        value.persist(); 
         this.props.changeSearchValue(value);
     }
 
@@ -390,22 +391,22 @@ const mapStateToProps = (state) => {
 };
 const mapDispatchToProps = (dispatch) => {
     return {
-        changeModleState: (data) => { dispatch(Actions.modleState(data)); },
+        changeModleState: (data) => { dispatch(Actions.accountModleState(data)); },
         changeAccountDataLoading: (data) => { dispatch(Actions.accountDataLoading(data)); },
         changeAccountData: (data) => { dispatch(Actions.accountData(data)); },
-        changeModleName: (data) => { dispatch(Actions.modleName(data)); },
-        changeModleTitle: (data) => { dispatch(Actions.modleTitle(data)); },
-        changeModelData: (data) => { dispatch(Actions.modelData(data)); },
-        changeCheckListCol: (data) => { dispatch(Actions.checkListCol(data)); },
-        changePageSize: (data) => { dispatch(Actions.pageSize(data)); },
-        changePageNow: (data) => { dispatch(Actions.pageNow(data)); },
-        changePageTotal: (data) => { dispatch(Actions.pageTotal(data)); },
-        changeSearchValue: (data) => { dispatch(Actions.searchUserValue(data)); },
-        changeSearchType: (data) => { dispatch(Actions.searchUserType(data)); },
+        changeModleName: (data) => { dispatch(Actions.accountModleName(data)); },
+        changeModleTitle: (data) => { dispatch(Actions.accountModleTitle(data)); },
+        changeModelData: (data) => { dispatch(Actions.accountModelData(data)); },
+        changeCheckListCol: (data) => { dispatch(Actions.accountCheckListCol(data)); },
+        changePageSize: (data) => { dispatch(Actions.accountPageSize(data)); },
+        changePageNow: (data) => { dispatch(Actions.accountPageNow(data)); },
+        changePageTotal: (data) => { dispatch(Actions.accountPageTotal(data)); },
+        changeSearchValue: (data) => { dispatch(Actions.accountSearchUserValue(data)); },
+        changeSearchType: (data) => { dispatch(Actions.accountSearchUserType(data)); },
 
         // 排序
-        changePageSort: (data) => { dispatch(Actions.pageSort(data)); },
-        changePageSortCol: (data) => { dispatch(Actions.pageSortCol(data)); },
+        changePageSort: (data) => { dispatch(Actions.accountPageSort(data)); },
+        changePageSortCol: (data) => { dispatch(Actions.accountPageSortCol(data)); },
     }
 };
 export default connect(

@@ -5,50 +5,50 @@ import { connect } from 'react-redux';
 import classify from '@magento/venia-concept/esm/classify';
 // const SearchBar = React.lazy(() => import('src/components/SearchBar'));
 import styles from './account.module.less';
-import { getUserInfo, createAccount, updateAccount, validateAccount, searchAccount, searchAccountTotal } from '../../fetch/account'
-import { transSex, editTransToSex, transToSex } from '../../func/account'
+import { createFrontUser, updateFrontUser, validateFrontUser, searchFrontUser, searchFrontUserTotal } from '../../fetch/frontUser';
+import { transSex, editTransToSex, transToSex } from '../../func/account';
 import { Input, Col, Row, Select, Button, Modal, Spin, Form, Icon } from 'antd';
 const { Option } = Select;
 
 let myClear, clearData, modelData = {
     email: '',
-    userName: '',
+    name: '',
     password: '',
     phoneCode: '',
     phone: '',
     sex: '男',
     company: '',
 };
-class AccountForm extends PureComponent {
+class FrontUserForm extends PureComponent {
     state = {
-        userNameFeedback: false,
+        nameFeedback: false,
     }
 
     componentDidMount() {
         this.props.onRef(this);
-        if (this.props.state.account.modelName == 'add') {
+        if (this.props.state.frontUser.modelName == 'add') {
             this.props.form.setFieldsValue({
                 email: '',
-                userName: '',
+                name: '',
                 password: '',
                 phoneCode: '',
                 phone: '',
                 sex: transSex(0),
                 company: '',
             })
-        } else if (this.props.state.account.modelName == 'edit') {
-            const data = this.props.state.account.modelData;
+        } else if (this.props.state.frontUser.modelName == 'edit') {
+            const data = this.props.state.frontUser.modelData;
             this.props.form.setFieldsValue({
                 id: data.id,
                 email: data.email,
-                userName: data.name,
+                name: data.name,
                 password: data.password,
                 phoneCode: data.phoneCode,
                 phone: data.phone,
                 sex: transSex(data.sex),
                 company: data.company,
             })
-        } else if (this.props.state.account.modelName == 'delete') {
+        } else if (this.props.state.frontUser.modelName == 'delete') {
 
         }
     }
@@ -60,11 +60,11 @@ class AccountForm extends PureComponent {
 
     // 组件更新
     componentWillUpdate(nextPorps) {
-        if (this.props.state.account.modelName !== nextPorps.state.account.modelName) {
+        if (this.props.state.frontUser.modelName !== nextPorps.state.account.modelName) {
             if (nextPorps.state.account.modelName == 'add') {
                 this.props.form.setFieldsValue({
                     email: '',
-                    userName: '',
+                    name: '',
                     password: '',
                     phoneCode: '',
                     phone: '',
@@ -75,7 +75,7 @@ class AccountForm extends PureComponent {
                 const data = nextPorps.state.account.modelData;
                 this.props.form.setFieldsValue({
                     email: data.email,
-                    userName: data.name,
+                    name: data.name,
                     password: data.password,
                     phoneCode: data.phoneCode,
                     phone: data.phone,
@@ -93,15 +93,15 @@ class AccountForm extends PureComponent {
         this.props.form.validateFields((err, values) => {
             if (!err) {
                 this.props.changeConfirmLoading(true);
-                if (this.props.state.account.modelName === 'add') {
+                if (this.props.state.frontUser.modelName === 'add') {
                     values.sex = transToSex(this.props.form.getFieldValue('sex'));
-                    createAccount(values, this.createFinish)
-                } else if (this.props.state.account.modelName == 'edit') {
+                    createFrontUser(values, this.createFinish)
+                } else if (this.props.state.frontUser.modelName == 'edit') {
                     // 将id添加到请求内容中
-                    values.id = parseInt(this.props.state.account.modelData.key);
+                    values.id = parseInt(this.props.state.frontUser.modelData.key);
                     // 将性别转换格式
                     editTransToSex(values);
-                    updateAccount(values, this.createFinish)
+                    updateFrontUser(values, this.createFinish)
                 }
             }
         });
@@ -122,7 +122,7 @@ class AccountForm extends PureComponent {
 
     // 提交数据后返回
     createFinish = (result) => {
-        if (this.props.state.account.modelName === 'add') {
+        if (this.props.state.frontUser.modelName === 'add') {
             if (result.data.regFrontUser[0].state === 1) {
                 this.props.changeConfirmLoading(false);
                 this.props.changeModleState(false);
@@ -136,21 +136,21 @@ class AccountForm extends PureComponent {
 
                 // 加载上一次的配置
                 let data = {};
-                data.search = this.props.state.account.searchValue ? this.props.state.account.searchValue : ""
-                data.searchType = this.props.state.account.searchType ? this.props.state.account.searchType : "";
-                data.pageSize = this.props.state.account.pageSize;
-                data.start = this.props.state.account.pageNow;
-                data.sort = this.props.state.account.pageSort;
+                data.search = this.props.state.frontUser.searchValue ? this.props.state.frontUser.searchValue : ""
+                data.searchType = this.props.state.frontUser.searchType ? this.props.state.frontUser.searchType : "";
+                data.pageSize = this.props.state.frontUser.pageSize;
+                data.start = this.props.state.frontUser.pageNow;
+                data.sort = this.props.state.frontUser.pageSort;
                 // 如果搜索性别需要装换
                 if (data.searchType === "sex") {
-                    data.search = transToSex(this.props.state.account.searchValue);
+                    data.search = transToSex(this.props.state.frontUser.searchValue);
                 }
-                searchAccountTotal(data, this.setPageTotal)
-                searchAccount(data, this.searchData);
+                searchFrontUserTotal(data, this.setPageTotal)
+                searchFrontUser(data, this.searchData);
             } else {
                 this.props.changeModleState(false);
             }
-        } else if (this.props.state.account.modelName == 'edit') {
+        } else if (this.props.state.frontUser.modelName == 'edit') {
             if (result.data.updateFrontUser[0].state === 1) {
                 this.props.changeConfirmLoading(false);
                 this.props.changeModleState(false);
@@ -164,17 +164,17 @@ class AccountForm extends PureComponent {
 
                 // 加载上一次的配置
                 let data = {};
-                data.search = this.props.state.account.searchValue ? this.props.state.account.searchValue : ""
-                data.searchType = this.props.state.account.searchType ? this.props.state.account.searchType : "";
-                data.pageSize = this.props.state.account.pageSize;
-                data.start = this.props.state.account.pageNow;
-                data.sort = this.props.state.account.pageSort;
+                data.search = this.props.state.frontUser.searchValue ? this.props.state.frontUser.searchValue : ""
+                data.searchType = this.props.state.frontUser.searchType ? this.props.state.frontUser.searchType : "";
+                data.pageSize = this.props.state.frontUser.pageSize;
+                data.start = this.props.state.frontUser.pageNow;
+                data.sort = this.props.state.frontUser.pageSort;
                 // 如果搜索性别需要装换
                 if (data.searchType === "sex") {
-                    data.search = transToSex(this.props.state.account.searchValue);
+                    data.search = transToSex(this.props.state.frontUser.searchValue);
                 }
-                searchAccountTotal(data, this.setPageTotal)
-                searchAccount(data, this.searchData);
+                searchFrontUserTotal(data, this.setPageTotal)
+                searchFrontUser(data, this.searchData);
             } else {
                 this.props.changeModleState(false);
             }
@@ -191,7 +191,7 @@ class AccountForm extends PureComponent {
         result.data.searchFrontUser.map((item, index) => (
             data[index] = {
                 key: item.id,
-                userName: item.name,
+                name: item.name,
                 sex: item.sex,
                 email: item.email,
                 phoneCode: item.phoneCode,
@@ -223,22 +223,22 @@ class AccountForm extends PureComponent {
         // 调用查询用户名的接口进行返回
         // this.props.form.getFieldValue('userName')
         if (value !== "") {
-            if (this.props.state.account.modelName === 'edit' && value === this.props.state.account.modelData.userName) {
+            if (this.props.state.frontUser.modelName === 'edit' && value === this.props.state.frontUser.modelData.name) {
                 callback()
             } else {
-                this.setState({ userNameFeedback: true })
+                this.setState({ nameFeedback: true })
                 // 校验用户名是否存在
-                validateAccount(value, (data) => {
-                    this.setState({ userNameFeedback: false })
-                    if (data.data.validateAccount[0].state === 1) {
+                validateFrontUser(value, (data) => {
+                    this.setState({ nameFeedback: false })
+                    if (data.data.validateFrontUser[0].state === 1) {
                         callback()
-                    } else if (data.data.validateAccount[0].state === 0) {
+                    } else if (data.data.validateFrontUser[0].state === 0) {
                         callback('false')
                     }
                 })
             }
         } else {
-            this.setState({ userNameFeedback: false })
+            this.setState({ nameFeedback: false })
             callback()
         }
     }
@@ -269,8 +269,8 @@ class AccountForm extends PureComponent {
                             ],
                         })(<Input placeholder="请输入邮箱" />)}
                     </Form.Item>
-                    <Form.Item label="用户名" {...formItemLayout} hasFeedback={this.state.userNameFeedback} style={{ marginBottom: '10px' }}>
-                        {getFieldDecorator('userName', {
+                    <Form.Item label="用户名" {...formItemLayout} hasFeedback={this.state.nameFeedback} style={{ marginBottom: '10px' }}>
+                        {getFieldDecorator('name', {
                             initialValue: '',
                             validateTrigger: 'onBlur',
                             rules: [
@@ -295,9 +295,9 @@ class AccountForm extends PureComponent {
                                     message: '请输入密码',
                                 },
                             ],
-                        })(<Input type="password" placeholder="请输入密码" disabled={this.props.state.account.modelName === 'edit' ? "disabled" : ""} />)}
+                        })(<Input type="password" placeholder="请输入密码" disabled={this.props.state.frontUser.modelName === 'edit' ? "disabled" : ""} />)}
                     </Form.Item>
-                    {this.props.state.account.modelName === 'add' && <Form.Item label="重复密码" {...formItemLayout} style={{ marginBottom: '10px' }}>
+                    {this.props.state.frontUser.modelName === 'add' && <Form.Item label="重复密码" {...formItemLayout} style={{ marginBottom: '10px' }}>
                         {getFieldDecorator('confirmPassword', {
                             initialValue: '',
                             validateTrigger: 'onBlur',
@@ -374,7 +374,7 @@ class AccountForm extends PureComponent {
     }
 }
 
-const CreateAccount = Form.create({ name: 'createAccount' })(AccountForm);
+const CreateFrontUser = Form.create({ name: 'CreateFrontUser' })(FrontUserForm);
 
 const mapStateToProps = (state) => {
     return {
@@ -401,4 +401,4 @@ const mapDispatchToProps = (dispatch) => {
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(classify(styles)(CreateAccount));
+)(classify(styles)(CreateFrontUser));

@@ -50,7 +50,7 @@ class ProductInfoDetail extends Component {
                     <div className={styles.product_promotion_message}>{this.props.promotionMessage}</div>
                     <div className={styles.product_desc_features}>
                         <ul>
-                            {JSON.parse(this.props.featrues).map((item, index) => {
+                            {JSON.parse(this.props.features).map((item, index) => {
                                 return <li key={index + 'features_asqewq'}>{item}</li>
                             })}
                         </ul>

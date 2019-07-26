@@ -93,7 +93,7 @@ CREATE TABLE IF NOT EXISTS product
   `type` bigint(20) DEFAULT NULL,
   `img` varchar(255) DEFAULT NULL,
   `promotionMessage` varchar(255) DEFAULT NULL,
-  `featrues` varchar(2550) DEFAULT NULL,
+  `features` varchar(2550) DEFAULT NULL,
   `promotionMessageSecond` varchar(255) DEFAULT NULL,
   `usedPrice` bigint(20) DEFAULT NULL,
   `nowPrice` bigint(20) DEFAULT NULL,
@@ -127,6 +127,7 @@ CREATE TABLE IF NOT EXISTS cartItem
 CREATE TABLE IF NOT EXISTS goodsResInfo
 (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `userName` varchar(255) DEFAULT NULL,
   `email` varchar(255) DEFAULT NULL,
   `firstName` varchar(255) DEFAULT NULL,
   `lastName` varchar(255) DEFAULT NULL,
@@ -156,6 +157,18 @@ CREATE TABLE IF NOT EXISTS orders
   `productList` varchar(2000) DEFAULT NULL,
   `fullPrice` bigint(20) DEFAULT NULL,
   `orderState` int(2) DEFAULT NULL,
+  `createTime` datetime NOT NULL,
+  `updateTime` datetime NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE = INNODB CHARACTER SET utf8;
+
+-- 订单产品信息
+CREATE TABLE IF NOT EXISTS orderProducts
+(
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `orderOdd` varchar(255) DEFAULT NULL,
+  `productId`bigint(20) DEFAULT NULL,
+  `productNum`bigint(20) DEFAULT NULL,
   `createTime` datetime NOT NULL,
   `updateTime` datetime NOT NULL,
   PRIMARY KEY (`id`)
@@ -581,3 +594,36 @@ CREATE TABLE IF NOT EXISTS qrcode
 --   369,
 --   NOW(),
 --   NOW());
+
+
+
+
+
+
+                -- id: item.id,
+                -- name: item.name,
+                -- phoneCode: item.phoneCode,
+                -- phone: item.phone,
+                -- email: item.email,
+                -- productId: item.productId,
+                -- productName: item.productName,
+                -- productNum: item.productNum,
+                -- productType: item.productType,
+                -- productImg: item.productImg,
+                -- promotionMessage: item.promotionMessage,
+                -- promotionMessageSecond: item.promotionMessageSecond,
+                -- features: item.features,
+                -- usedPrice: item.usedPrice,
+                -- nowPrice: item.nowPrice,
+                -- orderOdd: item.orderOdd,
+                -- payMethod: item.payMethod,
+                -- payTime: item.payTime,
+                -- payState: item.payState,
+                -- deliveryMethod: item.deliveryMethod,
+                -- deliveryHopeTime: item.deliveryHopeTime,
+                -- expressOdd: item.expressOdd,
+                -- goodsResAddress: item.goodsResAddress,
+                -- fullPrice: item.fullPrice,
+                -- orderState: item.orderState,
+                -- createTime: timestampToTime(parseInt(item.createTime)),
+                -- updateTime: timestampToTime(parseInt(item.updateTime)),

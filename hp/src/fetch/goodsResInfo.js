@@ -1,8 +1,8 @@
 // 查询用户的收货地址
 const getGoodsResInfo = (data, func) => {
-    const query = `mutation queryGoodsResInfoByEmail($email: String){
-        queryGoodsResInfoByEmail(email:$email){
-        id, email, firstName, lastName, phoneCode, phone, province, address, postCode
+    const query = `mutation queryGoodsResInfoByUserName($userName: String){
+        queryGoodsResInfoByUserName(userName:$userName){
+            id, userName, email, firstName, lastName, phoneCode, phone, province, address, postCode
         }
       }`;
 
@@ -18,7 +18,7 @@ const getGoodsResInfo = (data, func) => {
         body: JSON.stringify({
             query,
             variables: {
-                email: data
+                userName: data
             }
         })
     })
@@ -28,11 +28,12 @@ const getGoodsResInfo = (data, func) => {
 // 添加收货地址
 const addGoodsResInfo = (data, func) => {
     const province = data.province + data.city + data.district
-    const query = `mutation regGoodsResInfo($email: String, $firstName: String, $lastName: String, $phoneCode: Int, $phone: String, 
+    const query = `mutation regGoodsResInfo($email: String, $userName: String, $firstName: String, $lastName: String, $phoneCode: Int, $phone: String, 
         $province: String, $address: String, $postCode: Int){
-              regGoodsResInfo(email: $email, firstName: $firstName, lastName: $lastName, phoneCode: $phoneCode, 
+              regGoodsResInfo(email: $email, userName:$userName, firstName: $firstName, lastName: $lastName, phoneCode: $phoneCode, 
                 phone: $phone, province: $province, address: $address, postCode: $postCode){
                 id,
+                userName,
                 email,
                 firstName, 
                 lastName,
@@ -58,6 +59,7 @@ const addGoodsResInfo = (data, func) => {
         body: JSON.stringify({
             query,
             variables: {
+                userName: data.userName,
                 email: data.email,
                 firstName: data.firstname,
                 lastName: data.lastname,

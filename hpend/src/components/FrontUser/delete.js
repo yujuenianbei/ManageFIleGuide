@@ -5,12 +5,12 @@ import { connect } from 'react-redux';
 import classify from '@magento/venia-concept/esm/classify';
 // const SearchBar = React.lazy(() => import('src/components/SearchBar'));
 import styles from './account.module.less';
-import { deleteAccount, searchAccount, searchAccountTotal } from '../../fetch/account'
+import { deleteFrontUser, searchFrontUser, searchFrontUserTotal } from '../../fetch/frontUser';
 import { transToSex } from '../../func/account'
 
 
 let clearData;
-class DeleteAccount extends PureComponent {
+class DeleteFrontUser extends PureComponent {
 
     componentDidMount() {
         this.props.onDel(this);
@@ -19,7 +19,7 @@ class DeleteAccount extends PureComponent {
     // 提交数据
     handleSubmit = (e) => {
         e.preventDefault();
-        deleteAccount(this.props.state.account.modelData, this.deleteFinish)
+        deleteFrontUser(this.props.state.frontUser.modelData, this.deleteFinish)
     };
 
     // 取消提交
@@ -46,17 +46,17 @@ class DeleteAccount extends PureComponent {
 
             // 加载上一次的配置
             let data = {};
-            data.search = this.props.state.account.searchValue ? this.props.state.account.searchValue : ""
-            data.searchType = this.props.state.account.searchType ? this.props.state.account.searchType : "";
-            data.pageSize = this.props.state.account.pageSize;
-            data.start = this.props.state.account.pageNow;
-            data.sort = this.props.state.account.pageSort;
+            data.search = this.props.state.frontUser.searchValue ? this.props.state.frontUser.searchValue : ""
+            data.searchType = this.props.state.frontUser.searchType ? this.props.state.frontUser.searchType : "";
+            data.pageSize = this.props.state.frontUser.pageSize;
+            data.start = this.props.state.frontUser.pageNow;
+            data.sort = this.props.state.frontUser.pageSort;
             // 如果搜索性别需要装换
             if (data.searchType === "sex") {
-                data.search = transToSex(this.props.state.account.searchValue);
+                data.search = transToSex(this.props.state.frontUser.searchValue);
             }
-            searchAccountTotal(data, this.setPageTotal)
-            searchAccount(data, this.searchData);
+            searchFrontUserTotal(data, this.setPageTotal)
+            searchFrontUser(data, this.searchData);
         }
     }
 
@@ -68,32 +68,30 @@ class DeleteAccount extends PureComponent {
     searchData = (result) => {
         // 删除最后一条数据
         if (result.data.searchFrontUser.length === 0) {
-            const pageNow = this.props.state.account.pageNow - 1;
+            const pageNow = this.props.state.frontUser.pageNow - 1;
             this.props.changePageNow(pageNow);
 
             // 加载上一次的配置
             let data = {};
-            data.search = this.props.state.account.searchValue ? this.props.state.account.searchValue : ""
-            data.searchType = this.props.state.account.searchType ? this.props.state.account.searchType : "";
-            data.pageSize = this.props.state.account.pageSize;
+            data.search = this.props.state.frontUser.searchValue ? this.props.state.frontUser.searchValue : ""
+            data.searchType = this.props.state.frontUser.searchType ? this.props.state.frontUser.searchType : "";
+            data.pageSize = this.props.state.frontUser.pageSize;
             data.start = pageNow;
-            data.sort = this.props.state.account.pageSort;
+            data.sort = this.props.state.frontUser.pageSort;
             // 如果搜索性别需要装换
             if (data.searchType === "sex") {
-                data.search = transToSex(this.props.state.account.searchValue);
+                data.search = transToSex(this.props.state.frontUser.searchValue);
             }
-            searchAccountTotal(data, this.setPageTotal)
-            searchAccount(data, this.searchData);
+            searchFrontUserTotal(data, this.setPageTotal)
+            searchFrontUser(data, this.searchData);
         } else {
             let data = []
             result.data.searchFrontUser.map((item, index) => (
                 data[index] = {
                     key: item.id,
-                    userName: item.userName,
+                    name: item.name,
                     sex: item.sex,
                     email: item.email,
-                    firstName: item.firstName,
-                    lastName: item.lastName,
                     phoneCode: item.phoneCode,
                     phone: item.phone,
                     company: item.company,
@@ -110,7 +108,7 @@ class DeleteAccount extends PureComponent {
     render() {
         return (
             <div>
-                <span>是否要删除 {this.props.state.account.modelData.userName} 用户？</span>
+                <span>是否要删除 {this.props.state.frontUser.modelData.name} 用户？</span>
             </div>
         );
     }
@@ -138,4 +136,4 @@ const mapDispatchToProps = (dispatch) => {
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(classify(styles)(DeleteAccount));
+)(classify(styles)(DeleteFrontUser));

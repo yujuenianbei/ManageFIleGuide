@@ -1,37 +1,37 @@
-export const MODELSTATE = 'MODLESTATE';
+export const ACCOUNTMODELSTATE = 'ACCOUNTMODLESTATE';
 export const ACCOUNTDATA = 'ACCOUNTDATA';
 export const ACCOUNTLOADING = 'ACCOUNTLOADING';
-export const CONFIRMLOADING = 'CONFIRMLOADING'
-export const MODLENAME = 'MODLENAME';
-export const MODELTITLE = 'MODELTITLE';
-export const MODELDATA = 'MODELDATA';
-export const CHECKLISTCOL = 'CHECKLISTCOL';
-export const ALLCHECKCOL = 'ALLCHECKCOL';
-export const PAGESIZE = 'PAGESIZE';  
-export const PAGETOTAL = 'PAGETOTAL'//总页数
-export const PAGENOW = 'PAGENOW';  //当前页数
-export const PAGESORT = 'PAGESORT';  //排序
-export const PAGESORTCOL = 'PAGESORTCOL'; // 排序字段
-export const SEARCHTYPE = 'SEARCHTYPE'; //搜索类型
-export const SEARCHVALUE = 'SEARCHVALUE'; //搜索内容
+export const ACCOUNTCONFIRMLOADING = 'ACCOUNTCONFIRMLOADING'
+export const ACCOUNTMODLENAME = 'ACCOUNTMODLENAME';
+export const ACCOUNTMODELTITLE = 'ACCOUNTMODELTITLE';
+export const ACCOUNTMODELDATA = 'ACCOUNTMODELDATA';
+export const ACCOUNTCHECKLISTCOL = 'ACCOUNTCHECKLISTCOL';
+export const ACCOUNTALLCHECKCOL = 'ACCOUNTALLCHECKCOL';
+export const ACCOUNTPAGESIZE = 'ACCOUNTPAGESIZE';  
+export const ACCOUNTPAGETOTAL = 'ACCOUNTPAGETOTAL'//总页数
+export const ACCOUNTPAGENOW = 'ACCOUNTPAGENOW';  //当前页数
+export const ACCOUNTPAGESORT = 'ACCOUNTPAGESORT';  //排序
+export const ACCOUNTPAGESORTCOL = 'ACCOUNTPAGESORTCOL'; // 排序字段
+export const ACCOUNTSEARCHTYPE = 'ACCOUNTSEARCHTYPE'; //搜索类型
+export const ACCOUNTSEARCHVALUE = 'ACCOUNTSEARCHVALUE'; //搜索内容
 
 // 弹出框状态
-export function modleState(data) {
+export function accountModleState(data) {
   return {
-    type: MODELSTATE,
+    type: ACCOUNTMODELSTATE,
     data
   }
 }
 // 弹出框名称
-export function modleName(data) {
+export function accountModleName(data) {
   return {
-    type: MODLENAME,
+    type: ACCOUNTMODLENAME,
     data
   }
 }
-export function modleTitle(data) {
+export function accountModleTitle(data) {
   return {
-    type: MODELTITLE,
+    type: ACCOUNTMODELTITLE,
     data
   }
 }
@@ -43,9 +43,9 @@ export function accountDataLoading(data) {
   }
 }
 // 提交loading
-export function confirmLoading(data) {
+export function accountConfirmLoading(data) {
   return {
-    type: CONFIRMLOADING,
+    type: ACCOUNTCONFIRMLOADING,
     data
   }
 }
@@ -57,73 +57,73 @@ export function accountData(data) {
   }
 }
 // 列表中的用户信息
-export function modelData(data) {
+export function accountModelData(data) {
   return {
-    type: MODELDATA,
+    type: ACCOUNTMODELDATA,
     data
   }
 }
 
 // 所有列 数组
-export function allCheckCols(data){
+export function accountAllCheckCols(data){
   return {
-    type: ALLCHECKCOL,
+    type: ACCOUNTALLCHECKCOL,
     data
   }
 }
 // 选择列 数组
-export function checkListCol(data){
+export function accountCheckListCol(data){
   return {
-    type: CHECKLISTCOL,
+    type: ACCOUNTCHECKLISTCOL,
     data
   }
 }
 // 每页显示条数
-export function pageSize(data){
+export function accountPageSize(data){
   return {
-    type: PAGESIZE,
+    type: ACCOUNTPAGESIZE,
     data
   }
 }
 // 总页数
-export function pageTotal(data){
+export function accountPageTotal(data){
   return {
-    type: PAGETOTAL,
+    type: ACCOUNTPAGETOTAL,
     data
   }
 }
 // 当前页数
-export function pageNow(data){
+export function accountPageNow(data){
   return {
-    type: PAGENOW,
+    type: ACCOUNTPAGENOW,
     data
   }
 }
 // 排序
-export function pageSort(data){
+export function accountPageSort(data){
   return {
-    type: PAGESORT,
+    type: ACCOUNTPAGESORT,
     data
   }
 }
 // 排序字段
-export function pageSortCol(data){
+export function accountPageSortCol(data){
   return {
-    type: PAGESORTCOL,
+    type: ACCOUNTPAGESORTCOL,
     data
   }
 }
 // 搜索内容
-export function searchUserValue(data) {
+export function accountSearchUserValue(data) {
   return {
-    type: SEARCHVALUE,
+    type: ACCOUNTSEARCHVALUE,
     data
   }
 }
 // 
-export function searchUserType(data) {
+export function accountSearchUserType(data) {
   return {
-    type: SEARCHTYPE,
+    type: ACCOUNTSEARCHTYPE,
     data
   }
 }
