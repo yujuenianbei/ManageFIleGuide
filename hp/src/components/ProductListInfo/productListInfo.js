@@ -4,6 +4,8 @@ import * as Actions from '../../actions/index';
 import { connect } from 'react-redux';
 import classify from '@magento/venia-concept/esm/classify';
 import styles from './productListInfo.module.less';
+// http
+import { http } from '../../http';
 class ProductInfo extends Component {
     postCart = (productNum) => {
         var query = `mutation addToCart($userId: Int,$productId: Int, $productNum : Int){
@@ -12,7 +14,7 @@ class ProductInfo extends Component {
                 productNum
             } 
           }`;
-        fetch('http://localhost:3004/graphql', {
+        fetch( http.port, {
             method: 'POST',
             mode: "cors",
             headers: {
@@ -85,8 +87,8 @@ class ProductInfo extends Component {
                     <div className={styles.product_promotion_message}>{this.props.promotionMessage}</div>
                     <div className={styles.product_desc_features}>
                         <ul>
-                            {JSON.parse(this.props.featrues).map((item, index) => {
-                                return <li key={index + 'featrues'}>{item}</li>
+                            {JSON.parse(this.props.features).map((item, index) => {
+                                return <li key={index + 'features'}>{item}</li>
                             })}
                         </ul>
                     </div>

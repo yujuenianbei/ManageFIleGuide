@@ -95,7 +95,7 @@ class DeleteProduct extends PureComponent {
                     productName: item.productName,
                     type: typeToTypeName(this.props.state.product.productTypeList, item.type),
                     img: item.img,
-                    featrues: item.featrues,
+                    features: item.features,
                     promotionMessage: item.promotionMessage,
                     promotionMessageSecond: item.promotionMessageSecond,
                     usedPrice: item.usedPrice,

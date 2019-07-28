@@ -1,6 +1,8 @@
-// 获取二维码
+// http
+import { http } from '../http';
+//  获取二维码
 const getQRcode = (func) => {
-    fetch('http://localhost:3004/loadUid', {
+    fetch(http.ip + '/loadUid', {
         method: 'GET',
         mode: "cors",
     })
@@ -11,7 +13,7 @@ const getQRcode = (func) => {
 
 // verify
 const verifyQRcode = (func, uid) => {
-    fetch('http://localhost:3004/verify', {
+    fetch(http.ip + '/verify', {
         method: 'POST',
         mode: "cors",
         headers: {
@@ -27,7 +29,7 @@ const verifyQRcode = (func, uid) => {
 }
 // 删除二维码
 const deleteQRcode = (func, uid) => {
-    fetch('http://localhost:3004/delete', {
+    fetch(http.ip + '/delete', {
         method: 'POST',
         mode: "cors",
         headers: {
@@ -57,7 +59,7 @@ const getUserCart = (func) => {
       }
     }`;
 
-    fetch('http://localhost:3004/graphql', {
+    fetch(http.port, {
         method: 'POST',
         mode: "cors",
         headers: {
@@ -88,7 +90,7 @@ const postCart = (id, value, func) => {
         } 
       }`;
     //   https://demo.yujuenianbei.xyz:3001/graphql
-    fetch('http://localhost:3004/graphql', {
+    fetch(http.port, {
         method: 'POST',
         mode: "cors",
         headers: {
@@ -117,7 +119,7 @@ const deleteCartProduct = (id, func) => {
             state
       }
     }`;
-    fetch('http://localhost:3004/graphql', {
+    fetch(http.port, {
         method: 'POST',
         mode: "cors",
         headers: { 
@@ -139,5 +141,32 @@ const deleteCartProduct = (id, func) => {
 }
 
 
+// 获取配送方式
+const getDeliveryMethod = (func) => {
+    var query = `query queryDeliveryMethod{
+        queryDeliveryMethod{
+          id
+          name
+        }
+      }`;
+    fetch(http.port, {
+        method: 'POST',
+        mode: "cors",
+        headers: { 
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'login': localStorage.getItem('loginState'),
+            'token': localStorage.getItem('token')
+        },
+        body: JSON.stringify({
+            query,
+            variables: {}
+        })
+    })
+        .then(r => r.json())
+        .then(result => { func(result) });
+}
 
-export { deleteCartProduct, postCart, getUserCart, getQRcode, verifyQRcode, deleteQRcode }
+
+
+export { deleteCartProduct, postCart, getUserCart, getQRcode, verifyQRcode, deleteQRcode, getDeliveryMethod }

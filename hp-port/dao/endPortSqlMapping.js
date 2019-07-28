@@ -13,12 +13,20 @@ var endPort = {
     searchAllAccount: 'SELECT count(*) as total FROM account',
     searchTotal: 'SELECT FOUND_ROWS() as total',
 
+    // frontUser
+    insertFrontUser: 'INSERT INTO user(uuid, name, sex, email, phoneCode, phone, password, company, createTime, updateTime) VALUES(REPLACE(UUID(),"-",""),?,?,?,?,?,?,?,NOW(), NOW())',
+    updateFrontUser: 'UPDATE user SET name=?, sex=?, email=?, phoneCode=?, phone=?, password=?, company=?, updateTime=NOW() WHERE id=?',
+    queryFrontUserByUserName: 'SELECT * FROM `user` WHERE name=?',
+    queryAllFrontUser: "SELECT * FROM `user`",
+    deleteFrontUserById: 'DELETE FROM `user` WHERE id=?',
+    queryFrontUserById: 'SELECT * FROM `user` WHERE id=?',
+    searchAllFrontUser: 'SELECT count(*) as total FROM user',
 
     // product
     queryEndProductByName: 'SELECT * FROM `product` WHERE productName=?',
     queryEndProductById: 'SELECT * FROM `product` WHERE id=?',
-    updateEndProduct: 'UPDATE product set productName=?, type=?, img=?, promotionMessage=?, featrues=?, promotionMessageSecond=?, usedPrice=?, nowPrice=?, updateTime=NOW() where id=?',
-    insertEndProduct: 'INSERT INTO product(productName, type, img, promotionMessage, featrues, promotionMessageSecond, usedPrice, nowPrice, createTime, updateTime) VALUES(?,?,?,?,?,?,?,?,NOW(), NOW())',
+    updateEndProduct: 'UPDATE product set productName=?, type=?, img=?, promotionMessage=?, features=?, promotionMessageSecond=?, usedPrice=?, nowPrice=?, updateTime=NOW() where id=?',
+    insertEndProduct: 'INSERT INTO product(productName, type, img, promotionMessage, features, promotionMessageSecond, usedPrice, nowPrice, createTime, updateTime) VALUES(?,?,?,?,?,?,?,?,NOW(), NOW())',
     searchAllProduct: 'SELECT count(*) as total FROM product',
     searchTotalProduct: 'SELECT FOUND_ROWS() as total',
     deleteEndProduct: 'DELETE FROM `product` WHERE id=?',
@@ -39,14 +47,27 @@ var endPort = {
     // 返回所有用户的购物车的产品
     queryCartItem: 'SELECT * FROM `cartItem` WHERE cartId in(SELECT cartId FROM `cart`)',
     // 返回所有用户的购物车的产品信息
-    queryAllProductInCart: 'SELECT USER.id,USER.name,USER.email,USER.phoneCode,USER.phone,PTYPE.typeName,PRO.productName,PRO.img,PRO.promotionMessage,PRO.featrues,PRO.promotionMessageSecond, PRO.usedPrice,PRO.nowPrice,ITEM.cartId,ITEM.createTime,ITEM.updateTime,ITEM.productNum FROM (SELECT id,name,email,phoneCode,phone FROM `user` WHERE id in(SELECT userId FROM `cart`)) AS USER, product AS PRO,cartItem AS ITEM,cart AS CART,productType AS PTYPE WHERE PRO.id = ITEM.productId AND USER.id =CART.userId and ITEM.cartId = CART.cartId and PTYPE.id = PRO.type ',
+    queryAllProductInCart: 'SELECT USER.id,USER.name,USER.email,USER.phoneCode,USER.phone,PTYPE.typeName,PRO.productName,PRO.img,PRO.promotionMessage,PRO.features,PRO.promotionMessageSecond, PRO.usedPrice,PRO.nowPrice,ITEM.cartId,ITEM.createTime,ITEM.updateTime,ITEM.productNum FROM (SELECT id,name,email,phoneCode,phone FROM `user` WHERE id in(SELECT userId FROM `cart`)) AS USER, product AS PRO,cartItem AS ITEM,cart AS CART,productType AS PTYPE WHERE PRO.id = ITEM.productId AND USER.id =CART.userId and ITEM.cartId = CART.cartId and PTYPE.id = PRO.type ',
     searchAllCart: 'SELECT count(*) as total FROM cartItem',
     serachTypeCart: 'SELECT count(*) as total FROM (SELECT id,name,email,phoneCode,phone FROM `user` WHERE id in(SELECT userId FROM `cart`)) AS USER, product AS PRO,cartItem AS ITEM,cart AS CART,productType AS PTYPE WHERE PRO.id = ITEM.productId AND USER.id =CART.userId and ITEM.cartId = CART.cartId and PTYPE.id = PRO.type and ',
-
     // 获取所有购物车中每个产品分类中的产品数量
     queryAllProductNumberOfType: 'SELECT PTYPE.typeName as item, sum(ITEM.productNum) as count FROM (SELECT id,name,email,phoneCode,phone FROM `user` WHERE id in(SELECT userId FROM `cart`)) AS USER, product AS PRO,cartItem AS ITEM,cart AS CART,productType AS PTYPE WHERE PRO.id = ITEM.productId AND USER.id =CART.userId and ITEM.cartId = CART.cartId and PTYPE.id = PRO.type GROUP BY PTYPE.typeName',
     // 获取用户购物车中保存最多的前十个产品
     queryTopTenProductInCart: 'SELECT PRO.productName,PRO.img,PRO.usedPrice,PRO.nowPrice,ITEM.cartId,ITEM.createTime,ITEM.updateTime,ITEM.productNum FROM (SELECT id,name,email,phoneCode,phone FROM `user` WHERE id in(SELECT userId FROM `cart`)) AS USER, product AS PRO,cartItem AS ITEM,cart AS CART WHERE PRO.id = ITEM.productId AND USER.id =CART.userId and ITEM.cartId = CART.cartId ORDER BY productNum DESC limit 0,10',
+
+    // order
+    queryAllOrderInOrders: 'SELECT USER.id, USER.name, USER.phoneCode, USER.phone,USER.email,PRO.id AS productId, PRO.productName, PROT.typeName AS productType, PRO.img AS productImg, PRO.promotionMessage, PRO.promotionMessageSecond, PRO.features, PRO.usedPrice, PRO.nowPrice, ORDERS.orderOdd, PAYM.name AS payMethod, ORDERS.payTime, ORDERS.payState, DELVM.name AS deliveryMethod, ORDERS.deliveryHopeTime, ORDERS.expressOdd, ORDERS.goodsResAddress, ORDERS.fullPrice, ORS.name AS orderState, ORPRO.productNum, ORDERS.createTime, ORDERS.updateTime FROM user AS USER, product AS PRO, goodsResInfo AS GRF, orders AS ORDERS, orderProducts AS ORPRO, productType AS PROT, orderState AS ORS, payMethod AS PAYM, deliveryMethod AS DELVM WHERE USER.name=GRF.userName AND GRF.id=ORDERS.goodsResAddress AND ORDERS.orderOdd=ORPRO.orderOdd and ORPRO.productId=PRO.id AND PROT.id=PRO.type AND PAYM.ID=ORDERS.payMethod AND ORDERS.deliveryMethod=DELVM.id AND ORDERS.orderState=ORS.id ',
+    searchAllOrders: 'SELECT count(*) as total FROM orders',
+    serachTypeOrders: 'SELECT count(*) as total FROM  USER.name=GRF.userName AND GRF.id=ORDERS.goodsResAddress AND ORDERS.orderOdd=ORPRO.orderOdd and ORPRO.productId=PRO.id AND PROT.id=PRO.type AND PAYM.ID=ORDERS.payMethod AND ORDERS.deliveryMethod=DELVM.id AND ORDERS.orderState=ORS.id ',
+    searchTotalOrders: 'SELECT FOUND_ROWS() as total',
+
+
+
+
+
+
+
+
 
 
     // 获取所有购物车里面的产品信息
@@ -81,7 +102,7 @@ var endPort = {
     // //购物车
 
     // // 获取指定用户的购物车产品信息
-    // queryUserCartProductInfo: "SELECT c.id, c.productName, c.type, c.img, c.promotionMessage, c.featrues, c.promotionMessageSecond, c.usedPrice, c.nowPrice,i.productNum FROM product AS c,cartItem AS i WHERE (SELECT i.productId FROM cart,user WHERE cart.cartId=i.cartId and user.id=cart.userId and i.productId=c.id and user.id = ? )",
+    // queryUserCartProductInfo: "SELECT c.id, c.productName, c.type, c.img, c.promotionMessage, c.features, c.promotionMessageSecond, c.usedPrice, c.nowPrice,i.productNum FROM product AS c,cartItem AS i WHERE (SELECT i.productId FROM cart,user WHERE cart.cartId=i.cartId and user.id=cart.userId and i.productId=c.id and user.id = ? )",
     // // 查询用户在购物车内有没有购物车内容
     // queryCartUser:'SELECT * FROM `cart` where userId= ?',
     // // 查询购物车中某个产品个数

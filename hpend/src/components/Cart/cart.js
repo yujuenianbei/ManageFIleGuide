@@ -9,7 +9,8 @@ import { searchCart, searchCartTotal } from '../../fetch/cart'
 import { getAllproductType } from '../../fetch/productType'
 import { timestampToTime, typeToTypeName } from '../../func/common'
 import { Table, Divider, Dropdown, Checkbox, Menu, Icon, Tag, Breadcrumb, Input, Col, Row, Select, Button, Modal, Spin } from 'antd';
-
+// http
+import { http } from '../../http'
 const Search = Input.Search;
 const InputGroup = Input.Group;
 const { Option } = Select;
@@ -135,16 +136,16 @@ class Cart extends PureComponent {
                 key: 'img',
                 width: 130,
                 render: (text, record) => {
-                    return <img className={styles.productBreImg} src={record.img.split('http').length > 1 ? record.img : 'http://localhost:3004/static/img/' + record.img} title={record.productName} />
+                    return <img className={styles.productBreImg} src={record.img.split('http').length > 1 ? record.img : http.img + record.img} title={record.productName} />
                 },
             },
             {
                 title: '配置参数',
-                dataIndex: 'featrues',
-                key: 'featrues',
+                dataIndex: 'features',
+                key: 'features',
                 // width: '15%',
                 render: (text, record) => {
-                    return JSON.parse(record.featrues).map((item, index) =>
+                    return JSON.parse(record.features).map((item, index) =>
                         <li key={index + '123123'}>
                             <span title={record.item}>{index + 1}. {item}</span>
                         </li>
@@ -408,7 +409,7 @@ class Cart extends PureComponent {
                 productName: item.productName,
                 type: item.typeName,
                 img: item.img,
-                featrues: item.featrues,
+                features: item.features,
                 promotionMessage: item.promotionMessage,
                 promotionMessageSecond: item.promotionMessageSecond,
                 usedPrice: item.usedPrice,

@@ -5,28 +5,32 @@ import { persistor, store } from './store/store';
 import * as Actions from './actions';
 import ApolloClient from "apollo-boost";
 import './less/font.less'
+// 模块
 import Header from './components/Header';
 import HeaderInt from './components/HeaderInt';
 import Notification from './components/Notification';
 import Routers from './router/routers';
 import Footer from './components/Footer';
+import ScrollToTop from './components/ScrollToTop';
 
 import { ApolloProvider } from 'react-apollo';
 import { Provider as ReduxProvider } from 'react-redux';
 import { HashRouter as Router } from 'react-router-dom';
 import { LocaleProvider } from 'antd';
 import zhCN from 'antd/lib/locale-provider/zh_CN';
-import ScrollToTop from './components/ScrollToTop';
+
 // 状态数据持久化
 import { PersistGate } from 'redux-persist/integration/react'
+// http
+import { http } from './http'
 
 // const client = new ApolloClient({
-//   uri: "http://localhost:3004/graphql"
+//   uri: "http://192.168.31.50:3004/graphql"
 // });
 
 const client = new ApolloClient({
   // uri: "https://demo.yujuenianbei.xyz:3001/graphql",
-  uri: "http://localhost:3004/graphql",
+  uri: http.ip + "/graphql",
   fetchOptions: {
     credentials: 'include'
   },
@@ -45,16 +49,16 @@ const client = new ApolloClient({
 function RndNum(n) {
   var rnd = "";
   for (var i = 0; i < n; i++)
-      rnd += Math.floor(Math.random() * 10);
+    rnd += Math.floor(Math.random() * 10);
   return rnd;
 }
 
 const App = () => {
   // 
-  if(!localStorage.getItem('loginState')){
+  if (!localStorage.getItem('loginState')) {
     localStorage.setItem("loginState", 0);
   }
-  if(!localStorage.getItem('id')){
+  if (!localStorage.getItem('id')) {
     localStorage.setItem("id", RndNum(8));
   }
   // 判断浏览器的在线状态
@@ -100,20 +104,20 @@ const App = () => {
 
     <ApolloProvider client={client}>
       <ReduxProvider store={store}>
-      <PersistGate persistor={persistor}>
-        <Router>
-          <ScrollToTop>
-          <LocaleProvider locale={zhCN}>
-            <Fragment>
-              <Header />
-              <HeaderInt />
-              <Notification />
-              <Routers />
-              <Footer />
-            </Fragment>
-          </LocaleProvider>
-          </ScrollToTop>
-        </Router>
+        <PersistGate persistor={persistor}>
+          <Router>
+            <ScrollToTop>
+              <LocaleProvider locale={zhCN}>
+                <Fragment>
+                  <Header />
+                  <HeaderInt />
+                  <Notification />
+                  <Routers />
+                  <Footer />
+                </Fragment>
+              </LocaleProvider>
+            </ScrollToTop>
+          </Router>
         </PersistGate>
       </ReduxProvider>
     </ApolloProvider>

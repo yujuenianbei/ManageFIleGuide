@@ -1,5 +1,5 @@
-
-
+// http
+import { http } from '../http';
 // 获取所有产品分类
 const getAllproductType = (func) => {
     const query = `query AllProductType{
@@ -11,7 +11,7 @@ const getAllproductType = (func) => {
         }
     }`;
 
-    fetch('http://localhost:3004/graphqlPort', {
+    fetch(http.port, {
         method: 'POST',
         mode: "cors",
         headers: {
@@ -38,7 +38,7 @@ const createProductType = (data, func) => {
         }
       }`;
 
-    fetch('http://localhost:3004/graphqlPort', {
+    fetch(http.port, {
         method: 'POST',
         mode: "cors",
         headers: {
@@ -67,7 +67,7 @@ const updateProductType = (data, func) => {
         }
       }`;
 
-    fetch('http://localhost:3004/graphqlPort', {
+    fetch(http.port, {
         method: 'POST',
         mode: "cors",
         headers: {
@@ -98,7 +98,7 @@ const deleteProductType = (data, func) => {
       }
     }`;
 
-    fetch('http://localhost:3004/graphqlPort', {
+    fetch(http.port, {
         method: 'POST',
         mode: "cors",
         headers: {
@@ -142,7 +142,7 @@ const searchProductType = (data, func) => {
     }
     `;
 
-    fetch('http://localhost:3004/graphqlPort', {
+    fetch(http.port, {
         method: 'POST',
         mode: "cors",
         headers: {
@@ -179,7 +179,7 @@ const searchProductTypeTotal = (data, func) => {
           }
         }`;
 
-    fetch('http://localhost:3004/graphqlPort', {
+    fetch(http.port, {
         method: 'POST',
         mode: "cors",
         headers: {
@@ -209,7 +209,7 @@ const validateTypeName = (data, func) => {
         }
       }`;
 
-    fetch('http://localhost:3004/graphqlPort', {
+    fetch(http.port, {
         method: 'POST',
         mode: "cors",
         headers: {

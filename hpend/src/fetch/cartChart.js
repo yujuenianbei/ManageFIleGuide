@@ -1,4 +1,5 @@
-
+// http
+import { http } from '../http';
 // 修改购物车信息
 const ProductNumberOfTypeInCart = (func) => {
     var query = `query queryProductNumberOfType{
@@ -7,7 +8,7 @@ const ProductNumberOfTypeInCart = (func) => {
             count
         }
       }`;
-    fetch('http://localhost:3004/graphqlPort', {
+    fetch(http.port, {
         method: 'POST',
         mode: "cors",
         headers: {

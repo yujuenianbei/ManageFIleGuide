@@ -16,14 +16,16 @@ import ScrollToTop from './components/ScrollToTop';
 // 状态数据持久化
 import { PersistGate } from 'redux-persist/integration/react'
 import Main from './components/Main';
+// http
+import { http } from './http'
 
 // const client = new ApolloClient({
-//   uri: "http://localhost:3004/graphql"
+//   uri: "http://192.168.31.50:3004/graphql"
 // });
 
 const client = new ApolloClient({
   // uri: "https://demo.yujuenianbei.xyz:3001/graphql",
-  uri: "http://localhost:3004/graphqlPort",
+  uri: http.port,
   fetchOptions: {
     credentials: 'include'
   },

@@ -11,7 +11,7 @@ class DeliveryProduct extends Component {
                     <img src={item.img} alt="" />
                 </div>
                 <div className={styles.price}>
-                    <span>￥{item.price}</span>
+                    <span>￥{item.nowPrice}</span>
                 </div>
                 <div className={styles.num}>
                     <span>x {item.num}</span>

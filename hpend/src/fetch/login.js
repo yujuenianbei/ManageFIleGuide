@@ -1,3 +1,5 @@
+// http
+import { http } from '../http';
 // 获取用户购物车的信息
 const loginAccount = (val, func) => {
     const query = `mutation login($userName: String, $password: String, $remember: Boolean){
@@ -9,7 +11,7 @@ const loginAccount = (val, func) => {
         } 
       }`;
 
-    fetch('http://localhost:3004/graphqlPort', {
+    fetch(http.port, {
         method: 'POST',
         mode: "cors",
         headers: {
@@ -30,7 +32,7 @@ const loginAccount = (val, func) => {
 }
 
 const getQrcode = (func) => {
-    fetch('http://localhost:3004/aclogin/loginByPhone', {
+    fetch(http.ip + '/aclogin/loginByPhone', {
         method: 'GET',
         mode: "cors",
         headers: {

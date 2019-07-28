@@ -1,4 +1,4 @@
-SET NAMES utf8;
+-- SET NAMES utf8;
 -- SET FOREIGN_KEY_CHECKS = 0;
 -- CREATE DATABASE hpGraphql
 
@@ -93,7 +93,7 @@ CREATE TABLE IF NOT EXISTS product
   `type` bigint(20) DEFAULT NULL,
   `img` varchar(255) DEFAULT NULL,
   `promotionMessage` varchar(255) DEFAULT NULL,
-  `featrues` varchar(2550) DEFAULT NULL,
+  `features` varchar(2550) DEFAULT NULL,
   `promotionMessageSecond` varchar(255) DEFAULT NULL,
   `usedPrice` bigint(20) DEFAULT NULL,
   `nowPrice` bigint(20) DEFAULT NULL,
@@ -123,6 +123,87 @@ CREATE TABLE IF NOT EXISTS cartItem
   PRIMARY KEY (`id`)
 ) ENGINE = INNODB CHARACTER SET utf8;
 
+-- 收货地址信息
+CREATE TABLE IF NOT EXISTS goodsResInfo
+(
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `userName` varchar(255) DEFAULT NULL,
+  `email` varchar(255) DEFAULT NULL,
+  `firstName` varchar(255) DEFAULT NULL,
+  `lastName` varchar(255) DEFAULT NULL,
+  `phoneCode` int(6) DEFAULT NULL,
+  `phone` varchar(20) DEFAULT NULL,
+  `province` varchar(255) DEFAULT NULL,
+  `address` varchar(255) DEFAULT NULL,
+  `postCode` bigint(20) DEFAULT NULL,
+  `createTime` datetime NOT NULL,
+  `updateTime` datetime NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE = INNODB CHARACTER SET utf8;
+
+-- 订单
+CREATE TABLE IF NOT EXISTS orders
+(
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `orderOdd` varchar(255) DEFAULT NULL,
+  `email` varchar(255) DEFAULT NULL,
+  `payMethod` int(2) DEFAULT NULL,
+  `payTime` datetime DEFAULT NULL,
+  `payState` int(1) DEFAULT NULL,
+  `deliveryMethod` int(2) DEFAULT NULL,
+  `deliveryHopeTime` varchar(20) DEFAULT NULL,
+  `expressOdd` varchar(255) DEFAULT NULL,
+  `goodsResAddress` bigint(20) DEFAULT NULL,
+  `productList` varchar(2000) DEFAULT NULL,
+  `fullPrice` bigint(20) DEFAULT NULL,
+  `orderState` int(2) DEFAULT NULL,
+  `createTime` datetime NOT NULL,
+  `updateTime` datetime NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE = INNODB CHARACTER SET utf8;
+
+-- 订单产品信息
+CREATE TABLE IF NOT EXISTS orderProducts
+(
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `orderOdd` varchar(255) DEFAULT NULL,
+  `productId`bigint(20) DEFAULT NULL,
+  `productNum`bigint(20) DEFAULT NULL,
+  `createTime` datetime NOT NULL,
+  `updateTime` datetime NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE = INNODB CHARACTER SET utf8;
+
+-- 支付方式
+CREATE TABLE IF NOT EXISTS payMethod
+(
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `createTime` datetime NOT NULL,
+  `updateTime` datetime NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE = INNODB CHARACTER SET utf8;
+
+-- 支付方式
+CREATE TABLE IF NOT EXISTS deliveryMethod
+(
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `createTime` datetime NOT NULL,
+  `updateTime` datetime NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE = INNODB CHARACTER SET utf8;
+
+-- 订单状态
+CREATE TABLE IF NOT EXISTS orderState
+(
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `createTime` datetime NOT NULL,
+  `updateTime` datetime NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE = INNODB CHARACTER SET utf8;
+
 -- 二维码登录
 CREATE TABLE IF NOT EXISTS qrcode
 (
@@ -137,19 +218,52 @@ CREATE TABLE IF NOT EXISTS qrcode
 ) ENGINE = INNODB CHARACTER SET utf8;
 
 
--- INSERT INTO qrcode(uid,state)  
--- SELECT 'b8466408-20b7-460c-8907-9fbca82eaba0', 2
--- FROM qrcode  
--- WHERE NOT EXISTS(  
---       SELECT *  
---       FROM qrcode  
---       WHERE uid = 'b8466408-20b7-460c-8907-9fbca82eaba1'
--- );
+-- -- INSERT INTO qrcode(uid,state)  
+-- -- SELECT 'b8466408-20b7-460c-8907-9fbca82eaba0', 2
+-- -- FROM qrcode  
+-- -- WHERE NOT EXISTS(  
+-- --       SELECT *  
+-- --       FROM qrcode  
+-- --       WHERE uid = 'b8466408-20b7-460c-8907-9fbca82eaba1'
+-- -- );
+
+-- -- ----------------------------
+-- --  Records of `paymethod`
+-- -- ----------------------------
+-- INSERT INTO `payMethod` VALUES (1, '微信', NOW(), NOW());
+-- INSERT INTO `payMethod` VALUES (2, '支付宝', NOW(), NOW());
+-- INSERT INTO `payMethod` VALUES (3, '银联', NOW(), NOW());
+-- INSERT INTO `payMethod` VALUES (4, '货到付款', NOW(), NOW());
+
+-- -- ----------------------------
+-- --  Records of `deliveryMethod`
+-- -- ----------------------------
+-- INSERT INTO `deliveryMethod` VALUES (1, '申通', NOW(), NOW());
+-- INSERT INTO `deliveryMethod` VALUES (2, '圆通', NOW(), NOW());
+-- INSERT INTO `deliveryMethod` VALUES (3, '京东', NOW(), NOW());
+-- INSERT INTO `deliveryMethod` VALUES (4, '韵达', NOW(), NOW());
+-- INSERT INTO `deliveryMethod` VALUES (5, '顺丰', NOW(), NOW());
+-- INSERT INTO `deliveryMethod` VALUES (6, '宅急送', NOW(), NOW());
+-- INSERT INTO `deliveryMethod` VALUES (7, '德邦', NOW(), NOW());
+-- INSERT INTO `deliveryMethod` VALUES (8, '中通', NOW(), NOW());
+-- INSERT INTO `deliveryMethod` VALUES (9, 'EMS', NOW(), NOW());
+
+-- -- ----------------------------
+-- --  Records of `orderState`
+-- -- ----------------------------
+-- INSERT INTO `orderState` VALUES (1, '订单已取消', NOW(), NOW());
+-- INSERT INTO `orderState` VALUES (2, '订单待支付', NOW(), NOW());
+-- INSERT INTO `orderState` VALUES (3, '订单备货中', NOW(), NOW());
+-- INSERT INTO `orderState` VALUES (4, '订单已发货', NOW(), NOW());
+-- INSERT INTO `orderState` VALUES (5, '订单在途', NOW(), NOW());
+-- INSERT INTO `orderState` VALUES (6, '订单已完成', NOW(), NOW());
+-- INSERT INTO `orderState` VALUES (7, '订单拒收', NOW(), NOW());
+-- INSERT INTO `orderState` VALUES (8, '订单退货', NOW(), NOW());
+-- INSERT INTO `orderState` VALUES (9, '订单换货', NOW(), NOW());
 
 -- -- ----------------------------
 -- --  Records of `user`
 -- -- ----------------------------
-
 -- INSERT INTO `user` VALUES (1, REPLACE(UUID(), "-", ""), 'admin', '1', 086, '18966823501', 'wangad@shinetechchina.com', '123456', 'shinetech',NOW(), NOW());
 -- INSERT INTO account(uuid, uid, userName, sex, email, firstName, lastName, phoneCode, phone, password, company, createTime, updateTime) VALUES(REPLACE(UUID(),"-",""),REPLACE(UUID(),"-",""),'admin',1,'365913672@qq.com','andong','wang',86,18966823501,'123','NERV',NOW(), NOW());
 
@@ -480,3 +594,36 @@ CREATE TABLE IF NOT EXISTS qrcode
 --   369,
 --   NOW(),
 --   NOW());
+
+
+
+
+
+
+                -- id: item.id,
+                -- name: item.name,
+                -- phoneCode: item.phoneCode,
+                -- phone: item.phone,
+                -- email: item.email,
+                -- productId: item.productId,
+                -- productName: item.productName,
+                -- productNum: item.productNum,
+                -- productType: item.productType,
+                -- productImg: item.productImg,
+                -- promotionMessage: item.promotionMessage,
+                -- promotionMessageSecond: item.promotionMessageSecond,
+                -- features: item.features,
+                -- usedPrice: item.usedPrice,
+                -- nowPrice: item.nowPrice,
+                -- orderOdd: item.orderOdd,
+                -- payMethod: item.payMethod,
+                -- payTime: item.payTime,
+                -- payState: item.payState,
+                -- deliveryMethod: item.deliveryMethod,
+                -- deliveryHopeTime: item.deliveryHopeTime,
+                -- expressOdd: item.expressOdd,
+                -- goodsResAddress: item.goodsResAddress,
+                -- fullPrice: item.fullPrice,
+                -- orderState: item.orderState,
+                -- createTime: timestampToTime(parseInt(item.createTime)),
+                -- updateTime: timestampToTime(parseInt(item.updateTime)),

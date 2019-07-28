@@ -16,7 +16,7 @@ query productListInfoOne($id: Int!){
         img
         productName
         promotionMessage
-        featrues
+        features
         promotionMessageSecond
         usedPrice
         nowPrice
@@ -46,7 +46,7 @@ class ProductListMain extends Component {
                                         img={item.img}
                                         productName={item.productName}
                                         promotionMessage={item.promotionMessage}
-                                        featrues={item.featrues}
+                                        features={item.features}
                                         promotionMessageSecond={item.promotionMessageSecond}
                                         usedPrice={item.usedPrice}
                                         nowPrice={item.nowPrice}

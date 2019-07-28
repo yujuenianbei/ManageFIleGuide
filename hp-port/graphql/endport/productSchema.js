@@ -44,9 +44,9 @@ const SearchProduct = new GraphQLObjectType({
                     return data.promotionMessage;
                 }
             },
-            featrues: {
+            features: {
                 type: GraphQLString, resolve(data) {
-                    return data.featrues;
+                    return data.features;
                 }
             },
             promotionMessageSecond: {
@@ -113,9 +113,9 @@ const AddProduct = new GraphQLObjectType({
                     return data.promotionMessage;
                 }
             },
-            featrues: {
+            features: {
                 type: GraphQLString, resolve(data) {
-                    return data.featrues;
+                    return data.features;
                 }
             },
             promotionMessageSecond: {
@@ -183,9 +183,9 @@ const UpdateProduct = new GraphQLObjectType({
                     return data.promotionMessage;
                 }
             },
-            featrues: {
+            features: {
                 type: GraphQLString, resolve(data) {
-                    return data.featrues;
+                    return data.features;
                 }
             },
             promotionMessageSecond: {

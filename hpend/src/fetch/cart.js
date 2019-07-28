@@ -1,4 +1,5 @@
-
+// http
+import { http } from '../http';
 // 修改购物车信息
 const searchCart = (data, func) => {
 
@@ -24,7 +25,7 @@ const searchCart = (data, func) => {
             productName,
             productNum,
             typeName,
-            featrues,
+            features,
             img,
             promotionMessage,
             promotionMessageSecond,
@@ -34,7 +35,7 @@ const searchCart = (data, func) => {
             updateTime
           }
         }`;
-    fetch('http://localhost:3004/graphqlPort', {
+    fetch(http.port, {
         method: 'POST',
         mode: "cors",
         headers: {
@@ -70,7 +71,7 @@ const searchCartTotal = (data, func) => {
       }
     }`;
 
-    fetch('http://localhost:3004/graphqlPort', {
+    fetch(http.port, {
         method: 'POST',
         mode: "cors",
         headers: {

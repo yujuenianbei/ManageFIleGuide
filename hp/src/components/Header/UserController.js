@@ -6,7 +6,8 @@ import styles from './UserController.module.less';
 import { Link } from 'react-router-dom';
 import { deleteCartProduct, postCart, getUserCart, getQRcode, verifyQRcode, deleteQRcode } from '../../fetch/cart';
 import { Badge, Icon, InputNumber, Spin } from 'antd';
-
+// http
+import { http } from '../../http';
 let timeout, interval;
 class UserController extends PureComponent {
     state = {
@@ -45,7 +46,7 @@ class UserController extends PureComponent {
     }
     // 加载二维码
     loadQRcode = () => {
-        this.setState({ uid_img: "http://localhost:3004/loginByPhone?" + new Date() })
+        this.setState({ uid_img: http.ip + "/loginByPhone?" + new Date() })
         timeout = setTimeout(() => {
             getQRcode(this.verifying)
         }, 100)
@@ -87,7 +88,7 @@ class UserController extends PureComponent {
             } 
           }
           `;
-        fetch('http://localhost:3004/graphql', {
+        fetch( http.ip + '/graphql', {
             method: 'POST',
             mode: "cors",
             headers: {
@@ -358,43 +359,3 @@ export default connect(
     mapStateToProps,
     mapDispatchToProps
 )(classify(styles)(UserController));
-
-
-        // var query = `mutation addToCart($userId: Int,$productId: Int, $productNum : Int){
-        //     addToCart(userId: $userId,productId: $productId,productNum: $productNum){
-        //         productId
-        //         productNum
-        //     } 
-        //   }`;
-        // fetch('http://localhost:3004/graphql', {
-        //     method: 'POST',
-        //     mode: "cors",
-        //     headers: {
-        //         'Content-Type': 'application/json',
-        //         'Accept': 'application/json',
-        //         'login': localStorage.getItem('loginState'),
-        //         'token': localStorage.getItem('token')
-        //     },
-        //     body: JSON.stringify({
-        //         query,
-        //         variables: {
-        //             "userId": parseInt(localStorage.getItem('id')),
-        //             "productId": id,
-        //             "productNum": value
-        //         }
-        //     })
-        // })
-        //     .then(r => r.json())
-        //     .then(result => {
-        //         // console.log(result.data.addToCart[0].productNum)
-        //         const productList = Object.assign([], this.props.state.cart.productInfo);
-        //         let num = 0;
-        //         productList.map((item, index) => {
-        //             if (item.id === id) {
-        //                 item.num = result.data.addToCart[0].productNum;
-        //             }
-        //             num += item.num
-        //         })
-        //         this.props.addProductNumInCart(num);
-        //         this.props.addProductInCart(productList)
-        //     });

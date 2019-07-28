@@ -124,15 +124,15 @@ const mapStateToProps = (state) => {
 };
 const mapDispatchToProps = (dispatch) => {
     return {
-        changeModleState: (data) => { dispatch(Actions.modleState(data)); },
+        changeModleState: (data) => { dispatch(Actions.accountModleState(data)); },
         changeAccountDataLoading: (data) => { dispatch(Actions.accountDataLoading(data)); },
         changeAccountData: (data) => { dispatch(Actions.accountData(data)); },
-        changeModleTitle: (data) => { dispatch(Actions.modleTitle(data)); },
-        changeModleName: (data) => { dispatch(Actions.modleName(data)); },
-        changeModelData: (data) => { dispatch(Actions.modelData(data)); },
-        changeModleTitle: (data) => { dispatch(Actions.modleTitle(data)); },
-        changePageTotal: (data) => { dispatch(Actions.pageTotal(data)); },
-        changePageNow: (data) => { dispatch(Actions.pageNow(data)); },
+        changeModleTitle: (data) => { dispatch(Actions.accountModleTitle(data)); },
+        changeModleName: (data) => { dispatch(Actions.accountModleName(data)); },
+        changeModelData: (data) => { dispatch(Actions.accountModelData(data)); },
+        changeModleTitle: (data) => { dispatch(Actions.accountModleTitle(data)); },
+        changePageTotal: (data) => { dispatch(Actions.accountPageTotal(data)); },
+        changePageNow: (data) => { dispatch(Actions.accountPageNow(data)); },
     }
 };
 export default connect(

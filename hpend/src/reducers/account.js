@@ -1,20 +1,20 @@
 import {
-  MODELSTATE,
+  ACCOUNTMODELSTATE,
   ACCOUNTDATA,
   ACCOUNTLOADING,
-  MODLENAME,
-  MODELTITLE,
-  MODELDATA,
-  CONFIRMLOADING,
-  CHECKLISTCOL,
-  ALLCHECKCOL,
-  PAGESIZE,
-  PAGETOTAL,
-  PAGENOW,
-  PAGESORT,
-  PAGESORTCOL,
-  SEARCHVALUE,
-  SEARCHTYPE
+  ACCOUNTMODLENAME,
+  ACCOUNTMODELTITLE,
+  ACCOUNTMODELDATA,
+  ACCOUNTCONFIRMLOADING,
+  ACCOUNTCHECKLISTCOL,
+  ACCOUNTALLCHECKCOL,
+  ACCOUNTPAGESIZE,
+  ACCOUNTPAGETOTAL,
+  ACCOUNTPAGENOW,
+  ACCOUNTPAGESORT,
+  ACCOUNTPAGESORTCOL,
+  ACCOUNTSEARCHVALUE,
+  ACCOUNTSEARCHTYPE
 } from '../actions/index'
 
 const initValue = {
@@ -38,16 +38,16 @@ const initValue = {
 export default (state = initValue, action) => {
   const data = action.data
   switch (action.type) {
-    case MODELSTATE: {
+    case ACCOUNTMODELSTATE: {
       return Object.assign({}, state, { modelState: data })
     }
-    case MODLENAME: {
+    case ACCOUNTMODLENAME: {
       return Object.assign({}, state, { modelName: data })
     }
-    case MODELTITLE: {
+    case ACCOUNTMODELTITLE: {
       return Object.assign({}, state, { modelTitle: data })
     }
-    case MODELDATA: {
+    case ACCOUNTMODELDATA: {
       return Object.assign({}, state, { modelData: data })
     }
     case ACCOUNTDATA: {
@@ -56,34 +56,34 @@ export default (state = initValue, action) => {
     case ACCOUNTLOADING: {
       return Object.assign({}, state, { accountLoading: data })
     }
-    case CONFIRMLOADING: {
+    case ACCOUNTCONFIRMLOADING: {
       return Object.assign({}, state, { confirmLoading: data })
     }
-    case CHECKLISTCOL: {
+    case ACCOUNTCHECKLISTCOL: {
       return Object.assign({}, state, { checkListCol: data })
     }
-    case ALLCHECKCOL: {
+    case ACCOUNTALLCHECKCOL: {
       return Object.assign({}, state, { allCheckcols: data })
     }
-    case PAGESIZE: {
+    case ACCOUNTPAGESIZE: {
       return Object.assign({}, state, { pageSize: data })
     }
-    case PAGENOW: {
+    case ACCOUNTPAGENOW: {
       return Object.assign({}, state, { pageNow: data })
     }
-    case PAGETOTAL: {
+    case ACCOUNTPAGETOTAL: {
       return Object.assign({}, state, { pageTotal: data })
     }
-    case PAGESORT: {
+    case ACCOUNTPAGESORT: {
       return Object.assign({}, state, { pageSort: data })
     }
-    case PAGESORTCOL: {
+    case ACCOUNTPAGESORTCOL: {
       return Object.assign({}, state, { pageSortCol: data })
     }
-    case SEARCHVALUE: {
+    case ACCOUNTSEARCHVALUE: {
       return Object.assign({}, state, { searchValue: data })
     } 
-    case SEARCHTYPE: {
+    case ACCOUNTSEARCHTYPE: {
       return Object.assign({}, state, { searchType: data }) 
     }
     default: {

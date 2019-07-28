@@ -1,3 +1,5 @@
+// http
+import { http } from '../http';
 // 获取用户购物车的信息
 const getProductsNum = (func) => {
   const query = `query queryProductNum{
@@ -6,7 +8,7 @@ const getProductsNum = (func) => {
     }
   }`;
 
-  fetch('http://localhost:3004/graphql', {
+  fetch(http.port, {
       method: 'POST',
       mode: "cors",
       headers: {
@@ -32,14 +34,14 @@ const getProductsByPage = (start, size, func) => {
           productName
           img
           promotionMessage
-          featrues
+          features
           promotionMessageSecond
           usedPrice
           nowPrice
         }
       }`;
 
-    fetch('http://localhost:3004/graphql', {
+    fetch(http.port, {
         method: 'POST',
         mode: "cors",
         headers: {
@@ -68,14 +70,14 @@ const getProductInfo = (id, func) => {
         img
         productName
         promotionMessage
-        featrues
+        features
         promotionMessageSecond
         usedPrice
         nowPrice
       }
     }`;
 
-    fetch('http://localhost:3004/graphql', {
+    fetch(http.port, {
         method: 'POST',
         mode: "cors",
         headers: {

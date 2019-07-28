@@ -79,9 +79,9 @@ const QueryAllCart = new GraphQLObjectType({
                     return data.promotionMessage;
                 }
             },
-            featrues: {
+            features: {
                 type: GraphQLString, resolve(data) {
-                    return data.featrues;
+                    return data.features;
                 }
             },
             promotionMessageSecond: {
@@ -89,9 +89,9 @@ const QueryAllCart = new GraphQLObjectType({
                     return data.promotionMessageSecond;
                 }
             },
-            featrues: {
+            features: {
                 type: GraphQLString, resolve(data) {
-                    return data.featrues;
+                    return data.features;
                 }
             },
             usedPrice: {

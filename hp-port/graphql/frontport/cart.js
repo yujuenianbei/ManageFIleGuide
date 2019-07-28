@@ -160,9 +160,9 @@ const QueryCart = new GraphQLObjectType({
                     return data.promotionMessage;
                 }
             },
-            featrues: {
+            features: {
                 type: GraphQLString, resolve(data) {
-                    return data.featrues;
+                    return data.features;
                 }
             },
             promotionMessageSecond: {

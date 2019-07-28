@@ -1,11 +1,12 @@
 export const PRODUCTINFO = 'PRODUCTINFO';
 export const PRODUCTNUM = 'PRODUCTNUM';
-export const USERINFO = 'USERINFO';
-export const EXPRESSINCART = 'EXPRESSINCART';
-
+export const CARTTOORDER = 'CARTTOORDER';
+export const CARTTOORDERITEM = 'CARTTOORDERITEM';
 export const CARTERROR = 'CARTERROR';
 export const MESSAGEPRODUCT = 'MESSAGEPRODUCT';
 export const MESSAGEEXPRESS = 'MESSAGEEXPRESS';
+export const CARTDELIVERYLIST = 'CARTDELIVERYLIST';
+export const CARTCOUNTPRICE = 'CARTCOUNTPRICE';
 // 购物车的产品数量
 export function productNumInCart(data) {
     return {
@@ -21,21 +22,21 @@ export function productInCart(data) {
   }
 }
 
-// 购物车中的用户信息
-export function userinfoInCart(data) {
+// 购物车中的订单产品
+export function cartToOrder(data) {
   return {
-    type: USERINFO,
+    type: CARTTOORDER,
+    data
+  }
+}
+// 购物车中的订单产品index
+export function cartToOrderItem(data) {
+  return {
+    type: CARTTOORDERITEM,
     data
   }
 }
 
-// 购物车中的配送方式
-export function expressInCart(data) {
-  return {
-    type: EXPRESSINCART,
-    data
-  }
-}
 
 // 修改错误提示状态
 export function cartError(data) {
@@ -57,6 +58,22 @@ export function messageInProduct(data) {
 export function messageInExpress(data) {
   return {
     type: MESSAGEEXPRESS,
+    data
+  }
+}
+
+// 配送方式
+export function cartDeliveryList(data) {
+  return {
+    type: CARTDELIVERYLIST,
+    data
+  }
+}
+
+// 配送方式
+export function cartCountPrice(data) {
+  return {
+    type: CARTCOUNTPRICE,
     data
   }
 }

@@ -1,3 +1,5 @@
+// http
+import { http } from '../http';
 // 获取用户购物车的信息
 const getUserInfo = (func) => {
     const query = `query queryAllUsers{
@@ -15,7 +17,7 @@ const getUserInfo = (func) => {
         }
     }`;
 
-    fetch('http://localhost:3004/graphqlPort', {
+    fetch(http.port, {
         method: 'POST',
         mode: "cors",
         headers: {
@@ -54,7 +56,7 @@ const createAccount = (data, func) => {
           }
       }`;
 
-    fetch('http://localhost:3004/graphqlPort', {
+    fetch(http.port, {
         method: 'POST',
         mode: "cors",
         headers: {
@@ -103,7 +105,7 @@ const updateAccount = (data, func) => {
           }
       }`;
 
-    fetch('http://localhost:3004/graphqlPort', {
+    fetch(http.port, {
         method: 'POST',
         mode: "cors",
         headers: {
@@ -141,7 +143,7 @@ const deleteAccount = (data, func) => {
         }
       }`;
 
-    fetch('http://localhost:3004/graphqlPort', {
+    fetch(http.port, {
         method: 'POST',
         mode: "cors",
         headers: {
@@ -169,7 +171,7 @@ const validateAccount = (data, func) => {
         }
       }`;
 
-    fetch('http://localhost:3004/graphqlPort', {
+    fetch(http.port, {
         method: 'POST',
         mode: "cors",
         headers: {
@@ -228,7 +230,7 @@ const searchAccount = (data, func) => {
       }
       `;
 
-    fetch('http://localhost:3004/graphqlPort', {
+    fetch(http.port, {
         method: 'POST',
         mode: "cors",
         headers: {
@@ -269,7 +271,7 @@ const searchAccountTotal = (data, func) => {
         }
       }`;
 
-    fetch('http://localhost:3004/graphqlPort', {
+    fetch(http.port, {
         method: 'POST',
         mode: "cors",
         headers: {

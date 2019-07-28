@@ -58,12 +58,12 @@ const mapStateToProps = (state) => {
 };
 const mapDispatchToProps = (dispatch) => {
     return {
-        changeModleState: (data) => { dispatch(Actions.modleState(data)); },
+        changeModleState: (data) => { dispatch(Actions.accountModleState(data)); },
         changeAccountDataLoading: (data) => { dispatch(Actions.accountDataLoading(data)); },
         changeAccountData: (data) => { dispatch(Actions.accountData(data)); },
-        changeModleTitle: (data) => { dispatch(Actions.modleTitle(data)); },
-        changeModleName: (data) => { dispatch(Actions.modleName(data)); },
-        changeModleTitle: (data) => { dispatch(Actions.modleTitle(data)); },
+        changeModleTitle: (data) => { dispatch(Actions.accountModleTitle(data)); },
+        changeModleName: (data) => { dispatch(Actions.accountModleName(data)); },
+        changeModleTitle: (data) => { dispatch(Actions.accountModleTitle(data)); },
     }
 };
 export default connect(

@@ -130,13 +130,13 @@ const ProductListInfoOne = new GraphQLObjectType({
                     return data.promotionMessage;
                 }
             },
-            featrues: {
+            features: {
                 // // 返回数组
                 // type: new GraphQLList(GraphQLString), resolve(data) {
-                //     return data.featrues;
+                //     return data.features;
                 // }
                 type: GraphQLString, resolve(data) {
-                    return data.featrues;
+                    return data.features;
                 }
             },
             promotionMessageSecond: {

@@ -4,6 +4,9 @@ import { connect } from 'react-redux';
 // import PropTypes from 'prop-types';
 import classify from '@magento/venia-concept/esm/classify';
 // const SearchBar = React.lazy(() => import('src/components/SearchBar'));
+// http
+import { http } from '../../http';
+
 import styles from './productInfo.module.less';
 import { searchProduct, searchProductTotal } from '../../fetch/product'
 import { getAllproductType } from '../../fetch/productType'
@@ -53,16 +56,16 @@ class Product extends PureComponent {
                 key: 'img',
                 width: 120,
                 render: (text, record) => {
-                    return <img className={styles.productBreImg} src={ record.img.split('http').length > 1 ? record.img : 'http://localhost:3004/static/img/' + record.img} title={record.productName} />
+                    return <img className={styles.productBreImg} src={ record.img.split('http').length > 1 ? record.img : http.img + record.img} title={record.productName} />
                 },
             },
             {
                 title: '配置参数',
-                dataIndex: 'featrues',
-                key: 'featrues',
+                dataIndex: 'features',
+                key: 'features',
                 width: '15%',
                 render: (text, record) => {
-                    return JSON.parse(record.featrues).map((item, index) =>
+                    return JSON.parse(record.features).map((item, index) =>
                         <li key={index+ '123123'}>
                             <span title={record.item}>{index + 1}. {item}</span>
                         </li>
@@ -316,7 +319,7 @@ class Product extends PureComponent {
                 productName: item.productName,
                 type: typeToTypeName(this.props.state.product.productTypeList, item.type),
                 img: item.img,
-                featrues: item.featrues,
+                features: item.features,
                 promotionMessage: item.promotionMessage,
                 promotionMessageSecond: item.promotionMessageSecond,
                 usedPrice: item.usedPrice,
