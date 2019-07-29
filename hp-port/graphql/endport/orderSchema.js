@@ -175,10 +175,84 @@ const OrderItemTotal = new GraphQLObjectType({
         });
     },
 });
+const OrderAddress = new GraphQLObjectType({
+    name: 'OrderAddress',
+    description: "查询用户的收货地址",
+    fields: () => {
+        return ({
+            id: {
+                type: GraphQLID, resolve(data) {
+                    return data.id;
+                }
+            },
+            userName: {
+                type: GraphQLString, resolve(data) {
+                    return data.userName;
+                }
+            },
+            email: {
+                type: GraphQLString, resolve(data) {
+                    return data.email;
+                }
+            },
+            firstName: {
+                type: GraphQLString, resolve(data) {
+                    return data.firstName;
+                }
+            },
+            lastName: {
+                type: GraphQLString, resolve(data) {
+                    return data.lastName;
+                }
+            },
+            phoneCode: {
+                type: GraphQLInt, resolve(data) {
+                    return data.phoneCode;
+                }
+            },
+            phone: {
+                type: GraphQLString, resolve(data) {
+                    return data.phone;
+                }
+            },
+            province: {
+                type: GraphQLString, resolve(data) {
+                    return data.province;
+                }
+            },
+            address: {
+                type: GraphQLString, resolve(data) {
+                    return data.address;
+                }
+            },
+            postCode: {
+                type: GraphQLInt, resolve(data) {
+                    return data.postCode;
+                }
+            },
+            addressState: {
+                type: GraphQLInt, resolve(data) {
+                    return data.addressState;
+                }
+            },
+            createTime: {
+                type: GraphQLString, resolve(data) {
+                    return data.createTime;
+                }
+            },
+            updateTime: {
+                type: GraphQLString, resolve(data) {
+                    return data.updateTime;
+                }
+            },
+        });
+    }
+});
 
 
 
 module.exports = { 
     QueryAllOrder,
-    OrderItemTotal
+    OrderItemTotal,
+    OrderAddress
 }

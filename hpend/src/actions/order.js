@@ -15,7 +15,9 @@ export const ORDERPAGESORTCOL = 'ORDERPAGESORTCOL'; // 排序字段
 export const ORDERSEARCHTYPE = 'ORDERSEARCHTYPE'; //搜索类型
 export const ORDERSEARCHVALUE = 'ORDERSEARCHVALUE'; //搜索内容
 export const ORDERYPELIST = 'ORDERTYPELIST' //产品类别
-
+export const ORDERADDRESS = 'ORDERADDRESS' //收货地址
+export const ORDEREDIT = 'ORDEREDIT' // 编辑状态（所有）
+export const ORDEREXCHANGE = 'ORDEREXCHANGE' // 切换状态（所有）
 // 弹出框状态
 export function orderModleState(data) {
   return {
@@ -135,6 +137,30 @@ export function orderTypeList(data) {
     data
   }
 }
+// 用户收货地址
+export function orderAddress(data) {
+  return {
+    type: ORDERADDRESS,
+    data
+  }
+}
+
+// 编辑状态
+export function orderEdit(data) {
+  return {
+    type: ORDEREDIT,
+    data
+  }
+}
+
+// 切换状态
+export function orderExchange(data) {
+  return {
+    type: ORDEREXCHANGE,
+    data
+  }
+}
+
 
 
 

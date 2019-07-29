@@ -103,6 +103,46 @@ const searchOrderTotal = (data, func) => {
         .then((result) => { func(result) });
 }
 
+// 根据指定条件进行查询用户总数
+const searchOrderAddress = (data, func) => {
+    const query = `mutation searchAddress($id: Int){
+        searchAddress(id: $id){
+          id,
+          userName,
+          email,
+          firstName,
+          lastName,
+          phoneCode,
+          phone,
+          province,
+          address,
+          postCode,
+          addressState,
+          createTime,
+          updateTime
+        }
+      }`;
+
+    fetch(http.port, {
+        method: 'POST',
+        mode: "cors",
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            // 'login': localStorage.getItem('loginState'),
+            // 'token': localStorage.getItem('token')
+        },
+        body: JSON.stringify({
+            query,
+            variables:     {
+                id: data
+              }
+        })
+    })
+        .then(r => r.json())
+        .then((result) => { func(result) });
+}
 
 
-export { searchOrder, searchOrderTotal }
+
+export { searchOrder, searchOrderTotal, searchOrderAddress }

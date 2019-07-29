@@ -39,6 +39,7 @@ class Headers extends PureComponent {
             this.props.changePageUid('')
             this.props.changeUserOnlineList('')
             localStorage.removeItem("uid");
+            localStorage.removeItem("persist:root");
             // console.log(localStorage.getItem('persist:root'))
         }
     }

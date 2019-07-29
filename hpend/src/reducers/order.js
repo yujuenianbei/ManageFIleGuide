@@ -15,8 +15,12 @@ import {
     ORDERPAGESORTCOL,
     ORDERSEARCHVALUE,
     ORDERSEARCHTYPE,
-    ORDERYPELIST
+    ORDERYPELIST,
+    ORDERADDRESS,
+    ORDEREDIT,
+    ORDEREXCHANGE
 } from '../actions/index'
+import { object } from 'prop-types';
 
 const initValue = {
     confirmLoading: false,
@@ -26,6 +30,9 @@ const initValue = {
     modelData: '',
     orderLoading: false,
     orderData: [],
+    orderEdit: false,
+    orderExchange: false,
+    orderAddress: {},
     pageTotal: 10,
     pageSize: 10,
     pageNow: 0,
@@ -34,8 +41,8 @@ const initValue = {
     searchValue: '',
     searchType: '',
     orderTypeList: [],
-    checkListCol: ['订单号', '支付方式', '支付状态', '快递名称', '期望时间', '快递单号', '收货地址', '总价', '订单状态', '创建时间', '产品名称', '类别', '封面'],
-    allCheckcols: ['邮箱', '区号', '电话', '订单号', '支付方式', '支付时间', '支付状态', '快递名称', '期望时间', '快递单号', '收货地址', '总价', '订单状态', '创建时间', '更新时间', '产品名称', '类别', '封面', '配置参数', '原价', '现价' ]
+    checkListCol: ['订单号', '支付方式', '支付状态', '快递名称', '期望时间', '快递单号', '收货地址', '总价', '订单状态', '创建时间', '产品名称', '类别', '封面', '数量'],
+    allCheckcols: ['邮箱', '区号', '电话', '订单号', '支付方式', '支付时间', '支付状态', '快递名称', '期望时间', '快递单号', '收货地址', '总价', '订单状态', '创建时间', '更新时间', '产品名称', '类别', '封面', '原价', '现价', '数量']
 }
 export default (state = initValue, action) => {
     const data = action.data
@@ -90,6 +97,15 @@ export default (state = initValue, action) => {
         }
         case ORDERYPELIST: {
             return Object.assign({}, state, { orderTypeList: data })
+        }
+        case ORDERADDRESS: {
+            return Object.assign({}, state, { orderAddress: data })
+        }
+        case ORDEREDIT: {
+            return Object.assign({}, state, { orderEdit: data })
+        }
+        case ORDEREXCHANGE: {
+            return Object.assign({}, state, { orderExchange: data })
         }
         default: {
             return state;

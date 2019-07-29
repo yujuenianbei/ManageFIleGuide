@@ -136,6 +136,7 @@ CREATE TABLE IF NOT EXISTS goodsResInfo
   `province` varchar(255) DEFAULT NULL,
   `address` varchar(255) DEFAULT NULL,
   `postCode` bigint(20) DEFAULT NULL,
+  `addressState` bigint(20) DEFAULT NULL,
   `createTime` datetime NOT NULL,
   `updateTime` datetime NOT NULL,
   PRIMARY KEY (`id`)

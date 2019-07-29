@@ -10,8 +10,9 @@
 6. 省市区 province
 7. 详细地址 address
 8. 邮政编码 postCode
-9. 创建时间 createTime
-10. 更新时间 updateTime
+9. 地址状态 addressState
+10. 创建时间 createTime
+11. 更新时间 updateTime
 
 
     `id` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -23,5 +24,6 @@
     `province` varchar(255) DEFAULT NULL,
     `address` varchar(255) DEFAULT NULL,
     `postCode` bigint(20) DEFAULT NULL,
+    `addressState` bigint(20) DEFAULT NULL,   1.常用（显示给用户的）  2.临时（后台可以看到的）
     `createTime` datetime NOT NULL,
     `updateTime` datetime NOT NULL,

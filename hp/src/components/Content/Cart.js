@@ -103,7 +103,7 @@ class CheckoutCart extends Component {
         var indexs = () => {
             for (let [index, items] of orderProduct.entries()) {
                 if (items.id === id) {
-                    console.log(index)
+                    // console.log(index)
                     return index;
                 }
             }
@@ -114,9 +114,12 @@ class CheckoutCart extends Component {
         productList.map((item, index) => {
             if (item.id === id) {
                 item.num = result.data.addToCart[0].productNum;
-
-                orderProduct[indexs()].num = result.data.addToCart[0].productNum
-                orderProducts[indexs()].num = result.data.addToCart[0].productNum
+                // console.log(orderProduct.indexOf(id))
+                // console.log(indexs())
+                if (orderProduct.length > 0 && indexs() >= 0) {
+                    orderProduct[indexs()].num = result.data.addToCart[0].productNum
+                    orderProducts[indexs()].num = result.data.addToCart[0].productNum
+                }
             }
             num += item.num;
         })
@@ -124,13 +127,13 @@ class CheckoutCart extends Component {
         this.props.addProductInCart(productList);
         this.props.loadingOnHeader(false);
 
-
-
-        // 添加在本页
-        this.props.changeCartToOrder(orderProduct)
-        // 添加到订单中
-        this.props.changeOrderProductList(orderProducts)
-        this.countCost(orderProduct)
+        if (orderProduct.length > 0) {
+            // 添加在本页
+            this.props.changeCartToOrder(orderProduct)
+            // 添加到订单中
+            this.props.changeOrderProductList(orderProducts)
+            this.countCost(orderProduct)
+        }
     }
 
     // 删除产品

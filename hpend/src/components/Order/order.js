@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 // import PropTypes from 'prop-types';
 import classify from '@magento/venia-concept/esm/classify';
 // const SearchBar = React.lazy(() => import('src/components/SearchBar'));
+import OrderModle from './model';
 import styles from './order.module.less';
 import { searchOrder, searchOrderTotal } from '../../fetch/order'
 import { getAllproductType } from '../../fetch/productType'
@@ -30,13 +31,50 @@ class Order extends PureComponent {
         // 先查询完产品分类再查产品
         getAllproductType(this.searchOrderMount);
 
-        this.checkBoxOnChange(this.props.state.order.checkListCol)
+        this.checkBoxOnChange(this.props.state.order.checkListCol);
     }
-
-    rowCol = (obj, index) => {
+    // 计算合并单元格 根据用户合并
+    rowCol = (obj, index, name) => {
         let row = [];
         this.props.state.order.orderData.map((item, index) => {
             if (index > 0 && this.props.state.order.orderData[index].name !== this.props.state.order.orderData[index - 1].name) {
+                row.push(index - 1);
+            }
+        })
+        row.push(this.props.state.order.pageSize - 1)
+        row.map((item, i) => {
+            if (i === 0) {
+                if (index === 0) {
+                    obj.props.rowSpan = row[0] + 1;
+                }
+                if (0 < index && index <= row[0]) {
+                    obj.props.rowSpan = 0;
+                }
+            }
+            else {
+                if (index === row[i - 1] + 1) {
+                    obj.props.rowSpan = row[i] - row[i - 1];
+                }
+                if (row[i - 1] + 1 < index && index <= row[i] + 1) {
+                    obj.props.rowSpan = 0;
+                }
+            }
+        })
+    }
+    // 根据订单合并单元格
+    orderRowCol = (obj, index) => {
+        let row = [];
+        const orderNewData = this.props.state.order.orderData.sort(function (x, y) {
+            if (x.orderOdd > y.orderOdd) {
+                return 1;
+            } else if (x.orderOdd === y.orderOdd) {
+                return x.name > y.name ? 1 : -1;
+            } else if (x.orderOdd < y.orderOdd) {
+                return -1;
+            }
+        })
+        orderNewData.map((item, index) => {
+            if (index > 0 && orderNewData[index].orderOdd !== orderNewData[index - 1].orderOdd) {
                 row.push(index - 1);
             }
         })
@@ -69,10 +107,10 @@ class Order extends PureComponent {
                 title: '邮箱',
                 dataIndex: 'email',
                 key: 'email',
-                width: 105,
+                width: 200,
                 render: (value, record, index) => {
                     const obj = {
-                        children: <span title={record.email}>
+                        children: <span style={{ wordBreak: 'break-word' }} title={record.email}>
                             {record.email}
                         </span>,
                         props: {},
@@ -85,7 +123,7 @@ class Order extends PureComponent {
                 title: '区号',
                 dataIndex: 'phoneCode',
                 key: 'phoneCode',
-                width: 105,
+                width: 70,
                 render: (value, record, index) => {
                     const obj = {
                         children: <span title={record.phoneCode}>
@@ -101,7 +139,7 @@ class Order extends PureComponent {
                 title: '电话',
                 dataIndex: 'phone',
                 key: 'phone',
-                width: 180,
+                width: 130,
                 render: (value, record, index) => {
                     const obj = {
                         children: <span title={record.phone}>
@@ -117,7 +155,7 @@ class Order extends PureComponent {
                 title: '订单号',
                 dataIndex: 'orderOdd',
                 key: 'orderOdd',
-                width: 105,
+                width: 240,
                 render: (value, record, index) => {
                     const obj = {
                         children: <span title={record.orderOdd}>
@@ -125,7 +163,7 @@ class Order extends PureComponent {
                         </span>,
                         props: {},
                     };
-                    this.rowCol(obj, index)
+                    this.orderRowCol(obj, index)
                     return obj
                 }
             },
@@ -141,7 +179,7 @@ class Order extends PureComponent {
                         </span>,
                         props: {},
                     };
-                    this.rowCol(obj, index)
+                    this.orderRowCol(obj, index)
                     return obj
                 }
             },
@@ -157,7 +195,7 @@ class Order extends PureComponent {
                         </span>,
                         props: {},
                     };
-                    this.rowCol(obj, index)
+                    this.orderRowCol(obj, index)
                     return obj
                 }
             },
@@ -173,7 +211,7 @@ class Order extends PureComponent {
                         </span>,
                         props: {},
                     };
-                    this.rowCol(obj, index)
+                    this.orderRowCol(obj, index)
                     return obj
                 }
             },
@@ -189,7 +227,7 @@ class Order extends PureComponent {
                         </span>,
                         props: {},
                     };
-                    this.rowCol(obj, index)
+                    this.orderRowCol(obj, index)
                     return obj
                 }
             },
@@ -205,7 +243,7 @@ class Order extends PureComponent {
                         </span>,
                         props: {},
                     };
-                    this.rowCol(obj, index)
+                    this.orderRowCol(obj, index)
                     return obj
                 }
             },
@@ -221,7 +259,7 @@ class Order extends PureComponent {
                         </span>,
                         props: {},
                     };
-                    this.rowCol(obj, index)
+                    this.orderRowCol(obj, index)
                     return obj
                 }
             },
@@ -233,11 +271,12 @@ class Order extends PureComponent {
                 render: (value, record, index) => {
                     const obj = {
                         children: <span title={record.goodsResAddress}>
-                            {record.goodsResAddress}
+                            <Button type="primary" onClick={() => this.EditOrder('showResInfo', record)}>查看</Button>
+                            {/* {record.goodsResAddress} */}
                         </span>,
                         props: {},
                     };
-                    this.rowCol(obj, index)
+                    this.orderRowCol(obj, index)
                     return obj
                 }
             },
@@ -253,7 +292,7 @@ class Order extends PureComponent {
                         </span>,
                         props: {},
                     };
-                    this.rowCol(obj, index)
+                    this.orderRowCol(obj, index)
                     return obj
                 }
             },
@@ -269,7 +308,7 @@ class Order extends PureComponent {
                         </span>,
                         props: {},
                     };
-                    this.rowCol(obj, index)
+                    this.orderRowCol(obj, index)
                     return obj
                 }
             },
@@ -285,7 +324,7 @@ class Order extends PureComponent {
                         </span>,
                         props: {},
                     };
-                    this.rowCol(obj, index)
+                    this.orderRowCol(obj, index)
                     return obj
                 }
             },
@@ -301,7 +340,7 @@ class Order extends PureComponent {
                         </span>,
                         props: {},
                     };
-                    this.rowCol(obj, index)
+                    this.orderRowCol(obj, index)
                     return obj
                 }
             },
@@ -309,7 +348,7 @@ class Order extends PureComponent {
                 title: '产品名称',
                 dataIndex: 'productName',
                 key: 'productName',
-                width: 105,
+                width: 300,
                 render: text => <a href="javascript:;">{text}</a>,
             },
             {
@@ -332,39 +371,17 @@ class Order extends PureComponent {
                     return <img className={styles.productBreImg} src={record.productImg.split('http').length > 1 ? record.productImg : http.img + record.productImg} title={record.productName} />
                 },
             },
-            // {
-            //     title: '配置参数',
-            //     dataIndex: 'features',
-            //     key: 'features',
-            //     // width: '15%',
-            //     render: (text, record) => {
-            //         return JSON.parse(record.features).map((item, index) =>
-            //             <li key={index + '123123'}>
-            //                 <span title={record.item}>{index + 1}. {item}</span>
-            //             </li>
-            //         )
-            //     },
-            // },
-            // {
-            //     title: '促销信息1',
-            //     dataIndex: 'promotionMessage',
-            //     key: 'promotionMessage',
-            //     render: (text, record) => (
-            //         <span title={record.promotionMessage}>
-            //             {record.promotionMessage}
-            //         </span>
-            //     ),
-            // },
-            // {
-            //     title: '促销信息2',
-            //     dataIndex: 'promotionMessageSecond',
-            //     key: 'promotionMessageSecond',
-            //     render: (text, record) => (
-            //         <span title={record.promotionMessageSecond}>
-            //             {record.promotionMessageSecond}
-            //         </span>
-            //     ),
-            // },
+            {
+                title: '数量',
+                dataIndex: 'productNum',
+                key: 'productNum',
+                width: 130,
+                render: (text, record) => (
+                    <span title={record.productNum}>
+                        {record.productNum}
+                    </span>
+                ),
+            },
             {
                 title: '原价',
                 dataIndex: 'usedPrice',
@@ -379,14 +396,16 @@ class Order extends PureComponent {
             }
         ],
         columns: [],
+        width: 0
     };
 
     // 显示弹出框
-    AddProduct = (e) => {
-        if (e === 'add') {
-            this.props.changeModleTitle('新增');
+    EditOrder = (e, record) => {
+        if (e === 'showResInfo') {
+            this.props.changeModleTitle('查看收货地址');
             this.props.changeModleName(e);
-            this.props.changeModelData('')
+            this.props.changeModelData('');
+            this.props.changeModelData(record)
         } else if (e === 'edit') {
             this.props.changeModleTitle('修改');
             this.props.changeModleName(e);
@@ -402,22 +421,33 @@ class Order extends PureComponent {
     handleButtonClick = (e) => {
         console.log(e);
     }
+
     // 选择列
     checkBoxOnChange = checkedList => {
+        // console.log(document.getElementsByClassName('ant-table-wrapper')[0].clientWidth)
         this.setState({
             indeterminate: !!checkedList.length && checkedList.length < this.props.state.order.allCheckcols.length,
             checkAll: checkedList.length === this.props.state.order.allCheckcols.length,
+            columns: this.mixColData(checkedList)
+        }, () => {
+            let width = 0
+            checkedList.map(items => {
+                this.state.columns.map(item => {
+                    if (item.title === items) {
+                        width += item.width
+                    }
+                })
+            })
+            if (width > document.getElementsByClassName('ant-table-wrapper')[0].clientWidth) {
+                this.setState({ width: { x: width } })
+            } else {
+                this.setState({ width: { x: 'max-content' } })
+            }
+            console.log(width)
         });
         this.props.changeCheckListCol(checkedList);
-        this.setState({ columns: this.mixColData(checkedList) })
-
-        let title = '';
-        this.state.defaultColumns.map(item => {
-            if (item.key === this.props.state.order.searchType) {
-                title = item.title
-            }
-        })
     };
+
     // 全选
     onCheckAllChange = e => {
         this.setState({
@@ -459,12 +489,17 @@ class Order extends PureComponent {
             title: '操作',
             key: 'action',
             width: 100,
-            fixed: 'right',
-            render: (text, record) => (
-                <span>
-                    <Button type="primary" onClick={() => console.log('查看')}>查看</Button>
-                </span>
-            ),
+            // fixed: 'right',
+            render: (value, record, index) => {
+                const obj = {
+                    children: <span>
+                        <Button type="primary" onClick={() => this.EditOrder('showResInfo')}>查看</Button>
+                    </span>,
+                    props: {},
+                };
+                this.orderRowCol(obj, index)
+                return obj
+            }
         })
         return data
     }
@@ -492,6 +527,7 @@ class Order extends PureComponent {
         searchOrderTotal(data, this.setPageTotal)
         searchOrder(data, this.searchData);
     }
+
     // 分页 
     ChangePage = (page, pageSize) => {
         this.props.changeOrderDataLoading(true);
@@ -518,6 +554,7 @@ class Order extends PureComponent {
     changeType = (value) => {
         this.props.changeSearchType(value);
     }
+
     // 搜索input
     searchValueChange = (value) => {
         this.props.changeSearchValue(value.target.value);
@@ -574,6 +611,7 @@ class Order extends PureComponent {
         this.props.changePageTotal(result.data.totalOrderItem.total);
         this.props.changeOrderDataLoading(false)
     }
+    
     // 搜索结果写入表中
     searchData = (result) => {
         let data = []
@@ -590,9 +628,9 @@ class Order extends PureComponent {
                 productNum: item.productNum,
                 productType: item.productType,
                 productImg: item.productImg,
-                promotionMessage: item.promotionMessage,
-                promotionMessageSecond: item.promotionMessageSecond,
-                features: item.features,
+                // promotionMessage: item.promotionMessage,
+                // promotionMessageSecond: item.promotionMessageSecond,
+                // features: item.features,
                 usedPrice: item.usedPrice,
                 nowPrice: item.nowPrice,
                 orderOdd: item.orderOdd,
@@ -677,14 +715,13 @@ class Order extends PureComponent {
             <Fragment>
                 <Breadcrumb style={{ margin: '16px 0' }}>
                     <Breadcrumb.Item>首页</Breadcrumb.Item>
-                    <Breadcrumb.Item>购物车管理</Breadcrumb.Item>
+                    <Breadcrumb.Item>订单管理</Breadcrumb.Item>
                 </Breadcrumb>
-                {/* <ProductModle /> */}
+                <OrderModle />
                 <div className={styles.content}>
                     <div className={styles.search}>
                         <Row>
                             <Col span={8}>
-                                <Button type="primary" onClick={() => this.AddProduct('add')}>新增</Button>
                                 <Dropdown.Button onClick={this.handleButtonClick} overlay={checkSlect} trigger={['click']} style={{ marginLeft: 10 }}>
                                     筛选列
                                 </Dropdown.Button>
@@ -724,18 +761,18 @@ class Order extends PureComponent {
                         </Row>
                     </div>
                     <Table
-                        scroll={{ x: true }}
+                        scroll={this.state.width}
                         bordered
                         columns={this.state.columns}
                         dataSource={this.props.state.order.orderData}
                         loading={this.props.state.order.orderLoading}
-                        onRow={(record) => {
-                            return {
-                                onClick: () => {
-                                    this.props.changeModelData(record)
-                                }
-                            }
-                        }}
+                        // onRow={(record) => {
+                        //     return {
+                        //         onClick: () => {
+                        //             this.props.changeModelData(record)
+                        //         }
+                        //     }
+                        // }}
                         pagination={{
                             current: this.props.state.order.pageNow,
                             total: this.props.state.order.pageTotal,
