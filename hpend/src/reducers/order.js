@@ -18,7 +18,9 @@ import {
     ORDERYPELIST,
     ORDERADDRESS,
     ORDEREDIT,
-    ORDEREXCHANGE
+    ORDEREXCHANGE,
+    ORDERUSERALLADDRESS,
+    ORDERADDRESSITEM
 } from '../actions/index'
 import { object } from 'prop-types';
 
@@ -33,6 +35,8 @@ const initValue = {
     orderEdit: false,
     orderExchange: false,
     orderAddress: {},
+    orderUserALLaddress: [],
+    orderAddressItem: '',
     pageTotal: 10,
     pageSize: 10,
     pageNow: 0,
@@ -106,6 +110,12 @@ export default (state = initValue, action) => {
         }
         case ORDEREXCHANGE: {
             return Object.assign({}, state, { orderExchange: data })
+        }
+        case ORDERUSERALLADDRESS: {
+            return Object.assign({}, state, { orderUserALLaddress: data })
+        }
+        case ORDERADDRESSITEM: {
+            return Object.assign({}, state, { orderAddressItem: data })
         }
         default: {
             return state;

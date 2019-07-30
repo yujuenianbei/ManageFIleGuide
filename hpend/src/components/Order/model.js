@@ -21,6 +21,11 @@ class OrderModle extends PureComponent {
         // } else {
         //     this.del.handleSubmit(e);  
         // }
+        if (this.props.state.order.modelName === 'showResInfo' ||
+            this.props.state.order.modelName === 'regNewAddress' ||
+            this.props.state.order.modelName === 'changeUserAddress') {
+            this.address.handleSubmit(e)
+        }
     };
 
     handleCancel = () => {
@@ -29,7 +34,9 @@ class OrderModle extends PureComponent {
         // } else {
         //     this.del.cancelSubmit();  
         // }
-        if(this.props.state.order.modelName !== 'delete'){
+        if (this.props.state.order.modelName === 'showResInfo' ||
+            this.props.state.order.modelName === 'regNewAddress' ||
+            this.props.state.order.modelName === 'changeUserAddress') {
             this.address.cancelSubmit()
         }
     };
@@ -46,8 +53,10 @@ class OrderModle extends PureComponent {
                     onCancel={this.handleCancel}
                     maskClosable={false}
                 >
-                {this.props.state.order.modelName === 'showResInfo' && <ShowAddress onAdr={(ref) => { this.address = ref }} />}
-                {/* {this.props.state.order.modelName !== 'delete' && <CreateOrder onRef={(ref) => { this.child = ref }} />}
+                    {(this.props.state.order.modelName === 'showResInfo' ||
+                        this.props.state.order.modelName === 'regNewAddress' ||
+                        this.props.state.order.modelName === 'changeUserAddress') && <ShowAddress onAdr={(ref) => { this.address = ref }} />}
+                    {/* {this.props.state.order.modelName !== 'delete' && <CreateOrder onRef={(ref) => { this.child = ref }} />}
                 {this.props.state.order.modelName === 'delete' && <DeleteOrder onDel={(ref) => { this.del = ref }}/>}  */}
                 </Modal>
             </Fragment>
@@ -69,7 +78,7 @@ const mapDispatchToProps = (dispatch) => {
         changeModleTitle: (data) => { dispatch(Actions.orderModleTitle(data)); },
         changeModleName: (data) => { dispatch(Actions.orderModleName(data)); },
         changeModleTitle: (data) => { dispatch(Actions.orderModleTitle(data)); },
-        
+
     }
 };
 export default connect(

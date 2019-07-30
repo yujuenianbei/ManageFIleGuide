@@ -341,6 +341,7 @@ class FrontUser extends PureComponent {
                         </Row>
                     </div>
                     <Table
+                        bordered
                         columns={this.state.columns}
                         dataSource={this.props.state.frontUser.frontUserData}
                         loading={this.props.state.frontUser.frontUserLoading}

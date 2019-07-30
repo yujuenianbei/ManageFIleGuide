@@ -24,3 +24,28 @@
 [class="ant-pagination ant-table-pagination"]{
     padding-top: @10;
 }
+
+.selected{
+    border: 1px solid @blue !important;
+}
+
+.addressButton{
+    margin-bottom: @10;
+    > button{
+        margin-right: @10;
+    }
+}
+.userAddressItem{
+    display: flex;
+    flex-wrap: wrap;
+    background: #fff;
+    padding: 30px;
+    margin-bottom: 10px;
+    border: 1px solid @white;
+    &:hover{
+        border: 1px solid @blue;
+    }
+    .item{
+        width: 50%;
+    }
+}

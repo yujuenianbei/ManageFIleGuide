@@ -5,8 +5,11 @@ import { connect } from 'react-redux';
 import classify from '@magento/venia-concept/esm/classify';
 // const SearchBar = React.lazy(() => import('src/components/SearchBar'));
 import styles from './order.module.less';
-import { searchOrderAddress } from '../../fetch/order'
+import { timestampToTime } from '../../func/common'
+import { searchOrderAddress, searchOrderUserAddress, regOrderUserAddress, searchOrder, searchOrderTotal, changeOrderAddress } from '../../fetch/order';
 import { Input, Col, Row, Select, Button, Modal, Spin, Form, Icon } from 'antd';
+import UserAddressItem from './orderItems';
+const { Option } = Select;
 let myClear, clearData;
 class ShowAddressForm extends PureComponent {
 
@@ -18,7 +21,7 @@ class ShowAddressForm extends PureComponent {
     getAddressData = (result) => {
         const res = result.data.searchAddress
         this.props.changeOrderAddress(res);
-        if (!!res) {
+        if (!this.props.state.order.orderExchange) {
             this.props.form.setFieldsValue({
                 email: res.email,
                 userName: res.userName,
@@ -32,6 +35,7 @@ class ShowAddressForm extends PureComponent {
             })
         }
     }
+
     componentWillUpdate(nextPorps) {
         if (nextPorps.state.order.modelData !== '' && nextPorps.state.order.modelName !== '' && this.props.state.order.modelName !== nextPorps.state.order.modelName) {
             searchOrderAddress(nextPorps.state.order.modelData.goodsResAddress, this.getAddressData)
@@ -41,107 +45,167 @@ class ShowAddressForm extends PureComponent {
     // 提交数据
     handleSubmit = (e) => {
         e.preventDefault();
-        this.props.changeOrderEdit(false);
-        // deleteOrder(this.props.state.order.modelData, this.deleteFinish)
+        // this.props.changeOrderEdit(false);
+        // this.props.changeOrderExchange(false);
+        if (this.props.state.order.modelName === 'showResInfo') {
+            this.cancelSubmit();
+        } else if (this.props.state.order.modelName === 'regNewAddress') {
+            this.props.form.validateFields((err, values) => {
+                if (!err) {
+                    regOrderUserAddress(values, this.regUserAddress);
+                }
+            });
+        } else if (this.props.state.order.modelName == 'changeUserAddress') {
+            const data = {
+                id: this.props.state.order.modelData.orderId,
+                goodsResAddress: this.props.state.order.orderAddressItem
+            }
+            changeOrderAddress(data, this.finishChangeAddress)
+        }
     };
+
+    regUserAddress = (result) => {
+        // 成功后关闭窗口
+        if (result.data.regGoodsResInfo.state === 1) {
+            const data = {
+                id: this.props.state.order.modelData.orderId,
+                goodsResAddress: parseInt(result.data.regGoodsResInfo.id)
+            }
+            changeOrderAddress(data, this.finishChangeAddress)
+        }
+    }
+
+    finishChangeAddress = (result) => {
+        if (result.data.updateOrderAddress.state === 1) {
+            this.cancelSubmit();
+            this.searchOrderMount();
+        }
+    }
 
     // 取消提交
     cancelSubmit = () => {
         this.props.changeModleState(false);
-        clearData = setTimeout(() => {
-            myClear = setTimeout(this.props.form.resetFields, 0);
-            this.props.changeOrderAddress('')
-            this.props.changeModelData('');
-            this.props.changeModleTitle('');
-            this.props.changeModleName('');
-            this.props.changeOrderExchange(false);
-            this.props.changeOrderEdit(false);
-            clearTimeout(clearData);
-        }, 0);
+        // clearData = setTimeout(() => {
+        //     myClear = setTimeout(this.props.form.resetFields, 0);
+        //     this.props.changeOrderAddress('')
+        //     this.props.changeModelData('');
+        //     this.props.changeModleTitle('');
+        //     this.props.changeModleName('');
+        //     this.props.changeOrderAddressItem('')
+        //     this.props.changeOrderExchange(false);
+        //     this.props.changeOrderEdit(false);
+        //     clearTimeout(clearData);
+        // }, 0);
+        if(this.props.state.order.modelName !== 'changeUserAddress'){
+            this.props.form.resetFields();
+        }
+        this.props.changeOrderAddress('');
+        this.props.changeModelData('');
+        this.props.changeModleTitle('');
+        this.props.changeModleName('');
+        this.props.changeOrderAddressItem('');
+        this.props.changeOrderExchange(false);
+        this.props.changeOrderEdit(false);
     }
 
-    // 创建新的临时地址替换原先的地址
+    // 创建新的地址替换原先的地址
     editAddress = () => {
         this.props.changeOrderEdit(true);
+        this.props.changeOrderExchange(false);
+        this.props.changeModleName('regNewAddress');
         this.props.changeModleTitle('创建收货地址');
     }
 
-    // 
+    // 在用户地址列表中选择更换的地址
     changeAddress = () => {
         this.props.changeOrderExchange(true);
+        this.props.changeModleName('changeUserAddress');
         this.props.changeModleTitle('切换收货地址');
+        this.props.changeOrderAddressItem(this.props.state.order.modelData.goodsResAddress)
+        // 请求用户的地址列表
+        searchOrderUserAddress(this.props.state.order.modelData.name, this.showUserAddress)
     }
-    // // 提交数据后返回
-    // deleteFinish = (result) => {
-    //     // 根据接口返回状态判断成功与否
-    //     if (result.data.deleteOrder[0].state === 1) {
-    //         this.props.changeModleState(false);
-    //         this.props.changeModelData('');
-    //         this.props.changeModleTitle('');
-    //         this.props.changeModleName('');
-    //         // 更新数据
-    //         this.props.changeOrderDataLoading(true);
 
-    //         // 加载上一次的配置
-    //         let data = {};
-    //         data.search = this.props.state.order.searchValue ? this.props.state.order.searchValue : ""
-    //         data.searchType = this.props.state.order.searchType ? this.props.state.order.searchType : "";
-    //         data.pageSize = this.props.state.order.pageSize;
-    //         data.start = this.props.state.order.pageNow;
-    //         data.sort = this.props.state.order.pageSort;
-    //         // 如果搜索性别需要装换
-    //         if (data.searchType === "sex") {
-    //             data.search = transToSex(this.props.state.order.searchValue);
-    //         }
-    //         searchOrderTotal(data, this.setPageTotal)
-    //         searchOrder(data, this.searchData);
-    //     }
-    // }
+    // 查询用户地址后的操作
+    showUserAddress = (result) => {
+        this.props.changeOrderUserAllAddress(result.data.searchUserAddress)
+    }
 
-    // // 修改总数
-    // setPageTotal = (result) => {
-    //     this.props.changePageTotal(result.data.total.total)
-    // }
-    // // 搜索结果写入表中
-    // searchData = (result) => {
-    //     // 删除最后一条数据
-    //     if (result.data.searchOrder.length === 0) {
-    //         const pageNow = this.props.state.order.pageNow - 1;
-    //         this.props.changePageNow(pageNow);
+    // 确认收货地址
+    selectAddress = (index) => {
+        this.props.changeOrderAddressItem(index);
+    }
 
-    //         // 加载上一次的配置
-    //         let data = {};
-    //         data.search = this.props.state.order.searchValue ? this.props.state.order.searchValue : ""
-    //         data.searchType = this.props.state.order.searchType ? this.props.state.order.searchType : "";
-    //         data.pageSize = this.props.state.order.pageSize;
-    //         data.start = pageNow;
-    //         data.sort = this.props.state.order.pageSort;
-    //         // 如果搜索性别需要装换
-    //         if (data.searchType === "sex") {
-    //             data.search = transToSex(this.props.state.order.searchValue);
-    //         }
-    //         searchOrderTotal(data, this.setPageTotal);
-    //         searchOrder(data, this.searchData);
-    //     } else {
-    //         let data = []
-    //         result.data.searchOrder.map((item, index) => (
-    //             data[index] = {
-    //                 key: item.id,
-    //                 userName: item.userName,
-    //                 sex: item.sex,
-    //                 email: item.email,
-    //                 firstName: item.firstName,
-    //                 lastName: item.lastName,
-    //                 phoneCode: item.phoneCode,
-    //                 phone: item.phone,
-    //                 company: item.company,
-    //                 password: item.password,
-    //             }
-    //         ))
-    //         this.props.changeOrderData(data);
-    //         this.props.changeOrderDataLoading(false);
-    //     }
-    // }
+    // 修改总数
+    setPageTotal = (result) => {
+        this.props.changePageTotal(result.data.totalOrderItem.total)
+    }
+
+    // 加载上一次的搜索
+    searchOrderMount = (result) => {
+        this.props.changeOrderDataLoading(true)
+        // this.props.changeOrderTypeList(result.data.AllProductType)
+
+        let searchValue;
+        if (this.props.state.order.searchType === 'type' && !!this.props.state.order.searchValue) {
+            searchValue = JSON.stringify(this.props.state.order.orderTypeList.filter(item => item.typeName === this.props.state.order.searchValue)[0].id);
+        } else {
+            searchValue = this.props.state.order.searchValue
+        }
+        let data = {
+            search: this.props.state.order.searchValue ? searchValue : "",
+            searchType: this.props.state.order.searchType ? this.props.state.order.searchType : "",
+            pageSize: this.props.state.order.pageSize,
+            start: this.props.state.order.pageNow,
+            sort: this.props.state.order.pageSort,
+        };
+        searchOrderTotal(data, this.setPageTotal)
+        searchOrder(data, this.searchData);
+    }
+
+    // 修改总数
+    setPageTotal = (result) => {
+        this.props.changePageTotal(result.data.totalOrderItem.total);
+        this.props.changeOrderDataLoading(false)
+    }
+
+    // 搜索结果写入表中
+    searchData = (result) => {
+        let data = []
+        result.data.searchOrder.map((item, index) => {
+            return data[index] = {
+                key: index,
+                id: item.id,
+                name: item.name,
+                phoneCode: item.phoneCode,
+                phone: item.phone,
+                email: item.email,
+                productId: item.productId,
+                productName: item.productName,
+                productNum: item.productNum,
+                productType: item.productType,
+                productImg: item.productImg,
+                usedPrice: item.usedPrice,
+                nowPrice: item.nowPrice,
+                orderOdd: item.orderOdd,
+                payMethod: item.payMethod,
+                payTime: item.payTime,
+                payState: item.payState,
+                deliveryMethod: item.deliveryMethod,
+                deliveryHopeTime: item.deliveryHopeTime,
+                expressOdd: item.expressOdd,
+                goodsResAddress: item.goodsResAddress,
+                fullPrice: item.fullPrice,
+                orderState: item.orderState,
+                orderId: item.orderId,
+                createTime: timestampToTime(parseInt(item.createTime)),
+                updateTime: timestampToTime(parseInt(item.updateTime)),
+
+            }
+        })
+        this.props.changeOrderData(data)
+        this.props.changeOrderDataLoading(false)
+    }
 
 
 
@@ -154,10 +218,10 @@ class ShowAddressForm extends PureComponent {
         return (
             <Fragment>
                 {!this.props.state.order.orderEdit && !this.props.state.order.orderExchange &&
-                    <Fragment>
+                    <div className={styles.addressButton}>
                         <Button type="primary" onClick={this.editAddress}>创建地址</Button>
                         <Button type="primary" onClick={this.changeAddress}>更换地址</Button>
-                    </Fragment>
+                    </div>
                 }
                 {!this.props.state.order.orderExchange &&
                     <Form layout="horizontal" onSubmit={this.handleSubmit} labelAlign="left">
@@ -224,7 +288,10 @@ class ShowAddressForm extends PureComponent {
                                         message: '请输入区号',
                                     },
                                 ],
-                            })(<Input type="number" placeholder="请输入区号" disabled={!this.props.state.order.orderEdit ? "disabled" : ""} />)}
+                            })(<Select placeholder="请选择区号" disabled={!this.props.state.order.orderEdit ? "disabled" : ""}>
+                                <Option value="086">086</Option>
+                                <Option value="007">007</Option>
+                            </Select>)}
                         </Form.Item>
                         <Form.Item label="手机号" {...formItemLayout} style={{ marginBottom: '10px' }}>
                             {getFieldDecorator('phone', {
@@ -276,6 +343,24 @@ class ShowAddressForm extends PureComponent {
                         </Form.Item>
                     </Form >
                 }
+                {this.props.state.order.orderExchange &&
+                    this.props.state.order.orderUserALLaddress.map((item, index) => (
+                        <UserAddressItem
+                            id={item.id}
+                            index={index}
+                            key={'sdasdqwe' + index}
+                            email={item.email}
+                            firstaName={item.firstName}
+                            lastName={item.lastName}
+                            phoneCode={item.phoneCode}
+                            phone={item.phone}
+                            province={item.province}
+                            address={item.address}
+                            postCode={item.postCode}
+                            onClick={e => this.selectAddress(item.id)}
+                        />
+                    ))
+                }
             </Fragment>
         );
     }
@@ -301,6 +386,8 @@ const mapDispatchToProps = (dispatch) => {
         changePageNow: (data) => { dispatch(Actions.orderPageNow(data)); },
         changeOrderEdit: (data) => { dispatch(Actions.orderEdit(data)); },
         changeOrderExchange: (data) => { dispatch(Actions.orderExchange(data)); },
+        changeOrderUserAllAddress: (data) => { dispatch(Actions.orderUserAllAddress(data)); },
+        changeOrderAddressItem: (data) => { dispatch(Actions.orderAddressItem(data)); },
     }
 };
 export default connect(

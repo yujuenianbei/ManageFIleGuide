@@ -18,6 +18,8 @@ export const ORDERYPELIST = 'ORDERTYPELIST' //产品类别
 export const ORDERADDRESS = 'ORDERADDRESS' //收货地址
 export const ORDEREDIT = 'ORDEREDIT' // 编辑状态（所有）
 export const ORDEREXCHANGE = 'ORDEREXCHANGE' // 切换状态（所有）
+export const ORDERUSERALLADDRESS = 'ORDERUSERALLADDRESS' // 用户所有的收货地址
+export const ORDERADDRESSITEM = 'ORDERADDRESSITEM' //选择的第几个地址在订单中
 // 弹出框状态
 export function orderModleState(data) {
   return {
@@ -160,6 +162,23 @@ export function orderExchange(data) {
     data
   }
 }
+
+//查询用户的所有收货地址
+export function orderUserAllAddress(data) {
+  return {
+    type: ORDERUSERALLADDRESS,
+    data
+  }
+} 
+//查询用户的所有收货地址
+export function orderAddressItem(data) {
+  return {
+    type: ORDERADDRESSITEM,
+    data
+  }
+} 
+
+
 
 
 

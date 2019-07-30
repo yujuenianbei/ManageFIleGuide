@@ -218,7 +218,7 @@ class Account extends PureComponent {
     }
     // 搜索input
     searchValueChange = (value) => {
-        value.persist(); 
+        value.persist();
         this.props.changeSearchValue(value);
     }
 
@@ -318,7 +318,7 @@ class Account extends PureComponent {
                     <Breadcrumb.Item>首页</Breadcrumb.Item>
                     <Breadcrumb.Item>用户管理</Breadcrumb.Item>
                 </Breadcrumb>
-                <AccountModle/>
+                <AccountModle />
                 <div className={styles.content}>
                     <div className={styles.search}>
                         <Row>
@@ -339,7 +339,7 @@ class Account extends PureComponent {
                                                 <Option value="">无</Option>
                                                 {this.state.columns.map((item, index) => {
                                                     if (item.key !== 'action') {
-                                                        return <Option value={item.key} key={"searchType_"+index}>{item.title}</Option>
+                                                        return <Option value={item.key} key={"searchType_" + index}>{item.title}</Option>
                                                     }
                                                 })}
                                             </Select>
@@ -359,6 +359,7 @@ class Account extends PureComponent {
                         </Row>
                     </div>
                     <Table
+                        bordered
                         columns={this.state.columns}
                         dataSource={this.props.state.account.accountData}
                         loading={this.props.state.account.accountLoading}

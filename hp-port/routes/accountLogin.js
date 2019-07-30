@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var UUID = require('uuid-js');
 var qrImg = require('qr-image');
+var http = require('../config/http');
 
 /* GET scanned page. */
 router.get('/scanned', function (req, res, next) {
@@ -21,7 +22,7 @@ let qruid;
 //   try {
 //     if (typeof (qruid) !== "undefined") {
 //       // 写入二维码内的网址，微信扫描后自动跳转
-//       let jumpURL = "http://192.168.31.50:3004/aclogin/scanned?qruid=" + qruid;
+//       let jumpURL = "http://192.168.1.128:3004/aclogin/scanned?qruid=" + qruid;
 //       // 生成二维码(size：图片大小， margin: 边框留白)
 //       var img = qrImg.image(jumpURL, { size: 6, margin: 2 });
 //       res.writeHead(200, { 'Content-Type': 'image/png' });
@@ -47,7 +48,7 @@ router.get('/loginByPhone', function (req, res) {
   try {
     if (typeof (qruid) !== "undefined") {
       // 写入二维码内的网址，微信扫描后自动跳转
-      let jumpURL = "http://192.168.31.50:3004/aclogin/scanned?qruid=" + qruid;
+      let jumpURL = http.ip + "/aclogin/scanned?qruid=" + qruid;
       // 生成二维码(size：图片大小， margin: 边框留白)
       var img = qrImg.imageSync(jumpURL, { size: 6, margin: 2, type: 'png' });
       res.send({

@@ -118,5 +118,25 @@ module.exports = {
                     })
             }
         },
+        updateOrderAddress: {
+            type: OrderAddress,
+            description: '修改用户订单中的收货地址',
+            args: {
+                id: { type: GraphQLInt },
+                goodsResAddress: { type: GraphQLInt },
+            },
+            resolve: async function (source, { goodsResAddress, id }) {
+                console.log(goodsResAddress, id)
+                return await searchSql($sql.updateOrderGoodsResInfo, [goodsResAddress, id])
+                    .then(async (reslut) => {
+                        console.log(reslut)
+                        if (reslut.affectedRows) {
+                            return { state: 1 };
+                        } else {
+                            return { state: 0 };
+                        }
+                    })
+            }
+        }
     }
 };

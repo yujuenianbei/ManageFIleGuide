@@ -340,6 +340,7 @@ class Product extends PureComponent {
                         </Row>
                     </div>
                     <Table
+                        bordered
                         columns={this.state.columns}
                         dataSource={this.props.state.productType.productData}
                         loading={this.props.state.productType.productLoading}

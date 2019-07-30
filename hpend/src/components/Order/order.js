@@ -582,7 +582,6 @@ class Order extends PureComponent {
         searchOrder(data, this.searchData);
     }
 
-
     // 搜索
     searchOrder = (value) => {
         this.props.changeOrderDataLoading(true)
@@ -628,9 +627,6 @@ class Order extends PureComponent {
                 productNum: item.productNum,
                 productType: item.productType,
                 productImg: item.productImg,
-                // promotionMessage: item.promotionMessage,
-                // promotionMessageSecond: item.promotionMessageSecond,
-                // features: item.features,
                 usedPrice: item.usedPrice,
                 nowPrice: item.nowPrice,
                 orderOdd: item.orderOdd,
@@ -643,6 +639,7 @@ class Order extends PureComponent {
                 goodsResAddress: item.goodsResAddress,
                 fullPrice: item.fullPrice,
                 orderState: item.orderState,
+                orderId: item.orderId,
                 createTime: timestampToTime(parseInt(item.createTime)),
                 updateTime: timestampToTime(parseInt(item.updateTime)),
 
@@ -722,13 +719,12 @@ class Order extends PureComponent {
                     <div className={styles.search}>
                         <Row>
                             <Col span={8}>
-                                <Dropdown.Button onClick={this.handleButtonClick} overlay={checkSlect} trigger={['click']} style={{ marginLeft: 10 }}>
+                                <Dropdown.Button onClick={this.handleButtonClick} overlay={checkSlect} trigger={['click']}>
                                     筛选列
                                 </Dropdown.Button>
                             </Col>
                             <Col span={12} offset={4}>
                                 <Row>
-
                                     <InputGroup compact >
                                         <Col span={8}>
                                             <Button type="primary" onClick={() => this.clearAll()}>清空</Button>

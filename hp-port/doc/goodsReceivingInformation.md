@@ -27,3 +27,13 @@
     `addressState` bigint(20) DEFAULT NULL,   1.常用（显示给用户的）  2.临时（后台可以看到的）
     `createTime` datetime NOT NULL,
     `updateTime` datetime NOT NULL,
+
+
+##### 前台用户 
+1. 如果没有收货地址时 则显示form让用户自己创建收货地址
+2. 有收货地址时可以对收货地址进行 增删改
+
+##### 后台用户
+1. 可以查询用户的收货地址（查）
+2. 可以切换用户的收货地址（改订单中的对应关系）
+3. 可以创建一个新的收货地址和用户关联（增）

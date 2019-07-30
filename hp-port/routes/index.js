@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+var http = require('../config/http');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -18,7 +19,7 @@ var { searchSql } = require("../sql/init")
 
 /* GET home page. */
 router.get('/scanned', function(req, res, next) {
-  res.render('index', { title: '扫码登录', uid: req.query.uid });
+  res.render('index', { title: '扫码登录', uid: req.query.uid, http: http.port });
 });
 
 
@@ -30,7 +31,7 @@ router.get('/loginByPhone', function (req, res) {
   try {
     if (typeof(uid) !== "undefined"){
       // 写入二维码内的网址，微信扫描后自动跳转
-      let jumpURL = "http://192.168.31.50:3004/scanned?uid=" + uid;
+      let jumpURL = http.ip + "/scanned?uid=" + uid;
       // 生成二维码(size：图片大小， margin: 边框留白)
       var img = qrImg.image(jumpURL, {size :6, margin: 2});
       res.writeHead(200, {'Content-Type': 'image/png'});

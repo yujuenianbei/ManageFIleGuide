@@ -56,17 +56,19 @@ var endPort = {
     queryTopTenProductInCart: 'SELECT PRO.productName,PRO.img,PRO.usedPrice,PRO.nowPrice,ITEM.cartId,ITEM.createTime,ITEM.updateTime,ITEM.productNum FROM (SELECT id,name,email,phoneCode,phone FROM `user` WHERE id in(SELECT userId FROM `cart`)) AS USER, product AS PRO,cartItem AS ITEM,cart AS CART WHERE PRO.id = ITEM.productId AND USER.id =CART.userId and ITEM.cartId = CART.cartId ORDER BY productNum DESC limit 0,10',
 
     // order
-    queryAllOrderInOrders: 'SELECT USER.id, USER.name, USER.phoneCode, USER.phone,USER.email,PRO.id AS productId, PRO.productName, PROT.typeName AS productType, PRO.img AS productImg, PRO.promotionMessage, PRO.promotionMessageSecond, PRO.features, PRO.usedPrice, PRO.nowPrice, ORDERS.orderOdd, PAYM.name AS payMethod, ORDERS.payTime, ORDERS.payState, DELVM.name AS deliveryMethod, ORDERS.deliveryHopeTime, ORDERS.expressOdd, ORDERS.goodsResAddress, ORDERS.fullPrice, ORS.name AS orderState, ORPRO.productNum, ORDERS.createTime, ORDERS.updateTime FROM user AS USER, product AS PRO, goodsResInfo AS GRF, orders AS ORDERS, orderProducts AS ORPRO, productType AS PROT, orderState AS ORS, payMethod AS PAYM, deliveryMethod AS DELVM WHERE USER.name=GRF.userName AND GRF.id=ORDERS.goodsResAddress AND ORDERS.orderOdd=ORPRO.orderOdd and ORPRO.productId=PRO.id AND PROT.id=PRO.type AND PAYM.ID=ORDERS.payMethod AND ORDERS.deliveryMethod=DELVM.id AND ORDERS.orderState=ORS.id ',
+    queryAllOrderInOrders: 'SELECT USER.id, USER.name, USER.phoneCode, USER.phone,USER.email,PRO.id AS productId, PRO.productName, PROT.typeName AS productType, PRO.img AS productImg, PRO.promotionMessage, PRO.promotionMessageSecond, PRO.features, PRO.usedPrice, PRO.nowPrice, ORDERS.orderOdd, PAYM.name AS payMethod, ORDERS.id AS orderId,ORDERS.payTime, ORDERS.payState, DELVM.name AS deliveryMethod, ORDERS.deliveryHopeTime, ORDERS.expressOdd, ORDERS.goodsResAddress, ORDERS.fullPrice, ORS.name AS orderState, ORPRO.productNum, ORDERS.createTime, ORDERS.updateTime FROM user AS USER, product AS PRO, goodsResInfo AS GRF, orders AS ORDERS, orderProducts AS ORPRO, productType AS PROT, orderState AS ORS, payMethod AS PAYM, deliveryMethod AS DELVM WHERE USER.name=GRF.userName AND GRF.id=ORDERS.goodsResAddress AND ORDERS.orderOdd=ORPRO.orderOdd and ORPRO.productId=PRO.id AND PROT.id=PRO.type AND PAYM.ID=ORDERS.payMethod AND ORDERS.deliveryMethod=DELVM.id AND ORDERS.orderState=ORS.id ',
     searchAllOrders: 'SELECT count(*) as total FROM orderProducts',
-    serachOrderAddress: 'SELECT * from goodsResInfo WHERE id=?',
     serachTypeOrders: 'SELECT count(*) as total FROM  USER.name=GRF.userName AND GRF.id=ORDERS.goodsResAddress AND ORDERS.orderOdd=ORPRO.orderOdd and ORPRO.productId=PRO.id AND PROT.id=PRO.type AND PAYM.ID=ORDERS.payMethod AND ORDERS.deliveryMethod=DELVM.id AND ORDERS.orderState=ORS.id ',
     searchTotalOrders: 'SELECT FOUND_ROWS() as total',
+    updateOrderGoodsResInfo: 'UPDATE orders SET goodsResAddress=? WHERE id=?',
 
-
-
-
-
-
+    // goodsResInfo
+    queryGoodsResInfo: "SELECT * FROM goodsResInfo where id= ?",
+    insertGoodsResInfo: "INSERT INTO goodsResInfo(email, userName, firstName, lastName, phoneCode, phone, province, address, postCode, createTime, updateTime) VALUES(?,?,?,?,?,?,?,?,?,NOW(), NOW())",
+    updateGoodsResInfo: "UPDATE goodsResInfo SET email=?, firstName=?, lastName=?, phoneCode=?, phone=?, province=?, address=?, postCode=?, updateTime=NOW()",
+    deleteGoodsResInfo: "DELETE FROM goodsResInfo WHERE id=?",
+    serachOrderAddress: 'SELECT * from goodsResInfo WHERE id=?',
+    searchUserAllAddress: 'SELECT * from goodsResInfo WHERE userName=?',
 
 
 
