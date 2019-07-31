@@ -9,7 +9,7 @@ import './less/font.less'
 
 import { ApolloProvider } from 'react-apollo';
 import { Provider as ReduxProvider } from 'react-redux';
-import { HashRouter as Router } from 'react-router-dom';
+import { BrowserRouter, HashRouter as Router } from 'react-router-dom';
 import { LocaleProvider } from 'antd';
 import zhCN from 'antd/lib/locale-provider/zh_CN';
 import ScrollToTop from './components/ScrollToTop';
@@ -86,13 +86,13 @@ const App = () => {
     <ApolloProvider client={client}>
       <ReduxProvider store={store}>
         <PersistGate persistor={persistor}>
-          <Router>
+          <BrowserRouter>
             <ScrollToTop>
               <LocaleProvider locale={zhCN}>
                 <Main />
               </LocaleProvider>
             </ScrollToTop>
-          </Router>
+          </BrowserRouter>
         </PersistGate>
       </ReduxProvider>
     </ApolloProvider>

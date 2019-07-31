@@ -8,6 +8,7 @@ export const ORDERTOTALCOST = 'ORDERTOTALCOST';
 export const ORDERERROR = 'ORDERERROR';
 export const MESSAGEADDRESS = 'MESSAGEADDRESS';
 export const MESSAGEPAYMENT = 'MESSAGEPAYMENT';
+export const ORDERADDADDRESS = 'ORDERADDADDRESS';
 
 
 
@@ -87,6 +88,14 @@ export function messageInAddress(data) {
 export function messageInPayment(data) {
   return {
     type: MESSAGEPAYMENT,
+    data
+  }
+}
+
+// 
+export function orderAddAddress(data) {
+  return {
+    type: ORDERADDADDRESS,
     data
   }
 }

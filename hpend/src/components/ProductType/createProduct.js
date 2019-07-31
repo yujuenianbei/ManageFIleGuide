@@ -16,16 +16,9 @@ class ProductTypeForm extends PureComponent {
         typeNameFeedback: false,
     }
     componentDidMount() {
-        this.props.onRef(this);
-        if (this.props.state.productType.modelName === 'add') {
+        if ((this.props.state.order.addAddressState) || (this.props.loginState && this.props.loginGoodsResInfo.length === 0)) {
             this.props.form.setFieldsValue({
-                typeName: '',
-            })
-        } else if (this.props.state.productType.modelName === 'edit') {
-            const data = this.props.state.productType.modelData;
-            console.log(data)
-            this.props.form.setFieldsValue({
-                typeName: data.typeName,
+                email: this.props.state.user.useremail,
             })
         }
     }
@@ -35,8 +28,8 @@ class ProductTypeForm extends PureComponent {
         clearTimeout(myClear);
     };
 
-     // 组件更新
-     componentWillUpdate(nextPorps) {
+    // 组件更新
+    componentWillUpdate(nextPorps) {
         if (this.props.state.productType.modelName !== nextPorps.state.productType.modelName) {
             if (nextPorps.state.productType.modelName == 'add') {
                 this.props.form.setFieldsValue({

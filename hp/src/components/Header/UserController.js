@@ -88,7 +88,7 @@ class UserController extends PureComponent {
             } 
           }
           `;
-        fetch( http.ip + '/graphql', {
+        fetch(http.ip + '/graphql', {
             method: 'POST',
             mode: "cors",
             headers: {
@@ -128,11 +128,22 @@ class UserController extends PureComponent {
         this.setState({ userToggle: false, cartToggle: false, qrToggle: false })
     }
     signOut = () => {
+        // 清空购物车
         this.props.addProductInCart([]);
         this.props.addProductNumInCart(0);
-
+        // 清空登录状态
         this.props.changeLoginstate(0);
         this.props.changeUsername('');
+        // 清空订单内容
+        this.props.changeCartToOrder([]);
+        this.props.changeOrderProductList([]);
+        this.props.changeCartToOrderItem([]);
+        this.props.changeCartCountPrice(0);
+        this.props.changeOrderTotalCost(0)
+        this.props.changeOrderProducts([]);
+        this.props.setOrderAddressItem("0");
+        this.props.changePaymentMethod(0);
+        this.props.changeExpress(0)
         this.hideToggle();
     }
     // 请求购物车内容
@@ -353,6 +364,16 @@ const mapDispatchToProps = (dispatch) => {
         changeLoginstate: (data) => { dispatch(Actions.loginstate(data)); },
         changeUsername: (data) => { dispatch(Actions.usernanme(data)); },
         loadingOnHeader: (data) => { dispatch(Actions.loadingHeader(data)); },
+
+        changeOrderProducts: (data) => { dispatch(Actions.orderProducts(data)); },
+        changeOrderTotalCost: (data) => { dispatch(Actions.orderTotalCost(data)); },
+        changeCartToOrder: (data) => { dispatch(Actions.cartToOrder(data)); },
+        changeOrderProductList: (data) => { dispatch(Actions.orderProductList(data)); },
+        changeCartToOrderItem: (data) => { dispatch(Actions.cartToOrderItem(data)); },
+        changeCartCountPrice: (data) => { dispatch(Actions.cartCountPrice(data)); },
+        setOrderAddressItem: (data) => { dispatch(Actions.orderAddressItem(data)); },
+        changePaymentMethod: (data) => { dispatch(Actions.orderPaymentMethod(data)); },
+        changeExpress: (data) => { dispatch(Actions.orderDelivery(data)); },
     }
 };
 export default connect(

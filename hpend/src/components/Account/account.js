@@ -9,7 +9,8 @@ import { getUserInfo, searchAccount, searchAccountTotal } from '../../fetch/acco
 import { Table, Divider, Dropdown, Checkbox, Menu, Icon, Tag, Breadcrumb, Input, Col, Row, Select, Button, Modal, Spin } from 'antd';
 import AccountModle from './model'
 import { transToSex } from '../../func/account'
-
+// 控制跳转
+import { withRouter } from "react-router-dom";
 const Search = Input.Search;
 const InputGroup = Input.Group;
 const { Option } = Select;
@@ -413,4 +414,4 @@ const mapDispatchToProps = (dispatch) => {
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(classify(styles)(Account));
+)(classify(styles)(withRouter(Account)));

@@ -4,10 +4,18 @@ import styles from './deliveryAddress.module.less';
 import * as Actions from '../../actions/index';
 import { connect } from 'react-redux';
 class DeliveryAddress extends Component {
+    componentDidMount() {
+        if ((this.props.state.order.addAddressState) ||
+            (this.props.loginState && this.props.loginGoodsResInfo.length === 0)) {
+            this.props.form.setFieldsValue({
+                email: this.props.state.user.useremail,
+            })
+        }
+    }
     render() {
         let errors;
         const { getFieldError, getFieldDecorator } = this.props.form;
-        const { loginGoodsResInfo } = this.props;
+        const { loginGoodsResInfo, loginState, addAddress } = this.props;
         return (
             <div className={styles.deliveryAddress}>
                 <div className={styles.deliveryAddressList}>
@@ -23,7 +31,7 @@ class DeliveryAddress extends Component {
                             }],
                         }],
                     })(
-                        <input type="email" placeholder="请收入邮箱" className={(errors = getFieldError('email')) ? styles.userInput_error : styles.userInput} disabled={loginGoodsResInfo ? 'disabled' : ''} />
+                        <input type="email" placeholder="请收入邮箱" className={(errors = getFieldError('email')) ? styles.userInput_error : styles.userInput} />
                     )}
                     {(errors = getFieldError('email')) ? <div className={styles.errorMessage}>{errors.join(',')}</div> : null}
                 </div>
@@ -91,7 +99,7 @@ class DeliveryAddress extends Component {
                             }],
                         }],
                     })(
-                        <input type="text" placeholder="请输入您的地址" className={(errors = getFieldError('phone') || getFieldError('pin')) ? styles.phone_error : styles.phone} />
+                        <input type="text" placeholder="请输入您的电话" className={(errors = getFieldError('phone') || getFieldError('pin')) ? styles.phone_error : styles.phone} />
                     )}
                     {getFieldDecorator('phoneCode', {
                         initialValue: '86',

@@ -49,28 +49,31 @@ module.exports = {
                 sort: { type: GraphQLString }  //ASC DEC
             },
             resolve: async function (source, { intvalue, value, type, start, pageSize, sort }) {
-                console.log(intvalue, value, type, start, pageSize, sort)
+                // console.log(intvalue, value, type, start, pageSize, sort)
+                if(type === 'name'){
+                    type = 'USER.name'
+                }
                 // type 没选 全局搜
                 if (type !== '' && value !== '') {
-                    console.log($sql.queryAllOrderInOrders + `AND ${type} like ${JSON.stringify(value)} ORDER BY orderOdd ${sort} limit ${start},${pageSize}`)
+                    // console.log($sql.queryAllOrderInOrders + `AND ${type} like ${JSON.stringify(value)} ORDER BY email ${sort} limit ${start},${pageSize}`)
                     value = '%' + value + '%'
-                    return await searchSql($sql.queryAllOrderInOrders + `AND ${type} like ${JSON.stringify(value)} ORDER BY orderOdd ${sort} limit ${start},${pageSize}`)
+                    return await searchSql($sql.queryAllOrderInOrders + `AND ${type} like ${JSON.stringify(value)} ORDER BY email ${sort} limit ${start},${pageSize}`)
                         .then(async (reslut) => {
                             return reslut;
                         })
                 }
                 else if (type !== '') {
-                    console.log($sql.queryAllOrderInOrders + `ORDER BY orderOdd ${sort} limit ${start},${pageSize}`)
-                    return await searchSql($sql.queryAllOrderInOrders + `ORDER BY orderOdd ${sort} limit ${start},${pageSize}`)
+                    // console.log($sql.queryAllOrderInOrders + `ORDER BY email ${sort} limit ${start},${pageSize}`)
+                    return await searchSql($sql.queryAllOrderInOrders + `ORDER BY email ${sort} limit ${start},${pageSize}`)
                         .then(async (reslut) => {
                             return reslut;
                         })
                 } else if (type == '') {
-                    console.log(11)
-                    console.log($sql.queryAllOrderInOrders + `ORDER BY orderOdd ${sort} limit ${start},${pageSize}`)
-                    return await searchSql($sql.queryAllOrderInOrders + `ORDER BY orderOdd ${sort} limit ${start},${pageSize}`)
+                    // console.log(11)
+                    // console.log($sql.queryAllOrderInOrders + `ORDER BY email ${sort} limit ${start},${pageSize}`)
+                    return await searchSql($sql.queryAllOrderInOrders + `ORDER BY email ${sort} limit ${start},${pageSize}`)
                         .then(async (reslut) => {
-                            console.log(reslut)
+                            // console.log(reslut)
                             return reslut;
                         })
                 }
@@ -86,18 +89,21 @@ module.exports = {
                 type: { type: GraphQLString }
             },
             resolve: async function (source, { intvalue, value, type }) {
-                console.log(intvalue, value, type)
+                // console.log(intvalue, value, type)
+                if(type === 'name'){
+                    type = 'USER.name'
+                }
                 if (type === "" || value === "") {
                     return await searchSql($sql.searchAllOrders)
                         .then(async (reslut) => {
-                            console.log(1, reslut);
+                            // console.log(1, reslut);
                             return await reslut[0];
                         })
                 } else {
-                    console.log($sql.serachTypeOrders + `${type} like %${value}%`)
-                    return await searchSql($sql.serachTypeOrders + `${type} like ?`, [`%${value}%`])
+                    console.log($sql.serachTypeOrders + `AND ${type} like %${value}%`)
+                    return await searchSql($sql.serachTypeOrders + `AND ${type} like ?`, [`%${value}%`])
                         .then(async (reslut) => {
-                            console.log(2, reslut);
+                            // console.log(2, reslut);
                             return await reslut[0];
                         })
                 }
@@ -113,7 +119,7 @@ module.exports = {
             resolve: async function (source, { id }) {
                 return await searchSql($sql.serachOrderAddress, [id])
                     .then(async (reslut) => {
-                        console.log(reslut)
+                        // console.log(reslut)
                         return reslut[0];
                     })
             }
@@ -126,10 +132,10 @@ module.exports = {
                 goodsResAddress: { type: GraphQLInt },
             },
             resolve: async function (source, { goodsResAddress, id }) {
-                console.log(goodsResAddress, id)
+                // console.log(goodsResAddress, id)
                 return await searchSql($sql.updateOrderGoodsResInfo, [goodsResAddress, id])
                     .then(async (reslut) => {
-                        console.log(reslut)
+                        // console.log(reslut)
                         if (reslut.affectedRows) {
                             return { state: 1 };
                         } else {

@@ -8,7 +8,8 @@ import {
   ORDERTOTALCOST,
   ORDERERROR ,
   MESSAGEADDRESS,
-  MESSAGEPAYMENT
+  MESSAGEPAYMENT,
+  ORDERADDADDRESS
 } from '../actions/index'
 const initValue = {
   orderAddressMessage: '',
@@ -20,6 +21,7 @@ const initValue = {
   orderTotalCost: 0,
   orderProducts: [],
   orderProductList: [],
+  addAddressState: false,
   delivery: null,
 }
 export default (state = initValue, action) => {
@@ -54,6 +56,9 @@ export default (state = initValue, action) => {
     }
     case MESSAGEPAYMENT: {
       return Object.assign({}, state, { orderPaymentMessage: data })
+    }
+    case ORDERADDADDRESS: {
+      return Object.assign({}, state, { addAddressState: data })
     }
     default: {
       return state;
