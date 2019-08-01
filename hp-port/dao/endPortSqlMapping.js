@@ -64,9 +64,9 @@ var endPort = {
 
     // goodsResInfo
     queryGoodsResInfo: "SELECT * FROM goodsResInfo where id= ?",
-    insertGoodsResInfo: "INSERT INTO goodsResInfo(email, userName, firstName, lastName, phoneCode, phone, province, address, postCode, createTime, updateTime) VALUES(?,?,?,?,?,?,?,?,?,NOW(), NOW())",
+    insertGoodsResInfo: "INSERT INTO goodsResInfo(email, userName, firstName, lastName, phoneCode, phone, province, address, postCode, addressState, createTime, updateTime) VALUES(?,?,?,?,?,?,?,?,?,1,NOW(), NOW())",
     updateGoodsResInfo: "UPDATE goodsResInfo SET email=?, firstName=?, lastName=?, phoneCode=?, phone=?, province=?, address=?, postCode=?, updateTime=NOW()",
-    deleteGoodsResInfo: "DELETE FROM goodsResInfo WHERE id=?",
+    deleteGoodsResInfo: "UPDATE goodsResInfo SET addressState=0 WHERE id=?",
     serachOrderAddress: 'SELECT * from goodsResInfo WHERE id=?',
     searchUserAllAddress: 'SELECT * from goodsResInfo WHERE userName=?',
 

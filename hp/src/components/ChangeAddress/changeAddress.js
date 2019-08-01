@@ -1,5 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import classify from '@magento/venia-concept/esm/classify';
+import * as Actions from '../../actions/index';
+import { connect } from 'react-redux';
 import styles from './changeAddress.module.less';
 import { Link } from 'react-router-dom';
 import { Icon } from 'antd';
@@ -84,4 +86,29 @@ class ChangeAddress extends Component {
         );
     }
 }
-export default classify(styles)(ChangeAddress);
+const mapStateToProps = (state) => {
+    return {
+        state
+    };
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        addProductNumInCart: (data) => { dispatch(Actions.productNumInCart(data)); },
+        addProductInCart: (data) => { dispatch(Actions.productInCart(data)); },
+        loadingOnHeader: (data) => { dispatch(Actions.loadingHeader(data)); },
+        changeExpress: (data) => { dispatch(Actions.orderDelivery(data)); },
+        changeCartError: (data) => { dispatch(Actions.cartError(data)); },
+        changeMessageInProduct: (data) => { dispatch(Actions.messageInProduct(data)); },
+        changeMessageInExpress: (data) => { dispatch(Actions.messageInExpress(data)); },
+        changeCartToOrder: (data) => { dispatch(Actions.cartToOrder(data)); },
+        changeCartDeliveryList: (data) => { dispatch(Actions.cartDeliveryList(data)); },
+        changeOrderProductList: (data) => { dispatch(Actions.orderProductList(data)); },
+        changeCartToOrderItem: (data) => { dispatch(Actions.cartToOrderItem(data)); },
+        changeCartCountPrice: (data) => { dispatch(Actions.cartCountPrice(data)); },
+    }
+};
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(classify(styles)(ChangeAddress));

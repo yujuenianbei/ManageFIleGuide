@@ -12,6 +12,8 @@ import { createForm } from 'rc-form';
 // 请求函数
 import { deleteCartProduct, postCart, getDeliveryMethod } from '../../fetch/cart';
 import Product from '../../data/product';
+// http
+import { http } from '../../http';
 const Panel = Collapse.Panel;
 class CheckoutCart extends Component {
     state = {
@@ -325,7 +327,7 @@ class CheckoutCart extends Component {
                                             return <div className={this.productInOrder(index) === index ? styles.product + ' ' + styles.productSelected : styles.product} key={index + "cart_produc_123asdas"}>
                                                 <Icon className={styles.delete} type="close" onClick={() => this.onDelete(item.id)} />
                                                 <div className={styles.productImg}>
-                                                    <img src={item.img} alt={item.productName} />
+                                                    <img src={item.img.split('http').length > 1 ? item.img : http.img + item.img} alt={item.productName} />
                                                 </div>
                                                 <div className={styles.productInfo}>
                                                     <Link to={'/productInfo/' + item.id} className={styles.productName}>{item.productName}</Link>

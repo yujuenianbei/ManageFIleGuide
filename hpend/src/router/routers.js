@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { PureComponent, Fragment } from 'react';
 import { Route } from 'react-router-dom';
 import classify from '@magento/venia-concept/esm/classify';
 import styles from './index.moudle.less';
@@ -13,30 +13,20 @@ import Order from '../components/Order';
 import Cart from '../components/Cart';
 
 import CartChart from '../components/CartChart';
-// import CheckoutCart from '../components/Content/Cart';
-// import Delivery from '../components/Content/Delivery';
-// import Customer from '../components/Content/Customer';
-class Routers extends Component {
+class EndRouters extends PureComponent {
     render() {
         return (
             <Fragment>
                 <Route exact path="/" component={Main} />
                 <Route path="/account" component={Account} />
                 <Route path="/frontUser" component={FrontUser} />
-                
                 <Route path="/order" component={Order} />
                 <Route path="/cart" component={Cart} />
                 <Route path="/product" component={Product} />
                 <Route path="/productType" component={ProductType} />
                 <Route path="/cartchart" component={CartChart} />
-
-                
-                {/* <Route path="/productInfo/:id" component={Product} />
-                <Route path="/checkout/cart" component={CheckoutCart} />
-                <Route path="/onestepcheckout" component={Delivery} />
-                <Route path="/customer" component={Customer} /> */}
             </Fragment>
         );
     }
 }
-export default classify(styles)(Routers);
+export default classify(styles)(EndRouters);

@@ -12,6 +12,9 @@ class userAddressItem extends PureComponent {
         return (
             <div className={parseInt(this.props.state.order.orderAddressItem) === parseInt(id) ? styles.userAddressItem + ' ' + styles.selected : styles.userAddressItem} onClick={this.props.onClick}>
                 <div className={styles.item}>
+                    <label>email: </label><span>{email}</span>
+                </div>
+                <div className={styles.item}>
                     <label>姓: </label><span>{lastName}</span>
                 </div>
                 <div className={styles.item}>

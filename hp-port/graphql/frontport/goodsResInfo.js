@@ -74,6 +74,11 @@ const GoodsResInfo = new GraphQLObjectType({
                     return data.postCode;
                 }
             },
+            state: {
+                type: GraphQLInt, resolve(data) {
+                    return data.state;
+                }
+            },
             createTime: {
                 type: GraphQLString, resolve(data) {
                     return data.createTime;
@@ -190,5 +195,37 @@ module.exports = {
                     })
             }
         },
+        delGoodsResInfo: {
+            type: GoodsResInfo,
+            description: '删除收货地址',
+            args: {
+                id: { type: GraphQLInt },
+            },
+            resolve: async function (source, { id }) {
+                console.log(id)
+                return await searchSql($sql.deleteGoodsResInfo, [id])
+                    .then(async (reslut) => {
+                        return await searchSql($sql.queryGoodsResInfo, [reslut.id])
+                            .then(async (resluts) => {
+                                console.log(resluts)
+                                if(resluts.length === 0){
+                                    let res={};
+                                    res.state = 1
+                                    console.log(res)
+                                    return await res;
+                                } else {
+                                    let res={};
+                                    res.state = 0
+                                    console.log(res)
+                                    return await res;
+                                }
+                                
+                            })
+                    })
+            }
+        },
+
+
+        
     }
 };

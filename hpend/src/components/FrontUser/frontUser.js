@@ -4,13 +4,14 @@ import { connect } from 'react-redux';
 // import PropTypes from 'prop-types';
 import classify from '@magento/venia-concept/esm/classify';
 // const SearchBar = React.lazy(() => import('src/components/SearchBar'));
-import styles from './account.module.less';
+import styles from './frontUser.module.less';
 import { searchFrontUser, searchFrontUserTotal } from '../../fetch/frontUser'
 import { Table, Divider, Dropdown, Checkbox, Menu, Icon, Tag, Breadcrumb, Input, Col, Row, Select, Button, Modal, Spin } from 'antd';
 import FrontUserModle from './model'
 import { transToSex } from '../../func/account'
 // 控制跳转
 import { withRouter } from "react-router-dom";
+
 const Search = Input.Search;
 const InputGroup = Input.Group;
 const { Option } = Select;
@@ -25,7 +26,7 @@ class FrontUser extends PureComponent {
 
     componentDidMount() {
         // 首次加载用户数据
-        this.props.changeAccountDataLoading(true);
+        this.props.changeFrontUserDataLoading(true);
         this.searchFrontUserMount();
         this.checkBoxOnChange(this.props.state.frontUser.checkListCol)
     }
@@ -74,7 +75,7 @@ class FrontUser extends PureComponent {
     };
 
     // 显示弹出框
-    AddAccount = (e) => {
+    AddFrontUser = (e) => {
         if (e === 'add') {
             this.props.changeModleTitle('新增');
             this.props.changeModleName(e);
@@ -149,9 +150,9 @@ class FrontUser extends PureComponent {
             key: 'action',
             render: (text, record) => (
                 <span>
-                    <Button type="primary" onClick={() => this.AddAccount('edit')}>修改</Button>
+                    <Button type="primary" onClick={() => this.AddFrontUser('edit')}>修改</Button>
                     <Divider type="vertical" />
-                    <Button type="default" onClick={() => this.AddAccount('delete')}>删除</Button>
+                    <Button type="default" onClick={() => this.AddFrontUser('delete')}>删除</Button>
                 </span>
             ),
         })
@@ -160,7 +161,7 @@ class FrontUser extends PureComponent {
 
     // 修改每页展示行数
     ChangePageSize = (current, size) => {
-        this.props.changeAccountDataLoading(true);
+        this.props.changeFrontUserDataLoading(true);
         // 修改行数
         this.props.changePageSize(size);
         // 跳转第一页
@@ -182,7 +183,7 @@ class FrontUser extends PureComponent {
 
     // 分页
     ChangePage = (page, pageSize) => {
-        this.props.changeAccountDataLoading(true);
+        this.props.changeFrontUserDataLoading(true);
         // 修改当前页数字
         this.props.changePageNow(page);
 
@@ -212,7 +213,7 @@ class FrontUser extends PureComponent {
 
     // 加载上一次的搜索
     searchFrontUserMount = () => {
-        this.props.changeAccountDataLoading(true)
+        this.props.changeFrontUserDataLoading(true)
         let data = {};
         data.search = this.props.state.frontUser.searchValue ? this.props.state.frontUser.searchValue : ""
         data.searchType = this.props.state.frontUser.searchType ? this.props.state.frontUser.searchType : "";
@@ -229,7 +230,7 @@ class FrontUser extends PureComponent {
 
     // 搜索
     searchFrontUser = (value) => {
-        this.props.changeAccountDataLoading(true)
+        this.props.changeFrontUserDataLoading(true)
         // 写入搜索内容
         this.props.changeSearchValue(value);
         this.props.changePageNow(1);
@@ -252,7 +253,7 @@ class FrontUser extends PureComponent {
     // 修改总数
     setPageTotal = (result) => {
         this.props.changePageTotal(result.data.frontUserTotal.total);
-        this.props.changeAccountDataLoading(false)
+        this.props.changeFrontUserDataLoading(false)
     }
 
     // 搜索结果写入表中
@@ -270,8 +271,8 @@ class FrontUser extends PureComponent {
                 password: item.password,
             }
         ))
-        this.props.changeAccountData(data)
-        this.props.changeAccountDataLoading(false)
+        this.props.changeFrontUserData(data)
+        this.props.changeFrontUserDataLoading(false)
     }
 
     render() {
@@ -306,7 +307,7 @@ class FrontUser extends PureComponent {
                     <div className={styles.search}>
                         <Row>
                             <Col span={8}>
-                                <Button type="primary" onClick={() => this.AddAccount('add')}>新增</Button>
+                                <Button type="primary" onClick={() => this.AddFrontUser('add')}>新增</Button>
                                 <Dropdown.Button onClick={this.handleButtonClick} overlay={checkSlect} trigger={['click']} style={{ marginLeft: 10 }}>
                                     筛选列
                                 </Dropdown.Button>
@@ -376,8 +377,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         changeModleState: (data) => { dispatch(Actions.frontUserModleState(data)); },
-        changeAccountDataLoading: (data) => { dispatch(Actions.frontUserDataLoading(data)); },
-        changeAccountData: (data) => { dispatch(Actions.frontUserData(data)); },
+        changeFrontUserDataLoading: (data) => { dispatch(Actions.frontUserDataLoading(data)); },
+        changeFrontUserData: (data) => { dispatch(Actions.frontUserData(data)); },
         changeModleName: (data) => { dispatch(Actions.frontUserModleName(data)); },
         changeModleTitle: (data) => { dispatch(Actions.frontUserModleTitle(data)); },
         changeModelData: (data) => { dispatch(Actions.frontUserModelData(data)); },

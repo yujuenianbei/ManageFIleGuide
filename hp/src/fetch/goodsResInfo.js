@@ -77,4 +77,32 @@ const addGoodsResInfo = (data, func) => {
         .then((result) => { func(result) });
 }
 
-export { getGoodsResInfo, addGoodsResInfo }
+// 添加收货地址
+const delGoodsResInfo = (data, func) => {
+    const query = `mutation delGoodsResInfo($id: Int){
+        delGoodsResInfo(id: $id){
+          state
+        }
+      }`;
+
+    fetch(http.port, {
+        method: 'POST',
+        mode: "cors",
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'login': localStorage.getItem('loginState'),
+            'token': localStorage.getItem('token')
+        },
+        body: JSON.stringify({
+            query,
+            variables: {
+                id: parseInt(data)
+            }
+        })
+    })
+        .then(r => r.json())
+        .then((result) => { func(result) });
+}
+
+export { getGoodsResInfo, addGoodsResInfo, delGoodsResInfo }

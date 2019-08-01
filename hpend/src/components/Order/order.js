@@ -1,17 +1,18 @@
-import React, { PureComponent, Fragment } from 'react';
-import * as Actions from '../../actions/index';
-import { connect } from 'react-redux';
 // import PropTypes from 'prop-types';
 import classify from '@magento/venia-concept/esm/classify';
-// const SearchBar = React.lazy(() => import('src/components/SearchBar'));
-import OrderModle from './model';
-import styles from './order.module.less';
-import { searchOrder, searchOrderTotal } from '../../fetch/order'
-import { getAllproductType } from '../../fetch/productType'
-import { timestampToTime, typeToTypeName } from '../../func/common'
-import { Table, Divider, Dropdown, Checkbox, Menu, Icon, Tag, Breadcrumb, Input, Col, Row, Select, Button, Modal, Spin } from 'antd';
+import { Breadcrumb, Button, Checkbox, Col, Divider, Dropdown, Input, Menu, Row, Select, Table } from 'antd';
+import React, { Fragment, PureComponent } from 'react';
+import { connect } from 'react-redux';
+import * as Actions from '../../actions/index';
+import { searchOrder, searchOrderTotal } from '../../fetch/order';
+import { getAllproductType } from '../../fetch/productType';
+import { timestampToTime } from '../../func/common';
 // http
 import { http } from '../../http';
+// const SearchBar = React.lazy(() => import('src/components/SearchBar'));
+import OrderModle from './model';
+import OrderOperation from './orderOperation';
+import styles from './order.module.less';
 
 const Search = Input.Search;
 const InputGroup = Input.Group;
@@ -19,7 +20,6 @@ const { Option } = Select;
 const CheckboxGroup = Checkbox.Group;
 
 class Order extends PureComponent {
-
     constructor(props) {
         super(props);
         this.myRef = React.createRef();
@@ -33,6 +33,7 @@ class Order extends PureComponent {
 
         this.checkBoxOnChange(this.props.state.order.checkListCol);
     }
+    
     // 计算合并单元格 根据用户合并
     rowCol = (obj, index, name) => {
         let row = [];
@@ -61,6 +62,7 @@ class Order extends PureComponent {
             }
         })
     }
+
     // 根据订单合并单元格
     orderRowCol = (obj, index) => {
         let row = [];
@@ -396,7 +398,7 @@ class Order extends PureComponent {
             }
         ],
         columns: [],
-        width: 0
+        Twidth: 0
     };
 
     // 显示弹出框
@@ -439,9 +441,9 @@ class Order extends PureComponent {
                 })
             })
             if (width > document.getElementsByClassName('ant-table-wrapper')[0].clientWidth) {
-                this.setState({ width: { x: width } })
+                this.setState({ Twidth: { x: width } })
             } else {
-                this.setState({ width: { x: 'max-content' } })
+                this.setState({ Twidth: { x: 'max-content' } })
             }
             console.log(width)
         });
@@ -488,13 +490,11 @@ class Order extends PureComponent {
         data.push({
             title: '操作',
             key: 'action',
-            width: 100,
+            width: 140,
             // fixed: 'right',
             render: (value, record, index) => {
                 const obj = {
-                    children: <span>
-                        <Button type="primary" onClick={() => this.EditOrder('showResInfo')}>查看</Button>
-                    </span>,
+                    children: <OrderOperation value record index/>,
                     props: {},
                 };
                 this.orderRowCol(obj, index)
@@ -610,7 +610,7 @@ class Order extends PureComponent {
         this.props.changePageTotal(result.data.totalOrderItem.total);
         this.props.changeOrderDataLoading(false)
     }
-    
+
     // 搜索结果写入表中
     searchData = (result) => {
         let data = []
@@ -757,7 +757,7 @@ class Order extends PureComponent {
                         </Row>
                     </div>
                     <Table
-                        scroll={this.state.width}
+                        scroll={this.state.Twidth}
                         bordered
                         columns={this.state.columns}
                         dataSource={this.props.state.order.orderData}

@@ -2,13 +2,15 @@ import React, { Component } from 'react';
 import classify from '@magento/venia-concept/esm/classify';
 import styles from './deliveryProduct.module.less';
 import { Link } from 'react-router-dom';
+// http
+import { http } from '../../http';
 class DeliveryProduct extends Component {
     render() {
         const item = this.props.items;
         return (
             <div className={styles.deliveryProduct}>
                 <div className={styles.productImg}>
-                    <img src={item.img} alt="" />
+                    <img src={item.img.split('http').length > 1 ? item.img : http.img + item.img} alt="" />
                 </div>
                 <div className={styles.price}>
                     <span>￥{item.nowPrice}</span>

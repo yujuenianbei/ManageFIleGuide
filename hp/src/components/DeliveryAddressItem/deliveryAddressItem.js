@@ -3,12 +3,16 @@ import classify from '@magento/venia-concept/esm/classify';
 import styles from './deliveryAddressItem.module.less';
 import * as Actions from '../../actions/index';
 import { connect } from 'react-redux';
+import { Icon } from 'antd';
 class DeliveryAddressItem extends Component {
     render() {
         const { id, index, email, firstaName, lastName, phoneCode, phone,
             province, address, postCode } = this.props;
         return (
             <div className={this.props.state.order.orderAddressItem === id ? styles.deliveryAddressItem + ' ' + styles.selected : styles.deliveryAddressItem} onClick={this.props.onClick}>
+                <div className={styles.closeBtn} onClick={this.props.remove}>
+                    <Icon type="close" />
+                </div>
                 <div className={styles.item}>
                     <label>姓: </label><span>{lastName}</span>
                 </div>

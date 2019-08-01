@@ -1,18 +1,32 @@
 import React, { Component, Fragment } from 'react';
 import classify from '@magento/venia-concept/esm/classify';
+import * as Actions from '../../actions/index';
+import { connect } from 'react-redux';
 import styles from './Account.module.less';
 import { changeCrumbs } from '../../fetch/links';
 import { createForm } from 'rc-form';
 import ChangeAddress from '../ChangeAddress'
 import { Link } from 'react-router-dom';
 import { Icon } from 'antd';
-
+import DeliveryAddressItem from '../DeliveryAddressItem';
+import DeliveryAddress from '../DeliveryAddress';
+import { getGoodsResInfo, addGoodsResInfo, delGoodsResInfo } from '../../fetch/goodsResInfo';
 class Account extends Component {
     state = {
         phoneChange: false,
         phonePWD: false,
-        addressChange: false
+        addressChange: false,
+        showAddress: false
     }
+    componentDidMount() {
+        getGoodsResInfo(this.props.state.user.userName, this.getGoodsResInfoData)
+    }
+    // 获取收货地址后
+    getGoodsResInfoData = (result) => {
+        this.props.getUserAddress(result.data.queryGoodsResInfoByUserName)
+        console.log(result)
+    }
+
     // 显示修改手机
     changedPhone = () => {
         this.setState({ phoneChange: !this.state.phoneChange })
@@ -22,8 +36,12 @@ class Account extends Component {
         this.setState({ phonePWD: !this.state.phonePWD })
     }
     // 显示添加收货地址
-    changeAddress = () => {
+    addAddress = () => {
         this.setState({ addressChange: !this.state.addressChange })
+    }
+    // 显示全部地址
+    showAddress = () => {
+        this.setState({ showAddress: !this.state.showAddress })
     }
 
     // 发送验证码
@@ -32,12 +50,11 @@ class Account extends Component {
             if (!error) {
                 console.log(value);
                 // 发送手机号然后得到验证码
-
             }
             console.log(error, value);
         });
     }
-
+    // 校验用户名
     validateUserNameTimely = (rule, value, callback) => {
         console.log(value)
         var regu = /^[1][0-9]{10}$/;
@@ -55,6 +72,53 @@ class Account extends Component {
             callback()
         } else {
             callback('false')
+        }
+    }
+
+    // 提交新地址
+    submitNewAddress = () => {
+        this.props.form.validateFields(
+            ['email', 'lastname', 'firstname', 'address', 'phone',
+                'phoneCode', 'province', 'city', 'district', 'postCode'], (error, value) => {
+                    if (!error) {
+                        value.userName = this.props.state.user.userName;
+                        console.log(value)
+                        addGoodsResInfo(value, this.addGoodsResInfo);
+                    }
+                    console.log(error, value);
+                });
+    }
+    // 添加收货地址结束
+    addGoodsResInfo = (result) => {
+        if (result.data.regGoodsResInfo.length === 0) {
+            console.log(result)
+        } else {
+            this.setState({ 
+                addressChange: false,
+                showAddress: true
+            })
+            // this.props.setOrderAddressItem(result.data.regGoodsResInfo[0].id);
+            getGoodsResInfo(this.props.state.user.userName, this.getGoodsResInfoData)
+        }
+    }
+    // 确认收货地址
+    selectAddress = (index) => {
+        this.props.setOrderAddressItem(index);
+    }
+
+    // 删除地址（只是不给用户显示）
+    deleteAddress = (e, id) => {
+        // e.persist();
+        // 阻止事件冒泡
+        e.stopPropagation();
+        // 应该还有个是不能删除默认的地址
+        
+        delGoodsResInfo(id, this.finishDelAddress)
+    }
+    // 删除地址后
+    finishDelAddress = (result) => {
+        if(result.data.delGoodsResInfo.state === 1){
+            getGoodsResInfo(this.props.state.user.userName, this.getGoodsResInfoData)
         }
     }
 
@@ -242,14 +306,60 @@ class Account extends Component {
                     <h3>收货地址</h3>
                     <div className={styles.address}>
                         <div className={styles.contents}>
-                            <span>有0个已经保存的收货地址。要添加新的收货地址，请点击</span>
-                            <button className={styles.prime} onClick={this.changeAddress}>添加收货地址</button>
+                            <span>有{this.props.state.user.userAddress.length}个已经保存的收货地址。要添加新的收货地址，请点击</span>
+                            <button className={styles.prime} onClick={this.showAddress}>{this.state.showAddress ? "收起收货地址" : "显示收货地址"}</button>
+                            <button className={styles.prime} onClick={this.addAddress}>添加收货地址</button>
                         </div>
-                        {this.state.addressChange && <ChangeAddress show={this.changeAddress}/>}
+
+                        {this.props.state.user.userAddress.length > 0 && this.state.showAddress &&
+                            <div className={styles.addresscontents}>
+                                {this.props.state.user.userAddress.map((item, index) => (
+                                    <div className={styles.addressItem}>
+                                        <DeliveryAddressItem
+                                            id={item.id}
+                                            index={index}
+                                            key={'sdasdqwe' + index}
+                                            email={item.email}
+                                            firstaName={item.firstName}
+                                            lastName={item.lastName}
+                                            phoneCode={item.phoneCode}
+                                            phone={item.phone}
+                                            province={item.province}
+                                            address={item.address}
+                                            postCode={item.postCode}
+                                            onClick={e => this.selectAddress(item.id)}
+                                            remove={e => this.deleteAddress(e,item.id)}
+                                        />
+                                    </div>
+                                ))}
+                            </div>}
+                        {this.state.addressChange && <div className={styles.addressFormContents}>
+                            <DeliveryAddress
+                                form={this.props.form}
+                                loginState={1}
+                                loginGoodsResInfo={[]} />
+                            <button className={styles.submitBtn + " " + styles.prime} onClick={this.submitNewAddress}>确定</button>
+                            <button className={styles.right + ' ' + styles.primed} onClick={this.addAddress}>取消</button>
+                        </div>}
                     </div>
                 </div>
             </div>
         );
     }
 }
-export default classify(styles)(createForm()(Account));
+const mapStateToProps = (state) => {
+    return {
+        state
+    };
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        setOrderAddressItem: (data) => { dispatch(Actions.orderAddressItem(data)); },
+        getUserAddress: (data) => { dispatch(Actions.userAddress(data)); },
+    }
+};
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(classify(styles)(createForm()(Account)));

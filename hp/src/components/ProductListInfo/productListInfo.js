@@ -76,7 +76,7 @@ class ProductInfo extends Component {
             <div className={styles.productInfo}>
                 <div className={styles.productImg}>
                     <Link to={'/productInfo/' + this.props.id}>
-                        <img src={this.props.img} alt={this.props.productName} />
+                        <img src={this.props.img.split('http').length > 1 ? this.props.img : http.img + this.props.img} alt={this.props.productName} />
                     </Link>
                 </div>
                 <div className={styles.productInfo_details}>

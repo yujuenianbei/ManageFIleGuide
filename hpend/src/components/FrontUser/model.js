@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 // import PropTypes from 'prop-types';
 import classify from '@magento/venia-concept/esm/classify';
 // const SearchBar = React.lazy(() => import('src/components/SearchBar'));
-import styles from './account.module.less';
+import styles from './frontUser.module.less';
 import { Modal, Spin, Form, Icon } from 'antd';
 
 import CreateFrontUser from './createFrontUser';
@@ -58,8 +58,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         changeModleState: (data) => { dispatch(Actions.frontUserModleState(data)); },
-        changeAccountDataLoading: (data) => { dispatch(Actions.frontUserDataLoading(data)); },
-        changeAccountData: (data) => { dispatch(Actions.frontUserData(data)); },
+        changeFrontUserDataLoading: (data) => { dispatch(Actions.frontUserDataLoading(data)); },
+        changeFrontUserData: (data) => { dispatch(Actions.frontUserData(data)); },
         changeModleTitle: (data) => { dispatch(Actions.frontUserModleTitle(data)); },
         changeModleName: (data) => { dispatch(Actions.frontUserModleName(data)); },
         changeModleTitle: (data) => { dispatch(Actions.frontUserModleTitle(data)); },

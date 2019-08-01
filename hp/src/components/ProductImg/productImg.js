@@ -5,12 +5,14 @@ import Slider from "react-slick";
 import classify from '@magento/venia-concept/esm/classify';
 import styles from './productImg.module.less';
 import './productImg.css';
+// http
+import { http } from '../../http';
 class ProductImg extends Component {
     render() {
         // console.log(this.props.match)
         var dots = [
             {
-                src: this.props.state.product.productImg
+                src: this.props.state.product.productImg.split('http').length > 1 ? this.props.state.product.productImg : http.img + this.props.state.product.productImg
             },
             {
                 src: "https://media.hpstore.cn/catalog/product/cache/e4d64343b1bc593f1c5348fe05efa4a6/o/m/omen_0_700x700_3.jpg"
@@ -28,7 +30,7 @@ class ProductImg extends Component {
         var settings = {
             customPaging: function (i) {
                 return (
-                        <img src={dots[i].src} alt="" />
+                    <img src={dots[i].src} alt="" />
                 );
             },
             dots: true,
@@ -44,7 +46,7 @@ class ProductImg extends Component {
             <div className={styles.productListBanner + " productImg"}>
                 <Slider {...settings}>
                     <div>
-                        <img src={this.props.state.product.productImg} alt="" />
+                        <img src={this.props.state.product.productImg.split('http').length > 1 ? this.props.state.product.productImg : http.img + this.props.state.product.productImg} alt="" />
                     </div>
                     <div>
                         <img src="https://media.hpstore.cn/catalog/product/cache/e4d64343b1bc593f1c5348fe05efa4a6/o/m/omen_0_700x700_3.jpg" alt="" />

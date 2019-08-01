@@ -9,6 +9,10 @@ import { timestampToTime } from '../../func/common'
 import { searchOrderAddress, searchOrderUserAddress, regOrderUserAddress, searchOrder, searchOrderTotal, changeOrderAddress } from '../../fetch/order';
 import { Input, Col, Row, Select, Button, Modal, Spin, Form, Icon } from 'antd';
 import UserAddressItem from './orderItems';
+
+// 懒加载
+// const UserAddressItem = React.lazy(() => import('./orderItems'));
+
 const { Option } = Select;
 let myClear, clearData;
 class ShowAddressForm extends PureComponent {
@@ -16,22 +20,34 @@ class ShowAddressForm extends PureComponent {
     componentDidMount() {
         this.props.onAdr(this);
         searchOrderAddress(this.props.state.order.modelData.goodsResAddress, this.getAddressData)
+        this.props.changeOrderAddressItem(this.props.state.order.modelData.goodsResAddress)
     }
 
     getAddressData = (result) => {
         const res = result.data.searchAddress
         this.props.changeOrderAddress(res);
         if (!this.props.state.order.orderExchange) {
+            // this.props.form.setFieldsValue({
+            //     email: res.email,
+            //     userName: res.userName,
+            //     lastName: res.lastName,
+            //     firstName: res.firstName,
+            //     phoneCode: res.phoneCode,
+            //     phone: res.phone,
+            //     province: res.province,
+            //     address: res.address,
+            //     postCode: res.postCode
+            // })
             this.props.form.setFieldsValue({
-                email: res.email,
+                email: "",
                 userName: res.userName,
-                lastName: res.lastName,
-                firstName: res.firstName,
-                phoneCode: res.phoneCode,
-                phone: res.phone,
-                province: res.province,
-                address: res.address,
-                postCode: res.postCode
+                lastName: "",
+                firstName: "",
+                phoneCode: "",
+                phone: "",
+                province: "",
+                address: "",
+                postCode: ""
             })
         }
     }
@@ -39,14 +55,13 @@ class ShowAddressForm extends PureComponent {
     componentWillUpdate(nextPorps) {
         if (nextPorps.state.order.modelData !== '' && nextPorps.state.order.modelName !== '' && this.props.state.order.modelName !== nextPorps.state.order.modelName) {
             searchOrderAddress(nextPorps.state.order.modelData.goodsResAddress, this.getAddressData)
+            this.props.changeOrderAddressItem(this.props.state.order.modelData.goodsResAddress)
         }
     }
 
     // 提交数据
     handleSubmit = (e) => {
-        e.preventDefault();
-        // this.props.changeOrderEdit(false);
-        // this.props.changeOrderExchange(false);
+        e.stopPropagation();
         if (this.props.state.order.modelName === 'showResInfo') {
             this.cancelSubmit();
         } else if (this.props.state.order.modelName === 'regNewAddress') {
@@ -96,7 +111,7 @@ class ShowAddressForm extends PureComponent {
         //     this.props.changeOrderEdit(false);
         //     clearTimeout(clearData);
         // }, 0);
-        if(this.props.state.order.modelName !== 'changeUserAddress'){
+        if (this.props.state.order.modelName !== 'changeUserAddress') {
             this.props.form.resetFields();
         }
         this.props.changeOrderAddress('');
@@ -218,12 +233,25 @@ class ShowAddressForm extends PureComponent {
         return (
             <Fragment>
                 {!this.props.state.order.orderEdit && !this.props.state.order.orderExchange &&
-                    <div className={styles.addressButton}>
-                        <Button type="primary" onClick={this.editAddress}>创建地址</Button>
-                        <Button type="primary" onClick={this.changeAddress}>更换地址</Button>
-                    </div>
+                    <Fragment>
+                        <div className={styles.addressButton}>
+                            <Button type="primary" onClick={this.editAddress}>创建地址</Button>
+                            <Button type="primary" onClick={this.changeAddress}>更换地址</Button>
+                        </div>
+                        <UserAddressItem
+                            id={this.props.state.order.orderAddress.id}
+                            email={this.props.state.order.orderAddress.email}
+                            firstaName={this.props.state.order.orderAddress.firstName}
+                            lastName={this.props.state.order.orderAddress.lastName}
+                            phoneCode={this.props.state.order.orderAddress.phoneCode}
+                            phone={this.props.state.order.orderAddress.phone}
+                            province={this.props.state.order.orderAddress.province}
+                            address={this.props.state.order.orderAddress.address}
+                            postCode={this.props.state.order.orderAddress.postCode}
+                        />
+                    </Fragment>
                 }
-                {!this.props.state.order.orderExchange &&
+                {!this.props.state.order.orderExchange && this.props.state.order.orderEdit &&
                     <Form layout="horizontal" onSubmit={this.handleSubmit} labelAlign="left">
                         <Form.Item label="用户名" {...formItemLayout} style={{ marginBottom: '10px' }}>
                             {getFieldDecorator('userName', {
@@ -235,7 +263,7 @@ class ShowAddressForm extends PureComponent {
                                         message: '请输入用户名',
                                     },
                                 ],
-                            })(<Input placeholder="请输入用户名" disabled="disabled" />)}
+                            })(<Input placeholder="请输入用户名" disabled={true} />)}
                         </Form.Item>
                         <Form.Item label="邮箱" {...formItemLayout} style={{ marginBottom: '10px' }}>
                             {getFieldDecorator('email', {
@@ -252,7 +280,7 @@ class ShowAddressForm extends PureComponent {
                                         message: '请输入邮箱',
                                     },
                                 ],
-                            })(<Input placeholder="请输入邮箱" disabled={!this.props.state.order.orderEdit ? "disabled" : ""} />)}
+                            })(<Input placeholder="请输入邮箱" disabled={!this.props.state.order.orderEdit ? true : ""} />)}
                         </Form.Item>
                         <Form.Item label="姓" {...formItemLayout} style={{ marginBottom: '10px' }}>
                             {getFieldDecorator('lastName', {
@@ -264,7 +292,7 @@ class ShowAddressForm extends PureComponent {
                                         message: '请输入姓氏',
                                     },
                                 ],
-                            })(<Input placeholder="请输入姓氏" disabled={!this.props.state.order.orderEdit ? "disabled" : ""} />)}
+                            })(<Input placeholder="请输入姓氏" disabled={!this.props.state.order.orderEdit ? true : ""} />)}
                         </Form.Item>
                         <Form.Item label="名" {...formItemLayout} style={{ marginBottom: '10px' }}>
                             {getFieldDecorator('firstName', {
@@ -276,7 +304,7 @@ class ShowAddressForm extends PureComponent {
                                         message: '请输入名字',
                                     },
                                 ],
-                            })(<Input placeholder="请输入名字" disabled={!this.props.state.order.orderEdit ? "disabled" : ""} />)}
+                            })(<Input placeholder="请输入名字" disabled={!this.props.state.order.orderEdit ? true : ""} />)}
                         </Form.Item>
                         <Form.Item label="区号" {...formItemLayout} style={{ marginBottom: '10px' }}>
                             {getFieldDecorator('phoneCode', {
@@ -288,7 +316,7 @@ class ShowAddressForm extends PureComponent {
                                         message: '请输入区号',
                                     },
                                 ],
-                            })(<Select placeholder="请选择区号" disabled={!this.props.state.order.orderEdit ? "disabled" : ""}>
+                            })(<Select placeholder="请选择区号" disabled={!this.props.state.order.orderEdit ? true : ""}>
                                 <Option value="086">086</Option>
                                 <Option value="007">007</Option>
                             </Select>)}
@@ -303,7 +331,7 @@ class ShowAddressForm extends PureComponent {
                                         message: '请输入手机号',
                                     },
                                 ],
-                            })(<Input type="number" placeholder="请输入手机号" disabled={!this.props.state.order.orderEdit ? "disabled" : ""} />)}
+                            })(<Input type="number" placeholder="请输入手机号" disabled={!this.props.state.order.orderEdit ? true : ""} />)}
                         </Form.Item>
                         <Form.Item label="省市区" {...formItemLayout} style={{ marginBottom: '10px' }}>
                             {getFieldDecorator('province', {
@@ -315,7 +343,7 @@ class ShowAddressForm extends PureComponent {
                                         message: '请输入省市区',
                                     },
                                 ],
-                            })(<Input placeholder="请输入省市区" disabled={!this.props.state.order.orderEdit ? "disabled" : ""} />)}
+                            })(<Input placeholder="请输入省市区" disabled={!this.props.state.order.orderEdit ? true : ""} />)}
                         </Form.Item>
                         <Form.Item label="详细地址" {...formItemLayout} style={{ marginBottom: '10px' }}>
                             {getFieldDecorator('address', {
@@ -327,7 +355,7 @@ class ShowAddressForm extends PureComponent {
                                         message: '请输入详细地址',
                                     },
                                 ],
-                            })(<Input placeholder="请输入详细地址" disabled={!this.props.state.order.orderEdit ? "disabled" : ""} />)}
+                            })(<Input placeholder="请输入详细地址" disabled={!this.props.state.order.orderEdit ? true : ""} />)}
                         </Form.Item>
                         <Form.Item label="邮编" {...formItemLayout} style={{ marginBottom: '10px' }}>
                             {getFieldDecorator('postCode', {
@@ -339,7 +367,7 @@ class ShowAddressForm extends PureComponent {
                                         message: '请输入邮编',
                                     },
                                 ],
-                            })(<Input placeholder="请输入邮编" disabled={!this.props.state.order.orderEdit ? "disabled" : ""} />)}
+                            })(<Input placeholder="请输入邮编" disabled={!this.props.state.order.orderEdit ? true : ""} />)}
                         </Form.Item>
                     </Form >
                 }

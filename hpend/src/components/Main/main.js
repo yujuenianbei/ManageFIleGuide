@@ -11,7 +11,7 @@ import Notification from '../Notification';
 import Login from '../Login';
 import ChatContent from '../Chat';
 // 路由
-import Routers from '../../router/routers';
+import EndRouters from '../../router/routers';
 // 插件
 import { Layout } from 'antd';
 const { Content } = Layout;
@@ -27,7 +27,7 @@ class Main extends PureComponent {
                             <Layout>
                                 <Headers />
                                 <Content style={{ margin: '0 16px' }}>
-                                    <Routers />
+                                    <EndRouters />
                                 </Content>
                                 <ChatContent />
                             </Layout>

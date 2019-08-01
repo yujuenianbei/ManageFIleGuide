@@ -13,7 +13,7 @@ import { Icon, Collapse, Checkbox, Radio, Input } from 'antd';
 import { createForm } from 'rc-form';
 // 请求
 import { getUserCart } from '../../fetch/cart';
-import { getGoodsResInfo, addGoodsResInfo } from '../../fetch/goodsResInfo';
+import { getGoodsResInfo, addGoodsResInfo, delGoodsResInfo } from '../../fetch/goodsResInfo';
 import { getProductsInOrder, addUserOrder } from '../../fetch/order';
 
 const RadioGroup = Radio.Group;
@@ -337,7 +337,7 @@ class Delivery extends Component {
                             <div className={styles.userInfo} ref={ref => { this.form = ref }}>
                                 <div className={styles.leftContent + " " + styles.deliveryAddress}>
                                     <h2>收货地址
-                                        {(this.props.state.order.orderAddress.length > 0 || !this.props.state.order.addAddressState) &&
+                                        {(this.props.state.order.orderAddress.length > 0 || this.props.state.order.addAddressState) &&
                                             <button className={styles.prime + " " + styles.addAddress} onClick={this.addNewAddress}>
                                                 {!this.props.state.order.addAddressState ? '添加收货地址' : '取消添加地址'}
                                             </button>

@@ -4,6 +4,8 @@ import * as Actions from '../../actions/index';
 import { connect } from 'react-redux';
 import classify from '@magento/venia-concept/esm/classify';
 import styles from './productListInfoDetail.module.less';
+// http
+import { http } from '../../http';
 class ProductInfoDetail extends Component {
     addToCart = () => {
         console.log(this.props.state.cart.productNum)
@@ -39,7 +41,7 @@ class ProductInfoDetail extends Component {
                 <div className={styles.productImg}>
                     {/* <Link to={{ pathname: '/productInfo',state:{ day: 'Friday' }}}> */}
                     <Link to={'/productInfo/' +this.props.id}>
-                        <img src={this.props.img} alt={this.props.productName}/>
+                        <img src={this.props.img.split('http').length > 1 ? this.props.img : http.img + this.props.img } alt={this.props.productName}/>
                     </Link>
                 </div>
                 <div className={styles.productInfo_details}>

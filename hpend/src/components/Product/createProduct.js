@@ -580,7 +580,7 @@ class ProductForm extends PureComponent {
                                     message: '请输入价格',
                                 },
                             ],
-                        })(<Input type="number" placeholder="请输入价格" disabled={true} />)}
+                        })(<Input type="number" placeholder="请输入价格" disabled={false} />)}
                     </Form.Item>
                     <Form.Item label="最新价格" {...formItemLayout} style={{ marginBottom: '10px' }}>
                         {getFieldDecorator('nowPrice', {

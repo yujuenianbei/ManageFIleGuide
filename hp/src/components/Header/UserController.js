@@ -252,7 +252,7 @@ class UserController extends PureComponent {
                                                 {this.props.state.cart.productInfo.map((item, index) => {
                                                     return <div className={styles.productInCrat} key={index + 'cartproductInfo1231231'}>
                                                         <div className={styles.left}>
-                                                            <img src={item.img} />
+                                                            <img src={item.img.split('http').length > 1 ? item.img : http.img + item.img} />
                                                         </div>
                                                         <div className={styles.right}>
                                                             <div className={styles.productName}>

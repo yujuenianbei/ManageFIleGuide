@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 // import PropTypes from 'prop-types';
 import classify from '@magento/venia-concept/esm/classify';
 // const SearchBar = React.lazy(() => import('src/components/SearchBar'));
-import styles from './account.module.less';
+import styles from './frontUser.module.less';
 import { createFrontUser, updateFrontUser, validateFrontUser, searchFrontUser, searchFrontUserTotal } from '../../fetch/frontUser';
 import { transSex, editTransToSex, transToSex } from '../../func/account';
 import { Input, Col, Row, Select, Button, Modal, Spin, Form, Icon } from 'antd';
@@ -60,8 +60,8 @@ class FrontUserForm extends PureComponent {
 
     // 组件更新
     componentWillUpdate(nextPorps) {
-        if (this.props.state.frontUser.modelName !== nextPorps.state.account.modelName) {
-            if (nextPorps.state.account.modelName == 'add') {
+        if (this.props.state.frontUser.modelName !== nextPorps.state.frontUser.modelName) {
+            if (nextPorps.state.frontUser.modelName == 'add') {
                 this.props.form.setFieldsValue({
                     email: '',
                     name: '',
@@ -71,8 +71,8 @@ class FrontUserForm extends PureComponent {
                     sex: transSex(0),
                     company: '',
                 })
-            } else if (nextPorps.state.account.modelName == 'edit') {
-                const data = nextPorps.state.account.modelData;
+            } else if (nextPorps.state.frontUser.modelName == 'edit') {
+                const data = nextPorps.state.frontUser.modelData;
                 this.props.form.setFieldsValue({
                     email: data.email,
                     name: data.name,
@@ -113,6 +113,7 @@ class FrontUserForm extends PureComponent {
         this.props.changeConfirmLoading(false);
         clearData = setTimeout(() => {
             myClear = setTimeout(this.props.form.resetFields, 0);
+            // this.props.form.resetFields
             this.props.changeModelData('');
             this.props.changeModleTitle('');
             this.props.changeModleName('');
@@ -132,7 +133,7 @@ class FrontUserForm extends PureComponent {
                 // 清空表单内容
                 myClear = setTimeout(this.props.form.resetFields, 0);
                 // 更新数据
-                this.props.changeAccountDataLoading(true);
+                this.props.changeFrontUserDataLoading(true);
 
                 // 加载上一次的配置
                 let data = {};
@@ -160,7 +161,7 @@ class FrontUserForm extends PureComponent {
                 // 清空表单内容
                 myClear = setTimeout(this.props.form.resetFields, 0);
                 // 更新数据
-                this.props.changeAccountDataLoading(true);
+                this.props.changeFrontUserDataLoading(true);
 
                 // 加载上一次的配置
                 let data = {};
@@ -200,8 +201,8 @@ class FrontUserForm extends PureComponent {
                 password: item.password,
             }
         ))
-        this.props.changeAccountData(data)
-        this.props.changeAccountDataLoading(false)
+        this.props.changeFrontUserData(data)
+        this.props.changeFrontUserDataLoading(false)
     }
 
 
@@ -295,7 +296,7 @@ class FrontUserForm extends PureComponent {
                                     message: '请输入密码',
                                 },
                             ],
-                        })(<Input type="password" placeholder="请输入密码" disabled={this.props.state.frontUser.modelName === 'edit' ? "disabled" : ""} />)}
+                        })(<Input type="password" placeholder="请输入密码" disabled={this.props.state.frontUser.modelName === 'edit' ? true : ""} />)}
                     </Form.Item>
                     {this.props.state.frontUser.modelName === 'add' && <Form.Item label="重复密码" {...formItemLayout} style={{ marginBottom: '10px' }}>
                         {getFieldDecorator('confirmPassword', {
@@ -384,8 +385,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         changeModleState: (data) => { dispatch(Actions.frontUserModleState(data)); },
-        changeAccountDataLoading: (data) => { dispatch(Actions.frontUserDataLoading(data)); },
-        changeAccountData: (data) => { dispatch(Actions.frontUserData(data)); },
+        changeFrontUserDataLoading: (data) => { dispatch(Actions.frontUserDataLoading(data)); },
+        changeFrontUserData: (data) => { dispatch(Actions.frontUserData(data)); },
         changeModleTitle: (data) => { dispatch(Actions.frontUserModleTitle(data)); },
         changeModleName: (data) => { dispatch(Actions.frontUserModleName(data)); },
         changeModelData: (data) => { dispatch(Actions.frontUserModelData(data)); },

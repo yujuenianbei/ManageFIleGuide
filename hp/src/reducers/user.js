@@ -1,13 +1,15 @@
 import {
   LOGINSTATE,
   USERNAME,
-  EMAIL
+  EMAIL,
+  USERADDRESS
 } from '../actions/index'
 
 const initValue = {
   loginState: 0,
   userName: '',
   useremail: '',
+  userAddress: []
 }
 export default (state = initValue, action) => {
   const data = action.data
@@ -20,6 +22,9 @@ export default (state = initValue, action) => {
     }
     case EMAIL: {
       return Object.assign({}, state, { useremail: data })
+    }
+    case USERADDRESS: {
+      return Object.assign({}, state, { userAddress: data })
     }
     default: {
       return state;

@@ -91,14 +91,14 @@ var user = {
 
 
     // 收货地址
-    queryGoodsResInfo: "SELECT * FROM goodsResInfo where id= ?",
-    insertGoodsResInfo: "INSERT INTO goodsResInfo(email, userName, firstName, lastName, phoneCode, phone, province, address, postCode, createTime, updateTime) VALUES(?,?,?,?,?,?,?,?,?,NOW(), NOW())",
+    queryGoodsResInfo: "SELECT * FROM goodsResInfo where id= ? AND addressState=1",
+    insertGoodsResInfo: "INSERT INTO goodsResInfo(email, userName, firstName, lastName, phoneCode, phone, province, address, postCode, addressState, createTime, updateTime) VALUES(?,?,?,?,?,?,?,?,?,1,NOW(), NOW())",
     updateGoodsResInfo: "UPDATE goodsResInfo SET email=?, firstName=?, lastName=?, phoneCode=?, phone=?, province=?, address=?, postCode=?, updateTime=NOW()",
-    deleteGoodsResInfo: "DELETE FROM goodsResInfo WHERE id=?",
+    deleteGoodsResInfo: "UPDATE goodsResInfo SET addressState=0 WHERE id=?",
 
     // 根据用户登录状态查询收货地址
-    quertGoodsResInfoByEmail: "SELECT * FROM goodsResInfo where email= ?",
-    quertGoodsResInfoByUserName: "SELECT * FROM goodsResInfo where userName= ?",
+    quertGoodsResInfoByEmail: "SELECT * FROM goodsResInfo where email=? AND addressState=1",
+    quertGoodsResInfoByUserName: "SELECT * FROM goodsResInfo where userName=? AND addressState=1",
     // 获取配送方式
     queryAllDeliveryMethod: "SELECT * FROM deliveryMethod",
     // 获取支付方式
