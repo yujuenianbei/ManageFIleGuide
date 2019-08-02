@@ -274,7 +274,6 @@ class Order extends PureComponent {
                     const obj = {
                         children: <span title={record.goodsResAddress}>
                             <Button type="primary" onClick={() => this.EditOrder('showResInfo', record)}>查看</Button>
-                            {/* {record.goodsResAddress} */}
                         </span>,
                         props: {},
                     };
@@ -494,7 +493,7 @@ class Order extends PureComponent {
             // fixed: 'right',
             render: (value, record, index) => {
                 const obj = {
-                    children: <OrderOperation value record index/>,
+                    children: <OrderOperation value={value} record={record} index={index}/>,
                     props: {},
                 };
                 this.orderRowCol(obj, index)
@@ -639,6 +638,7 @@ class Order extends PureComponent {
                 goodsResAddress: item.goodsResAddress,
                 fullPrice: item.fullPrice,
                 orderState: item.orderState,
+                orderStateNum: item.orderStateNum,
                 orderId: item.orderId,
                 createTime: timestampToTime(parseInt(item.createTime)),
                 updateTime: timestampToTime(parseInt(item.updateTime)),

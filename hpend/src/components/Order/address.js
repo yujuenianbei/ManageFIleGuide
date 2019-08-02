@@ -19,10 +19,10 @@ class ShowAddressForm extends PureComponent {
 
     componentDidMount() {
         this.props.onAdr(this);
-        searchOrderAddress(this.props.state.order.modelData.goodsResAddress, this.getAddressData)
+        searchOrderAddress(this.props.state.order.modelData.goodsResAddress, this.props.state.order.modelData.orderId, this.getAddressData)
         this.props.changeOrderAddressItem(this.props.state.order.modelData.goodsResAddress)
     }
-
+    // 获取订单地址后
     getAddressData = (result) => {
         const res = result.data.searchAddress
         this.props.changeOrderAddress(res);
@@ -54,7 +54,7 @@ class ShowAddressForm extends PureComponent {
 
     componentWillUpdate(nextPorps) {
         if (nextPorps.state.order.modelData !== '' && nextPorps.state.order.modelName !== '' && this.props.state.order.modelName !== nextPorps.state.order.modelName) {
-            searchOrderAddress(nextPorps.state.order.modelData.goodsResAddress, this.getAddressData)
+            searchOrderAddress(nextPorps.state.order.modelData.goodsResAddress, nextPorps.state.order.modelData.orderId, this.getAddressData)
             this.props.changeOrderAddressItem(this.props.state.order.modelData.goodsResAddress)
         }
     }
@@ -115,7 +115,7 @@ class ShowAddressForm extends PureComponent {
             this.props.form.resetFields();
         }
         this.props.changeOrderAddress('');
-        this.props.changeModelData('');
+        // this.props.changeModelData('');
         this.props.changeModleTitle('');
         this.props.changeModleName('');
         this.props.changeOrderAddressItem('');
@@ -232,12 +232,15 @@ class ShowAddressForm extends PureComponent {
         };
         return (
             <Fragment>
-                {!this.props.state.order.orderEdit && !this.props.state.order.orderExchange &&
+                {!this.props.state.order.orderEdit &&
+                    !this.props.state.order.orderExchange &&
                     <Fragment>
-                        <div className={styles.addressButton}>
-                            <Button type="primary" onClick={this.editAddress}>创建地址</Button>
-                            <Button type="primary" onClick={this.changeAddress}>更换地址</Button>
-                        </div>
+                        {(this.props.state.order.orderAddress.orderState === 2 || this.props.state.order.orderAddress.orderState === 3) &&
+                            <div className={styles.addressButton}>
+                                <Button type="primary" onClick={this.editAddress}>创建地址</Button>
+                                <Button type="primary" onClick={this.changeAddress}>更换地址</Button>
+                            </div>
+                        }
                         <UserAddressItem
                             id={this.props.state.order.orderAddress.id}
                             email={this.props.state.order.orderAddress.email}
@@ -251,7 +254,7 @@ class ShowAddressForm extends PureComponent {
                         />
                     </Fragment>
                 }
-                {!this.props.state.order.orderExchange && this.props.state.order.orderEdit &&
+                {!this.props.state.order.orderExchange && this.props.state.order.orderEdit && (this.props.state.order.modelData.orderStateNum === 2 || this.props.state.order.modelData.orderStateNum === 3) &&
                     <Form layout="horizontal" onSubmit={this.handleSubmit} labelAlign="left">
                         <Form.Item label="用户名" {...formItemLayout} style={{ marginBottom: '10px' }}>
                             {getFieldDecorator('userName', {
@@ -371,7 +374,7 @@ class ShowAddressForm extends PureComponent {
                         </Form.Item>
                     </Form >
                 }
-                {this.props.state.order.orderExchange &&
+                {this.props.state.order.orderExchange && (this.props.state.order.modelData.orderStateNum === 2 || this.props.state.order.modelData.orderStateNum === 3) &&
                     this.props.state.order.orderUserALLaddress.map((item, index) => (
                         <UserAddressItem
                             id={item.id}

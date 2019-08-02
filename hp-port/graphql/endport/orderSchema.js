@@ -144,6 +144,11 @@ const QueryAllOrder = new GraphQLObjectType({
                     return data.orderState;
                 }
             },
+            orderStateNum: {
+                type: GraphQLInt, resolve(data) {
+                    return data.orderStateNum;
+                }
+            },
             orderId: {
                 type: GraphQLInt, resolve(data) {
                     return data.orderId;
@@ -248,6 +253,11 @@ const OrderAddress = new GraphQLObjectType({
             updateTime: {
                 type: GraphQLString, resolve(data) {
                     return data.updateTime;
+                }
+            },
+            orderState: {
+                type: GraphQLInt, resolve(data) {
+                    return data.orderState;
                 }
             },
             state: {

@@ -41,6 +41,7 @@ const searchOrder = (data, func) => {
             goodsResAddress,
             fullPrice,
             orderState,
+            orderStateNum,
             orderId,
             createTime,
             updateTime
@@ -105,9 +106,9 @@ const searchOrderTotal = (data, func) => {
 }
 
 // 根据id查询订单收货地址
-const searchOrderAddress = (data, func) => {
-    const query = `mutation searchAddress($id: Int){
-        searchAddress(id: $id){
+const searchOrderAddress = (data, orderId, func) => {
+    const query = `mutation searchAddress($goodsResInfoId: Int, $orderId: Int){
+        searchAddress(goodsResInfoId: $goodsResInfoId, orderId: $orderId){
           id,
           userName,
           email,
@@ -119,6 +120,7 @@ const searchOrderAddress = (data, func) => {
           address,
           postCode,
           addressState,
+          orderState,
           createTime,
           updateTime
         }
@@ -136,7 +138,8 @@ const searchOrderAddress = (data, func) => {
         body: JSON.stringify({
             query,
             variables: {
-                id: data
+                goodsResInfoId: data,
+                orderId: orderId
             }
         })
     })

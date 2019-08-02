@@ -12,6 +12,8 @@ const { confirm } = Modal;
 class OrderOperation extends PureComponent {
     // 取消订单
     cancelOrder = () => {
+        const { value, record, index } = this.props;
+        console.log(value, record, index)
         confirm({
             title: '是否要取消此订单?',
             content: '订单一旦取消就无法再重新使用',
@@ -27,28 +29,59 @@ class OrderOperation extends PureComponent {
         });
     }
     // 操作菜单列表
-    menu = (
-        <Menu>
+    menu = () => {
+        const { value, record, index } = this.props;
+        console.log(value, record, index)
+        return <Menu>
             {/* <Menu.Item>
-                <Button title='重新支付' onClick={this.refresh}>重新支付</Button>
-            </Menu.Item> */}
+            <Button title='重新支付' onClick={this.refresh}>重新支付</Button>
+        </Menu.Item> */}
             <Menu.Item>
                 <Button type="primary" title='修改订单状态' onClick={this.changeOrderState}>修改订单状态</Button>
             </Menu.Item>
-            <Menu.Item>
-                <Button type="primary" title='修改订单产品' onClick={this.changeOrderProduct}>修改订单产品</Button>
-            </Menu.Item>
+            {(this.props.value.orderStateNum === 2 || this.props.value.orderStateNum === 3) &&
+                <Menu.Item>
+                    <Button type="primary" title='修改订单产品' onClick={this.changeOrderProduct}>修改订单产品</Button>
+                </Menu.Item>
+            }
             <Menu.Item>
                 <Button type="default" title='查看状态历史' onClick={this.showOrderState}>查看状态历史</Button>
             </Menu.Item>
-            <Menu.Item>
-                <Button type="default" title='查看快递状态' onClick={this.showDeliveryState}>查看快递状态</Button>
-            </Menu.Item>
-            <Menu.Item>
-                <Button type="danger" title='取消本条订单' onClick={this.cancelOrder}>取消本条订单</Button>
-            </Menu.Item>
+            {this.props.value.orderStateNum !== 1 && this.props.value.orderStateNum !== 2 && this.props.value.orderStateNum !== 3 &&
+                <Menu.Item>
+                    <Button type="default" title='查看快递状态' onClick={this.showDeliveryState}>查看快递状态</Button>
+                </Menu.Item>
+            }
+            {!(this.props.value.orderStateNum === 1 || this.props.value.orderStateNum === 10) &&
+                <Menu.Item>
+                    <Button type="danger" title='取消本条订单' onClick={this.cancelOrder}>取消本条订单</Button>
+                </Menu.Item>
+            }
         </Menu>
-    );
+    };
+
+    state = { visible: false };
+
+    changeOrderState = () => {
+        this.setState({
+            visible: true,
+        });
+    };
+
+    handleOk = e => {
+        console.log(e);
+        this.setState({
+            visible: false,
+        });
+    };
+
+    handleCancel = e => {
+        console.log(e);
+        this.setState({
+            visible: false,
+        });
+    };
+
 
     render() {
         const { value, record, index } = this.props;
@@ -57,8 +90,17 @@ class OrderOperation extends PureComponent {
                 <Dropdown overlay={this.menu} trigger={['click']} placement="bottomCenter">
                     <Button type="primary" title='操作'>操作</Button>
                 </Dropdown>
-
-            </div>
+                <Modal
+                    title="Basic Modal"
+                    visible={this.state.visible}
+                    onOk={this.handleOk}
+                    onCancel={this.handleCancel}
+                >
+                    <p>Some contents...</p>
+                    <p>Some contents...</p>
+                    <p>Some contents...</p>
+                </Modal>
+            </div >
         );
     }
 }

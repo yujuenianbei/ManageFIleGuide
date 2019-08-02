@@ -114,10 +114,11 @@ module.exports = {
             type: OrderAddress,
             description: '查询用户的收货地址',
             args: {
-                id: { type: GraphQLInt },
+                goodsResInfoId: { type: GraphQLInt },
+                orderId: { type: GraphQLInt }
             },
-            resolve: async function (source, { id }) {
-                return await searchSql($sql.serachOrderAddress, [id])
+            resolve: async function (source, { goodsResInfoId, orderId }) {
+                return await searchSql($sql.serachOrderAddress, [goodsResInfoId, orderId])
                     .then(async (reslut) => {
                         // console.log(reslut)
                         return reslut[0];

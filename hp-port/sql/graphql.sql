@@ -205,6 +205,21 @@ CREATE TABLE IF NOT EXISTS orderState
   PRIMARY KEY (`id`)
 ) ENGINE = INNODB CHARACTER SET utf8;
 
+
+-- 物流信息
+CREATE TABLE IF NOT EXISTS logisticsInfo
+(
+  `logisticsId` bigint(20) NOT NULL AUTO_INCREMENT,
+  `logisticsName` varchar(255) NOT NULL,
+  `logisticsEntrepotId` bigint(20) NOT NULL,
+  `logisticsContactUser` varchar(255) NOT NULL,
+  `logisticsContactNumber` bigint(20) NOT NULL,
+  `logisticsCost` bigint(20) NOT NULL,
+  `createTime` datetime NOT NULL,
+  `updateTime` datetime NOT NULL,
+  PRIMARY KEY (`logisticsId`)
+) ENGINE = INNODB CHARACTER SET utf8;
+
 -- 二维码登录
 CREATE TABLE IF NOT EXISTS qrcode
 (
