@@ -220,6 +220,48 @@ CREATE TABLE IF NOT EXISTS logisticsInfo
   PRIMARY KEY (`logisticsId`)
 ) ENGINE = INNODB CHARACTER SET utf8;
 
+
+-- 库房信息
+CREATE TABLE IF NOT EXISTS warehouse
+(
+  `warehouse_id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `warehouse_sn` bigint(20) NOT NULL,
+  `warehouse_name` varchar(255) NOT NULL,
+  `warehouse_phone` bigint(20) NOT NULL,
+  `warehouse_contact` varchar(255) NOT NULL,
+  `province` varchar(255) NOT NULL,
+  `city` varchar(255) NOT NULL,
+  `district` varchar(255) NOT NULL,
+  `address` varchar(255) NOT NULL,
+  `postCode` bigint(20) NOT NULL,
+  `status` bigint(20) NOT NULL,
+  `createTime` datetime NOT NULL,
+  `updateTime` datetime NOT NULL,
+  PRIMARY KEY (`warehouse_id`)
+) ENGINE = INNODB CHARACTER SET utf8;
+
+-- 订单操作日志
+CREATE TABLE IF NOT EXISTS orderLog
+(
+  `orderLogId` bigint(20) NOT NULL AUTO_INCREMENT,
+  `userName` varchar(255) DEFAULT NULL,
+  `userType` varchar(255) NOT NULL,
+  `orderId`bigint(20) DEFAULT NULL,
+  `operationName`bigint(20) DEFAULT NULL,
+  `createTime` datetime NOT NULL,
+  PRIMARY KEY (`orderLogId`)
+) ENGINE = INNODB CHARACTER SET utf8;
+
+-- 订单操作日志名称
+CREATE TABLE IF NOT EXISTS orderLogState
+(
+  `orderLogStateId` bigint(20) NOT NULL AUTO_INCREMENT,
+  `operationName` varchar(255) NOT NULL,
+  `createTime` datetime NOT NULL,
+  `updateTime` datetime NOT NULL,
+  PRIMARY KEY (`orderLogStateId`)
+) ENGINE = INNODB CHARACTER SET utf8;
+
 -- 二维码登录
 CREATE TABLE IF NOT EXISTS qrcode
 (
@@ -263,6 +305,30 @@ CREATE TABLE IF NOT EXISTS qrcode
 -- INSERT INTO `deliveryMethod` VALUES (7, '德邦', NOW(), NOW());
 -- INSERT INTO `deliveryMethod` VALUES (8, '中通', NOW(), NOW());
 -- INSERT INTO `deliveryMethod` VALUES (9, 'EMS', NOW(), NOW());
+
+
+-- -- ----------------------------
+-- --  Records of `logisticsInfo`
+-- -- ----------------------------
+-- INSERT INTO `logisticsInfo` VALUES (1, '申通', 1, 'john', 123789, 710043, NOW(), NOW());
+-- INSERT INTO `logisticsInfo` VALUES (2, '圆通', 1, 'tom', 1231231, 710043, NOW(), NOW());
+-- INSERT INTO `logisticsInfo` VALUES (3, '京东', 1, 'jack', 145334, 710043, NOW(), NOW());
+-- INSERT INTO `logisticsInfo` VALUES (4, '韵达', 1, 'bill', 36542314, 710043, NOW(), NOW());
+-- INSERT INTO `logisticsInfo` VALUES (5, '顺丰', 1, 'anto', 1234234, 710043, NOW(), NOW());
+-- INSERT INTO `logisticsInfo` VALUES (6, '宅急送', 1, 'ted', 3423425, 710043, NOW(), NOW());
+-- INSERT INTO `logisticsInfo` VALUES (7, '德邦', 1, 'kanny', 42345, 710043, NOW(), NOW());
+-- INSERT INTO `logisticsInfo` VALUES (8, '中通', 1, 'bily', 2452345, 710043, NOW(), NOW());
+-- INSERT INTO `logisticsInfo` VALUES (9, 'EMS', 1, 'tim', 62346254, 710043, NOW(), NOW());
+
+
+-- -- ----------------------------
+-- --  Records of `warehouse`
+-- -- ----------------------------
+-- INSERT INTO `warehouse` VALUES (1, 123, '西北', 123789, '张三', '陕西', '西安', '新城区', '金花路12号', 710043, 1, NOW(), NOW());
+-- INSERT INTO `warehouse` VALUES (2, 456, '华东', 1231231, '李四', '上海', '上海', '黄浦区', '南京东路街道24号', 200000, 1, NOW(), NOW());
+-- INSERT INTO `warehouse` VALUES (3, 789, '华北', 145334, '王五', '河北', '石家庄', '长安区', '建北街道14号', 050000, 1, NOW(), NOW());
+-- INSERT INTO `warehouse` VALUES (4, 147, '东北', 36542314, '钱六', '黑龙江', '哈尔滨', '道里区', '兆麟街道4号', 150000, 1, NOW(), NOW());
+
 
 -- -- ----------------------------
 -- --  Records of `orderState`

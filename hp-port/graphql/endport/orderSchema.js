@@ -245,6 +245,11 @@ const OrderAddress = new GraphQLObjectType({
                     return data.addressState;
                 }
             },
+            goodsResAddress: {
+                type: GraphQLInt, resolve(data) {
+                    return data.goodsResAddress;
+                }
+            },
             createTime: {
                 type: GraphQLString, resolve(data) {
                     return data.createTime;

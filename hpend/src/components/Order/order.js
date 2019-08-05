@@ -273,7 +273,7 @@ class Order extends PureComponent {
                 render: (value, record, index) => {
                     const obj = {
                         children: <span title={record.goodsResAddress}>
-                            <Button type="primary" onClick={() => this.EditOrder('showResInfo', record)}>查看</Button>
+                            <Button type="primary" onClick={() => this.EditOrderAddress('showResInfo', record)}>查看</Button>
                         </span>,
                         props: {},
                     };
@@ -401,19 +401,12 @@ class Order extends PureComponent {
     };
 
     // 显示弹出框
-    EditOrder = (e, record) => {
+    EditOrderAddress = (e, record) => {
         if (e === 'showResInfo') {
             this.props.changeModleTitle('查看收货地址');
             this.props.changeModleName(e);
             this.props.changeModelData('');
             this.props.changeModelData(record)
-        } else if (e === 'edit') {
-            this.props.changeModleTitle('修改');
-            this.props.changeModleName(e);
-        }
-        else if (e === 'delete') {
-            this.props.changeModleTitle('删除');
-            this.props.changeModleName(e);
         }
         this.props.changeModleState(true)
     };

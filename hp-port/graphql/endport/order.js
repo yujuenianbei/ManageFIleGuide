@@ -50,7 +50,7 @@ module.exports = {
             },
             resolve: async function (source, { intvalue, value, type, start, pageSize, sort }) {
                 // console.log(intvalue, value, type, start, pageSize, sort)
-                if(type === 'name'){
+                if (type === 'name') {
                     type = 'USER.name'
                 }
                 // type 没选 全局搜
@@ -90,7 +90,7 @@ module.exports = {
             },
             resolve: async function (source, { intvalue, value, type }) {
                 // console.log(intvalue, value, type)
-                if(type === 'name'){
+                if (type === 'name') {
                     type = 'USER.name'
                 }
                 if (type === "" || value === "") {
@@ -120,7 +120,6 @@ module.exports = {
             resolve: async function (source, { goodsResInfoId, orderId }) {
                 return await searchSql($sql.serachOrderAddress, [goodsResInfoId, orderId])
                     .then(async (reslut) => {
-                        // console.log(reslut)
                         return reslut[0];
                     })
             }
@@ -133,15 +132,33 @@ module.exports = {
                 goodsResAddress: { type: GraphQLInt },
             },
             resolve: async function (source, { goodsResAddress, id }) {
-                // console.log(goodsResAddress, id)
                 return await searchSql($sql.updateOrderGoodsResInfo, [goodsResAddress, id])
                     .then(async (reslut) => {
-                        // console.log(reslut)
                         if (reslut.affectedRows) {
                             return { state: 1 };
                         } else {
                             return { state: 0 };
                         }
+                    })
+            }
+        },
+        deleteOrder: {
+            type: OrderAddress,
+            description: '删除用户的订单（假删除）',
+            args: {
+                orderId: { type: GraphQLInt },
+            },
+            resolve: async function (source, { orderId }) {
+                return await searchSql($sql.deleteOrders, [orderId])
+                    .then(async (result) => {
+                        return await searchSql($sql.queryOrderState, [orderId])
+                            .then(async (results) => {
+                                if (results[0].orderState === 1) {
+                                    return { state: 1 };
+                                } else {
+                                    return { state: 0 };
+                                }
+                            })
                     })
             }
         }

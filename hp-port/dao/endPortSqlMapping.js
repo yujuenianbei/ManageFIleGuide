@@ -61,6 +61,8 @@ var endPort = {
     serachTypeOrders: 'SELECT count(*) as total FROM user AS USER, product AS PRO, goodsResInfo AS GRF, orders AS ORDERS, orderProducts AS ORPRO, productType AS PROT, orderState AS ORS, payMethod AS PAYM, deliveryMethod AS DELVM WHERE  USER.name=GRF.userName AND GRF.id=ORDERS.goodsResAddress AND ORDERS.orderOdd=ORPRO.orderOdd and ORPRO.productId=PRO.id AND PROT.id=PRO.type AND PAYM.ID=ORDERS.payMethod AND ORDERS.deliveryMethod=DELVM.id AND ORDERS.orderState=ORS.id ',
     searchTotalOrders: 'SELECT FOUND_ROWS() as total',
     updateOrderGoodsResInfo: 'UPDATE orders SET goodsResAddress=? WHERE id=?',
+    deleteOrders: 'UPDATE orders SET orderState=1, updateTime=NOW() WHERE id=?',
+    queryOrderState: 'SELECT * FROM orders WHERE id=?',
 
     // goodsResInfo
     queryGoodsResInfo: "SELECT * FROM goodsResInfo where id= ?",

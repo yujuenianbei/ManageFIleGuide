@@ -24,7 +24,8 @@ class ShowAddressForm extends PureComponent {
     }
     // 获取订单地址后
     getAddressData = (result) => {
-        const res = result.data.searchAddress
+        const res = result.data.searchAddress;
+        console.log(res)
         this.props.changeOrderAddress(res);
         if (!this.props.state.order.orderExchange) {
             // this.props.form.setFieldsValue({
@@ -212,6 +213,7 @@ class ShowAddressForm extends PureComponent {
                 goodsResAddress: item.goodsResAddress,
                 fullPrice: item.fullPrice,
                 orderState: item.orderState,
+                orderStateNum: item.orderStateNum,
                 orderId: item.orderId,
                 createTime: timestampToTime(parseInt(item.createTime)),
                 updateTime: timestampToTime(parseInt(item.updateTime)),
@@ -221,8 +223,6 @@ class ShowAddressForm extends PureComponent {
         this.props.changeOrderData(data)
         this.props.changeOrderDataLoading(false)
     }
-
-
 
     render() {
         const { getFieldDecorator, getFieldsError, getFieldError, isFieldTouched } = this.props.form;
@@ -242,7 +242,7 @@ class ShowAddressForm extends PureComponent {
                             </div>
                         }
                         <UserAddressItem
-                            id={this.props.state.order.orderAddress.id}
+                            id={this.props.state.order.orderAddress.goodsResAddress}
                             email={this.props.state.order.orderAddress.email}
                             firstaName={this.props.state.order.orderAddress.firstName}
                             lastName={this.props.state.order.orderAddress.lastName}

@@ -9,7 +9,7 @@ import { getUserInfo } from '../../fetch/order'
 import { Modal, Spin, Form, Icon } from 'antd';
 
 import ShowAddress from './address';
-// import CreateOrder from './createOrder';
+import OrderOperation from './operation';
 // import DeleteOrder from './delete';
 
 class OrderModle extends PureComponent {
@@ -25,6 +25,8 @@ class OrderModle extends PureComponent {
             this.props.state.order.modelName === 'regNewAddress' ||
             this.props.state.order.modelName === 'changeUserAddress') {
             this.address.handleSubmit(e)
+        } else if (this.props.state.order.modelName === 'changeOrderState') {
+            this.operation.handleSubmit(e)
         }
     };
 
@@ -38,6 +40,8 @@ class OrderModle extends PureComponent {
             this.props.state.order.modelName === 'regNewAddress' ||
             this.props.state.order.modelName === 'changeUserAddress') {
             this.address.cancelSubmit()
+        } else if (this.props.state.order.modelName === 'changeOrderState') {
+            this.operation.cancelSubmit()
         }
     };
 
@@ -56,8 +60,8 @@ class OrderModle extends PureComponent {
                     {(this.props.state.order.modelName === 'showResInfo' ||
                         this.props.state.order.modelName === 'regNewAddress' ||
                         this.props.state.order.modelName === 'changeUserAddress') && <ShowAddress onAdr={(ref) => { this.address = ref }} />}
-                    {/* {this.props.state.order.modelName !== 'delete' && <CreateOrder onRef={(ref) => { this.child = ref }} />}
-                {this.props.state.order.modelName === 'delete' && <DeleteOrder onDel={(ref) => { this.del = ref }}/>}  */}
+                    {this.props.state.order.modelName === 'changeOrderState' && <OrderOperation onOpe={(ref) => { this.operation = ref }} />}
+                    {/* {this.props.state.order.modelName === 'delete' && <DeleteOrder onDel={(ref) => { this.del = ref }}/>}  */}
                 </Modal>
             </Fragment>
         );

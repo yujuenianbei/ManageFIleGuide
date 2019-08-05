@@ -121,6 +121,7 @@ const searchOrderAddress = (data, orderId, func) => {
           postCode,
           addressState,
           orderState,
+          goodsResAddress,
           createTime,
           updateTime
         }
@@ -269,4 +270,34 @@ const changeOrderAddress = (data, func) => {
 }
 
 
-export { searchOrder, searchOrderTotal, searchOrderAddress, searchOrderUserAddress, regOrderUserAddress, changeOrderAddress }
+// 根据id删除订单信息
+const delteOrder = (orderId, func) => {
+    const query = `mutation deleteOrder($orderId: Int){
+        deleteOrder(orderId: $orderId){
+          state
+        }
+      }`;
+
+    fetch(http.port, {
+        method: 'POST',
+        mode: "cors",
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            // 'login': localStorage.getItem('loginState'),
+            // 'token': localStorage.getItem('token')
+        },
+        body: JSON.stringify({
+            query,
+            variables: {
+                orderId: orderId
+            }
+        })
+    })
+        .then(r => r.json())
+        .then((result) => { func(result) });
+}
+
+
+
+export { searchOrder, searchOrderTotal, searchOrderAddress, searchOrderUserAddress, regOrderUserAddress, changeOrderAddress, delteOrder }
