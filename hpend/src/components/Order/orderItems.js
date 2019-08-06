@@ -9,7 +9,7 @@ class userAddressItem extends PureComponent {
     render() {
         const { id, index, email, firstaName, lastName, phoneCode, phone,
             province, address, postCode } = this.props;
-            console.log(this.props.state.order.orderAddressItem, id)
+            // console.log(this.props.state.order.orderAddressItem, id)
         return (
             <div className={parseInt(this.props.state.order.orderAddressItem) === parseInt(id) ? styles.userAddressItem + ' ' + styles.selected : styles.userAddressItem} onClick={this.props.onClick}>
                 <div className={styles.item}>

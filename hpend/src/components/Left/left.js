@@ -16,7 +16,7 @@ const { SubMenu } = Menu;
 class Left extends PureComponent {
     rootSubmenuKeys = []
     state = {
-        collapsed: false,
+        // collapsed: false,
         openKeys: [],
         list: [
             {
@@ -55,6 +55,30 @@ class Left extends PureComponent {
                         title: "用户浏览",
                         icon: "team",
                         path: "/cart3"
+                    }
+                ]
+            }, {
+                title: "快递管理",
+                icon: "desktop",
+                path: "/delivery",
+                children: [
+                    {
+                        title: "完成订单",
+                        icon: "desktop",
+                        path: "/cart10"
+                    },
+                    {
+                        title: "在途订单",
+                        icon: "desktop",
+                        path: "/cart11"
+                    }, {
+                        title: "待运订单",
+                        icon: "desktop",
+                        path: "/cart12"
+                    }, {
+                        title: "快递公司管理",
+                        icon: "team",
+                        path: "/cart13"
                     }
                 ]
             }, {
@@ -148,25 +172,37 @@ class Left extends PureComponent {
     }
 
     onCollapse = collapsed => {
-        // console.log(collapsed);
-        this.setState({ collapsed }, () => {
-            this.onOpenChange(this.state.openKeys);
-        });
+        this.props.changeSettingCollapsed(collapsed)
+        this.onOpenChange(this.state.openKeys);
     };
+
     render() {
         const path = this.props.location.pathname;
         return (
-            <Sider collapsible collapsed={this.state.collapsed} onCollapse={this.onCollapse}>
-                <div className={styles.menuIcon}>
+            <Sider
+                className={styles.left}
+                style={this.props.state.setting.leftFix ? {
+                    overflow: 'auto',
+                    height: '100vh',
+                    position: 'fixed',
+                    left: 0,
+                    zIndex: 100
+                } : {}}
+                theme={this.props.state.setting.menuTheme}
+                collapsible
+                collapsed={this.props.state.setting.leftCollapsed}
+                onCollapse={this.onCollapse}>
+                <div className={styles.menuIcon} style={this.props.state.setting.menuTheme === 'dark' ? { borderBottom: '1px solid #001529' } : {borderBottom: '1px solid #c1c1c1' }}>
                     <img src="https://media.hpstore.cn/static/version1559772150/frontend/HPOLS/default/zh_Hans_CN/images/logo.svg" alt="hp" />
-                    <div className={styles.leftTitle}><span>HP</span></div>
+                    <div className={styles.leftTitle} style={this.props.state.setting.menuTheme === 'dark' ? { color: '#fff' } : { color: '#001529' }}><span>HP</span></div>
                 </div>
                 <Menu
-                    theme="dark"
+                    style={{ height: "calc(100vh - 108px)" }}
+                    theme={this.props.state.setting.menuTheme}
                     defaultSelectedKeys={[path]}
                     mode="inline"
-                    // openKeys={this.state.openKeys}
-                    // onOpenChange={this.onOpenChange}
+                // openKeys={this.state.openKeys}
+                // onOpenChange={this.onOpenChange}
                 >
                     {this.state.menu}
                 </Menu>
@@ -179,6 +215,13 @@ const mapStateToProps = (state) => {
         state
     };
 };
+const mapDispatchToProps = (dispatch) => {
+    return {
+        // 设置
+        changeSettingCollapsed: (data) => { dispatch(Actions.settingCollapsed(data)) },
+    }
+};
 export default connect(
     mapStateToProps,
+    mapDispatchToProps
 )(classify(styles)(withRouter(Left)));

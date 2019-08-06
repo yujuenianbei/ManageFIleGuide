@@ -70,8 +70,8 @@ class ChatContent extends PureComponent {
         socket.on('chatMsg', function (data) {
             console.log(data)
             // 让用户跳转  其实不需要进行改变用户跳转 只要把内容添加到里面就行了
-            if(data){
-               _this.addChatUser(data.from)
+            if (data) {
+                _this.addChatUser(data.from)
             }
             const contents = _this.props.state.chat.chatContent
             const from = data.from;
@@ -239,12 +239,13 @@ class ChatContent extends PureComponent {
         return (
             <Fragment>
                 <Drawer
+                    title="聊天室"
                     placement="right"
                     mask={false}
-                    closable={false}
+                    closable={true}
                     onClose={this.chatList}
                     width={400}
-                    style={{ top: 66 }}
+                    style={this.props.state.setting.fixHeader ? { top: 66 } : { top: 0 }}
                     bodyStyle={{ padding: 0 }}
                     visible={this.props.state.chat.chatListState}
                 >

@@ -170,7 +170,8 @@ export function orderUserAllAddress(data) {
     data
   }
 } 
-//查询用户的所有收货地址
+
+//订单中每个地址的内容
 export function orderAddressItem(data) {
   return {
     type: ORDERADDRESSITEM,

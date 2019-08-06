@@ -25,7 +25,10 @@ class OrderModle extends PureComponent {
             this.props.state.order.modelName === 'regNewAddress' ||
             this.props.state.order.modelName === 'changeUserAddress') {
             this.address.handleSubmit(e)
-        } else if (this.props.state.order.modelName === 'changeOrderState') {
+        } else if (this.props.state.order.modelName === 'changeOrderState' ||
+            this.props.state.order.modelName === 'changeOrderProducts' ||
+            this.props.state.order.modelName === 'showDeliveryState' ||
+            this.props.state.order.modelName === 'showOrderHistory') {
             this.operation.handleSubmit(e)
         }
     };
@@ -40,7 +43,10 @@ class OrderModle extends PureComponent {
             this.props.state.order.modelName === 'regNewAddress' ||
             this.props.state.order.modelName === 'changeUserAddress') {
             this.address.cancelSubmit()
-        } else if (this.props.state.order.modelName === 'changeOrderState') {
+        } else if (this.props.state.order.modelName === 'changeOrderState' ||
+            this.props.state.order.modelName === 'changeOrderProducts' ||
+            this.props.state.order.modelName === 'showDeliveryState' ||
+            this.props.state.order.modelName === 'showOrderHistory') {
             this.operation.cancelSubmit()
         }
     };
@@ -60,7 +66,10 @@ class OrderModle extends PureComponent {
                     {(this.props.state.order.modelName === 'showResInfo' ||
                         this.props.state.order.modelName === 'regNewAddress' ||
                         this.props.state.order.modelName === 'changeUserAddress') && <ShowAddress onAdr={(ref) => { this.address = ref }} />}
-                    {this.props.state.order.modelName === 'changeOrderState' && <OrderOperation onOpe={(ref) => { this.operation = ref }} />}
+                    {(this.props.state.order.modelName === 'changeOrderState' ||
+                        this.props.state.order.modelName === 'changeOrderProducts' ||
+                        this.props.state.order.modelName === 'showDeliveryState' ||
+                        this.props.state.order.modelName === 'showOrderHistory') && <OrderOperation onOpe={(ref) => { this.operation = ref }} />}
                     {/* {this.props.state.order.modelName === 'delete' && <DeleteOrder onDel={(ref) => { this.del = ref }}/>}  */}
                 </Modal>
             </Fragment>

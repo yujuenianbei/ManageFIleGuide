@@ -55,25 +55,23 @@ module.exports = {
                 }
                 // type 没选 全局搜
                 if (type !== '' && value !== '') {
-                    // console.log($sql.queryAllOrderInOrders + `AND ${type} like ${JSON.stringify(value)} ORDER BY email ${sort} limit ${start},${pageSize}`)
+                    console.log($sql.queryAllOrderInOrders + `AND ${type} like ${JSON.stringify(value)} ORDER BY updateTime ${sort} limit ${start},${pageSize}`)
                     value = '%' + value + '%'
-                    return await searchSql($sql.queryAllOrderInOrders + `AND ${type} like ${JSON.stringify(value)} ORDER BY email ${sort} limit ${start},${pageSize}`)
+                    return await searchSql($sql.queryAllOrderInOrders + `AND ${type} like ${JSON.stringify(value)} ORDER BY updateTime ${sort} limit ${start},${pageSize}`)
                         .then(async (reslut) => {
                             return reslut;
                         })
                 }
                 else if (type !== '') {
-                    // console.log($sql.queryAllOrderInOrders + `ORDER BY email ${sort} limit ${start},${pageSize}`)
-                    return await searchSql($sql.queryAllOrderInOrders + `ORDER BY email ${sort} limit ${start},${pageSize}`)
+                    console.log($sql.queryAllOrderInOrders + `ORDER BY updateTime ${sort} limit ${start},${pageSize}`)
+                    return await searchSql($sql.queryAllOrderInOrders + `ORDER BY updateTime ${sort} limit ${start},${pageSize}`)
                         .then(async (reslut) => {
                             return reslut;
                         })
                 } else if (type == '') {
-                    // console.log(11)
-                    // console.log($sql.queryAllOrderInOrders + `ORDER BY email ${sort} limit ${start},${pageSize}`)
-                    return await searchSql($sql.queryAllOrderInOrders + `ORDER BY email ${sort} limit ${start},${pageSize}`)
+                    console.log($sql.queryAllOrderInOrders + `ORDER BY updateTime ${sort} limit ${start},${pageSize}`)
+                    return await searchSql($sql.queryAllOrderInOrders + `ORDER BY updateTime ${sort} limit ${start},${pageSize}`)
                         .then(async (reslut) => {
-                            // console.log(reslut)
                             return reslut;
                         })
                 }

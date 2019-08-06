@@ -40,7 +40,7 @@ const initValue = {
     pageTotal: 10,
     pageSize: 10,
     pageNow: 0,
-    pageSort: 'ASC',
+    pageSort: 'DESC',
     pageSortCol: 'sex',
     searchValue: '',
     searchType: '',

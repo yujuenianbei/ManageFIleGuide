@@ -1,3 +1,4 @@
+export * from './setting';
 export * from './main';
 export * from './user';
 export * from './account';

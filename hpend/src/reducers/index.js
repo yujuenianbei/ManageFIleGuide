@@ -1,3 +1,4 @@
+import settingsReducer from './setting';
 import mainsReducer from './main';
 import usersReducer from './user';
 import accountsReducer from './account';
@@ -7,4 +8,4 @@ import productsReducer from './product';
 import productTypesReducer from './productType';
 import cartsReducer from './cart';
 import ordersReducer from './order';
-export { mainsReducer, usersReducer, accountsReducer, frontUsersReducer, chatsReducer, productsReducer, cartsReducer, ordersReducer, productTypesReducer }
+export { settingsReducer, mainsReducer, usersReducer, accountsReducer, frontUsersReducer, chatsReducer, productsReducer, cartsReducer, ordersReducer, productTypesReducer }

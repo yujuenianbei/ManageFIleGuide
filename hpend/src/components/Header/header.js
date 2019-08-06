@@ -26,7 +26,7 @@ class Headers extends PureComponent {
         if (e.key === "0") {
 
         } else if (e.key === "1") {
-
+            this.props.changeSettingModel(!this.props.state.setting.modelState);
         } else if (e.key === "2") {
             socket.emit('userList', {
                 type: 'out',
@@ -44,8 +44,52 @@ class Headers extends PureComponent {
         }
     }
 
-    chatList=() => {
+    chatList = () => {
         this.props.changeChatListState(!this.props.state.chat.chatListState)
+    }
+
+    // 头部设置的样式
+    headerStyle = () => {
+        const FH = this.props.state.setting.fixHeader;
+        const LH = this.props.state.setting.leftFix;
+        const LC = this.props.state.setting.leftCollapsed;
+        if (!FH && !LH && !LC) {
+            return {}
+        } else if (!FH && !LH && LC) {
+            return {}
+        } else if (!FH && LH && !LC) {
+            return {}
+        } else if (!FH && LH && LC) {
+            return {}
+        } else if (FH && !LH && !LC) {
+            return {
+                position: 'fixed',
+                width: 'calc(100% - 200px)',
+                borderBottom: '1px solid #c1c1c1',
+                marginLeft: 0
+            }
+        } else if (FH && !LH && LC) {
+            return {
+                position: 'fixed',
+                width: 'calc(100% - 80px)',
+                borderBottom: '1px solid #c1c1c1',
+                marginLeft: 0
+            }
+        } else if (FH && LH && !LC) {
+            return { 
+                position: 'fixed',
+                width: 'calc(100% - 80px)',
+                borderBottom: '1px solid #c1c1c1',
+                marginLeft: 80
+             }
+        } else if (FH && LH && LC) {
+            return { 
+                position: 'fixed',
+                width: 'calc(100% - 80px)',
+                borderBottom: '1px solid #c1c1c1',
+                marginLeft: 80
+             }
+        }
     }
 
     render() {
@@ -57,7 +101,7 @@ class Headers extends PureComponent {
                 </Menu.Item>
                 <Menu.Item key="1">
                     <Icon type="setting" />
-                    个人设置
+                    系统设置
                 </Menu.Item>
                 <Menu.Divider />
                 <Menu.Item key="2">
@@ -68,7 +112,7 @@ class Headers extends PureComponent {
         )
         return (
             <Fragment>
-                <Header style={{ background: '#fff', padding: 0 }}>
+                <Header className={styles.header} style={this.headerStyle()}>
                     <div className={styles.chatList} onClick={this.chatList}>
                         <Badge count={99}>
                             <Icon type="team" style={{ fontSize: '28px', verticalAlign: 'middle' }} />
@@ -103,6 +147,8 @@ const mapDispatchToProps = (dispatch) => {
         // 聊天
         changeChatListState: (data) => { dispatch(Actions.chatListState(data)) },
         changeUserOnlineList: (data) => { dispatch(Actions.userOnlineList(data)) },
+        // 设置
+        changeSettingModel: (data) => { dispatch(Actions.settingModel(data)) },
     }
 };
 export default connect(

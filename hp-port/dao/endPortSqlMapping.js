@@ -64,6 +64,8 @@ var endPort = {
     deleteOrders: 'UPDATE orders SET orderState=1, updateTime=NOW() WHERE id=?',
     queryOrderState: 'SELECT * FROM orders WHERE id=?',
 
+    // editOrderProduct: '',
+
     // goodsResInfo
     queryGoodsResInfo: "SELECT * FROM goodsResInfo where id= ?",
     insertGoodsResInfo: "INSERT INTO goodsResInfo(email, userName, firstName, lastName, phoneCode, phone, province, address, postCode, addressState, createTime, updateTime) VALUES(?,?,?,?,?,?,?,?,?,1,NOW(), NOW())",

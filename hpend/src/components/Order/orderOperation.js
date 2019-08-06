@@ -19,6 +19,7 @@ class OrderOperation extends PureComponent {
         const { value, record, index } = this.props;
         console.log(value, record, index)
         confirm({
+            centered: true,
             title: '是否要取消此订单?',
             content: '订单一旦取消就无法再重新使用',
             okText: '是',
@@ -26,9 +27,6 @@ class OrderOperation extends PureComponent {
             cancelText: '否',
             onOk() {
                 delteOrder(record.orderId, _this.finishDelteOrder)
-                // return new Promise((resolve, reject) => {
-                //     setTimeout(Math.random() > 0.5 ? resolve : reject, 1000);
-                // }).catch(() => console.log('Oops errors!'));
             },
             onCancel() { },
         });
@@ -37,6 +35,7 @@ class OrderOperation extends PureComponent {
     finishDelteOrder = (result) => {
         if (result.data.deleteOrder.state === 1) {
             this.searchOrderMount();
+            this.props.changeModelData('');
         }
     }
 
@@ -111,25 +110,24 @@ class OrderOperation extends PureComponent {
     // 操作菜单列表
     menu = () => {
         const { value, record, index } = this.props;
-        console.log(value, record, index)
         return <Menu>
             {/* <Menu.Item>
             <Button title='重新支付' onClick={this.refresh}>重新支付</Button>
         </Menu.Item> */}
             <Menu.Item>
-                <Button type="primary" title='修改订单状态' onClick={this.changeOrderState}>修改订单状态</Button>
+                <Button type="primary" title='修改订单状态' onClick={() => this.changeOrderState(record)}>修改订单状态</Button>
             </Menu.Item>
             {(this.props.value.orderStateNum === 2 || this.props.value.orderStateNum === 3) &&
                 <Menu.Item>
-                    <Button type="primary" title='修改订单产品' onClick={this.changeOrderProduct}>修改订单产品</Button>
+                    <Button type="primary" title='修改订单产品' onClick={() => this.changeOrderProducts(record)}>修改订单产品</Button>
                 </Menu.Item>
             }
             <Menu.Item>
-                <Button type="default" title='查看状态历史' onClick={this.showOrderState}>查看状态历史</Button>
+                <Button type="default" title='查看状态历史' onClick={() => this.showOrderHistory(record)}>查看状态历史</Button>
             </Menu.Item>
             {this.props.value.orderStateNum !== 1 && this.props.value.orderStateNum !== 2 && this.props.value.orderStateNum !== 3 &&
                 <Menu.Item>
-                    <Button type="default" title='查看快递状态' onClick={this.showDeliveryState}>查看快递状态</Button>
+                    <Button type="default" title='查看快递状态' onClick={() => this.showDeliveryState(record)}>查看快递状态</Button>
                 </Menu.Item>
             }
             {!(this.props.value.orderStateNum === 1 || this.props.value.orderStateNum === 10) &&
@@ -142,13 +140,38 @@ class OrderOperation extends PureComponent {
 
     state = { visible: false };
 
-    // 修改订单状态
-    changeOrderState = () => {
-        this.props.changeModleState(true)
+    showModel = (record) => {
+        this.props.changeModelData(record)
+        this.props.changeModleState(true);
         this.props.changeOrderEdit(true);
         this.props.changeOrderExchange(false);
+    }
+    // 修改订单状态
+    changeOrderState = (record) => {
+        this.showModel(record);
         this.props.changeModleName('changeOrderState');
         this.props.changeModleTitle('修改订单状态');
+    };
+
+    // 修改订单状态
+    changeOrderProducts = (record) => {
+        this.showModel(record);
+        this.props.changeModleName('changeOrderProducts');
+        this.props.changeModleTitle('修改订单产品');
+    };
+
+    // 查看快递状态
+    showDeliveryState = (record) => {
+        this.showModel(record);
+        this.props.changeModleName('showDeliveryState');
+        this.props.changeModleTitle('查看快递状态');
+    };
+
+    // 查看历史状态
+    showOrderHistory = (record) => {
+        this.showModel(record);
+        this.props.changeModleName('showOrderHistory');
+        this.props.changeModleTitle('查看订单历史');
     };
 
     handleOk = e => {
@@ -173,19 +196,6 @@ class OrderOperation extends PureComponent {
                 <Dropdown overlay={this.menu} trigger={['click']} placement="bottomCenter">
                     <Button type="primary" title='操作'>操作</Button>
                 </Dropdown>
-                {/* <Modal
-                    centered
-                    title="Basic Modal"
-                    visible={this.state.visible}
-                    onOk={this.handleOk}
-                    onCancel={this.handleCancel}
-                >
-                    <Steps direction="vertical" size="small" current={1}>
-                        <Step title="Finished" description="This is a description." />
-                        <Step title="In Progress" description="This is a description." />
-                        <Step title="Waiting" description="This is a description." />
-                    </Steps>
-                </Modal> */}
             </div >
         );
     }
@@ -202,6 +212,7 @@ const mapDispatchToProps = (dispatch) => {
         changeOrderDataLoading: (data) => { dispatch(Actions.orderDataLoading(data)); },
         changeOrderConfirmLoading: (data) => { dispatch(Actions.orderConfirmLoading(data)); },
         changeOrderData: (data) => { dispatch(Actions.orderData(data)); },
+        changeModelData: (data) => { dispatch(Actions.orderModelData(data)); },
         changeModleTitle: (data) => { dispatch(Actions.orderModleTitle(data)); },
         changePageTotal: (data) => { dispatch(Actions.orderPageTotal(data)); },
         changeModleName: (data) => { dispatch(Actions.orderModleName(data)); },

@@ -18,37 +18,55 @@ class OperateOrder extends PureComponent {
         e.preventDefault();
         // deleteOrder(this.props.state.order.modelData, this.deleteFinish)
         this.props.changeModleState(false);
-        // this.props.changeModelData('');
+        this.props.changeModelData('');
         this.props.changeModleTitle('');
         this.props.changeModleName('');
-        // this.props.changeOrderExchange(false);
-        // this.props.changeOrderEdit(false);
+        this.props.changeOrderExchange(false);
+        this.props.changeOrderEdit(false);
     };
 
     // 取消提交
     cancelSubmit = () => {
-        console.log(123123123)
         this.props.changeModleState(false);
-        // this.props.changeModelData('');
+        this.props.changeModelData('');
         this.props.changeModleTitle('');
         this.props.changeModleName('');
-        // this.props.changeOrderExchange(false);
-        // this.props.changeOrderEdit(false);
+        this.props.changeOrderExchange(false);
+        this.props.changeOrderEdit(false);
     }
 
     render() {
         return (
             <div>
-                {/* {
-                    this.props.state.order.modleName === 'changeOrderState' && */}
+                {this.props.state.order.modelName === 'changeOrderState' &&
                     <Fragment>
                         <Steps direction="vertical" size="small" current={1}>
                             <Step title="Finished" description="This is a description." />
                             <Step title="In Progress" description="This is a description." />
                             <Step title="Waiting" description="This is a description." />
                         </Steps>
-                    </Fragment>
-                {/* } */}
+                    </Fragment>}
+                {this.props.state.order.modelName === 'changeOrderProducts' &&
+                    <Fragment>
+                        <Steps direction="vertical" size="small" current={1}>
+                            <Step title="修改产品 " description="This is a description." />
+                            <Step title="In Progress" description="This is a description." />
+                        </Steps>
+                    </Fragment>}
+                {this.props.state.order.modelName === 'showDeliveryState' &&
+                    <Fragment>
+                        <Steps direction="vertical" size="small" current={1}>
+                            <Step title="快递状态" description="This is a description." />
+                            <Step title="In Progress" description="This is a description." />
+                        </Steps>
+                    </Fragment>}
+                {this.props.state.order.modelName === 'showOrderHistory' &&
+                    <Fragment>
+                        <Steps direction="vertical" size="small" current={1}>
+                            <Step title="订单历史" description="This is a description." />
+                            <Step title="In Progress" description="This is a description." />
+                        </Steps>
+                    </Fragment>}
             </div>
         );
     }
@@ -71,6 +89,8 @@ const mapDispatchToProps = (dispatch) => {
         changeModleTitle: (data) => { dispatch(Actions.orderModleTitle(data)); },
         changePageTotal: (data) => { dispatch(Actions.orderPageTotal(data)); },
         changePageNow: (data) => { dispatch(Actions.orderPageNow(data)); },
+        changeOrderEdit: (data) => { dispatch(Actions.orderEdit(data)); },
+        changeOrderExchange: (data) => { dispatch(Actions.orderExchange(data)); },
     }
 };
 export default connect(

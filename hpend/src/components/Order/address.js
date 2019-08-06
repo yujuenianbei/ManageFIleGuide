@@ -25,9 +25,11 @@ class ShowAddressForm extends PureComponent {
     // 获取订单地址后
     getAddressData = (result) => {
         const res = result.data.searchAddress;
-        console.log(res)
         this.props.changeOrderAddress(res);
-        if (!this.props.state.order.orderExchange) {
+        // console.log(res)
+        // console.log(!this.props.state.order.orderExchange,this.props.state.order.modelData.orderStateNum)
+        if (!this.props.state.order.orderExchange && (this.props.state.order.modelData.orderStateNum === 2 || this.props.state.order.modelData.orderStateNum === 3)) {
+            console.log(123123)
             // this.props.form.setFieldsValue({
             //     email: res.email,
             //     userName: res.userName,
@@ -42,8 +44,8 @@ class ShowAddressForm extends PureComponent {
             this.props.form.setFieldsValue({
                 email: "",
                 userName: res.userName,
-                lastName: "",
-                firstName: "",
+                lastName: res.lastName,
+                firstName: res.firstName,
                 phoneCode: "",
                 phone: "",
                 province: "",
@@ -95,6 +97,7 @@ class ShowAddressForm extends PureComponent {
         if (result.data.updateOrderAddress.state === 1) {
             this.cancelSubmit();
             this.searchOrderMount();
+            this.props.changeModelData('');
         }
     }
 
@@ -115,6 +118,7 @@ class ShowAddressForm extends PureComponent {
         if (this.props.state.order.modelName !== 'changeUserAddress') {
             this.props.form.resetFields();
         }
+        this.props.changeModelData('');
         this.props.changeOrderAddress('');
         // this.props.changeModelData('');
         this.props.changeModleTitle('');
