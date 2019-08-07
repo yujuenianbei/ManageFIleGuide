@@ -188,11 +188,14 @@ class Left extends PureComponent {
                     left: 0,
                     zIndex: 100
                 } : {}}
+                width={250}
                 theme={this.props.state.setting.menuTheme}
+                breakpoint="lg"
+                collapsedWidth="80"
                 collapsible
                 collapsed={this.props.state.setting.leftCollapsed}
                 onCollapse={this.onCollapse}>
-                <div className={styles.menuIcon} style={this.props.state.setting.menuTheme === 'dark' ? { borderBottom: '1px solid #001529' } : {borderBottom: '1px solid #c1c1c1' }}>
+                <div className={styles.menuIcon} style={this.props.state.setting.menuTheme === 'dark' ? { borderBottom: '1px solid #001529' } : { borderBottom: '1px solid #c1c1c1' }}>
                     <img src="https://media.hpstore.cn/static/version1559772150/frontend/HPOLS/default/zh_Hans_CN/images/logo.svg" alt="hp" />
                     <div className={styles.leftTitle} style={this.props.state.setting.menuTheme === 'dark' ? { color: '#fff' } : { color: '#001529' }}><span>HP</span></div>
                 </div>

@@ -7,8 +7,8 @@ module.exports = override(
         style: true,
     }),    
     addLessLoader({
-        javascriptEnabled: true,
-        modifyVars: { '@primary-color': '#0197d6' },
+        // javascriptEnabled: true,
+        // modifyVars: { '@primary-color': '#0197d6' },
         localIdentName: '[local]--[hash:base64:5]' // 自定义 CSS Modules 的 localIdentName
     }),
     addLessLoader({ localIdentName: '[local]--[hash:base64:5]' })

@@ -16,6 +16,7 @@ class ProductTypeForm extends PureComponent {
         typeNameFeedback: false,
     }
     componentDidMount() {
+        this.props.onRef(this);
         if ((this.props.state.order.addAddressState) || (this.props.loginState && this.props.loginGoodsResInfo.length === 0)) {
             this.props.form.setFieldsValue({
                 email: this.props.state.user.useremail,

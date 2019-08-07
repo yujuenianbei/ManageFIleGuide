@@ -4,3 +4,6 @@
 .ant-table-tbody > tr > td{
     overflow: hidden;
 }
+.ant-checkbox-group-item{
+    display: flex !important;
+}

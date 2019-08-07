@@ -44,9 +44,15 @@ class Headers extends PureComponent {
         }
     }
 
+    // 聊天窗口
     chatList = () => {
         this.props.changeChatListState(!this.props.state.chat.chatListState)
     }
+
+    // 侧边栏
+    changeLeftCollapsed = () => {
+        this.props.changeSettingCollapsed(!this.props.state.setting.leftCollapsed);
+    };
 
     // 头部设置的样式
     headerStyle = () => {
@@ -58,37 +64,41 @@ class Headers extends PureComponent {
         } else if (!FH && !LH && LC) {
             return {}
         } else if (!FH && LH && !LC) {
-            return {}
+            return {
+                marginLeft: 250
+            }
         } else if (!FH && LH && LC) {
-            return {}
+            return {
+                marginLeft: 80
+            }
         } else if (FH && !LH && !LC) {
             return {
                 position: 'fixed',
-                width: 'calc(100% - 200px)',
+                width: 'calc(100% - 250px)',
                 borderBottom: '1px solid #c1c1c1',
-                marginLeft: 0
+                marginLeft: 0, transition: 'all 0.2s'
             }
         } else if (FH && !LH && LC) {
             return {
                 position: 'fixed',
                 width: 'calc(100% - 80px)',
                 borderBottom: '1px solid #c1c1c1',
-                marginLeft: 0
+                marginLeft: 0, transition: 'all 0.2s'
             }
         } else if (FH && LH && !LC) {
-            return { 
+            return {
                 position: 'fixed',
-                width: 'calc(100% - 80px)',
+                width: 'calc(100% - 250px)',
                 borderBottom: '1px solid #c1c1c1',
-                marginLeft: 80
-             }
+                marginLeft: 250
+            }
         } else if (FH && LH && LC) {
-            return { 
+            return {
                 position: 'fixed',
                 width: 'calc(100% - 80px)',
                 borderBottom: '1px solid #c1c1c1',
                 marginLeft: 80
-             }
+            }
         }
     }
 
@@ -124,6 +134,9 @@ class Headers extends PureComponent {
                             <span className={styles.userName}>{this.props.state.user.userName}</span>
                         </div>
                     </Dropdown>
+                    <div className={styles.foldMenu} onClick={this.changeLeftCollapsed}>
+                        <Icon type={this.props.state.setting.leftCollapsed ? "menu-unfold" : "menu-fold"} />
+                    </div>
                 </Header>
                 <BackTop className={styles.upCont}>
                     <Icon className={styles.up} type="up" />
@@ -149,6 +162,7 @@ const mapDispatchToProps = (dispatch) => {
         changeUserOnlineList: (data) => { dispatch(Actions.userOnlineList(data)) },
         // 设置
         changeSettingModel: (data) => { dispatch(Actions.settingModel(data)) },
+        changeSettingCollapsed: (data) => { dispatch(Actions.settingCollapsed(data)) },
     }
 };
 export default connect(

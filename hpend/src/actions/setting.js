@@ -3,6 +3,7 @@ export const SETTINGHEADER = 'SETTINGHEADER';  //headerFix
 export const SETTINGCOLLAPSED = 'SETTINGCOLLAPSED'; //leftCollapsed
 export const SETTINGLEFTFIX = 'SETTINGLEFTFIX'; //leftFix
 export const SETTINGMENUTHEME = 'SETTINGMENUTHEME'; //leftFix
+export const SETTINGTHEMECOLOR = 'SETTINGTHEMECOLOR'; // themeColor
 // 展开设置窗口
 export function settingModel(data) {
   return {
@@ -39,6 +40,14 @@ export function settingLeftFix(data) {
 export function settingMenuTheme(data) {
   return {
     type: SETTINGMENUTHEME,
+    data
+  }
+}
+
+// 菜单主题
+export function settingThemeColor(data) {
+  return {
+    type: SETTINGTHEMECOLOR,
     data
   }
 }

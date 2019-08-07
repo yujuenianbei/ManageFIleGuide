@@ -7,13 +7,14 @@
 .header{
     padding: 0; 
     z-index: 99;
-    background: #fff;
+    background: @white !important;
+    padding: 0 !important;
 }
 .upCont{
     background-color: @blue;
     border-radius: @5;
     text-align: center;
-    line-height: @40;
+    line-height: @40 !important;
     &:hover{
         background-color: @btnhover;
     }
@@ -35,6 +36,15 @@
 .chatList{
     cursor: pointer;
     float: right;
+    padding: 0 @20;
+    &:hover{
+        background-color: rgba(189, 189, 189, 0.12);
+    }
+}
+
+.foldMenu{
+    cursor: pointer;
+    float: left;
     padding: 0 @20;
     &:hover{
         background-color: rgba(189, 189, 189, 0.12);

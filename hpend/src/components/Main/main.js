@@ -18,7 +18,16 @@ import { Layout } from 'antd';
 const { Content } = Layout;
 
 class Main extends PureComponent {
-
+    componentWillMount(){
+        // console.log(localStorage.getItem('http://192.168.1.128:3006/color.less:vars'))
+        if(this.props.state.setting.themeColor){
+            // window.less.modifyVars({
+            //     '@primary-color': this.props.state.setting.themeColor,
+            //     '@btn-primary-bg': this.props.state.setting.themeColor
+            // })
+            window.less.modifyVars(JSON.parse(localStorage.getItem('http://192.168.1.128:3006/color.less:vars')))
+        }
+    }
     contentStyle = () => {
         const FH = this.props.state.setting.fixHeader;
         const LH = this.props.state.setting.leftFix;
@@ -28,7 +37,7 @@ class Main extends PureComponent {
         } else if(!FH && !LH && LC) {
             return { margin: '0 16px', transition: 'all 0.2s' }
         } else if(!FH && LH && !LC) {
-            return { margin: '0px 16px 0px 216px' }
+            return { margin: '0px 16px 0px 266px' }
         } else if(!FH && LH && LC) {
             return { margin: '0px 16px 0px 96px', transition: 'all 0.2s' }
         } else if(FH && !LH && !LC) {
@@ -36,7 +45,7 @@ class Main extends PureComponent {
         } else if(FH && !LH && LC) {
             return { margin: '64px 16px 0px 16px', transition: 'all 0.2s' }
         } else if(FH && LH && !LC) {
-            return { margin: '64px 16px 0px 216px' }
+            return { margin: '64px 16px 0px 266px' }
         } else if(FH && LH && LC) {
             return { margin: '64px 16px 0px 96px', transition: 'all 0.2s' }
         }

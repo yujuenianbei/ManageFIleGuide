@@ -33,7 +33,7 @@ class Order extends PureComponent {
 
         this.checkBoxOnChange(this.props.state.order.checkListCol);
     }
-    
+
     // 计算合并单元格 根据用户合并
     rowCol = (obj, index, name) => {
         let row = [];
@@ -376,7 +376,7 @@ class Order extends PureComponent {
                 title: '数量',
                 dataIndex: 'productNum',
                 key: 'productNum',
-                width: 130,
+                width: 80,
                 render: (text, record) => (
                     <span title={record.productNum}>
                         {record.productNum}
@@ -486,7 +486,7 @@ class Order extends PureComponent {
             // fixed: 'right',
             render: (value, record, index) => {
                 const obj = {
-                    children: <OrderOperation value={value} record={record} index={index}/>,
+                    children: <OrderOperation value={value} record={record} index={index} />,
                     props: {},
                 };
                 this.orderRowCol(obj, index)
@@ -716,36 +716,28 @@ class Order extends PureComponent {
                                     筛选列
                                 </Dropdown.Button>
                             </Col>
-                            <Col span={12} offset={4}>
-                                <Row>
-                                    <InputGroup compact >
-                                        <Col span={8}>
-                                            <Button type="primary" onClick={() => this.clearAll()}>清空</Button>
-                                            <Select
-                                                value={this.props.state.order.searchType}
-                                                style={{ width: '70%', marginLeft: 10 }}
-                                                onChange={(value) => this.changeType(value)}>
-                                                <Option value="">无</Option>
-                                                {this.state.columns.map((item, index) => {
-                                                    if (item.key !== 'action') {
-                                                        return <Option value={item.key} key={"searchType_" + index}>{item.title}</Option>
-                                                    }
-                                                })}
-                                            </Select>
-                                        </Col>
-                                        <Col span={16}>
-                                            <Search
-                                                style={{ width: '92%' }}
-                                                defaultValue={this.props.state.order.searchValue}
-                                                value={this.props.state.order.searchValue}
-                                                onChange={value => this.searchValueChange(value)}
-                                                placeholder="请输入与筛选选项相对应的搜索内容(除类型和配置外都支持模糊搜索)"
-                                                onSearch={value => this.searchOrder(value)}
-                                                enterButton />
-                                            <Button type="primary" icon="redo" style={{ marginLeft: 10 }} title='更新' onClick={this.refresh} />
-                                        </Col>
-                                    </InputGroup>
-                                </Row>
+                            <Col span={16} offset={0} style={{ textAlign: "right" }}>
+                                <Button type="primary" onClick={() => this.clearAll()}>清空</Button>
+                                <Select
+                                    value={this.props.state.order.searchType}
+                                    style={{ width: '15%', margin: '0 10px', minWidth: 100 }}
+                                    onChange={(value) => this.changeType(value)}>
+                                    <Option value="">无</Option>
+                                    {this.state.columns.map((item, index) => {
+                                        if (item.key !== 'action') {
+                                            return <Option value={item.key} key={"searchType_" + index}>{item.title}</Option>
+                                        }
+                                    })}
+                                </Select>
+                                <Search
+                                    style={{ width: '47%', minWidth: 200 }}
+                                    defaultValue={this.props.state.order.searchValue}
+                                    value={this.props.state.order.searchValue}
+                                    onChange={value => this.searchValueChange(value)}
+                                    placeholder="请输入与筛选选项相对应的搜索内容(除类型和配置外都支持模糊搜索)"
+                                    onSearch={value => this.searchOrder(value)}
+                                    enterButton />
+                                <Button type="primary" icon="redo" style={{ marginLeft: 10 }} title='更新' onClick={this.refresh} />
                             </Col>
                         </Row>
                     </div>

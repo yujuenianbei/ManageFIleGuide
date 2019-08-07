@@ -5,11 +5,8 @@ import classify from '@magento/venia-concept/esm/classify';
 import styles from './setting.module.less';
 // 插件
 // import UUID from 'uuid-js';
-import { Drawer, Tabs, Row, Col, Radio, Switch } from 'antd';
-// http
-import { http } from '../../http'
-const { TabPane } = Tabs;
-const ref = React.createRef();
+import { Drawer, Tabs, Row, Col, Radio, Switch, Select } from 'antd';
+const { Option } = Select;
 class ChatContent extends PureComponent {
     constructor(props) {
         super(props);
@@ -54,6 +51,15 @@ class ChatContent extends PureComponent {
         // console.log(e.target.value)
         this.props.changeSettingMenuTheme(e.target.value);
     }
+    // 更换主题颜色
+    changeThemeColor = (value) => {
+        console.log(value);
+        this.props.changeSettingThemeColor(value)
+        window.less.modifyVars({
+            '@primary-color': value,
+            '@btn-primary-bg': value
+        })
+    }
 
     render() {
         return (
@@ -88,11 +94,35 @@ class ChatContent extends PureComponent {
                         <div className={styles.settingList}>
                             <Row justify='space-between'>
                                 <Col span={24}>
+                                    <Col span={16}>
+                                        <label>主题颜色</label>
+                                    </Col>
+                                    <Col span={8}>
+                                        <Select defaultValue={this.props.state.setting.themeColor} style={{ width: 120 }} onChange={this.changeThemeColor}>
+                                            <Option style={{ backgroundColor: 'rgb(245, 34, 45)' }} value="rgb(245, 34, 45)">红色</Option>
+                                            <Option style={{ backgroundColor: 'rgb(250, 84, 28)' }} value="rgb(250, 84, 28)">橙色</Option>
+                                            <Option style={{ backgroundColor: 'rgb(250, 173, 20)' }} value="rgb(250, 173, 20)">黄色</Option>
+                                            <Option style={{ backgroundColor: 'rgb(19, 194, 194)' }} value="rgb(19, 194, 194)">青色</Option>
+                                            <Option style={{ backgroundColor: 'rgb(82, 196, 26)' }} value="rgb(82, 196, 26)">绿色</Option>
+                                            <Option style={{ backgroundColor: 'rgb(24, 144, 255)' }} value="rgb(24, 144, 255)">蓝色</Option>
+                                            <Option style={{ backgroundColor: 'rgb(114, 46, 209)' }} value="rgb(114, 46, 209)">紫色</Option>
+                                        </Select>
+                                    </Col>
+                                </Col>
+                            </Row>
+                        </div>
+                        <div className={styles.settingList}>
+                            <Row justify='space-between'>
+                                <Col span={24}>
                                     <Col span={21}>
                                         <label>固定头部</label>
                                     </Col>
                                     <Col span={3}>
-                                        <Switch defaultChecked={this.props.state.setting.fixHeader} onChange={this.changeHeader} />
+                                        <Switch
+                                            checkedChildren="开"
+                                            unCheckedChildren="关"
+                                            defaultChecked={this.props.state.setting.fixHeader}
+                                            onChange={this.changeHeader} />
                                     </Col>
                                 </Col>
                             </Row>
@@ -104,7 +134,12 @@ class ChatContent extends PureComponent {
                                         <label>收起侧边栏</label>
                                     </Col>
                                     <Col span={3}>
-                                        <Switch defaultChecked={this.props.state.setting.leftCollapsed} onChange={this.changeLeftCollapsed} />
+                                        <Switch
+                                            checkedChildren="开"
+                                            unCheckedChildren="关"
+                                            checked={this.props.state.setting.leftCollapsed}
+                                            defaultChecked={this.props.state.setting.leftCollapsed}
+                                            onChange={this.changeLeftCollapsed} />
                                     </Col>
                                 </Col>
                             </Row>
@@ -116,7 +151,11 @@ class ChatContent extends PureComponent {
                                         <label>固定侧边栏</label>
                                     </Col>
                                     <Col span={3}>
-                                        <Switch defaultChecked={this.props.state.setting.leftFix} onChange={this.changeLeftFix} />
+                                        <Switch
+                                            checkedChildren="开"
+                                            unCheckedChildren="关"
+                                            defaultChecked={this.props.state.setting.leftFix}
+                                            onChange={this.changeLeftFix} />
                                     </Col>
                                 </Col>
                             </Row>
@@ -140,6 +179,7 @@ const mapDispatchToProps = (dispatch) => {
         changeSettingCollapsed: (data) => { dispatch(Actions.settingCollapsed(data)) },
         changeSettingLeftFix: (data) => { dispatch(Actions.settingLeftFix(data)) },
         changeSettingMenuTheme: (data) => { dispatch(Actions.settingMenuTheme(data)) },
+        changeSettingThemeColor: (data) => { dispatch(Actions.settingThemeColor(data)) },
     }
 };
 export default connect(
