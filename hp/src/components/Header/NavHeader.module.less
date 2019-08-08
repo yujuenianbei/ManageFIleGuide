@@ -1,64 +1,88 @@
 @import "../../less/color.less";
+@import "../../less/font.less";
 
-.navHeader {
-    height: 46px;
-    line-height: 46px;
-    color: @a;
-    float: left;
-
-    >li {
-        position: relative;
-        &:first-child {
-            padding: 0px 5px 0px 0px;
-        }
-
-        &:hover {
-            >span {
-                color: @ahover;
-                &:before {
-                    border: 10px solid;
-                    border-color: transparent transparent @borderHover;
-                    z-index: 1000;
-                    content: '';
-                    display: block;
-                    height: 0;
-                    position: absolute;
-                    width: 0;
-                    transform: translateX(-50%);
-                    left: 50%;
-                    bottom: 0;
-                }
-                &:after {
-                    border: 9px solid;
-                    border-color: transparent transparent @nav;
-                    z-index: 1000;
-                    content: '';
-                    display: block;
-                    height: 0;
-                    position: absolute;
-                    width: 0;
-                    transform: translateX(-50%);
-                    left: 50%;
-                    bottom: 0;
-                }
-            }
-            .menu {
-                display: block;
-            }
-        }
-
-        padding: 0px 5px;
-        float: left;
-        font-size: 13px;
+@media screen and (max-width: 768px) {
+    .userIcon {
+        font-size: 28px;
+        margin: 0 @10;
         cursor: pointer;
+        margin-top: @20;
+    }
 
-        .menu {
-            display: none;
-            position: fixed;
-            width: 100%;
-            height: 200px;
-            background: @nav;
-            left: 0;
+    .navHeader {
+        display: none;
+    }
+}
+
+@media screen and (min-width: 1024px) {
+    .userIcon {
+        display: none;
+    }
+
+    .navHeader {
+        height: 46px;
+        line-height: 46px;
+        color: @a;
+        float: left;
+
+        >li {
+            position: relative;
+
+            &:first-child {
+                padding: 0px 5px 0px 0px;
+            }
+
+            &:hover {
+                >span {
+                    color: @ahover;
+
+                    &:before {
+                        border: 10px solid;
+                        border-color: transparent transparent @borderHover;
+                        z-index: 1000;
+                        content: '';
+                        display: block;
+                        height: 0;
+                        position: absolute;
+                        width: 0;
+                        transform: translateX(-50%);
+                        left: 50%;
+                        bottom: 0;
+                    }
+
+                    &:after {
+                        border: 9px solid;
+                        border-color: transparent transparent @nav;
+                        z-index: 1000;
+                        content: '';
+                        display: block;
+                        height: 0;
+                        position: absolute;
+                        width: 0;
+                        transform: translateX(-50%);
+                        left: 50%;
+                        bottom: 0;
+                    }
+                }
+
+                .menu {
+                    display: block;
+                }
+            }
+
+            padding: 0px 5px;
+            float: left;
+            font-size: 13px;
+            cursor: pointer;
+
+            .menu {
+                display: none;
+                position: fixed;
+                width: 100%;
+                height: 200px;
+                background: @nav;
+                left: 0;
+            }
         }
     }
 }

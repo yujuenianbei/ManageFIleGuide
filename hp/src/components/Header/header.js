@@ -19,13 +19,16 @@ class Header extends PureComponent {
         return (
             <header className={styles.header}>
                 <div className={styles.headerContent}>
-                    <div className={styles.logo}>
-                        <Link to={'/'}>
-                            <img className={styles.logoImg} src="https://media.hpstore.cn/static/version1559772150/frontend/HPOLS/default/zh_Hans_CN/images/logo.svg" alt="HP" />
-                        </Link>
-                    </div>
-                    <div className={styles.contentSearch}>
-                        <SerchInput />
+                    <div className={styles.topHeader}>
+                        <div className={styles.logo}>
+                            <Link to={'/'}>
+                                <img className={styles.logoImg} src="https://media.hpstore.cn/static/version1559772150/frontend/HPOLS/default/zh_Hans_CN/images/logo.svg" alt="HP" />
+                            </Link>
+                        </div>
+                        <div className={styles.contentSearch}>
+                            <SerchInput />
+                        </div>
+                        <a className={styles.telephone} href="tel:400-820-1015">400-820-1015</a>
                     </div>
                     <div className={styles.content}>
                         <NavHeader />

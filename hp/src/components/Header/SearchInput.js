@@ -10,7 +10,6 @@ class SearchInput extends Component {
             <div className={styles.search}>
                 <input className={styles.searchinput} />
                 <Icon className={styles.searchIcon}>search</Icon>
-                <a className={styles.telephone} href="tel:400-820-1015">400-820-1015</a>
             </div>
         );
     }

@@ -2,275 +2,551 @@
 @import "../../less/font.less";
 @import "../../less/button.less";
 
-.userController {
-    float: right;
-    height: 46px;
-    line-height: 30px;
-
-    >ul {
-        display: flex;
-        flex-wrap: wrap;
-        margin: 0;
-
-        >li {
-            position: relative;
-
-            .userIcon {
-                font-size: 26px;
-                margin: 0px 5px;
-                cursor: pointer;
-                margin-top: 12px;
-            }
-
-            .default {
-                margin: 0;
-            }
-
-            .disno {
-                display: none;
-            }
-
-            .minCart {
-                display: block;
-                position: absolute;
-                background-color: @white;
-                border: @1 solid @border;
-                right: 0;
-                width: 390px;
-                padding: 25px 20px;
-
-                &:before {
-                    border: 7px solid;
-                    border-color: transparent transparent #828282;
-                    z-index: 1000;
-                    content: '';
-                    display: block;
-                    height: 0;
-                    position: absolute;
-                    width: 0;
-                    transform: translateX(-50%);
-                    right: 0px;
-                    top: -14px;
-                }
-
-                &:after {
-                    border: 6px solid;
-                    border-color: transparent transparent @white;
-                    z-index: 1000;
-                    content: '';
-                    display: block;
-                    height: 0;
-                    position: absolute;
-                    width: 0;
-                    transform: translateX(-50%);
-                    right: 2px;
-                    top: -12px;
-                }
-
-                .close {
-                    position: absolute;
-                    right: 12px;
-                    top: 12px;
-                    font-size: 1.6rem;
-                }
-
-                .items {
-                    .noneCart {
-                        text-align: center;
-                    }
-
-                    .mincartTop {
-                        display: flex;
-                        flex-wrap: wrap;
-                        justify-content: space-between;
-
-                        .count {
-                            .productNum {}
-
-                            .docOne {}
-
-                        }
-                    }
-
-                    .title {
-                        .docTwo {}
-                    }
-
-
-                    .edit {
-                        width: @f;
-                        text-align: center;
-                    }
-
-                    .productInCrat {
-                        display: flex;
-                        flex-wrap: wrap;
-
-                        .left {
-                            width: 88px;
-
-                            img {
-                                width: 75px;
-                                height: 75px;
-                            }
-                        }
-
-                        .right {
-                            width: calc(~'100% - 88px');
-                            margin-top: 7px;
-
-                            .productName {
-                                line-height: 20px;
-                                max-height: 40px;
-                                height: 40px;
-                                overflow: hidden;
-                            }
-
-                            .id {
-                                display: none;
-                            }
-
-                            .controllPrice {
-                                float: left;
-
-                                .price {
-                                    font-weight: 400;
-                                    font-size: 1.8rem;
-                                    color: #5a5a5a;
-                                    display: block;
-                                    width: 100%;
-                                }
-                            }
-
-                            .controllNum {
-                                float: right;
-
-                                .delete {
-                                    padding: 0px 7px;
-                                    margin-left: 10px;
-                                }
-                            }
-                        }
-
-                    }
-                }
-            }
-
-            .userAccount {
-                display: block;
-                position: absolute;
-                background-color: @white;
-                border: @1 solid @border;
-                right: 0;
-                padding: 20px 20px;
-
-                &:before {
-                    border: 7px solid;
-                    border-color: transparent transparent #828282;
-                    z-index: 1000;
-                    content: '';
-                    display: block;
-                    height: 0;
-                    position: absolute;
-                    width: 0;
-                    transform: translateX(-50%);
-                    right: 0px;
-                    top: -14px;
-                }
-
-                &:after {
-                    border: 6px solid;
-                    border-color: transparent transparent @white;
-                    z-index: 1000;
-                    content: '';
-                    display: block;
-                    height: 0;
-                    position: absolute;
-                    width: 0;
-                    transform: translateX(-50%);
-                    right: 2px;
-                    top: -12px;
-                }
-
-                .login {
-                    width: @f;
-                    font-size: @16;
-                    margin-bottom: @10;
-                    padding: 0;
-                    transition: background-color 0.25s linear, color 0.25s linear;
-                }
-
-                a {
-                    &:last-child {
-                        .login {
-                            margin-bottom: 0;
-                        }
-                    }
-                }
-
-                .qrcodeState {
-                    font-size: 1.3rem;
-                }
-
-                span{
-                    font-size: 1.2rem;
-                }
-            }
-
-            .userAccountNoLogin {
-                width: 300px;
-            }
-
-            .userAccountLogin {
-                width: 300px;
-                
-                h5 {
-                    font-size: 1.5rem;
-                    line-height: 1.5rem;
-                }
-
-                .username {
-                    font-weight: 600;
-                }
-
-                .userControllerList {
-                    border-top: @1 solid @border;
-                    margin-bottom: @20;
-
-                    ul {
-                        width: @f;
-                        display: flex;
-                        flex-wrap: wrap;
-
-                        li {
-                            float: left;
-                            width: 40%;
-                            border-bottom: 1px solid #c1c1c1;
-                            margin: 0 10% 0 0;
-                            line-height: 38px;
-                            font-size: 1.6rem;
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-}
-
-.qrcode {
-    width: 120px;
-}
-
-
 @media screen and (max-width: 768px) {
     .userController {
+        float: right;
+        // height: 46px;
+        // line-height: 30px;
+
         >ul {
+            display: flex;
+            flex-wrap: wrap;
+            margin: 0;
+
             >li {
+                position: relative;
+                line-height: 60px;
+
+                &:nth-child(1) {
+                    display: none;
+                }
+
+                &:nth-child(3) {
+                    display: none;
+                }
+
+                // &:nth-child(4) {
+                //     display: none;
+                // }
+
                 .userIcon {
-                    font-size: 22px;
+                    font-size: 28px;
+                    margin: 0px 5px;
+                    cursor: pointer;
+                    margin-top: 20px;
+                }
+
+                .default {
+                    margin: 0;
+                }
+
+                .disno {
+                    display: none;
+                }
+
+                .minCart {
+                    display: block;
+                    position: absolute;
+                    background-color: @white;
+                    border: @1 solid @border;
+                    right: 0;
+                    width: 390px;
+                    padding: 25px 20px;
+
+                    &:before {
+                        border: 7px solid;
+                        border-color: transparent transparent #828282;
+                        z-index: 1000;
+                        content: '';
+                        display: block;
+                        height: 0;
+                        position: absolute;
+                        width: 0;
+                        transform: translateX(-50%);
+                        right: 0px;
+                        top: -14px;
+                    }
+
+                    &:after {
+                        border: 6px solid;
+                        border-color: transparent transparent @white;
+                        z-index: 1000;
+                        content: '';
+                        display: block;
+                        height: 0;
+                        position: absolute;
+                        width: 0;
+                        transform: translateX(-50%);
+                        right: 2px;
+                        top: -12px;
+                    }
+
+                    .close {
+                        position: absolute;
+                        right: 12px;
+                        top: 12px;
+                        font-size: 1.6rem;
+                    }
+
+                    .items {
+                        .noneCart {
+                            text-align: center;
+                        }
+
+                        .mincartTop {
+                            display: flex;
+                            flex-wrap: wrap;
+                            justify-content: space-between;
+
+                            .count {
+                                .productNum {}
+
+                                .docOne {}
+
+                            }
+                        }
+
+                        .title {
+                            .docTwo {}
+                        }
+
+
+                        .edit {
+                            width: @f;
+                            text-align: center;
+                        }
+
+                        .productInCrat {
+                            display: flex;
+                            flex-wrap: wrap;
+
+                            .left {
+                                width: 88px;
+
+                                img {
+                                    width: 75px;
+                                    height: 75px;
+                                }
+                            }
+
+                            .right {
+                                width: calc(~'100% - 88px');
+                                margin-top: 7px;
+
+                                .productName {
+                                    line-height: 20px;
+                                    max-height: 40px;
+                                    height: 40px;
+                                    overflow: hidden;
+                                }
+
+                                .id {
+                                    display: none;
+                                }
+
+                                .controllPrice {
+                                    float: left;
+
+                                    .price {
+                                        font-weight: 400;
+                                        font-size: 1.8rem;
+                                        color: #5a5a5a;
+                                        display: block;
+                                        width: 100%;
+                                    }
+                                }
+
+                                .controllNum {
+                                    float: right;
+
+                                    .delete {
+                                        padding: 0px 7px;
+                                        margin-left: 10px;
+                                    }
+                                }
+                            }
+
+                        }
+                    }
+                }
+
+                .userAccount {
+                    display: block;
+                    position: absolute;
+                    background-color: @white;
+                    border: @1 solid @border;
+                    right: 0;
+                    padding: 20px 20px;
+
+                    &:before {
+                        border: 7px solid;
+                        border-color: transparent transparent #828282;
+                        z-index: 1000;
+                        content: '';
+                        display: block;
+                        height: 0;
+                        position: absolute;
+                        width: 0;
+                        transform: translateX(-50%);
+                        right: 0px;
+                        top: -14px;
+                    }
+
+                    &:after {
+                        border: 6px solid;
+                        border-color: transparent transparent @white;
+                        z-index: 1000;
+                        content: '';
+                        display: block;
+                        height: 0;
+                        position: absolute;
+                        width: 0;
+                        transform: translateX(-50%);
+                        right: 2px;
+                        top: -12px;
+                    }
+
+                    .login {
+                        width: @f;
+                        font-size: @16;
+                        margin-bottom: @10;
+                        padding: 0;
+                        transition: background-color 0.25s linear, color 0.25s linear;
+                    }
+
+                    a {
+                        &:last-child {
+                            .login {
+                                margin-bottom: 0;
+                            }
+                        }
+                    }
+
+                    .qrcodeState {
+                        font-size: 1.3rem;
+                    }
+
+                    span {
+                        font-size: 1.2rem;
+                    }
+                }
+
+                .userAccountNoLogin {
+                    width: 300px;
+                }
+
+                .userAccountLogin {
+                    width: 300px;
+
+                    h5 {
+                        font-size: 1.5rem;
+                        line-height: 1.5rem;
+                    }
+
+                    .username {
+                        font-weight: 600;
+                    }
+
+                    .userControllerList {
+                        border-top: @1 solid @border;
+                        margin-bottom: @20;
+
+                        ul {
+                            width: @f;
+                            display: flex;
+                            flex-wrap: wrap;
+
+                            li {
+                                float: left;
+                                width: 40%;
+                                border-bottom: 1px solid #c1c1c1;
+                                margin: 0 10% 0 0;
+                                line-height: 38px;
+                                font-size: 1.6rem;
+                            }
+                        }
+                    }
                 }
             }
         }
     }
+
+    .qrcode {
+        width: 120px;
+    }
 }
+
+@media screen and (min-width: 1024px) {
+    .userController {
+        float: right;
+        height: 46px;
+        line-height: 30px;
+
+        >ul {
+            display: flex;
+            flex-wrap: wrap;
+            margin: 0;
+
+            >li {
+                position: relative;
+
+                .userIcon {
+                    font-size: 26px;
+                    margin: 0px 5px;
+                    cursor: pointer;
+                    margin-top: 12px;
+                }
+
+                .default {
+                    margin: 0;
+                }
+
+                .disno {
+                    display: none;
+                }
+
+                .minCart {
+                    display: block;
+                    position: absolute;
+                    background-color: @white;
+                    border: @1 solid @border;
+                    right: 0;
+                    width: 390px;
+                    padding: 25px 20px;
+
+                    &:before {
+                        border: 7px solid;
+                        border-color: transparent transparent #828282;
+                        z-index: 1000;
+                        content: '';
+                        display: block;
+                        height: 0;
+                        position: absolute;
+                        width: 0;
+                        transform: translateX(-50%);
+                        right: 0px;
+                        top: -14px;
+                    }
+
+                    &:after {
+                        border: 6px solid;
+                        border-color: transparent transparent @white;
+                        z-index: 1000;
+                        content: '';
+                        display: block;
+                        height: 0;
+                        position: absolute;
+                        width: 0;
+                        transform: translateX(-50%);
+                        right: 2px;
+                        top: -12px;
+                    }
+
+                    .close {
+                        position: absolute;
+                        right: 12px;
+                        top: 12px;
+                        font-size: 1.6rem;
+                    }
+
+                    .items {
+                        .noneCart {
+                            text-align: center;
+                        }
+
+                        .mincartTop {
+                            display: flex;
+                            flex-wrap: wrap;
+                            justify-content: space-between;
+
+                            .count {
+                                .productNum {}
+
+                                .docOne {}
+
+                            }
+                        }
+
+                        .title {
+                            .docTwo {}
+                        }
+
+
+                        .edit {
+                            width: @f;
+                            text-align: center;
+                        }
+
+                        .productInCrat {
+                            display: flex;
+                            flex-wrap: wrap;
+
+                            .left {
+                                width: 88px;
+
+                                img {
+                                    width: 75px;
+                                    height: 75px;
+                                }
+                            }
+
+                            .right {
+                                width: calc(~'100% - 88px');
+                                margin-top: 7px;
+
+                                .productName {
+                                    line-height: 20px;
+                                    max-height: 40px;
+                                    height: 40px;
+                                    overflow: hidden;
+                                }
+
+                                .id {
+                                    display: none;
+                                }
+
+                                .controllPrice {
+                                    float: left;
+
+                                    .price {
+                                        font-weight: 400;
+                                        font-size: 1.8rem;
+                                        color: #5a5a5a;
+                                        display: block;
+                                        width: 100%;
+                                    }
+                                }
+
+                                .controllNum {
+                                    float: right;
+
+                                    .delete {
+                                        padding: 0px 7px;
+                                        margin-left: 10px;
+                                    }
+                                }
+                            }
+
+                        }
+                    }
+                }
+
+                .userAccount {
+                    display: block;
+                    position: absolute;
+                    background-color: @white;
+                    border: @1 solid @border;
+                    right: 0;
+                    padding: 20px 20px;
+
+                    &:before {
+                        border: 7px solid;
+                        border-color: transparent transparent #828282;
+                        z-index: 1000;
+                        content: '';
+                        display: block;
+                        height: 0;
+                        position: absolute;
+                        width: 0;
+                        transform: translateX(-50%);
+                        right: 0px;
+                        top: -14px;
+                    }
+
+                    &:after {
+                        border: 6px solid;
+                        border-color: transparent transparent @white;
+                        z-index: 1000;
+                        content: '';
+                        display: block;
+                        height: 0;
+                        position: absolute;
+                        width: 0;
+                        transform: translateX(-50%);
+                        right: 2px;
+                        top: -12px;
+                    }
+
+                    .login {
+                        width: @f;
+                        font-size: @16;
+                        margin-bottom: @10;
+                        padding: 0;
+                        transition: background-color 0.25s linear, color 0.25s linear;
+                    }
+
+                    a {
+                        &:last-child {
+                            .login {
+                                margin-bottom: 0;
+                            }
+                        }
+                    }
+
+                    .qrcodeState {
+                        font-size: 1.3rem;
+                    }
+
+                    span {
+                        font-size: 1.2rem;
+                    }
+                }
+
+                .userAccountNoLogin {
+                    width: 300px;
+                }
+
+                .userAccountLogin {
+                    width: 300px;
+
+                    h5 {
+                        font-size: 1.5rem;
+                        line-height: 1.5rem;
+                    }
+
+                    .username {
+                        font-weight: 600;
+                    }
+
+                    .userControllerList {
+                        border-top: @1 solid @border;
+                        margin-bottom: @20;
+
+                        ul {
+                            width: @f;
+                            display: flex;
+                            flex-wrap: wrap;
+
+                            li {
+                                float: left;
+                                width: 40%;
+                                border-bottom: 1px solid #c1c1c1;
+                                margin: 0 10% 0 0;
+                                line-height: 38px;
+                                font-size: 1.6rem;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .qrcode {
+        width: 120px;
+    }
+}
+
+
+
+// @media screen and (max-width: 768px) {
+//     .userController {
+//         >ul {
+//             >li {
+//                 .userIcon {
+//                     font-size: 22px;
+//                 }
+//             }
+//         }
+//     }
+// }
