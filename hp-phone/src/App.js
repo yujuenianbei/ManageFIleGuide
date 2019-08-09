@@ -6,12 +6,12 @@ import * as Actions from './actions';
 import ApolloClient from "apollo-boost";
 // import './less/font.less'
 // 模块
-// import Header from './components/Header';
+import Header from './components/Header';
 // import HeaderInt from './components/HeaderInt';
 // import Notification from './components/Notification';
-// import Routers from './router/routers';
 // import Footer from './components/Footer';
 // import ScrollToTop from './components/ScrollToTop';
+import Main from './components/Main'
 
 import { ApolloProvider } from 'react-apollo';
 import { Provider as ReduxProvider } from 'react-redux';
@@ -19,6 +19,7 @@ import { HashRouter as Router } from 'react-router-dom';
 import { LocaleProvider } from 'antd-mobile';
 import zhCN from 'antd-mobile/lib/locale-provider/ru_RU';
 
+import Routers from './router/router';
 // 状态数据持久化
 import { PersistGate } from 'redux-persist/integration/react'
 // http
@@ -91,20 +92,17 @@ const App = () => {
     <ApolloProvider client={client}>
       <ReduxProvider store={store}>
         <PersistGate persistor={persistor}>
-          <Router>
-            {/* <ScrollToTop> */}
-              <LocaleProvider locale={zhCN}>
-                <Fragment>
-                    12312
-                  {/* <Header />
-                  <HeaderInt />
-                  <Notification />
-                  <Routers />
-                  <Footer /> */}
-                </Fragment>
-              </LocaleProvider>
-            {/* </ScrollToTop> */}
-          </Router>
+          <LocaleProvider locale={zhCN}>
+            <Router>
+              <Fragment>
+                <Routers />
+                {/* <Header /> */}
+                {/* <HeaderInt />
+                  <Notification /> */}
+                {/* <Footer /> */}
+              </Fragment>
+            </Router>
+          </LocaleProvider>
         </PersistGate>
       </ReduxProvider>
     </ApolloProvider>

@@ -1,0 +1,104 @@
+@import "./color.less";
+@import "./font.less";
+
+@pd30: 30px;
+@pd25: 25px;
+@pd20: 20px;
+@pd15: 15px;
+@pd10: 10px;
+@pd5: 5px;
+
+.prime{
+    border: 1px solid @blue;
+    padding: @6 @12;
+    background-color: @blue;
+    border-radius: @4;
+    color: @white;
+    transition: all 0.25s linear;
+    &:hover{
+        color: @blue;
+        background-color: @white;
+    }
+}
+.prime:disabled{
+    opacity: .5;
+    &:hover{
+        background-color: @blue;
+        color: @white;
+    }
+}
+
+.primed{
+    border: 1px solid @blue;
+    padding: @6 @12;
+    background-color: @white;
+    border-radius: @4;
+    color: @blue;
+    transition: all 0.25s linear;
+    &:hover{
+        color: @white;
+        background-color: @blue;
+    }
+}
+.primed:disabled{
+    opacity: .5;
+    &:hover{
+        background-color: @white;
+        color: @blue;
+    }
+}
+
+.albedo{
+    border: 1px solid @white;
+    padding: @6 @12;
+    background-color: @white;
+    border-radius: @4;
+    color: @gray;
+    transition: all 0.25s linear;
+    &:hover{
+        color: @blue;
+        background-color: @white;
+        border: 1px solid @blue;
+    }
+}
+.albedo:disabled{
+    opacity: .5;
+    &:hover{
+        background-color: @blue;
+        color: @white;
+    }
+}
+
+input[type="checkbox"] {
+    margin: 0;
+    width: @pd20;
+    height: @pd20;
+    line-height: @pd20;
+
+    &:after {
+        content: "\2714";
+        display: block;
+        width: @pd20;
+        height: @pd20;
+        text-align: center;
+        line-height: 18px;
+        font-size: 16px;
+        color: @white;
+        border: 1px solid @gray;
+        background-color: @white;
+        box-sizing: border-box;
+    }
+}
+
+input[type=checkbox]:checked:after {
+    border: 2px solid @gray;
+    background-color: @gray;
+}
+
+input[type=radio]:checked:after {
+    content: "L";
+    transform: matrix(-0.766044, -0.642788, -0.642788, 0.766044, 0, 0);
+    -webkit-transform: matrix(-0.766044, -0.642788, -0.642788, 0.766044, 0, 0);
+    border-color: #37AF6E;
+    background-color: #37AF6E;
+}
