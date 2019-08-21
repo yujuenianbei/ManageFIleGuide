@@ -1,0 +1,27 @@
+@import "../../less/color.less";
+@import "../../less/font.less";
+@import "../../less/button.less";
+
+.header{
+    position: fixed;
+    width: 100%;
+    height: 50px;
+    background: #f6f6f6;
+    box-shadow: 0 1px 0 0 #d0cccc;
+    z-index: 99;
+    .headerContent{
+        position: relative;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        padding: 0 15px;
+        .Icon{
+            line-height: 50px;
+            font-size: 24px;
+            color: #000;
+        }
+        img{
+            margin-top: 7px;
+        }
+    }
+}

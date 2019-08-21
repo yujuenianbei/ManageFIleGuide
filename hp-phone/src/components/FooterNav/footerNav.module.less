@@ -1,0 +1,39 @@
+.bottom {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    border-top: 1px solid #ccc;
+    background: #fff;
+
+    &>ul {
+        display: flex;
+        justify-content: space-around;
+
+        &>.list {
+            font-size: 28px;
+            width: 100%;
+            text-align: center;
+
+            &>a {
+                display: flex;
+                flex-direction: column;
+                padding: 10px 0 5px;
+
+                svg {
+                    width: 100% !important;
+                }
+
+                span {
+                    font-size: 12px;
+                    margin-top: 5px;
+                }
+            }
+        }
+
+        .navIcon {
+            a{
+                color: #108ee9 !important;
+            }
+        }
+    }
+}

@@ -6,12 +6,8 @@ import * as Actions from './actions';
 import ApolloClient from "apollo-boost";
 // import './less/font.less'
 // 模块
-import Header from './components/Header';
-// import HeaderInt from './components/HeaderInt';
-// import Notification from './components/Notification';
-// import Footer from './components/Footer';
-// import ScrollToTop from './components/ScrollToTop';
-import Main from './components/Main'
+import Header from './components/Main';
+
 
 import { ApolloProvider } from 'react-apollo';
 import { Provider as ReduxProvider } from 'react-redux';
@@ -96,10 +92,6 @@ const App = () => {
             <Router>
               <Fragment>
                 <Routers />
-                {/* <Header /> */}
-                {/* <HeaderInt />
-                  <Notification /> */}
-                {/* <Footer /> */}
               </Fragment>
             </Router>
           </LocaleProvider>

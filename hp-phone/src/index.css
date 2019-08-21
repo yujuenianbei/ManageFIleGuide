@@ -141,3 +141,6 @@ li {
   }
 } */
 
+.am-grid-item-content{
+  padding: 0 !important;
+}
