@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { PureComponent, Fragment } from 'react';
 import * as Actions from '../../actions/index';
 import classify from '@magento/venia-concept/esm/classify';
 import { connect } from 'react-redux';
@@ -21,12 +21,13 @@ import Classify from '../Classify';
 import Cart from '../Cart';
 import User from '../User';
 
-class Main extends Component {
+class Main extends PureComponent {
     state = {
         visible: false,
         selected: '',
         open: false,
         drawerVisible: false,
+        searchVisible: false
     }
     onSelect = (opt) => {
         this.setState({
@@ -38,8 +39,13 @@ class Main extends Component {
         // console.log(args);
         this.setState({ open: !this.state.open });
     }
+
     toggleDrawer = () => {
         this.setState({ drawerVisible: !this.state.drawerVisible })
+    }
+
+    toggleSearch = () => {
+        this.setState({ searchVisible: !this.state.searchVisible })
     }
 
     render() {
@@ -58,31 +64,48 @@ class Main extends Component {
         </List>);
         const { location } = this.props;
         return (<Fragment>
-            <Header drawer={this.toggleDrawer} />
-            <Drawer drawer={this.toggleDrawer} show={this.state.drawerVisible} />
+            <Header
+                drawer={this.toggleDrawer}
+                search={this.toggleSearch}
+                showSearch={this.state.searchVisible} />
+            <Drawer
+                drawer={this.toggleDrawer}
+                show={this.state.drawerVisible}
+                direct="left"
+                header={true}
+                headerContent="Header"
+                style={{
+                    touchAction: this.state.drawerVisible ? 'none' : 'auto',
+                }}
+                />
             <Mask drawer={this.toggleDrawer} show={this.state.drawerVisible} />
-            <div className={styles.main}>
-                <Route path='/home' component={Home} />
-                <Route path='/classify' component={Classify} />
-                <Route path='/cart' component={Cart} />
-                <Route path='/user' component={User} />
-                <FooterNav location={location} />
-            </div>
+                <div className={styles.main} id="main"
+                    style={{
+                        touchAction: this.state.drawerVisible ? 'none' : 'auto',
+                        paddingTop: this.state.searchVisible ? '100px' : '50px',
+                        minHeight: this.state.searchVisible ? 'calc( 100vh - 162px )' : 'calc( 100vh - 112px )',
+                    }}>
+                    <Route path='/home' component={Home} />
+                    <Route path='/classify' component={Classify} />
+                    <Route path='/cart' component={Cart} />
+                    <Route path='/user' component={User} />
+                    <FooterNav location={location} />
+                </div>
         </Fragment>);
+        }
     }
-}
 const mapStateToProps = (state) => {
     return {
-        state
-    };
-};
-
+                state
+            };
+        };
+        
 const mapDispatchToProps = (dispatch) => {
     return {
 
-    }
-};
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(withRouter(classify(styles)(Main)));
+            }
+            };
+            export default connect(
+                mapStateToProps,
+                mapDispatchToProps
+            )(withRouter(classify(styles)(Main)));

@@ -8,11 +8,13 @@ import Router from '../../router/detailRouter';
 import { Link, withRouter } from 'react-router-dom';
 // icon
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUserAlt, faBars } from '@fortawesome/fontawesome-free-solid';
+import { faSearch, faBars } from '@fortawesome/fontawesome-free-solid';
 import hp from '../../img/hp.png';
+// 
+import HeaderSearch from '../HeaderSearch';
 class Header extends Component {
     render() {
-        const {drawer} = this.props;
+        const { drawer, search, showSearch } = this.props;
         return (<div className={styles.header}>
             <div className={styles.headerContent}>
                 <span className={styles.Icon} onClick={drawer}>
@@ -21,10 +23,11 @@ class Header extends Component {
                 <Link to={'/home'}>
                     <img className="header-logo" src={hp} height="36" alt="Venia" title="Venia" />
                 </Link>
-                <span className={styles.Icon}>
-                    <FontAwesomeIcon icon={faUserAlt} />
+                <span className={styles.Icon} onClick={search}>
+                    <FontAwesomeIcon icon={faSearch} />
                 </span>
             </div>
+            <HeaderSearch showSearch={showSearch} />
         </div>);
     }
 }

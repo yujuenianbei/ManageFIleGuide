@@ -1,0 +1,65 @@
+.headerSearch {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 14px 10px;
+
+    .headerSearchContainer {
+        position: relative;
+        width: 100%;
+
+        .searchBar {
+            display: grid;
+            position: relative;
+            z-index: 2;
+            .searchRoot {
+                display: inline-grid;
+                grid-auto-flow: column;
+                grid-template-areas: 'before input after';
+                grid-template-columns: auto 1fr auto;
+                --iconsBefore: 1;
+                --iconsAfter: 1;
+
+                .inputBefore {
+                    grid-area: before;
+                    align-items: center;
+                    display: flex;
+                    justify-content: center;
+                    pointer-events: none;
+                    width: 36px;
+                    z-index: 9;
+                    font-size: 16px;
+                }
+
+                .input {
+                    align-items: center;
+                    display: flex;
+                    grid-column: before-start / after-end;
+                    grid-row: input-start / input-end;
+
+                    .searchInput {
+                        padding-left: 36px;
+                        padding-right: 36px;
+                        background: white;
+                        border: 1px solid #ccc;
+                        border-radius: 2px;
+                        margin: 0;
+                        width: 100%;
+                        line-height: 37px;
+                        font-size: 16px;
+                    }
+                }
+
+                .inputAfter {
+                    grid-area: after;
+                    align-items: center;
+                    display: flex;
+                    justify-content: center;
+                    width: 36px;
+                    font-size: 16px;
+                }
+            }
+        }
+
+    }
+}

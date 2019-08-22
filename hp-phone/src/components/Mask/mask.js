@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, useEffect } from 'react';
 import * as Actions from '../../actions/index';
 import classify from '@magento/venia-concept/esm/classify';
 import { connect } from 'react-redux';
@@ -10,9 +10,8 @@ import hp from '../../img/hp.png';
 
 const Drawer = (props) => {
     const className = props.show ? styles.show : styles.hide;
-    return (<div className={className + ' ' + styles.root} onClick = { props.drawer } >
 
-    </div >);
+    return (<div id="mask" className={className + ' ' + styles.root} onClick={props.drawer} ></div >);
 }
 const mapStateToProps = (state) => {
     return {
