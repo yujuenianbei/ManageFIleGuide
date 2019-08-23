@@ -158,6 +158,41 @@ const ProductListInfoOne = new GraphQLObjectType({
     },
 });
 
+const ProductAllType = new GraphQLObjectType({
+    name: 'ProductType',
+    description: "ProductType",
+    fields: () => {
+        return ({
+            // 这种可以
+            id: {
+                type: GraphQLInt, resolve(data) {
+                    return data.id;
+                }
+            },
+            typeName: {
+                type: GraphQLString, resolve(data) {
+                    return data.typeName;
+                }
+            },
+            type: {
+                type: GraphQLString, resolve(data) {
+                    return data.type;
+                }
+            },
+            createTime: {
+                type: GraphQLString, resolve(data) {
+                    return data.createTime;
+                }
+            },
+            updateTime: {
+                type: GraphQLString, resolve(data) {
+                    return data.updateTime;
+                }
+            }
+        });
+    },
+});
+
 
 
 const UserInput = new GraphQLInputObjectType({
@@ -195,6 +230,13 @@ module.exports = {
                 return await searchSql($sql.queryProductListBanner);
             }
         },
+        productType: {
+            type: new GraphQLList(ProductAllType),
+            description: '产品分类',
+            resolve: async function (root, args) {
+                return await searchSql($sql.queryAllProductType);
+            }
+        },
         productListInfoOne: {
             type: new GraphQLList(ProductListInfoOne),
             description: '查询首页ProductInfo',
@@ -217,7 +259,7 @@ module.exports = {
                 // }else if(args.id === 6){
                 //     return await searchSql($sql.queryProduct, [args.id])
                 // }
-                
+
             }
         }
     },

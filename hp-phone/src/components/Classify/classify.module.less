@@ -2,10 +2,54 @@
 @import "../../less/font.less";
 @import "../../less/button.less";
 
-.home{
+.classify {
     display: flex;
-    flex-direction: column;
-    position: fixed;
-    width: 100%;
-    height: 100vh;
+    flex-direction: row;
+
+    .classifyLeft {
+        width: 100px;
+        position: relative;
+        overflow-y: auto;
+        border-right: 1px solid #ccc;
+
+        &::-webkit-scrollbar {
+            display: none;
+        }
+
+        ul {
+            position: relative;
+            text-align: center;
+
+            li {
+                height: 40px;
+                line-height: 40px;
+            }
+        }
+    }
+
+    .classifyContent {
+        width: calc(~'100% - 100px');
+        position: fixed;
+        margin-left: 100px;
+        overflow-y: scroll;
+
+        &::-webkit-scrollbar {
+            display: none;
+        }
+
+        ul {
+            display: flex;
+            flex-wrap: wrap;
+            padding: 10px;
+
+            li {
+                width: calc(100%/3 - 20px);
+                padding: 10px;
+
+                img {
+                    width: 100%;
+                }
+            }
+        }
+    }
 }

@@ -74,6 +74,7 @@ var user = {
     queryProductListBanner: "SELECT * FROM productListBanner",
     queryProductType: "SELECT * FROM product where type= ? limit 4",
 
+    queryAllProductType: "SELECT * FROM productType",
     // 查询产品详情
     queryProductInfo: "SELECT * FROM product where id= ?",
     // 获取所有产品的类型
@@ -87,6 +88,8 @@ var user = {
     queryProductNum: "SELECT count(id) count FROM product ORDER BY id ASC",
     // 查询多个产品
     queryProductIn: "SELECT * FROM product WHERE id in ?",
+
+    queryProductByType: "SELECT product.id, product.productName, product.type, productType.typeName, product.img, product.promotionMessage,  product.features, product.usedPrice, product.nowPrice FROM product, productType WHERE productType.id=product.type AND product.type=?",
 
 
 

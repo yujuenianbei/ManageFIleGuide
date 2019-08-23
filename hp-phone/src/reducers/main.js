@@ -2,14 +2,18 @@ import {
     LOADING,
     OFFLINE,
     OFFLINENOTE,
-    LOADINGHEADER
+    LOADINGHEADER,
+    SEARCHBARSTATE,
+    DRAWERSTATE
     } from '../actions/index'
     
     const initValue = {
       headerLoading: false,
         loading: false,
         offline: false,
-        offlineNote: false
+        offlineNote: false,
+        searchbar: false,
+        drawer: false
     }
     export default (state = initValue, action) => {
       const data = action.data
@@ -25,6 +29,12 @@ import {
         }
         case OFFLINENOTE: {
           return Object.assign({}, state, {offlineNote: data})
+        }
+        case SEARCHBARSTATE: {
+          return Object.assign({}, state, {searchbar: data})
+        }
+        case DRAWERSTATE: {
+          return Object.assign({}, state, {drawer: data})
         }
         default: {
           return state;

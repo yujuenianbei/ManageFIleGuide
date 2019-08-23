@@ -81,6 +81,7 @@ CREATE TABLE IF NOT EXISTS productType
 (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `typeName` varchar(255) DEFAULT NULL,
+  `type` varchar(255) DEFAULT NULL,
   `createTime` datetime NOT NULL,
   `updateTime` datetime NOT NULL,
   PRIMARY KEY (`id`)
@@ -368,12 +369,12 @@ CREATE TABLE IF NOT EXISTS qrcode
 -- INSERT INTO `productListBanner` VALUES (5, 5, '显示器','https://media.hpstore.cn/wysiwyg/CN_OLS/bset-sellers/monitor001-20190319mmq.jpg', '/productList/123123', NOW(), NOW());
 -- INSERT INTO `productListBanner` VALUES (6, 6, '酷炫装备','https://media.hpstore.cn/wysiwyg/CN_OLS/bset-sellers/ass001-20190319mmq.jpg', '/productList/123123', NOW(), NOW());
 
--- INSERT INTO `productType` VALUES (1, 'notebook', NOW(), NOW());
--- INSERT INTO `productType` VALUES (2, 'gamebook', NOW(), NOW());
--- INSERT INTO `productType` VALUES (3, 'printer', NOW(), NOW());
--- INSERT INTO `productType` VALUES (4, 'consumable', NOW(), NOW());
--- INSERT INTO `productType` VALUES (5, 'display', NOW(), NOW());
--- INSERT INTO `productType` VALUES (6, 'peripheral', NOW(), NOW());
+-- INSERT INTO `productType` VALUES (1, '笔记本', 'notebook', NOW(), NOW());
+-- INSERT INTO `productType` VALUES (2, '游戏本', 'gamebook', NOW(), NOW());
+-- INSERT INTO `productType` VALUES (3, '打印机', 'printer', NOW(), NOW());
+-- INSERT INTO `productType` VALUES (4, '耗材', 'consumable', NOW(), NOW());
+-- INSERT INTO `productType` VALUES (5, '显示器', 'display', NOW(), NOW());
+-- INSERT INTO `productType` VALUES (6, '外设', 'peripheral', NOW(), NOW());
 
 
 -- -- ----------------------------

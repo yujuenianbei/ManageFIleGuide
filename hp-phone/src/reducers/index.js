@@ -1,2 +1,3 @@
 import mainsReducer from './main.js';
-export { mainsReducer }
+import classifiesReducer from './classify';
+export { mainsReducer, classifiesReducer }

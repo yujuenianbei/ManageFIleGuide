@@ -11,10 +11,11 @@ import { createStore, combineReducers, applyMiddleware } from 'redux';
 import { persistStore, persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage'
 import thunk from 'redux-thunk';
-import { mainsReducer} from '../reducers';
+import { mainsReducer, classifiesReducer} from '../reducers';
 
 const reducer = combineReducers({
   main: mainsReducer,
+  classify: classifiesReducer
 })
 
 // 状态未持久化

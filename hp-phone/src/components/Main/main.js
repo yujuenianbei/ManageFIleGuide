@@ -41,11 +41,11 @@ class Main extends PureComponent {
     }
 
     toggleDrawer = () => {
-        this.setState({ drawerVisible: !this.state.drawerVisible })
+        this.props.drawerVisible(!this.props.state.main.drawer)
     }
 
     toggleSearch = () => {
-        this.setState({ searchVisible: !this.state.searchVisible })
+        this.props.searchBarVisible(!this.props.state.main.searchbar)
     }
 
     render() {
@@ -67,45 +67,46 @@ class Main extends PureComponent {
             <Header
                 drawer={this.toggleDrawer}
                 search={this.toggleSearch}
-                showSearch={this.state.searchVisible} />
+                showSearch={this.props.state.main.searchbar} />
             <Drawer
                 drawer={this.toggleDrawer}
-                show={this.state.drawerVisible}
+                show={this.props.state.main.drawer}
                 direct="left"
                 header={true}
                 headerContent="Header"
                 style={{
-                    touchAction: this.state.drawerVisible ? 'none' : 'auto',
+                    touchAction: this.props.state.main.drawer ? 'none' : 'auto',
                 }}
-                />
-            <Mask drawer={this.toggleDrawer} show={this.state.drawerVisible} />
-                <div className={styles.main} id="main"
-                    style={{
-                        touchAction: this.state.drawerVisible ? 'none' : 'auto',
-                        paddingTop: this.state.searchVisible ? '100px' : '50px',
-                        minHeight: this.state.searchVisible ? 'calc( 100vh - 162px )' : 'calc( 100vh - 112px )',
-                    }}>
-                    <Route path='/home' component={Home} />
-                    <Route path='/classify' component={Classify} />
-                    <Route path='/cart' component={Cart} />
-                    <Route path='/user' component={User} />
-                    <FooterNav location={location} />
-                </div>
+            />
+            <Mask drawer={this.toggleDrawer} show={this.props.state.main.drawer} />
+            <div className={styles.main} id="main"
+                style={{
+                    touchAction: this.props.state.main.drawer ? 'none' : 'auto',
+                    paddingTop: this.props.state.main.searchbar ? '100px' : '50px',
+                    minHeight: this.props.state.main.searchbar? 'calc( 100vh - 162px )' : 'calc( 100vh - 112px )',
+                }}>
+                <Route path='/home' component={Home} />
+                <Route path='/classify' component={Classify} />
+                <Route path='/cart' component={Cart} />
+                <Route path='/user' component={User} />
+                <FooterNav location={location} />
+            </div>
         </Fragment>);
-        }
     }
+}
 const mapStateToProps = (state) => {
     return {
-                state
-            };
-        };
-        
+        state
+    };
+};
+
 const mapDispatchToProps = (dispatch) => {
     return {
-
-            }
-            };
-            export default connect(
-                mapStateToProps,
-                mapDispatchToProps
-            )(withRouter(classify(styles)(Main)));
+        searchBarVisible: (data) => { dispatch(Actions.searchBarState(data))},
+        drawerVisible: (data) => { dispatch(Actions.drawerState(data))},
+    }
+};
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(withRouter(classify(styles)(Main)));

@@ -106,6 +106,11 @@ const QueryPorduct = new GraphQLObjectType({
                     return data.type;
                 }
             },
+            typeName: {
+                type: GraphQLString, resolve(data) {
+                    return data.typeName;
+                }
+            },
             img: {
                 type: GraphQLString, resolve(data) {
                     return data.img;
@@ -194,6 +199,20 @@ module.exports = {
         }
     },
     mutation: {
-
+        queryProductByType: {
+            type: new GraphQLList(QueryPorduct),
+            description: '根据type选择产品',
+            args: {
+                type: { type: GraphQLInt },
+            },
+            resolve: async function (source, { type }) {
+                return await searchSql($sql.queryProductByType, [type])
+                    .then(async(result)=>{
+                        console.log(result)
+                        return await result
+                    })
+                
+            }
+        },
     }
 };
