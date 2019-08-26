@@ -21,6 +21,12 @@ import { PersistGate } from 'redux-persist/integration/react'
 // http
 import { http } from './http'
 
+import fontawesome from '@fortawesome/fontawesome'
+import FontAwesomeIcon from '@fortawesome/react-fontawesome'
+import brands from '@fortawesome/fontawesome-free-brands'
+
+fontawesome.library.add(brands)
+
 // const client = new ApolloClient({
 //   uri: "http://192.168.31.50:3004/graphql"
 // });

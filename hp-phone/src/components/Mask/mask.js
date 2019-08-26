@@ -11,7 +11,7 @@ import hp from '../../img/hp.png';
 const Drawer = (props) => {
     const className = props.show ? styles.show : styles.hide;
 
-    return (<div id="mask" className={className + ' ' + styles.root} onClick={props.drawer} ></div >);
+    return (<div id="mask" className={className + ' ' + styles.root} onClick={props.click} ></div >);
 }
 const mapStateToProps = (state) => {
     return {

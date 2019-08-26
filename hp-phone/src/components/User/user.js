@@ -12,7 +12,12 @@ import { faUserAlt } from '@fortawesome/fontawesome-free-solid'
 class Home extends Component {
     render() {
         return (<Fragment>
-            用户
+            <div className={styles.user}>
+                <div className={styles.userInfo}>
+                    <img src='https://media.hpstore.cn/static/version1566421957/frontend/HPOLS/default/zh_Hans_CN/images/logo.svg' width="90" />
+                    <span>用户名</span>
+                </div>
+            </div>
         </Fragment>);
     }
 }

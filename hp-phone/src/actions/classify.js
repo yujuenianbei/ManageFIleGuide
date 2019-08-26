@@ -29,6 +29,7 @@ export function typeOfProduct(data) {
     }
 }
 
+// fetch请求graphql
 export function changeType(data) {
     return (dispatch, getState) => {
         dispatch(typeLoading(true));
@@ -62,6 +63,7 @@ export function changeType(data) {
         })
             .then(r => r.json())
             .then((result) => { 
+                dispatch(type(data));
                 dispatch(typeLoading(false));
                 dispatch(typeOfProduct(result.data.queryProductByType));
              });

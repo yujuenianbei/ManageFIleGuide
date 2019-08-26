@@ -78,7 +78,7 @@ class Main extends PureComponent {
                     touchAction: this.props.state.main.drawer ? 'none' : 'auto',
                 }}
             />
-            <Mask drawer={this.toggleDrawer} show={this.props.state.main.drawer} />
+            <Mask click={this.toggleDrawer} show={this.props.state.main.drawer} />
             <div className={styles.main} id="main"
                 style={{
                     touchAction: this.props.state.main.drawer ? 'none' : 'auto',

@@ -3,6 +3,7 @@ import { Route } from 'react-router-dom';
 import classify from '@magento/venia-concept/esm/classify';
 import Main from '../components/Main';
 import Login from '../components/Login';
+import Product from '../components/Product';
 class Routers extends Component {
     render() {
         return (
@@ -12,6 +13,7 @@ class Routers extends Component {
                 <Route path="/cart" component={Main} />
                 <Route path="/user" component={Main} />
                 <Route path='/login' component={Login} />
+                <Route path='/product/:id' component={Product} />
             </Fragment>
         );
     }

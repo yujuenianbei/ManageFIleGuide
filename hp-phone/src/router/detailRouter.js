@@ -2,11 +2,13 @@ import React, { Component, Fragment } from 'react';
 import { Route } from 'react-router-dom';
 import classify from '@magento/venia-concept/esm/classify';
 import Login from '../components/Login';
+import Product from '../components/Product';
 class Routers extends Component {
     render() {
         return (
             <Fragment>
                 <Route path='/login' component={Login} />
+                <Route path='/product/:id' component={Product} />
                 {/* <Route path="/account/login" component={Login} />
                 <Route path="/account/register" component={RegUser} />
                 <Route path="/productList" component={List} />

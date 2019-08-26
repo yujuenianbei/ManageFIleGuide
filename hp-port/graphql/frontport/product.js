@@ -188,6 +188,19 @@ module.exports = {
                     })
             }
         },
+        queryProductById: {
+            type: QueryPorduct,
+            description: '查询产品详情(id)',
+            args: {
+                id: { type: GraphQLInt }
+            },
+            resolve: async function (source, { id }) {
+                return await searchSql($sql.queryProductInfo, [id])
+                    .then(async (result) => {
+                            return await result[0]
+                    })
+            }
+        },
         queryProductNum: {
             type: new GraphQLList(QueryPorductsNum),
             description: '查询产品总数',
@@ -196,9 +209,7 @@ module.exports = {
                     return await result
                 })
             }
-        }
-    },
-    mutation: {
+        },
         queryProductByType: {
             type: new GraphQLList(QueryPorduct),
             description: '根据type选择产品',
@@ -214,5 +225,8 @@ module.exports = {
                 
             }
         },
+    },
+    mutation: {
+        
     }
 };

@@ -76,7 +76,7 @@ var user = {
 
     queryAllProductType: "SELECT * FROM productType",
     // 查询产品详情
-    queryProductInfo: "SELECT * FROM product where id= ?",
+    queryProductInfo: "SELECT * FROM product where id=?",
     // 获取所有产品的类型
     queryProductTypeList: "SELECT id,( SELECT GROUP_CONCAT(c.typeName) FROM `productType` AS c WHERE FIND_IN_SET(c.id,s.type) ) FROM `product` AS s",
 

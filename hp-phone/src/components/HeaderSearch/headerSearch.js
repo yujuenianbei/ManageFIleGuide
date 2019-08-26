@@ -17,9 +17,9 @@ import { Close, Search } from '@material-ui/icons';
 const HeaderSearch = (props) => {
     const { showSearch } = props;
     const [search, setSearch] = useState('');
-    useEffect(() => {
-        console.log(search)
-      });
+    // useEffect(() => {
+    //     console.log(search)
+    //   });
 
     return (<Fragment>
         {showSearch && <div className={styles.headerSearch}>

@@ -28,12 +28,26 @@ const GET_TYPE = gql`
         }
 }`;
 
-class Home extends Component {
-    componentDidMount() {
-        document.getElementById('leftClassify').children[0].className = 'active';
-        this.props.changeType(this.props.state.classify.type)
+const GET_TYPE_CONTENT = gql`query queryProductByType($type: Int){
+    queryProductByType(type: $type){
+      id,
+      typeName,
+      type,
+      img,
+      productName,
+      promotionMessage,
+      features,
+      usedPrice,
+      nowPrice
     }
+  }`
 
+
+
+class Home extends Component {
+    // componentDidMount() {
+    //     this.props.changeType(this.props.state.classify.type)
+    // }
     selectData = (index, item, data) => {
         if (this.props.state.classify.type !== item.id) {
             data.productType.forEach((items, indexes) => {
@@ -58,8 +72,9 @@ class Home extends Component {
                                     <Loading />
                                 </div>;
                                 if (error) return `Error! ${error.message}`;
+
                                 return data.productType.map((item, index) => {
-                                    return <li key={"classifyList" + index} onClick={() => this.selectData(index, item, data)} className={index === 0 ? 'active' : ''}>
+                                    return <li key={"classifyList" + index} onClick={() => this.selectData(index, item, data)} className={index === this.props.state.classify.type - 1 ? 'active' : ''}>
                                         <span>{item.typeName}</span>
                                     </li>
                                 })
@@ -70,12 +85,29 @@ class Home extends Component {
                 <div className={styles.classifyContent}
                     style={{ height: this.props.state.main.searchbar ? 'calc( 100vh - 162px )' : 'calc( 100vh - 112px )' }}>
                     <ul>
-                        {this.props.state.classify.typeLoading && <Loading />}
+                        <Query query={GET_TYPE_CONTENT} variables={{ type: this.props.state.classify.type }}>
+                            {({ loading, error, data, refetch }) => {
+                                if (loading) return <div>
+                                    <Loading />
+                                </div>;
+                                if (error) return `Error! ${error.message}`;
+                                return data.queryProductByType.map((item, index) => {
+                                    return <li key={"classifyContent" + index}>
+                                        <Link to={'/product/' + item.id}>
+                                            <img src={item.img.split('http').length > 1 ? item.img : http.img + item.img} alt="" />
+                                        </Link>
+                                    </li>
+                                })
+                            }}
+                        </Query>
+
+                        {/* fetch请求产品 */}
+                        {/* {this.props.state.classify.typeLoading && <Loading />}
                         {this.props.state.classify.typeProduct && !this.props.state.classify.typeLoading && this.props.state.classify.typeProduct.map((item, index) => {
                             return <li key={"classifyContent" + index}>
                                 <img src={item.img.split('http').length > 1 ? item.img : http.img + item.img} alt="" />
                             </li>
-                        })}
+                        })} */}
                     </ul>
                 </div>
             </div>
@@ -90,7 +122,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        changeType: (data) => { dispatch(Actions.changeType(data)) }
+        changeTypeState: (data) => { dispatch(Actions.changeType(data)) },
+        changeType: (data) => { dispatch(Actions.type(data)) }
     }
 };
 export default connect(
