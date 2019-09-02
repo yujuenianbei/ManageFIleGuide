@@ -16,6 +16,9 @@ import { gql } from "apollo-boost";
 
 import Loading from '../Loading';
 
+// func
+import { imgLoading } from '../../func/commom'
+
 // http
 import { http } from '../../http';
 
@@ -68,7 +71,7 @@ class Home extends Component {
                     <ul id="leftClassify">
                         <Query query={GET_TYPE}>
                             {({ loading, error, data, refetch }) => {
-                                if (loading) return <div>
+                                if (loading) return <div className={styles.loading}>
                                     <Loading />
                                 </div>;
                                 if (error) return `Error! ${error.message}`;
@@ -87,14 +90,15 @@ class Home extends Component {
                     <ul>
                         <Query query={GET_TYPE_CONTENT} variables={{ type: this.props.state.classify.type }}>
                             {({ loading, error, data, refetch }) => {
-                                if (loading) return <div>
+                                if (loading) return <div className={styles.loading}>
                                     <Loading />
                                 </div>;
                                 if (error) return `Error! ${error.message}`;
                                 return data.queryProductByType.map((item, index) => {
                                     return <li key={"classifyContent" + index}>
                                         <Link to={'/product/' + item.id}>
-                                            <img src={item.img.split('http').length > 1 ? item.img : http.img + item.img} alt="" />
+                                            <img onLoad={(e)=>{imgLoading(e)}} style={{"display": "none"}} src={item.img.split('http').length > 1 ? item.img : http.img + item.img} alt="" />
+                                            <img src="http://placehold.it/300x300/f1f1f1/f1f1f1.png"/>
                                         </Link>
                                     </li>
                                 })

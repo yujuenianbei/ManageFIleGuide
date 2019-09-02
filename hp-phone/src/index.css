@@ -141,6 +141,39 @@ li {
   }
 } */
 
-.am-grid-item-content{
+.am-grid-item-content {
   padding: 0 !important;
+}
+
+#notice {
+  display: none;
+  width: calc(100% - 10px);
+  height: 40px;
+  line-height: 40px;
+  position: fixed;
+  bottom: 0;
+  background: #0097d7;
+  color: #fff;
+  padding: 0 0 0 10px;
+}
+
+.noticeContent {
+  float: left;
+}
+
+.noticeChoice {
+  float: right;
+  display: flex;
+}
+
+.noticeBtn {
+  height: 40px;
+  width: 40px;
+}
+#noticeYes{
+  background-color: #fff;
+  color: #0097d7;
+}
+#noticeNo{
+  color: #fff;
 }

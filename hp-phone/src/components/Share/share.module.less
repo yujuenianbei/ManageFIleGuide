@@ -1,26 +1,72 @@
 .share {
     position: fixed;
     width: 100%;
-    height: 100px;
     background: #fff;
     border-top: 1px solid #ccc;
     z-index: 200;
     transition: all 0.1s linear;
 
+    .title {
+        height: 50px;
+        line-height: 50px;
+        text-align: center;
+
+        .name {
+            font-size: 16px;
+        }
+    }
+
     .shareContent {
         display: flex;
-        padding: 10px;
+        flex-wrap: wrap;
+        margin: 0 20px;
+        border-bottom: 1px solid #ccc;
 
-        .shareIcon {
-            font-size: 40px;
-            border-radius: 50%;
-            padding: 7px;
-        }
+        .shareBtn {
+            width: 25%;
+            display: flex;
+            margin-bottom: 10px;
+            flex-direction: column;
+            text-align: center;
 
-        .wx {
-            color: #fff;
-            background: #00bd7a;
+            .shareIcon {
+                font-size: 32px;
+                border-radius: 50%;
+                padding: 7px;
+                margin: 0 auto 5px;
+                color: #fff;
+                width: 36px;
+            }
+
+            .wx {
+                background: #00bd7a;
+            }
+
+            .weibo {
+                background: #d62b2a;
+            }
+
+            .qq {
+                background: #108ee9;
+            }
+
+            .html {
+                background: #04d1ff;
+            }
+
+            .Pimg {
+                background: #8210e9;
+            }
+
+            .iconName {}
         }
+    }
+
+    .cancel {
+        height: 40px;
+        line-height: 40px;
+        text-align: center;
+        font-size: 16px;
     }
 
 }

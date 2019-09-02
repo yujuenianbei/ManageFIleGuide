@@ -33,7 +33,7 @@ class ProductHeader extends Component {
                 </div>
             </div>
             <Mask click={this.changeShare} show={this.state.shareState} />
-            <Sharer show={this.state.shareState} />
+            <Sharer click={this.changeShare} show={this.state.shareState} />
         </Fragment>);
     }
 }

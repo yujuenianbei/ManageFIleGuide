@@ -52,6 +52,7 @@ docker run -it -p3000:3000 -p3001:3001 -p3002:3002 -p3003:3003 -p3004:3004 --lin
 nginx
 docker run -p 8082:80 -p 8083:443 --name mynginx -v $PWD/:/usr/share/nginx/html -v $PWD/nginx/conf/nginx.conf:/etc/nginx/nginx.conf -v $PWD/nginx/conf.d/default.conf:/etc/nginx/conf.d/default.conf -v $PWD/nginx/conf.d:/etc/nginx/conf.d -v $PWD/logs:/var/log/nginx -d nginx
 
+docker run -it -p3000:3000 -p3001:3001 -p3002:3002 -p3003:3003 -p3004:3004 -p3005:3005 -p3006:3006 -p3007:3007 -p3008:3008 -p3009:3009 --link mysql:db -v /home/ubuntu/demo/ManageFIleGuide:/home/node --name mycentos yujuenianbei/yujuenianbeicentos /bin/bash
 
 后台地址
 192.168.31.31：3002

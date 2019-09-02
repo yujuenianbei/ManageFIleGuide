@@ -4,8 +4,8 @@
 <head>
   <meta charset="utf-8" />
   <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="theme-color" content="#000000" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta name="theme-color" content="#ffffff" />
   <!--
       manifest.json provides metadata used when your web app is installed on a
       user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
@@ -37,6 +37,17 @@
 <body>
   <noscript>You need to enable JavaScript to run this app.</noscript>
   <div id="root"></div>
+  <button id="btn-install-app">Add to home screen</button>
+  <div id="notice">
+    <div class="noticeContent">
+      是否接受HP推送
+    </div>
+    <div class="noticeChoice">
+      <button id="noticeNo" class="noticeBtn">否</button>
+      <button id="noticeYes" class="noticeBtn">是</button>
+    </div>
+
+  </div>
   <!--
       This HTML file is a template.
       If you open it directly in the browser, you will see an empty page.

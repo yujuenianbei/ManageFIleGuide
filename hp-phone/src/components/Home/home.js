@@ -9,10 +9,12 @@ import { Drawer, List, NavBar, Icon, Carousel, WingBlank, Grid, Popover } from '
 import { Link, withRouter } from 'react-router-dom';
 import Router from '../../router/detailRouter';
 
-import { Query, Mutation } from "react-apollo";
-import { gql } from "apollo-boost";
+import { Query, Mutation } from "@apollo/react-components";
+import gql from 'graphql-tag';
 
 import Loading from '../Loading';
+// func
+import { imgLoading } from '../../func/commom'
 
 const GET_BANNER = gql`
 query banner{
@@ -74,8 +76,8 @@ class Home extends Component {
                         return <Carousel
                             autoplay={true}
                             infinite
-                            // beforeChange={(from, to) => console.log(`slide from ${from} to ${to}`)}
-                            // afterChange={index => console.log('slide to', index)}
+                        // beforeChange={(from, to) => console.log(`slide from ${from} to ${to}`)}
+                        // afterChange={index => console.log('slide to', index)}
                         >
                             {data.banners.map((item, index) => (
                                 <Link to={item.link}
@@ -86,13 +88,15 @@ class Home extends Component {
                                     <img
                                         src={item.img}
                                         alt="item.title"
-                                        style={{ width: '100%', verticalAlign: 'top' }}
-                                        onLoad={() => {
+                                        style={{ width: '100%', verticalAlign: 'top', display: "none" }}
+                                        onLoad={(e) => {
+                                            imgLoading(e);
                                             // fire window resize event to change height
                                             window.dispatchEvent(new Event('resize'));
                                             this.setState({ imgHeight: 'auto' });
                                         }}
                                     />
+                                    <img src="https://placehold.it/1920x694/f1f1f1/f1f1f1.png" />
                                 </Link>
                             ))}
                         </Carousel>
@@ -109,7 +113,10 @@ class Home extends Component {
                         square={false}
                         columnNum={2}
                         renderItem={(dataItem, index) => (
-                            <img src={dataItem.img} style={{ width: '100%', height: '100%' }} alt={dataItem.title} />
+                            <Fragment>
+                                <img onLoad={(e)=>{imgLoading(e)}} src={dataItem.img} style={{ width: '100%', height: '100%', display: "none" }} alt={dataItem.title} />
+                                <img style={{width: "100%", height: "100%"}} src="https://placehold.it/474x255/f1f1f1/f1f1f1.png" />
+                            </Fragment>
                         )}
                     />
                 }}

@@ -85,7 +85,7 @@ class Main extends PureComponent {
                     paddingTop: this.props.state.main.searchbar ? '100px' : '50px',
                     minHeight: this.props.state.main.searchbar? 'calc( 100vh - 162px )' : 'calc( 100vh - 112px )',
                 }}>
-                <Route path='/home' component={Home} />
+                <Route path='/home' exact component={Home} />
                 <Route path='/classify' component={Classify} />
                 <Route path='/cart' component={Cart} />
                 <Route path='/user' component={User} />

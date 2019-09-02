@@ -9,6 +9,15 @@
 /hpend/node_modules
 /hp-port/node_modules
 /hp-phone/node_modules
+
+# /pwa/pwa-stdio/node_modules
+/pwa/pwa-stdio/packages/graphql-cli-validate-magento-pwa-queries/node_modules
+/pwa/pwa-stdio/packages/pwa-buildpack/node_modules
+/pwa/pwa-stdio/packages/upward-js/node_modules
+/pwa/pwa-stdio/packages/upward-spec/node_modules
+/pwa/pwa-stdio/packages/venia-concept/node_modules
+/pwa/pwa-stdio/packages/venia-concept/dist
+
 /hp/build
 /vue-storefront
 # testing

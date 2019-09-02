@@ -13,9 +13,10 @@ import storage from 'redux-persist/lib/storage'
 import thunk from 'redux-thunk';
 import { mainsReducer, classifiesReducer} from '../reducers';
 
+
 const reducer = combineReducers({
   main: mainsReducer,
-  classify: classifiesReducer
+  classify: classifiesReducer,
 })
 
 // 状态未持久化
